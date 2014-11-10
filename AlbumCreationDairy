@@ -1,0 +1,38 @@
+- 20/09/2014 : Bắt đầu đọc về AngularJS.
+
+- 25/9/2014 : Bắt đầu thử viết code chỉnh cỡ canvas. Vẽ ảnh trên canvas.
+
+- 30/9/2014 : Viết code tải ảnh từ máy, drag and drop.
+
+- 7/10/2010 : Viết code mô phỏng giao diện album (chuyển trang, thêm trang, xóa trang). Tích hợp cùng canvas, imageLoader.
+
+- 12/10/2010 : Tìm hiểu indexedDB.
+
+- 14/10/2014 : Thử nghiệm textarea.
+
+- 15/10/2014 : Khởi tạo, truy cập thành công database. Chuyển ng-show sang ng-if. 
+
+- 16/10/2014 : Sử dụng thành công text area. Tạo các tính năng dịch chuyển, đổi màu, xóa.
+
+- 17/10/2014 : Tạo tính năng hiển thị danh sách và truy cập các album đã tạo.
+
+- 20/10/2014 : Sử dụng thành công server với webpy. Thử nghiệm reportlab để tạo file pdf
+
+- 22/10/2014 : Hoàn thành code lưu ảnh trong máy client.
+
+- 25/10/2014: Xuất thành công file pdf với ảnh và text.
+
+- 26/10/2014: Sử dụng thành công embedded font cho file pdf.
+
+- 28/10/2014: Thêm chọn font family, style, weight, tạo bảng chọn màu.
+
+- 1/11/2014: Revise code với promise, services.
+
+- 2/11/2014: Hiển thị trang kép.ảnh, đọc exif và xoay ảnh.
+
+- 3/11/2014: Xoay ảnh khi tạo pdf, hoàn thiện thêm hình thức (tạo bóng album, title, description...)
+
+- 6/11/2014: Drag and drop frame, text. Thêm icons. Màu nền.
+
+- 7/11/2014: Thêm guide mode. 
+

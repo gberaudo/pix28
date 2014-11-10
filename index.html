@@ -1,0 +1,519 @@
+<html>
+<head>
+	<script src = 'static/js/angular_13.js'></script>
+	<script src = 'static/js/pdfkit.js'></script>
+	<script src = 'static/js/blob-stream.js'></script>
+	<script src = 'static/js/exif.js'></script>
+	<script src = 'static/js/albumController.js'></script>
+	<script src = 'static/js/pageController.js'></script>
+	<script src = 'static/js/canvasController.js'></script>
+	<script src = 'static/js/imageLoaderController.js'></script>
+	<script src = 'static/js/layoutController.js'></script>
+	<script src = 'static/js/textController.js'></script>
+	<script src = 'static/js/services.js'></script>
+	<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+	<title> Create your own story </title> 
+</head>
+
+<body ng-app = 'albumApp' ng-init = 'greeting = true'>
+
+	<div id = 'banner'> <span id = 'slogan'> Create your own story <span> </div>
+	<div ng-if = 'greeting'>
+		<h2 draggable="true" ondragstart='drag(event)'> Welcome!</h2>
+	</div>
+
+	<div ng-controller = 'AlbumController'>
+		<!--__________________welcome screen____________________-->
+		
+		
+
+		<h5 class = 'link' ng-click = 'createAlbum()' 
+				ng-show = 'showAlbums || greeting'
+				style = 'position: fixed; left: 50px; top: 100px'> 
+				New album 
+		</h5>	
+		<div ng-show = 'showAlbums'
+			id = 'albumList'>
+			<h5> Your albums</h5>
+			<ul> 
+				<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 13px'>
+					<span class = 'link'
+						ng-click = 'openAlbum(albumSC)'
+						ng-bind = 'albumSC.title||albumSC.date'></span> 
+						
+					<img src = 'static/icons/delete1.png' 
+						class = 'link inline'
+						ng-click = 'removeAlbum(albumSC.id, $index)'/>
+					<br/>
+					<span ng-bind = 'albumSC.description'
+						class = 'description'></span>
+
+				</li>
+			</ul>
+		</div>
+		
+		
+		
+<!-- 		display all existing albums-->
+
+		<!--____________________________end of welcome screen_____________-->
+		
+		<!--_____________begin album__________________-->
+		<div ng-if = 'inAlbum'> 
+			<div id = 'abTitle'>
+				<div name = 'editTitle'
+						ng-show = 'hasTitle'
+						ng-click = 'editTitle()'>
+					<span ng-bind = 'album.title' 
+						name = 'title'
+						ng-show = 'hasTitle'> 
+					</span>
+					<img src = 'static/icons/edit1.png'
+						ng-attr-title = '{{guideMode?"edit title":""}}'
+						name = 'edit'
+						class = 'clickable'/>
+				</div>
+				
+				<form ng-submit = 'showTitle()'
+						class = 'inline left'
+						ng-show = 'enterTitle'>
+					<input type = 'text' 
+						id = 'titleInput'
+						ng-model = 'album.title'
+						ng-blur = 'titleBlur()'
+						maxlength = '20'
+						placeholder = "Album's title"
+						required
+						value = 'album.title'>
+					</input>
+				</form>
+				
+
+					
+				<div class = 'right inline clickable'
+					ng-show = 'hasDescription'
+					ng-click = 'editDescription()'>
+					<span ng-bind = 'album.description'
+						class = 'description'>
+					</span>
+					<img src = 'static/icons/edit1.png'
+						ng-attr-title = '{{guideMode?"edit description":""}}'
+						name = 'edit'
+						class = 'clickable'/>
+				</div>
+				
+				<form ng-submit = 'showDescription()'
+					ng-if = 'enterDescription'
+					class = 'inline right'
+					ng-click = 'editDescription()'>
+					<input type = 'text' 
+						id = 'inputDescription'
+						ng-model = 'album.description'
+						ng-blur = 'descriptionBlur()'
+						maxlength = '40'
+						placeholder = "Album's description"
+						value = 'album.title'
+						>
+					</input>
+				<form>
+				
+			</div>
+
+			<div style = 'position: absolute; left: 20px; top: 75px'>
+				<span class = 'link' ng-click = 'createAlbum()'>
+					New album 
+				</span>
+				<br/> <br/>
+				<span class = 'link' id = 'allAlbums' 
+					ng-click = 'toAlbumList()'>
+					Your albums
+				</span>
+				<br/> <br/>
+				<button ng-click = 'guideMode = !guideMode' 
+					ng-bind = '"Turn " + (guideMode?"off":"on") + " guide"'>
+				</button>
+			</div>
+			<div id = 'export'>
+				<button ng-click = 'generatePdf()'>
+					Generate Pdf
+				</button>
+
+				<br>
+				<span ng-show = 'processing' style = 'font-size: 80%'>
+					Generating pdf... <br>
+					{{exportProcess}}
+				</span>
+				<br>
+				<span ng-show = 'showLink'>
+					<a download = '{{album.title + ".pdf"}}' id = 'pdfoutput'>download</a>
+				</span>
+			</div>
+			
+			<div id = 'album'
+				ng-mouseup = 'mouseUp($event)'>
+				
+				
+				<div id = 'doublepage'>
+				<!--head line-->
+					<div id = 'header'> 
+						<img src = 'static/icons/first1.png'
+								class = 'headerIcon left'
+								ng-attr-title = '{{guideMode?"go to the first page":""}}'
+								ng-show =  'show.leftPage' 
+								ng-click = 'goFirstPage()'
+								style = 'margin-left: 10px'/>
+						<img src = 'static/icons/prev1.png'
+								class = 'headerIcon left'
+								ng-attr-title = '{{guideMode?"go to the previous page":""}}'
+								ng-show =  'show.leftPage' 
+								ng-click = 'prevPage()'
+								style = ' margin-left: 10px' />
+						<img src = 'static/icons/newpage.png'
+								class = 'clickable'
+								ng-attr-title = '{{guideMode?"add a new double page":""}}'
+								ng-click = 'addNewPage()'
+								style = 'position: absolute; top: 5px; left: 280px; width: 30px'/> 
+						<img src = 'static/icons/deletepage.png' 
+								class = 'clickable'
+								ng-attr-title = '{{guideMode?"delete this double page":""}}'
+								ng-click = 'removePage()'
+								style = 'position: absolute; left: 360px; top: 5px; width: 30px'/>
+						<img src = 'static/icons/last1.png'
+								class = 'headerIcon right'
+								ng-attr-title = '{{guideMode?"go to the last page":""}}'
+								ng-show = 'show.rightPage' 
+								ng-click = 'goLastPage()'
+								style = 'margin-right:10px'/>
+						<img src = 'static/icons/next1.png'
+								class = 'headerIcon right'
+								ng-attr-title = '{{guideMode?"go to the next page":""}}'
+								ng-show = 'show.rightPage' 
+								ng-click = 'nextPage()'
+								style = 'margin-right:10px;'/>
+					
+						<span ng-show = 'show.leftPage'
+							id = 'leftPageNum'>
+							{{current.pageNum}}/{{album.content.length}}
+						</span>
+						<span ng-show = 'show.rightPage'
+							id = 'rightPageNum'>
+							{{current.pageNum + 1}}/{{album.content.length}}
+						</span>
+
+					</div>
+					<!--_______________________end of headline______________-->
+
+
+					<!--______________________a page in album______________________-->
+
+
+					<div ng-repeat = 'page in ["leftPage", "rightPage"]'
+						id = '{{page}}'
+						ng-controller = 'PageController'
+						ng-if = 'show[page]'
+						tabindex = 0
+						ondrop = 'angular.element(this).scope().dropInPage(event)' 
+						ondragover = 'angular.element(this).scope().allowDropInPage(event)'
+						ng-mousemove = 'mouseMove($event)'
+						ng-focus = 'pageFocus($event)'
+						style = 'background-color: {{current[page].background}}'>
+						
+						<div ng-repeat= 'frame in current[page].frames' 
+							ng-controller='CanvasController'
+							ng-style='{cursor: current.cursor}'>
+							<canvas tabindex = '0' 
+										class = 'frame'
+										ng-model = 'frame'
+										ng-attr-title = '{{guideMode?msg:""}}'
+										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
+										ondragover = 'angular.element(this).scope().allowDrop(event)'
+										ng-mousedown = 'mouseDown($event)' 
+										ng-keydown = 'keyDown($event)'
+										ng-focus = 'canvasFocus($event)'
+										>
+							</canvas>
+						</div>
+						
+						<div ng-repeat = 'textBox in current[page].textBoxes' 
+							ng-controller = 'TextBoxController'>
+							<textarea class = 'textAB'
+								ng-attr-title = '{{guideMode?"Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.":""}}'
+								ng-model = 'textBox.text'
+								ng-mousedown = 'mouseDown($event)'
+								ng-keyup = 'autoResize($event)'
+								ng-focus = 'textFocus($event)'
+								ng-blur = 'blur($event)'
+								ng-keydown = 'keyDown($event)'
+								style = 'position: absolute;
+											z-index: 1;
+											background-color: transparent;
+											overflow: hidden'>
+							</textarea>
+						</div>
+
+					</div>
+					
+					
+<!--					<div id = 'leftPage' class = 'page'
+						ng-controller = 'PageController'
+						ng-if = 'showPrevPage'
+						tabindex = '0'
+						ondrop = 'angular.element(this).scope().dropInPage(event)' 
+						ondragover = 'angular.element(this).scope().allowDropInPage(event)'
+						ng-mousemove = 'mouseMove($event)'
+						ng-focus = 'pageFocus($event)'
+						style = 'background-color: {{current.leftPage.background}}'>
+			
+						<div ng-repeat= 'frame in current.leftPage.frames' 
+							ng-controller='CanvasController'
+							ng-style='{cursor: current.cursor}'>
+							<canvas tabindex = '0' 
+										class = 'frame'
+										ng-model = 'frame'
+										ng-attr-title = '{{guideMode?msg:""}}'
+										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
+										ondragover = 'angular.element(this).scope().allowDrop(event)'
+										ng-mousedown = 'mouseDown($event)' 
+										ng-keydown = 'keyDown($event)'
+										ng-focus = 'canvasFocus($event)'
+										>
+							</canvas>
+						</div>
+						
+						<div ng-repeat = 'textBox in current.leftPage.textBoxes' 
+							ng-controller = 'TextBoxController'>
+							<textarea class = 'textAB'
+								ng-attr-title = '{{guideMode?"Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.":""}}'
+								ng-model = 'textBox.text'
+								ng-mousedown = 'mouseDown($event)'
+								ng-keyup = 'autoResize($event)'
+								ng-focus = 'textFocus($event)'
+								ng-blur = 'blur($event)'
+								ng-keydown = 'keyDown($event)'
+								style = 'position: absolute;
+											z-index: 1;
+											background-color: transparent;
+											overflow: hidden'>
+							</textarea>
+						</div>
+					</div>-->
+					
+					<!-- ________________________ right page_______________ -->
+					
+	<!--				<div id = 'rightPage' class = 'page'
+						ng-controller = 'PageController'
+						ng-if = 'showNextPage'
+						tabindex = '0'
+						ondrop = 'angular.element(this).scope().dropInPage(event)' 
+						ondragover = 'angular.element(this).scope().allowDropInPage(event)'
+						ng-mousemove = 'mouseMove($event)'
+						ng-focus = 'pageFocus($event)'
+						ng-style = '{backgroundColor: current.rightPage.background}'>
+
+						<div ng-repeat= 'frame in current.rightPage.frames' 
+							ng-controller='CanvasController'
+							ng-style='{cursor: current.cursor}'>
+							<canvas class = 'frame'
+										tabindex = '0' 
+										ng-model = 'frame'
+										ng-attr-title = '{{guideMode?msg:""}}'
+										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
+										ondragover = 'angular.element(this).scope().allowDrop(event)'
+										ng-mousedown = 'mouseDown($event)' 
+										ng-keydown = 'keyDown($event)'
+										ng-focus = 'canvasFocus($event)'
+										>
+							</canvas>
+						</div>
+						
+						<div ng-repeat = 'textBox in current.rightPage.textBoxes' 
+							ng-controller = 'TextBoxController'>
+							<textarea class = 'textAB'
+								ng-model = 'textBox.text'
+								ng-attr-title = '{{guideMode?"Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.":""}}'
+								ng-mousedown = 'mouseDown($event)'
+								ng-keyup = 'autoResize($event)'
+								ng-focus = 'textFocus()'
+								ng-blur = 'blur($event)'
+								ng-keydown = 'keyDown($event)'
+								style = 'position: absolute;
+											z-index: 1;
+											background-color: transparent;
+											overflow: hidden'>
+							</textarea>
+						</div>
+					</div>-->
+					
+
+					<!--_____________________________end of pages _____________________ -->
+					<div id = 'textControl' ng-controller = 'TextController'>
+						<img id = 'addText' src = 'static/icons/text.png'
+							name = 'text'
+							ng-attr-title = '{{guideMode?"drag and drop into page to add a text field":""}}'
+							class = 'draggable textCtrlBut' 
+							draggable = 'true'
+							ondragstart = 'angular.element(this).scope().dragText(event)'
+							/>
+
+						<select class = 'textCtrlBut' 
+							ng-attr-title = '{{guideMode?"choose text font":""}}'
+							ng-model = 'current.font.family' 
+							ng-change = 'changeFont(current.font.family)'>
+							<option ng-repeat = 'font in fonts'
+								value = {{font}}
+								style = 'font-family: {{font}}'>
+								{{font}}
+							</option> 
+						</select> 
+						
+						<button class = 'textCtrlBut italic' 
+							ng-click = 'italicClick()'>
+							I
+						</button>
+						
+						<button class = 'textCtrlBut bold'
+							ng-click = 'boldClick()'>
+							B
+						</button>
+						
+						<!--Color falldown menu -->
+						<button class = 'textCtrlBut'
+							ng-click = 'showColors()'
+							ng-attr-title = '{{guideMode?"choose text color":""}}'
+							style = 'color: {{current.font.color}}'
+							ng-blur = 'cbBlur()'>
+							Text color
+						</button>
+						<div tabindex = 0
+							id = 'colorMenu'
+							ng-if = 'showColorMenu' 
+							ng-init = 'showColorMenu = false'
+							ng-click = 'menuClick()'
+							ng-blur = 'menuBlur()'
+							ng-mouseenter = 'mouseEnter()'
+							ng-mouseleave = 'mouseLeave()'>
+							<div id = 'colorTable'
+								tabindex = 0 
+								ng-repeat = 'color in colors'
+								style = 'background-color:{{color}};
+												float:left'
+								ng-focus = 'changeColor(color)'
+								ng-blur = 'colorBlur()'>
+							</div>
+						</div>
+						<!-- end of color menu-->
+						<select 
+							class = 'textCtrlBut'
+							ng-attr-title = '{{guideMode?"change font size":""}}'
+							ng-model = 'current.font.size'
+							ng-change = 'changeFontSize(current.font.size)'>
+							<option ng-repeat = 'i in [8, 10,12, 14, 16, 18, 20, 24, 30]'
+								value = '{{i + "px"}}'> {{i}} </option>
+						</select>
+						
+						<button 
+							class = 'textCtrlBut'
+							ng-attr-title = '{{guideMode?"align text left":""}}'
+							ng-click = 'align("left")'>
+							<img src = 'static/icons/left.png'>
+							</button>
+						<button
+							class = 'textCtrlBut'
+							ng-attr-title = '{{guideMode?"align text right":""}}'
+							ng-click = 'align("right")'>
+							<img src = 'static/icons/right.png'>
+						</button>
+						<button 
+							class = 'textCtrlBut'
+							ng-attr-title = '{{guideMode?"align text center":""}}'
+							ng-click = 'align("center")'>
+							<img src = 'static/icons/center.png'>
+						</button>
+						
+						<img name = 'frame' 
+							src = 'static/icons/frame_edit.png'
+							ng-attr-title = '{{guideMode?"drag and drop into page to add a new frame":""}}'
+							class = 'draggable'
+							draggable = 'true'
+							ondragstart = 'angular.element(this).scope().dragFrame(event)'
+							style = 'float: right; height: 40px;'/> 
+					</div>
+					
+				</div>
+			
+				<!--_______________select layout________________________-->
+				<div id = 'selectLayout'
+					ng-controller = 'LayoutController'>
+					<span style = 'font-weight: bold; font-size: 90%; margin-left: 1em' >
+						Choose page layout
+					</span>
+					<span style = 'font-size: 80%'> (photos/page)</span> 
+					
+					<div id = 'layoutSets'>
+						<span ng-repeat = 'i in [1,2,3,4,5,6,7,8,9,10]'
+							class = 'link layout' 
+							ng-click = 'showLayouts("x"+i)'>
+							  {{'x'+ i}} 
+						</span>
+					</div>
+					<button class = ''
+							ng-attr-title = '{{guideMode?"choose page background color":""}}'
+							ng-click = 'showColors()'
+								style = 'color: {{current.font.color}}; float: right;
+									margin-right: 10px'
+								ng-blur = 'cbBlur()'>
+							Page BG color
+						</button>
+						<div tabindex = 0
+							id = 'BGcolorMenu'
+							ng-if = 'showColorMenu' 
+							ng-init = 'showColorMenu = false'
+							ng-click = 'menuClick()'
+							ng-blur = 'menuBlur()'
+							ng-mouseenter = 'mouseEnter()'
+							ng-mouseleave = 'mouseLeave()'>
+							<div id = 'colorTable'
+								tabindex = 0 
+								ng-repeat = 'color in colors'
+								style = 'background-color:{{color}};
+												float:left'
+								ng-focus = 'changeBGColor(color)'
+								ng-blur = 'colorBlur()'>
+							</div>
+						</div>
+					
+					<div id = 'layouts'>
+						<canvas ng-repeat = 'layout in layouts'
+							ng-attr-title = '{{guideMode?"Choose page first then click on the layout to load to the chosen page.":""}}'
+							ng-controller = 'minLayoutController'
+							ng-click = 'loadPageLayout(layout)'
+							class = 'clickable minframe'> 
+						</canvas>
+					</div>
+				</div>
+				<!--___________________end of select layour____________________-->
+		
+			<!--___________________image loader_____________________________-->
+				<div id = 'imageLoader'
+					ng-controller = 'ImageLoaderController'
+					ng-if = 'imgLoad'>
+					<label for = 'files' class = 'btn'
+						ng-attr-title = '{{guideMode?"click to load photos from your computer":""}}'>
+					Load photos</label>
+					<span style = 'font-size: 80%'
+						ng-show = 'loading'>{{fileProcess}}</span>
+					<input type = 'file' id = 'files' 
+						style = 'display: none'
+						onchange = 'angular.element(this).scope().handleFileSelect(event)'
+						multiple />
+					<div id = 'output'></div>
+				</div>
+			</div>
+			<!--____________________end of div class album_______________________-->
+
+		</div>
+
+			<!--_________________________end of image loader___________________-->
+	</div>
+</body>
+</html>

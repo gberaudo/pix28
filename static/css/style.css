@@ -1,0 +1,342 @@
+#banner {
+	height: 50px;
+	width: 100%;
+	background: -webkit-linear-gradient(left, red , blue); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(right, red, blue); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(right, red, blue); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom right, #CEECF5 , #0489B1);
+}
+
+#slogan {
+	font-size: 180%;
+	font-weight: 3;
+	font-family: UVNKeChuyen3;
+	float: right;
+	margin-right: 30px;
+	margin-top: 5px;
+}
+
+#album {
+	position: absolute;
+	width: 950px;
+	height: 500px;
+	left: 170px;
+	top: 100px;
+	border: 1px black solid;
+}
+
+#albumList {
+	position: absolute;
+	left: 250px;
+	top: 100px;
+	width: 15.5em;
+}
+
+#abTitle {
+	position: absolute;
+	top: 75px;
+	left: 170px;
+	width: 950px;
+	height: 25px;
+	
+}
+
+#selectLayout {
+	position: absolute; 
+	width: 700px; 
+	height: 125px; 
+	left: 0px; 
+	top: 378px; 
+	padding: 5px 0 0 0;
+ 	border-top: 1px solid #AAA; 
+}
+
+#imageLoader {
+	position: absolute;
+	left: 700px;
+	top: 0px;
+	width: 250px;
+	height: 500px;
+	border-left: 1px solid black; 
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#doublepage {
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	width: 700px;
+	padding-top: 8px;
+}
+
+#leftPage {
+	position: absolute;
+	left: 40px; 
+	top: 35px; 
+	width: 300px;
+	height: 300px;
+	border:1px solid #000000;
+	overflow: hidden;
+	box-shadow: 2px 3px 5px 6px #ccc;
+	border-bottom: 3px solid #333;
+
+}
+
+#rightPage {
+	position: absolute;
+	left: 342px; 
+	top: 35px; 
+	width: 300px;
+	height: 300px;
+	border:1px solid #000000;
+	border-right: 5px solid #555;
+	border-bottom: 3px solid #333;
+	overflow: hidden;
+	box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+#textControl {
+	position: absolute;
+	top: 340px;
+	left: 10px;
+	height: 35px;
+	width: 690px;
+}
+
+#colorMenu {
+	z-index:2;
+	position: absolute;
+	top: 25px;
+	left: 325px;
+	width: 150px;
+	border: 1px solid #888;
+}
+#BGcolorMenu {
+	z-index:2;
+	position: absolute;
+	top: 30px;
+	left: 470px;
+	width: 150px;
+	border: 1px solid #888;
+}
+#colorTable {
+	z-index:10;
+	width: 30px; 
+	height:20px;
+}
+
+#export {
+	position: absolute;
+	top: 190px;
+	left: 20px;
+}
+
+#rightPageNum {
+	position: absolute;
+	top: 40px;
+	left: 660;
+	font-size: 80%;
+}
+
+#leftPageNum {
+	position: absolute;
+	top: 40px;
+	left: 5px;
+	font-size: 80%;
+}
+
+#layoutSets {
+	position: absolute;
+	top: 25px;
+	left: 10px;
+}
+
+#layouts {
+	position: absolute;
+	top: 50px;
+	left: 10px;
+}
+
+#output {
+	position: absolute;
+	top: 3em;
+}
+.link {
+	color: #66F;
+	cursor: pointer;
+}
+
+img.thumb {
+	max-height: 67px;
+	max-width: 67px;
+	display: block;
+   margin: auto auto;
+	border: 1px solid #CCC;
+}
+div.thumb {
+	max-height: 67px;
+	width: 67px;
+/* 	border: 1px solid #CCC; */
+	margin: 7px 5px 0 0;
+	display: inline-block;
+	text-align: center;
+}
+
+canvas.frame {
+	position: absolute;
+}
+
+canvas.minframe {
+	border: 1px solid #CCC;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+span.description {
+	font-size: 80%; 
+	font-style: italic
+}
+.textCtrlBut {
+	margin-top: 8px;
+	height: 25px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+img.inline {
+	float: right;
+	width: 12px; 
+	height: 12px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.draggable {
+	cursor: move;
+}
+
+img.headerIcon {
+	cursor: pointer;
+	opacity: 0.9;
+	width: 20px; 
+	height: 20px;
+	display: inline-block;
+}
+#addText {
+	height: 35px; 
+	display: inline-block;
+	vertical-align: middle;
+}
+
+button {
+	cursor: pointer;
+}
+
+button.bold {
+	font-size: 100%; 
+	font-weight: bold; 
+	font-family: 'Times New Roman';
+}
+
+button.italic {
+	font-size: 100%; 
+	font-style: italic; 
+	font-family: "Times New Roman";
+}
+
+.layout {
+	width: 40px; 
+	margin-right: 5px;
+	background-color: #EEE;
+	display: inline-block;
+	text-align: center
+}
+#guide {
+	position: absolute;
+	font-size: 80%;
+	max-width: 15em;
+	text-align: center;
+	color: #0489B1;
+	text-shadow: 1px 1px 0 #FFF;
+}
+
+img[name = 'edit'] {
+	width: 25px;
+	height: 25px; 
+	vertical-align: middle;
+}
+
+div[name = 'editTitle'] {
+	float: left; 
+	cursor: pointer;
+	display: inline-block;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+span[name = 'title'] {
+	float: left; 
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.btn {
+display: inline-block;
+padding: 4px 12px;
+margin-bottom: 0;
+font-size: 14px;
+line-height: 20px;
+color: #333333;
+text-align: center;
+vertical-align: middle;
+cursor: pointer;
+border: 1px solid #bbbbbb;
+border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+border-bottom-color: #a2a2a2;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+}
+
+/*.btn {
+border-color: #c5c5c5;
+border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+}*/
+@font-face{
+	font-family: Calligraffiti;
+	src: url('../fonts/Calligraffiti.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: UVNDoiMoi;
+	src: url('../fonts/UVNDoiMoi.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: UVNKeChuyen3;
+	src: url('../fonts/UVNKeChuyen3.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: UVNKyThuat;
+	src: url('../fonts/UVNKyThuat.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: UVNTinTuc_R;
+	src: url('../fonts/UVNTinTuc_R.ttf') format('truetype');
+}
