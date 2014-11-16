@@ -1,11 +1,11 @@
-app.controller('CanvasController', function($scope, $element, $timeout, FrameObject) {
+app.controller('CanvasController', function($scope, $element, $timeout, FrameObject, ImgService) {
 	var display = $scope.frame.display,
 		image = $scope.frame.image,
 		canvas = $element[0].children[0],
-		ctx = canvas.getContext('2d'),
-		img = new Image();
-		
+		ctx = canvas.getContext('2d');
 	
+	$scope.img = new Image();
+	var img = $scope.img;
 	initCanvas();
 	
 	function initCanvas(){
@@ -13,10 +13,6 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		canvas.height = $scope.frame.canvas.height * $scope.pheight / 100;
 		canvas.style.left = ($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
 		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
-// 		canvas.width = $scope.frame.canvas.width;
-// 		canvas.height = $scope.frame.canvas.height;
-// 		canvas.style.left = $scope.frame.canvas.left + 'px';
-// 		canvas.style.top = $scope.frame.canvas.top + 'px';
 		if (!!image.src) {
 			img.onload = function() {
 				drawImage(img, display);
@@ -384,11 +380,11 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		switch (evt.keyCode) {
 			case 61: // if key + is pressed then zoom out 
 			case 187:
-				zoomImage('out');
+				ImgService.zoomImage(canvas, img, image, display, 'out');
 				break;
 			case 173: // key -
 			case 189:
-				zoomImage('in');
+				ImgService.zoomImage(canvas, img, image, display, 'in');
 				break;
 			case 37: //key left
 				moveImage('left');
@@ -403,50 +399,16 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 				moveImage('down');
 				break;
 			case 46: //del
-				delImage();
+				if (!evt.ctrlKey) {
+					ImgService.delCanvas(canvas, $scope);
+				}
 				break;
 		}
 		if (evt.ctrlKey && (evt.keyCode == 46)) {
-			delCanvas(evt.target);
+			ImgService.delImage(canvas, img, $scope.frame);
 		}
 	};
 
-	function zoomImage(para) {
-		var rate = 1.1;
-		if (para == 'out') {
-			zoom(1/rate);
-		}
-		if (para == 'in') {
-			zoom(rate);
-		}
-	};
-	
-	function zoom(rate) {
-		var sChange = {};
-		var canvasProp = canvas.height/canvas.width;
-		var realRate = rate;
-		sChange.X = -0.5 * (1 - 1 / realRate) * display.dw * realRate * image.scaleRatio;
-		sChange.Y = sChange.X * canvasProp;
-
-		if (sChange.X < -display.sx) {
-			sChange.X = -display.sx;
-			sChange.Y =  sChange.X * canvasProp;
-			realRate = 1 + 2* sChange.X / (display.dw * image.scaleRatio);
-		}
-		
-		if (sChange.Y < -display.sy) {
-			sChange.Y = -display.sy;
-			sChange.X = sChange.Y / canvasProp;
-			realRate = 1 + 2* sChange.X / (display.dw * image.scaleRatio);
-		}
-		
-		display.sx += sChange.X;
-		display.sy += sChange.Y; 
-		display.sw = display.sw * realRate;
-		display.sh = display.sh * realRate;
-		image.scaleRatio = realRate * image.scaleRatio; //update scale
-		redrawImage();
-	};
 	
 	function moveImage(para) {
 		var offset = 10;
@@ -478,17 +440,7 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		}
 		redrawImage();
 	};
-	
-	function delImage() {
-		$scope.frame.image = {};
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-	};
-	
-	function delCanvas(el) {
-		$scope.current[el.parentNode.parentNode.id].frames.splice($scope.$index,1);
-		
 
-	};
 	$scope.allowDrop = function(ev) {
 		ev.preventDefault();
 	};
@@ -507,10 +459,48 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		//then draw image
 			firstDrawImage();
 		}
+		//turn focus to and activate the frame and its page
+		evt.target.focus();
+		$scope.$parent.activate();
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
+			activeCanvas.removeClass('cActive');
+		}
+		angular.element(evt.target).addClass('cActive');
+		$scope.current.onEditText = false;
+		$scope.current.onEditImage = true;
 	};
 	
 	$scope.canvasFocus = function(event) {
 		$scope.$parent.activate();
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
+			activeCanvas.removeClass('cActive');
+		}
+		angular.element(event.target).addClass('cActive');
+		if (!!img.src) {
+			$scope.current.onEditText = false;
+			$scope.current.onEditImage = true;
+		}
 	};
 
+});
+
+app.controller('ImageController', function($scope, ImgService) {
+
+	$scope.zoomImage = function(para) {
+		var canvas = document.getElementsByClassName('cActive')[0],
+			scope = angular.element(canvas).scope(),
+			display = scope.frame.display,
+			image = scope.frame.image,
+			img = new Image();
+		img.src = image.src;
+		ImgService.zoomImage(canvas, img, image, display, para);
+	};
+	
+	$scope.removeImage = function() {
+		var canvas = document.getElementsByClassName('cActive')[0],
+			scope = angular.element(canvas).scope();
+ 		ImgService.delImage(canvas, scope.img, scope.frame);
+	};
 });

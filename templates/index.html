@@ -20,7 +20,7 @@
 
 <body ng-app = 'albumApp' ng-init = 'greeting = true'>
 
-	<div id = 'banner'> <span id = 'slogan'> Create your own story <span> </div>
+	<div id = 'banner'> <span id = 'slogan'> Create your own story </span> </div>
 	<div ng-if = 'greeting'>
 		<h2 style = 'position: absolute; top: {{0.05*screenWidth + "px"}}'> Welcome!</h2>
 	</div>
@@ -63,7 +63,7 @@
 						ng-show = 'hasTitle'> 
 					</span>
 					<img src = 'static/icons/edit1.png'
-						ng-attr-title = '{{guideMode?"edit title":""}}'
+						title = 'edit title'
 						name = 'edit'
 						class = 'clickable'/>
 				</div>
@@ -91,7 +91,7 @@
 						class = 'description'>
 					</span>
 					<img src = 'static/icons/edit1.png'
-						ng-attr-title = '{{guideMode?"edit description":""}}'
+						title = 'edit description'
 						name = 'edit'
 						class = 'clickable'/>
 				</div>
@@ -132,9 +132,9 @@
 				<br/> <br/>
 				
 				<div id = 'export'>
-				<button ng-click = 'generatePdf()'>
+				<span class = 'btn' ng-click = 'generatePdf()'>
 					Generate Pdf
-				</button>
+				</span>
 
 				<br>
 				<span ng-show = 'processing' style = 'font-size: 80%'>
@@ -151,10 +151,7 @@
 				
 				
 			</div>
-			<!--	<button ng-click = 'guideMode = !guideMode' 
-					ng-bind = '"Turn " + (guideMode?"off":"on") + " guide"'
-					style = 'position: absolute; bottom: 1%'>
-				</button>-->
+			
 			</div>
 
 			<div id = 'album'
@@ -168,7 +165,7 @@
 						ng-click = 'prevPage()'>
 						<img src = 'static/icons/prev.png'
 								class = 'prevnext'
-								ng-attr-title = '{{guideMode?"go to the previous page":""}}'
+								title = 'go to the previous page'
 								/>
 						previous
 					</div>
@@ -178,7 +175,7 @@
 						ng-click = 'nextPage()'>
 						<img src = 'static/icons/next.png'
 								class = 'prevnext'
-								ng-attr-title = '{{guideMode?"go to the next page":""}}'
+								title = 'go to the next page'
 								/>
 						next
 					</div>
@@ -186,7 +183,7 @@
 					<div id = 'topMenu'>
 						<span id = 'addPage' 
 							class = 'link small'
-							ng-attr-title = '{{guideMode?"add a new double page":""}}'
+							title = 'add a new double page'
 							ng-click = 'addNewPage()'>
 							<img src = 'static/icons/newpage.png'
 								class = 'inline'
@@ -195,7 +192,7 @@
 						
 						<span id = 'removePage' 
 							class = 'link small'
-							ng-attr-title = '{{guideMode?"Delete this double page":""}}'
+							title = 'Delete this double page'
 							ng-click = 'removePage()'>
 							<img src = 'static/icons/deletepage.png'
 								class = 'inline'
@@ -206,7 +203,7 @@
 							id = 'addText'
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragText(event)'
-							ng-attr-title = '{{guideMode?"Drag and drop into page to add a text field":""}}'>
+							title = 'Drag and drop into page to add a text field'>
 							<img  src = 'static/icons/text.png'
 								class = 'inline'
 								style = 'height: 150%'/>
@@ -216,7 +213,7 @@
 							id = 'addFrame'
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragFrame(event)'
-							ng-attr-title = '{{guideMode?"Drag and drop into page to add a new frame":""}}'>
+							title = 'Drag and drop into page to add a new frame'>
 							<img src = 'static/icons/frame_edit.png'
 								class = 'inline'
 								style = 'height: 150%'/>
@@ -225,13 +222,13 @@
 					
 		<!--			<img src = 'static/icons/first1.png'
 								class = 'headerIcon left'
-								ng-attr-title = '{{guideMode?"go to the first page":""}}'
+								title = 'go to the first page'
 								ng-show =  'show.leftPage' 
 								ng-click = 'goFirstPage()'
 								style = 'margin-left: 10px'/>-->
 						<!--<img src = 'static/icons/last1.png'
 								class = 'headerIcon right'
-								ng-attr-title = '{{guideMode?"go to the last page":""}}'
+								title = 'go to the last page'
 								ng-show = 'show.rightPage' 
 								ng-click = 'goLastPage()'
 								style = 'margin-right:10px'/>
@@ -267,7 +264,7 @@
 							<canvas tabindex = '0' 
 										class = 'frame'
 										ng-model = 'frame'
-										ng-attr-title = '{{guideMode?msg:""}}'
+										title = "Drop an image here. Click mouse near frame's corners or borders and drag to redimension the frame."
 										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
 										ondragover = 'angular.element(this).scope().allowDrop(event)'
 										ng-mousedown = 'mouseDown(\$event)' 
@@ -280,7 +277,7 @@
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
 							ng-controller = 'TextBoxController'>
 							<textarea class = 'textAB'
-								ng-attr-title = '{{guideMode?"Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.":""}}'
+								title = 'Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.'
 								ng-model = 'textBox.text'
 								ng-mousedown = 'mouseDown(\$event)'
 								ng-keyup = 'autoResize(\$event)'
@@ -297,89 +294,106 @@
 
 					</div>
 					
-					
-					<!--_____________________________end of pages _____________________ -->
-					<div id = 'textControl' ng-controller = 'TextController'
-						ng-show = 'current.onEditText'>
-						<select class = 'textCtrlBut' 
-							ng-attr-title = '{{guideMode?"choose text font":""}}'
-							ng-model = 'current.font.family' 
-							ng-change = 'changeFont(current.font.family)'>
-							<option ng-repeat = 'font in fonts'
-								value = {{font}}
-								style = 'font-family: {{font}}'>
-								{{font}}
-							</option> 
-						</select> 
-						
-						<button class = 'textCtrlBut italic' 
-							ng-click = 'italicClick()'>
-							I
-						</button>
-						
-						<button class = 'textCtrlBut bold'
-							ng-click = 'boldClick()'>
-							B
-						</button>
-						
-						<!--Color falldown menu -->
-						<div class = 'inline'>
-							<button
-								id = 'textColor'
-								class = 'textCtrlBut'
-								ng-click = 'showColors()'
-								ng-attr-title = '{{guideMode?"choose text color":""}}'
-								style = 'color: {{current.font.color}}'
-								ng-blur = 'cbBlur()'>
-								Text color
-							</button>
-							<br/>
-							<div tabindex = 0
-								id = 'colorMenu'
-								ng-if = 'showColorMenu' 
-								ng-init = 'showColorMenu = false'
-								ng-click = 'menuClick()'
-								ng-blur = 'menuBlur()'
-								ng-mouseenter = 'mouseEnter()'
-								ng-mouseleave = 'mouseLeave()'>
-								<div class = 'colorTable'
-									tabindex = 0 
-									ng-repeat = 'color in colors'
-									style = 'background-color:{{color}};
-													float:left'
-									ng-focus = 'changeColor(color)'
-									ng-blur = 'colorBlur()'>
+					<div id = 'controls'>
+						<div id = 'textControl' ng-controller = 'TextController'
+							ng-show = 'current.onEditText'>
+							<span style = 'font-weight: bold; 
+									font-size: 90%; 
+									margin-right: 0.5em; margin-left: 1em;'>
+									Style text
+							</span>
+							<select style = 'height: 2em' 
+								title = 'choose text font'
+								ng-model = 'current.font.family' 
+								ng-change = 'changeFont(current.font.family)'>
+								<option ng-repeat = 'font in fonts'
+									value = {{font}}
+									style = 'font-family: {{font}}'>
+									{{font}}
+								</option> 
+							</select> 
+							
+							<select 
+								style = 'height: 2em'
+								title = 'change font size'
+								ng-model = 'current.font.size'
+								ng-change = 'changeFontSize(current.font.size)'>
+								<option ng-repeat = 'i in [8, 10,12, 14, 16, 18, 20, 24, 30]'
+									value = '{{i + "px"}}'> {{i}} </option>
+							</select>
+							
+							<span class = 'btn italic' 
+								ng-click = 'italicClick()'>
+								I
+							</span>
+							
+							<span class = 'btn bold'
+								ng-click = 'boldClick()'>
+								B
+							</span>
+							
+							<!--Color falldown menu -->
+							<div class = 'inline'>
+								<span 
+									id = 'textColor'
+									class = 'btn'
+									ng-click = 'showColors()'
+									title = 'choose text color'
+									style = 'color: {{current.font.color}}'
+									ng-blur = 'cbBlur()'>
+									Text color
+								</span>
+								<br/>
+								<div tabindex = 0
+									id = 'colorMenu'
+									ng-if = 'showColorMenu' 
+									ng-init = 'showColorMenu = false'
+									ng-click = 'menuClick()'
+									ng-blur = 'menuBlur()'
+									ng-mouseenter = 'mouseEnter()'
+									ng-mouseleave = 'mouseLeave()'>
+									<div class = 'colorTable'
+										tabindex = 0 
+										ng-repeat = 'color in colors'
+										style = 'background-color:{{color}};
+														float:left'
+										ng-focus = 'changeColor(color)'
+										ng-blur = 'colorBlur()'>
+									</div>
 								</div>
 							</div>
+							<!-- end of color menu-->
+							
+							<span 
+								class = 'btn'
+								title = 'align text left'
+								ng-click = 'align("left")'>
+								<img src = 'static/icons/left.png' class = 'inline'/>
+							</span>
+							<span
+								class = 'btn'
+								title = 'align text right'
+								ng-click = 'align("right")'>
+								<img src = 'static/icons/right.png' class = 'inline'/>
+							</span>
+							<span 
+								class = 'btn'
+								title = 'align text center'
+								ng-click = 'align("center")'>
+								<img src = 'static/icons/center.png' class = 'inline'/>
+							</span>
 						</div>
-						<!-- end of color menu-->
-						<select 
-							class = 'textCtrlBut'
-							ng-attr-title = '{{guideMode?"change font size":""}}'
-							ng-model = 'current.font.size'
-							ng-change = 'changeFontSize(current.font.size)'>
-							<option ng-repeat = 'i in [8, 10,12, 14, 16, 18, 20, 24, 30]'
-								value = '{{i + "px"}}'> {{i}} </option>
-						</select>
 						
-						<button 
-							class = 'textCtrlBut'
-							ng-attr-title = '{{guideMode?"align text left":""}}'
-							ng-click = 'align("left")'>
-							<img src = 'static/icons/left.png'>
-							</button>
-						<button
-							class = 'textCtrlBut'
-							ng-attr-title = '{{guideMode?"align text right":""}}'
-							ng-click = 'align("right")'>
-							<img src = 'static/icons/right.png'>
-						</button>
-						<button 
-							class = 'textCtrlBut'
-							ng-attr-title = '{{guideMode?"align text center":""}}'
-							ng-click = 'align("center")'>
-							<img src = 'static/icons/center.png'>
-						</button>
+						<div id = 'imageControl' ng-controller = 'ImageController'
+							ng-show = 'current.onEditImage'>
+							<span> Style image </span>
+							<button ng-click = 'zoomImage("out")'
+								class = 'inline'> + </button>
+							<button ng-click = 'zoomImage("in")'
+								class = 'inline'> - </button>
+							<button ng-click = 'removeImage()'
+								class = 'inline'> X </button>
+						</div>
 					</div>
 					
 				</div>
@@ -403,12 +417,12 @@
 	<!--Choose page background color============================-->
 	
 					<div id = 'pageBGcolor'>
-						<button ng-attr-title = '{{guideMode?"choose page background color":""}}'
+						<span class = 'btn'
+							title = 'Choose page background color'
 							ng-click = 'showColors()'
-							style = 'color: {{current.font.color}};'
 							ng-blur = 'cbBlur()'>
-							Page BG color
-						</button>
+							Page background
+						</span>
 						<br/>
 						<div tabindex = 0
 							id = 'BGcolorMenu'
@@ -427,11 +441,11 @@
 							</div>
 						</div>
 					</div>
-	<!--===============================================================-->
+				<!--===============================================================-->
 	
 					<div id = 'layouts'>
 						<canvas ng-repeat = 'layout in layouts'
-							ng-attr-title = '{{guideMode?"Choose page first then click on the layout to load to the chosen page.":""}}'
+							title = 'Choose page first then click on the layout to load to the chosen page.'
 							ng-controller = 'minLayoutController'
 							ng-click = 'loadPageLayout(layout)'
 							class = 'clickable minframe'> 
@@ -445,7 +459,7 @@
 					ng-controller = 'ImageLoaderController'
 					ng-if = 'imgLoad'>
 					<label for = 'files' class = 'btn'
-						ng-attr-title = '{{guideMode?"click to load photos from your computer":""}}'>
+						title = 'click to load photos from your computer'>
 					Load photos</label>
 					<span style = 'font-size: 80%'
 						ng-show = 'loading'>{{fileProcess}}</span>
@@ -456,11 +470,9 @@
 					<div id = 'output'></div>
 				</div>
 			</div>
-			<!--____________________end of div class album_______________________-->
 
 		</div>
 
-			<!--_________________________end of image loader___________________-->
 	</div>
 </body>
 </html>

@@ -3,6 +3,7 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 	Init.initTextArea($scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
 		$scope.textArea.focus();
+		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
 		$scope.textArea.style.border =  "1px solid #77F";
 		$scope.current.datumWithFocus = undefined;
@@ -60,6 +61,7 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 
 	$scope.textFocus = function(event) {
 		var activeTextArea;
+		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
 		$scope.textArea.style.resize = 'both';
 		$scope.textArea.style.border =  "1px solid #77F";
@@ -82,7 +84,6 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 	
 
 	$scope.blur = function($event) {
-		$scope.current.onEditText = false;
 		if ($scope.textArea.value) {
 			$scope.textArea.style.border =  '1px solid transparent';
 		} 

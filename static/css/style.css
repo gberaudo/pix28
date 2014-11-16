@@ -125,12 +125,24 @@ body {
 	display: block;
 }
 
-#textControl {
+#controls {
+	position: absolute;
+	top: 90%;
+	left: 0%;
+	width: 100%; 
+}
+
+.textCtrlBut {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/*#textControl {
 	position: absolute;
 	top: 88%;
 	left: 0%;
 	width: 100%; 
-}
+}*/
 
 #colorMenu {
 	z-index:2;
@@ -201,7 +213,7 @@ body {
 	top: 3em;
 }
 .link {
-	color: #66F;
+	color: #0074DF;
 	cursor: pointer;
 }
 
@@ -232,12 +244,7 @@ span.description {
 	font-size: 80%; 
 	font-style: italic
 }
-.textCtrlBut {
-	margin-top: 8px;
-	height: 25px;
-	display: inline-block;
-	vertical-align: middle;
-}
+
 
 .clickable {
 	cursor: pointer;
@@ -252,13 +259,13 @@ button {
 	cursor: pointer;
 }
 
-button.bold {
+span.bold {
 	font-size: 100%; 
 	font-weight: bold; 
 	font-family: 'Times New Roman';
 }
 
-button.italic {
+span.italic {
 	font-size: 100%; 
 	font-style: italic; 
 	font-family: "Times New Roman";
@@ -347,13 +354,14 @@ span[name = 'title'] {
 display: inline-block;
 padding: 4px 12px;
 margin-bottom: 0;
-font-size: 14px;
+height: 1.2em;
+font-size: 90%;
 line-height: 20px;
 color: #333333;
 text-align: center;
 vertical-align: middle;
 cursor: pointer;
-border: 1px solid #bbbbbb;
+border: 1px solid #999999;
 border-color: #e6e6e6 #e6e6e6 #bfbfbf;
 border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 border-bottom-color: #a2a2a2;

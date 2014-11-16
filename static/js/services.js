@@ -267,7 +267,57 @@ app.service('ImgService', function() {
 		};
 	};
 	
+	this.zoomImage = function(canvas, img, image, display, para) {
+		var rate = 1.1;
+		if (para == 'out') {
+			zoom(1/rate);
+		}
+		if (para == 'in') {
+			zoom(rate);
+		}
+		
+		function zoom(rate) {
+			var sChange = {};
+			var canvasProp = canvas.height/canvas.width;
+			var realRate = rate;
+			sChange.X = -0.5 * (1 - 1 / realRate) * display.dw * realRate * image.scaleRatio;
+			sChange.Y = sChange.X * canvasProp;
 
+			if (sChange.X < -display.sx) {
+				sChange.X = -display.sx;
+				sChange.Y =  sChange.X * canvasProp;
+				realRate = 1 + 2* sChange.X / (display.dw * image.scaleRatio);
+			}
+			
+			if (sChange.Y < -display.sy) {
+				sChange.Y = -display.sy;
+				sChange.X = sChange.Y / canvasProp;
+				realRate = 1 + 2* sChange.X / (display.dw * image.scaleRatio);
+			}
+			
+			display.sx += sChange.X;
+			display.sy += sChange.Y; 
+			display.sw = display.sw * realRate;
+			display.sh = display.sh * realRate;
+			image.scaleRatio = realRate * image.scaleRatio; //update scale
+			
+			var ctx = canvas.getContext('2d');
+			ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
+							display.dx, display.dy, display.dw, display.dh);
+		};
+	};
+
+	this.delImage  = function(canvas, img, frame) {
+		var ctx = canvas.getContext('2d');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		img.src = null;
+		frame.image = {};
+		canvas.style.border = '1px solid #CCC';
+	};
+	
+	this.delCanvas = function(el, $scope) {
+		$scope.current[el.parentNode.parentNode.id].frames.splice($scope.$index,1);
+	};
 });
 
 /*-----------------------------------------------------------*/
@@ -298,5 +348,6 @@ app.service('Misc', function() {
 		}
 		return result;
 	};
+	
 });
 
