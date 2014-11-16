@@ -1,33 +1,39 @@
 app.controller('TextBoxController', function($scope, $element, $timeout, $http, Init) {
 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
-	Init.initTextArea($scope.textArea, $scope.textBox);
+	Init.initTextArea($scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
 		$scope.textArea.focus();
+		$scope.current.onEditText = true;
+		$scope.textArea.style.border =  "1px solid #77F";
 		$scope.current.datumWithFocus = undefined;
+		if (document.getElementsByClassName('tActive').length != 0) {
+			//deactivate the current active element
+			 activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
+			activeTextArea.removeClass('tActive');
+		}
+		angular.element($scope.textArea).addClass('tActive');
 	}
 	
 	//update textBox.box
 	$scope.$watch('textArea.offsetHeight', 
 		function(newValue, oldValue) {
 			if (newValue != oldValue) {
-				var pheight = parseInt($scope.pageHeight);
-				if (parseInt(newValue) + parseInt($scope.textArea.style.top) > pheight) {
-					var h = pheight - parseInt($scope.textArea.style.top);
+				if (newValue + parseFloat($scope.textArea.style.top) > $scope.pheight) {
+					var h = $scope.pheight - parseFloat($scope.textArea.style.top);
 					$scope.textArea.style.height= h + "px";
 				}
-				$scope.textBox.box.height = parseInt($scope.textArea.offsetHeight);
+				$scope.textBox.box.height = 100*$scope.textArea.offsetHeight/$scope.pheight;
 			}
 		}
 	);
 	
 	$scope.$watch('textArea.offsetWidth', function(newValue, oldValue) {
 		if  (newValue != oldValue) {
-			var pwidth = parseInt($scope.pageWidth);
-			if (parseInt(newValue) + parseInt($scope.textArea.style.left) > pwidth) {
-				var w = pwidth - parseInt($scope.textArea.style.left);
+			if (newValue + parseFloat($scope.textArea.style.left) > $scope.pwidth) {
+				var w = $scope.pwidth -parseFloat($scope.textArea.style.left);
 				$scope.textArea.style.width= w + "px";
 			}
-			$scope.textBox.box.width = parseInt($scope.textArea.style.width);
+			$scope.textBox.box.width = 100*$scope.textArea.offsetWidth/$scope.pwidth;
 		}
 	});
 	
@@ -54,6 +60,7 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 
 	$scope.textFocus = function(event) {
 		var activeTextArea;
+		$scope.current.onEditText = true;
 		$scope.textArea.style.resize = 'both';
 		$scope.textArea.style.border =  "1px solid #77F";
 		if (document.getElementsByClassName('tActive').length != 0) {
@@ -69,17 +76,13 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 		$scope.current.font.style = $scope.textArea.style.fontStyle;
 		$scope.current.font.size = $scope.textArea.style.fontSize;
 		$scope.current.font.family = $scope.textArea.style.fontFamily;
-
 		$scope.$parent.activate();
 	
 	};
 	
-	$scope.click = function(event) {
-		$scope.current.msg = 'Ctrl+Del to delete. Ctrl + arrow to move it around. Redimension by drawing the bottom-right corner.'
-		$scope.showGuide(event);
-	};
-	
+
 	$scope.blur = function($event) {
+		$scope.current.onEditText = false;
 		if ($scope.textArea.value) {
 			$scope.textArea.style.border =  '1px solid transparent';
 		} 
@@ -115,9 +118,16 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 	
 	function moveText(para) {
 		var offset = 5;
-		var pwidth = parseInt($scope.pageWidth),
-			pheight = parseInt($scope.pageHeight),
-			box = $scope.textBox.box;
+		var pwidth = $scope.pwidth,
+			pheight = $scope.pheight,
+			DBbox = $scope.textBox.box,
+			box = {
+				left: DBbox.left * pwidth / 100,
+				top: DBbox.top * pheight / 100,
+				width: DBbox.width * pwidth / 100,
+				height: DBbox.height * pheight /100
+			};
+			
 		switch (para) {
 			case 'left':
 				if (offset > box.left) {
@@ -148,31 +158,29 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 				$scope.textArea.style.top = box.top + "px";
 				break;
 		}
+		DBbox.left = 100 * box.left / pwidth;
+		DBbox.top = 100 * box.top / pheight;
+		DBbox.width = 100 * box.width /pwidth;
+		DBbox.height = 100 * box.height / pheight;
 	};
 	
 	function removeTextArea(el) {
-		if (el.parentNode.parentNode.id == 'rightPage') {
-			$scope.current.rightPage.textBoxes.splice($scope.$index,1);
-		}
-		if (el.parentNode.parentNode.id == 'leftPage') {
-			$scope.current.leftPage.textBoxes.splice($scope.$index,1);
-		}
+		var page = el.parentNode.parentNode.id;
+		$scope.current[page].textBoxes.splice($scope.$index,1);
 	};
 	
 	$scope.autoResize = function(event) {
 		var el = event.target;
-		var offset = el.offsetHeight - el.clientHeight;
-		
-		if (el.scrollHeight + offset > $scope.pheight) {
-			el.style.height = ($scope.pheight) + px;
-			$scope.textBox.box.height = $scope.pheight;
+		if (el.scrollHeight > $scope.pheight) {
+			el.style.height = $scope.pheight + 'px';
+			$scope.textBox.box.height = 100;
 		} else {
-			el.style.height = (el.scrollHeight + offset) + "px";
-			$scope.textBox.box.height = (el.scrollHeight + offset)
+			el.style.height = (el.scrollHeight)  + "px";
+			$scope.textBox.box.height = 100 * el.scrollHeight/$scope.pheight;
 		}
-		if (parseInt(el.style.height) + parseInt(el.style.top) > $scope.pheight) {
-			el.style.top = ($scope.pheight - parseInt(el.style.height)) + "px";
-			$scope.textBox.box.top = $scope.pheight - parseInt(el.style.height);
+		if (el.offsetHeight + el.offsetTop > $scope.pheight) {
+			el.style.top = ($scope.pheight - el.offsetHeight) + "px";
+			$scope.textBox.box.top = 100 * ($scope.pheight - el.offsetHeight)/$scope.pheight;
 		}
 	};
 });
@@ -185,10 +193,6 @@ app.controller('TextController', function($scope, $timeout, $http, Fonts, Colors
 	$scope.fonts = Fonts;
 	$scope.colors = Colors;
 	
-	
-	$scope.dragText = function(ev) {
-		ev.dataTransfer.setData("name", ev.target.getAttribute('name'));
-	};
 	
 	/*---------Color menu ------------*/
 	$scope.showColors = function() {
@@ -285,7 +289,5 @@ app.controller('TextController', function($scope, $timeout, $http, Fonts, Colors
 		}
 	};
 	
-	$scope.dragFrame = function(event) {
-		event.dataTransfer.setData("name", event.target.getAttribute('name'));
-	};
+	
 });

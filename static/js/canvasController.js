@@ -4,19 +4,19 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		canvas = $element[0].children[0],
 		ctx = canvas.getContext('2d'),
 		img = new Image();
-	$scope.msg = 'Drop photos here.  Ctrl+Del to delete frame. ' +
-					'Click mouse near the corners and edges to resize frame. '+ 
-					'Use keys + - to zoom image, Del to delete image, ' +
-					'Ctrl + arrows to move image inside frame.';
-	
+		
 	
 	initCanvas();
 	
 	function initCanvas(){
-		canvas.width = $scope.frame.canvas.width;
-		canvas.height = $scope.frame.canvas.height;
-		canvas.style.left = $scope.frame.canvas.left + 'px';
-		canvas.style.top = $scope.frame.canvas.top + 'px';
+		canvas.width = $scope.frame.canvas.width * $scope.pwidth / 100;
+		canvas.height = $scope.frame.canvas.height * $scope.pheight / 100;
+		canvas.style.left = ($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
+		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
+// 		canvas.width = $scope.frame.canvas.width;
+// 		canvas.height = $scope.frame.canvas.height;
+// 		canvas.style.left = $scope.frame.canvas.left + 'px';
+// 		canvas.style.top = $scope.frame.canvas.top + 'px';
 		if (!!image.src) {
 			img.onload = function() {
 				drawImage(img, display);
@@ -245,10 +245,10 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 	function redimension(cv, offset, anchor){
 		var sChange = {},
 			canvasProp = cv.height/cv.width,
-			ctop = parseInt(cv.style.top),
-			cleft = parseInt(cv.style.left),
-			pwidth = parseInt($scope.pageWidth),
-			pheight = parseInt($scope.pageHeight),
+			ctop = parseFloat(cv.style.top),
+			cleft = parseFloat(cv.style.left),
+			pwidth = $scope.pwidth,
+			pheight = $scope.pheight,
 			off;
 
 		switch (anchor){
@@ -368,12 +368,15 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 	};
 	
 	function updateFrame() {
-		$scope.frame.canvas.width = canvas.width;
-		$scope.frame.canvas.height = canvas.height;
-// 		$scope.frame.canvas.top = parseFloat(canvas.style.top);
-// 		$scope.frame.canvas.left = parseFloat(canvas.style.left);
-		$scope.frame.canvas.top = canvas.offsetTop;
-		$scope.frame.canvas.left = canvas.offsetLeft;
+		$scope.frame.canvas.width = 100 * canvas.width / $scope.pwidth;
+		$scope.frame.canvas.height = 100 * canvas.height / $scope.pheight;
+		$scope.frame.canvas.top = 100 * canvas.offsetTop / $scope.pheight;
+		$scope.frame.canvas.left = 100 * canvas.offsetLeft / $scope.pwidth;
+		
+// 		$scope.frame.canvas.width = canvas.width;
+// 		$scope.frame.canvas.height = canvas.height;
+// 		$scope.frame.canvas.top = canvas.offsetTop;
+// 		$scope.frame.canvas.left = canvas.offsetLeft;
 	};
 	
 	$scope.keyDown = function(evt) {

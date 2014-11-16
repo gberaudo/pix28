@@ -1,5 +1,5 @@
 app.controller('ImageLoaderController', 
-					function($scope, $timeout, ImgService, $q) {
+					function($scope, $timeout, ImgService, $q, $element) {
 	ImgService.loadImages($scope.current.albumId);
 	
 
@@ -161,14 +161,17 @@ app.controller('ImageLoaderController',
 			img.setAttribute('mHeight', result[0].mHeight);
 			img.setAttribute('mWidth', result[0].mWidth);
 			img.setAttribute('DbId', result[1]);
-
+ 			img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
+ 			img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
+ 			img.setAttribute('title', 'drag and drop on a frame in album'); 
 			i++;
 			if (i < files.length) {
 				putNextFile();
 			}
 		};
 	};
-
+	
+	
 	$scope.dragImage = function(ev) {
 		ev.dataTransfer.setData('URL', ev.target.src);
 		ev.dataTransfer.setData(
@@ -181,4 +184,26 @@ app.controller('ImageLoaderController',
 		ev.dataTransfer.setData('name', 'image');
 		
 	};
+	
+	$scope.bigImg = document.createElement('img');
+	$scope.bigImg.setAttribute('class', 'bigImg');
+	document.body.appendChild($scope.bigImg);
+
+	$scope.mouseOver = function(event) {
+		var bigImg = $scope.bigImg;
+		bigImg.src = event.target.src;
+		var mouseX = event.pageX,
+			mouseY = event.pageY;
+		bigImg.style.bottom =  (document.body.offsetHeight - mouseY + 50) + 'px';
+		bigImg.style.left = (mouseX - 100) + 'px';
+		bigImg.style.display = 'block';
+	};
+	
+	$scope.mouseLeave = function(event) {
+		$scope.bigImg.style.display = 'none';
+	};
 });
+
+
+
+

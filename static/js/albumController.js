@@ -1,5 +1,3 @@
-var app = angular.module('albumApp',[]);
-
 app.controller('AlbumController', function(
 	$scope, $timeout, $http, $element, $q, PageObject, DBServices, Misc
 ) {
@@ -8,15 +6,15 @@ app.controller('AlbumController', function(
 	DBServices.initAlbumDB($scope);
 	DBServices.initImageDB();
 	setInterval(function() {
-		var id = $scope.current.albumId;
-		if (id) {
-			DBServices.updateAlbumDB(
-				$scope.album.content, id,
-				$scope.album.title, $scope.album.description,
-				$scope.album.date
-			);
-		}
-	}, 5000);
+			var id = $scope.current.albumId;
+			if (id) {
+				DBServices.updateAlbumDB(
+					$scope.album.content, id,
+					$scope.album.title, $scope.album.description,
+					$scope.album.date
+				);
+			}
+	}, 10000);
 	$scope.guideMode = true;
 	
 	function init() {
@@ -30,13 +28,18 @@ app.controller('AlbumController', function(
 		}; 
 		$scope.albumSCs = [];
 		$scope.show = {};
-		$scope.pageWidth = '300px';
-		$scope.pwidth = 300;
-		$scope.pageHeight = '300px';
-		$scope.pheight = 300;
-		$scope.usedFonts = [];
 		
-
+		//need to detect screen resolution here
+// 		$scope.pheight = 0.2*screen.width;
+// 		$scope.pwidth = 0.2*screen.width;
+		var albumEl = document.getElementById('album');
+		albumEl.style.height =  0.52*albumEl.offsetWidth + 'px';
+		albumEl.style.top = 0.085*$scope.screenWidth + 'px';
+		
+		
+		$scope.pheight = $scope.pwidth = 0.3 * albumEl.offsetWidth;
+		$scope.pageHeight = $scope.pheight + 'px';
+		$scope.pageWidth = $scope.pwidth + 'px';
 	};
 	
 	
@@ -80,20 +83,7 @@ app.controller('AlbumController', function(
 	};
 	
 
-		
-// 	$scope.showAlbumList = function() {
-// 		$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
-// 		console.log($scope.album.title);
-// 		$scope.currentAlbumSC.description = $scope.album.description;
-// 		$timeout(function() {
-// 			console.log('show albums');
-// 			$scope.$parent.greeting = false;
-// 			$scope.showAlbums = true;
-// 		}, 20);
-// 	};
-	
-	
-	$scope.removeAlbum = function(id, index) {
+	$scope.removeAlbum = function(id) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		openRq.onsuccess = function(event) {
 			var db = openRq.result;
@@ -101,13 +91,22 @@ app.controller('AlbumController', function(
 									.objectStore('Albums')
 									.delete(id);
 			removeRq.onsuccess = function() {
+				for (i = 0; i < $scope.albumSCs.length; i++) {
+					if ($scope.albumSCs[i].id == $scope.current.albumId) {
+						$scope.albumSCs.splice(i,1);
+						break;
+					}
+				}
 				$scope.$apply(function() {
-					$scope.albumSCs.splice(index,1);
+					$scope.current.albumId = null;
+					$scope.inAlbum = false;
+					$scope.showAlbums = true;
 				});
 			};
 			removeRq.onerror = function() {
 				console.log('failed to remove album', id);
 			};
+				
 		};
 		openRq.onerror = function() {
 			console.log('failed to open DB to removing album');
@@ -337,7 +336,13 @@ app.controller('AlbumController', function(
 		}
 	};
 	
+	$scope.dragText = function(ev) {
+		ev.dataTransfer.setData('name', 'text');
+	};
 	
+	$scope.dragFrame = function(event) {
+		event.dataTransfer.setData('name','frame');
+	};
 	
 	function max(a, b) {
 		return a > b ? a : b;
@@ -424,8 +429,11 @@ app.controller('AlbumController', function(
 		}
 		
 		function makePdfFromJSON(json, fontsData) {
+			var pdfWidth = 600,
+				pdfHeight = 600,
+				ratio = pdfWidth/$scope.pwidth;
 			var doc = new PDFDocument({
-				size: [600, 600],
+				size: [pdfWidth, pdfHeight],
 				margin: 0
 			});
 			makeContent();
@@ -442,15 +450,16 @@ app.controller('AlbumController', function(
 							if (!tb.text) { 
 								continue;
 							}
+							console.log('ratio',ratio);
 							var color = Misc.RGBtoHex(tb.font.color);
-							doc.fontSize(parseInt(tb.font.size)*2)
+							doc.fontSize(parseInt(tb.font.size)*ratio)
 								.font(fontsData[tb.font.family])
 								.fillColor(color)
 								.text(tb.text, 
-										tb.box.left*2, //to be calculated
-										tb.box.top*2, //to be calculated
+										ratio * tb.box.left * $scope.pwidth/100, //to be calculated
+										ratio * tb.box.top * $scope.pheight/100, //to be calculated
 									{
-										width: tb.box.width*2,
+										width: ratio * tb.box.width * $scope.pwidth/100,
 										align: tb.align,
 										margin: 0
 									});
@@ -482,7 +491,7 @@ app.controller('AlbumController', function(
 				
 				function setBGColor(page) {
 					if (!!page.background) {
-						doc.rect(0, 0, 600, 600);
+						doc.rect(0, 0, pdfWidth, pdfHeight);
 						doc.fill(page.background);
 					}
 				}
@@ -555,7 +564,7 @@ app.controller('AlbumController', function(
 											rsy = max(img.rHeight - sh - sy, 0);
 											rsw = min(sw, img.rWidth - rsx);
 											rsh = min(sh, img.rHeight - rsy);
-											ctx.translate(canvas.with, canvas.height);
+											ctx.translate(canvas.width, canvas.height);
 											ctx.rotate(Math.PI);
 											ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
 															0, 0, canvas.width, canvas.height);
@@ -566,8 +575,8 @@ app.controller('AlbumController', function(
 											break;
 									}
 									var outputImg = canvas.toDataURL();
-									doc.image(outputImg, frame.canvas.left*2, 
-													frame.canvas.top*2,
+									doc.image(outputImg, 2*frame.canvas.left*$scope.pwidth/100, 
+													2*frame.canvas.top*$scope.pheight/100,
 													{width: display.dw*2});
 									deferred1.resolve(null);
 								}

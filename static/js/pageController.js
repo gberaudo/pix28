@@ -1,4 +1,5 @@
-app.controller('PageController', function($scope, $element, FrameObject) {
+app.controller('PageController', function($scope, $timeout, $element, FrameObject) {
+
 	$scope.pageFocus = function(event) {
 		$scope.activate();
 	};
@@ -35,8 +36,8 @@ app.controller('PageController', function($scope, $element, FrameObject) {
 		switch (name) {
 			case 'frame':
 				var canvas = {};
-				canvas.width = 100;
-				canvas.height = 100;
+				canvas.width = $scope.pwidth / 3;
+				canvas.height = $scope.pwidth / 3;
 				
 				//restrict frame into the page
 				if (mouseY < canvas.height/2) {
@@ -55,7 +56,13 @@ app.controller('PageController', function($scope, $element, FrameObject) {
 					canvas.left = mouseX - canvas.width/2;
 				}
 				
-				var frame = new FrameObject(canvas, {}, {});
+				var DBCanvas = {
+					width: 100*canvas.width/$scope.pwidth, 
+					height: 100*canvas.height/$scope.pheight,
+					top: 100*canvas.top/$scope.pheight,
+					left: 100*canvas.left/$scope.pwidth
+				};
+				var frame = new FrameObject(DBCanvas, {}, {});
 				$scope.$apply(function() {
 					$scope.current[page.id].frames.push(frame);
 				});
@@ -63,8 +70,8 @@ app.controller('PageController', function($scope, $element, FrameObject) {
 				break;
 			case 'text':
 				var box = {};
-				box.width = 150;
-				box.height = 20;
+				box.width =  $scope.pwidth / 2;
+				box.height = $scope.pheight / 12;
 				if (mouseY < box.height/2) {
 					box.top = 0;
 				} else if (mouseY + box.height/2 > $scope.pheight) {
@@ -80,7 +87,12 @@ app.controller('PageController', function($scope, $element, FrameObject) {
 					box.left = mouseX - box.width/2;
 				}
 				var newTextBox = {
-					box: box,
+					box: {
+						width: 100*box.width/$scope.pwidth,
+						height: 100*box.height/$scope.pheight,
+						left: 100*box.left/$scope.pwidth,
+						top: 100*box.top/$scope.pheight
+					},
 					font: {
 						color: $scope.current.font.color,
 						style: $scope.current.font.style,

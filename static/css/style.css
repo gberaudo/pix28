@@ -1,81 +1,86 @@
+body {
+	font-family: Arial, Helvetica, serif;
+	position: absolute;
+}
 #banner {
-	height: 50px;
+	position: absolute;
 	width: 100%;
-	background: -webkit-linear-gradient(left, red , blue); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(right, red, blue); /* For Opera 11.1 to 12.0 */
+	background: -webkit-linear-gradient(left, red , blue); /* For Safari 5.1 to 6.0 */ 
+	background: -o-linear-gradient(right, red, blue); /* For Opera 11.1 to 12.0 */ 
 	background: -moz-linear-gradient(right, red, blue); /* For Firefox 3.6 to 15 */
 	background: linear-gradient(to bottom right, #CEECF5 , #0489B1);
 }
 
 #slogan {
+	position: absolute;
 	font-size: 180%;
 	font-weight: 3;
 	font-family: UVNKeChuyen3;
-	float: right;
-	margin-right: 30px;
-	margin-top: 5px;
+	right: 2%;
+	bottom: 5%;
 }
 
 #album {
 	position: absolute;
-	width: 950px;
-	height: 500px;
-	left: 170px;
-	top: 100px;
+ 	width: 75%; 
+ 	left: 12%; 
 	border: 1px black solid;
 }
 
 #albumList {
-	position: absolute;
-	left: 250px;
-	top: 100px;
-	width: 15.5em;
+	position: absolute; 
+	left: 5%;
+	width: 20em;
 }
 
 #abTitle {
 	position: absolute;
-	top: 75px;
-	left: 170px;
-	width: 950px;
-	height: 25px;
-	
+	top: 14%;
+	height: 3%;
+	left: 12%;
+	width: 75%;
 }
 
 #selectLayout {
 	position: absolute; 
-	width: 700px; 
-	height: 125px; 
-	left: 0px; 
-	top: 378px; 
-	padding: 5px 0 0 0;
+	width: 75%; 
+	height: 25%; 
+	left: 0; 
+	top: 75%; 
  	border-top: 1px solid #AAA; 
 }
 
 #imageLoader {
 	position: absolute;
-	left: 700px;
-	top: 0px;
-	width: 250px;
-	height: 500px;
+	left: 75%;
+	top: 0%;
+	width: 25%;
+	height: 100%;
 	border-left: 1px solid black; 
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+.bigImg {
+	position: absolute;
+	max-height: 200px;
+	max-width: 200px;
+	display: none;
+	box-shadow: 2px 2px 2px 2px #aaa; 
+}
 
 #doublepage {
 	position:absolute;
-	top: 0px;
-	left: 0px;
-	width: 700px;
-	padding-top: 8px;
+	top: 0%;
+	left: 0%;
+	width: 75%;
+	height: 75%;
+	
 }
 
 #leftPage {
 	position: absolute;
-	left: 40px; 
-	top: 35px; 
-	width: 300px;
-	height: 300px;
+	left: 10%; 
+	top: 10%; 
 	border:1px solid #000000;
 	overflow: hidden;
 	box-shadow: 2px 3px 5px 6px #ccc;
@@ -85,10 +90,8 @@
 
 #rightPage {
 	position: absolute;
-	left: 342px; 
-	top: 35px; 
-	width: 300px;
-	height: 300px;
+	left: 50%; 
+	top: 10%; 
 	border:1px solid #000000;
 	border-right: 5px solid #555;
 	border-bottom: 3px solid #333;
@@ -96,66 +99,101 @@
 	box-shadow: 3px 3px 5px 6px #ccc;
 }
 
+#prev {
+	position: absolute;
+	top: 40%;
+	left: 1%;
+	width: 6%;
+	height: 5%;
+	text-align: center;
+	font-size: 80%;
+}
+#next {
+	position: absolute;
+	top: 40%;
+	right: 1%;
+	width: 6%;
+	height: 5%;
+	text-align: center;
+	font-size: 80%;
+}
+
+.prevnext {
+	margin-left: auto;
+	margin-right: auto;
+	height: 80%;
+	display: block;
+}
+
 #textControl {
 	position: absolute;
-	top: 340px;
-	left: 10px;
-	height: 35px;
-	width: 690px;
+	top: 88%;
+	left: 0%;
+	width: 100%; 
 }
 
 #colorMenu {
 	z-index:2;
 	position: absolute;
-	top: 25px;
-	left: 325px;
-	width: 150px;
+	width: 40%;
+	height: 6em; 
 	border: 1px solid #888;
+}
+
+#pageBGcolor {
+	float: right;
+	margin-right: 1%;
+	right: 1%;
 }
 #BGcolorMenu {
 	z-index:2;
 	position: absolute;
-	top: 30px;
-	left: 470px;
-	width: 150px;
+	width: 40%;
+	height: 6em;
 	border: 1px solid #888;
 }
-#colorTable {
+
+
+.colorTable {
 	z-index:10;
-	width: 30px; 
-	height:20px;
+	width: 10%; 
+	height:1.5em;
+	float: left;
 }
 
-#export {
-	position: absolute;
-	top: 190px;
-	left: 20px;
+#sideMenu {
+	position: absolute; 
+	left: 2%; 
+	top: 14%; 
+	height: 85%;
+	width: 10%;
 }
+
 
 #rightPageNum {
 	position: absolute;
-	top: 40px;
-	left: 660;
+	top: 10%;
+	right: 5%;
 	font-size: 80%;
 }
 
 #leftPageNum {
 	position: absolute;
-	top: 40px;
-	left: 5px;
+	top: 10%;
+	left: 5%;
 	font-size: 80%;
 }
 
 #layoutSets {
 	position: absolute;
-	top: 25px;
-	left: 10px;
+	top: 20%;
+	left: 1%;
 }
 
 #layouts {
 	position: absolute;
-	top: 50px;
-	left: 10px;
+	top: 45%;
+	left: 1%;
 }
 
 #output {
@@ -168,17 +206,14 @@
 }
 
 img.thumb {
-	max-height: 67px;
-	max-width: 67px;
-	display: block;
-   margin: auto auto;
-	border: 1px solid #CCC;
+ 	max-height: 100%; 
+	max-width: 100%;
+   margin: auto auto auto auto;
 }
 div.thumb {
-	max-height: 67px;
-	width: 67px;
-/* 	border: 1px solid #CCC; */
-	margin: 7px 5px 0 0;
+	height: 3em;
+	width: 4em;
+	margin-left: 0.5em;
 	display: inline-block;
 	text-align: center;
 }
@@ -204,12 +239,6 @@ span.description {
 	vertical-align: middle;
 }
 
-img.inline {
-	float: right;
-	width: 12px; 
-	height: 12px;
-}
-
 .clickable {
 	cursor: pointer;
 }
@@ -218,18 +247,6 @@ img.inline {
 	cursor: move;
 }
 
-img.headerIcon {
-	cursor: pointer;
-	opacity: 0.9;
-	width: 20px; 
-	height: 20px;
-	display: inline-block;
-}
-#addText {
-	height: 35px; 
-	display: inline-block;
-	vertical-align: middle;
-}
 
 button {
 	cursor: pointer;
@@ -248,8 +265,8 @@ button.italic {
 }
 
 .layout {
-	width: 40px; 
-	margin-right: 5px;
+	width: 2.5em; 
+	margin-right: 0.5em;
 	background-color: #EEE;
 	display: inline-block;
 	text-align: center
@@ -275,8 +292,41 @@ div[name = 'editTitle'] {
 	display: inline-block;
 }
 
+#topMenu {
+	position: absolute;
+	height: 6%;
+	width: 100%;
+}
+
+#removePage {
+	height: 100%;
+	margin-right: 1em;
+	float: right;
+}
+
+#addPage {
+	height: 100%;
+	margin-left: 1em;
+}
+
+#addText {
+	height: 100%; 
+	margin-left: 2em;
+}
+
+#addFrame {
+	height: 100%;
+	margin-left: 2em;
+}
+
+
+.small {
+	font-size: 80%;
+}
+
 .inline {
 	display: inline-block;
+	vertical-align: middle;
 }
 
 .left {

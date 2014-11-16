@@ -20,16 +20,16 @@ app.factory('FrameObject', function() {
 		{
 			frames:
 				[
-					{left: 70, top: 20, height: 150, width: 200},
-					{left: 70, top: 180, height: 100, width: 200}
+					{left: 10, top: 10, height: 35, width: 80},
+					{left: 10, top: 50, height: 40, width: 80}
 				],
 			boxes: []
 		},
 		{
 			frames: 
 				[
-					{left: 20, top: 20, width: 260, height: 125},
-					{left: 20, top: 175, width: 260, height: 100}
+					{left: 20, top: 10, width: 70, height: 50},
+					{left: 20, top: 65, width: 70, height: 30}
 				],
 			boxes: []
 		}
@@ -81,11 +81,11 @@ app.factory('FrameObject', function() {
 /*------------------------------------------------------*/
 
 app.service('Init', function() {
-	this.initTextArea = function(textArea, textBox) {
-		textArea.style.height = textBox.box.height + "px";
-		textArea.style.width = textBox.box.width + "px";
-		textArea.style.top = textBox.box.top + "px";
-		textArea.style.left = textBox.box.left + "px";
+	this.initTextArea = function(textArea, textBox, $scope) {
+		textArea.style.height = (textBox.box.height * $scope.pheight/100) + "px";
+		textArea.style.width = (textBox.box.width * $scope.pwidth/100) + "px";
+		textArea.style.top = (textBox.box.top * $scope.pheight/100) + "px";
+		textArea.style.left = (textBox.box.left * $scope.pwidth/100) + "px";
 		textArea.style.color = textBox.font.color;
 		textArea.style.fontFamily = textBox.font.family;
 		textArea.style.fontWeight = textBox.font.weight;
@@ -251,6 +251,9 @@ app.service('ImgService', function() {
 					img.setAttribute('mWidth', cursor.value.mWidth);
 					img.setAttribute('mHeight',cursor.value.mHeight);
 					img.setAttribute('DbId', cursor.value.id);
+					img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
+					img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
+					img.setAttribute('title', 'drag and drop on a frame in album'); 
 					var div = document.createElement('div');
 					div.setAttribute('class', 'thumb');
 					div.appendChild(img);
@@ -297,16 +300,3 @@ app.service('Misc', function() {
 	};
 });
 
-app.directive('myDraggable', function() {
-  return {
-    restrict: 'A',
-    link: function(scope, elm, attrs) {
-      var options = scope.$eval(attrs.myDraggable); //allow options to be passed in
-      elm.draggable(options);
-    }
-  };
-});
-
-function drag(ev) {
-    ev.dataTransfer.setData("Text", ev.target.id);
-}

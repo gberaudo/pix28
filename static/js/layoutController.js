@@ -70,8 +70,10 @@ app.controller('minLayoutController',
 		var rect = $scope.layout.frames[i];
 		ctx.beginPath();
 		ctx.lineWidth = '.2';
-		ctx.rect(scale * rect.left, scale * rect.top,
-					scale * rect.width, scale * rect.height
+		ctx.rect(scale * rect.left* $scope.pwidth / 100, 
+					scale * rect.top * $scope.pheight / 100,
+					scale * rect.width * $scope.pwidth / 100,
+					scale * rect.height * $scope.pheight / 100
 				  );
 		ctx.stroke();
 	}
