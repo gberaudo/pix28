@@ -25,8 +25,7 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 				}
 				$scope.textBox.box.height = 100*$scope.textArea.offsetHeight/$scope.pheight;
 			}
-		}
-	);
+		});
 	
 	$scope.$watch('textArea.offsetWidth', function(newValue, oldValue) {
 		if  (newValue != oldValue) {
@@ -35,6 +34,17 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 				$scope.textArea.style.width= w + "px";
 			}
 			$scope.textBox.box.width = 100*$scope.textArea.offsetWidth/$scope.pwidth;
+		}
+	});
+	
+	$scope.$watch('textArea.scrollHeight', function(newValue, oldValue) {
+		if (newValue != oldValue && $scope.textBox.text) {
+			$scope.textArea.style.height = $scope.textArea.scrollHeight + 'px';
+			$scope.textBox.box.height = 100 * $scope.textArea.offsetHeight/$scope.pheight;
+			if ($scope.textBox.box.height + $scope.textBox.box.top > 100) {
+				$scope.textBox.box.top = 100 - $scope.textBox.box.height;
+				$scope.textArea.style.top = $scope.textBox.box.top * $scope.pheight /100 + 'px';
+			}	
 		}
 	});
 	

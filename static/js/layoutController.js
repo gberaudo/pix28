@@ -70,12 +70,14 @@ app.controller('minLayoutController',
 		var rect = $scope.layout.frames[i];
 		ctx.beginPath();
 		ctx.lineWidth = '.2';
-		ctx.rect(scale * rect.left* $scope.pwidth / 100, 
-					scale * rect.top * $scope.pheight / 100,
-					scale * rect.width * $scope.pwidth / 100,
-					scale * rect.height * $scope.pheight / 100
-				  );
+		var left = scale * rect.left* $scope.pwidth / 100,
+			top = scale * rect.top * $scope.pheight / 100,
+			width = scale * rect.width * $scope.pwidth / 100,
+			height = scale * rect.height * $scope.pheight / 100;
+		ctx.rect(left, top, width, height);
 		ctx.stroke();
+		ctx.fillStyle = '#EEEEEE';
+		ctx.fillRect(left, top, width, height);
 	}
 	
 	for (i = 0; i < $scope.layout.boxes.length; i++) {

@@ -3,9 +3,9 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		image = $scope.frame.image,
 		canvas = $element[0].children[0],
 		ctx = canvas.getContext('2d');
+	var drawImage = ImgService.drawImage;
 	
 	$scope.img = new Image();
-	var img = $scope.img;
 	initCanvas();
 	
 	function initCanvas(){
@@ -14,26 +14,25 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		canvas.style.left = ($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
 		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
 		if (!!image.src) {
-			img.onload = function() {
-				drawImage(img, display);
-				canvas.style.border = 'none';
+			$scope.img.onload = function() {
+				drawImage(canvas, $scope.img, display);
 			};
-			img.src = image.src;
+			$scope.img.src = image.src;
 		} else {
-				canvas.style.border ='1px solid #CCC';
+				ImgService.resetFrame(canvas);
 		}
 	};
 
 	function firstDrawImage() {
-		if (!!img.src) {
+		if (!!$scope.img.src) {
 			//Negative case to be checked
 			/* When an image is dragged into the canvas, fill canvas with image*/
 			if (image.mHeight / canvas.height > image.mWidth / canvas.width) {
 				image.scaleRatio = image.mWidth / canvas.width;
 				display.sw = image.mWidth;
-				display.sh = Math.floor(canvas.height * image.scaleRatio);
+				display.sh = canvas.height * image.scaleRatio;
 				display.sx = 0;
-				display.sy = max((image.mHeight - display.sh) / 2, 0);
+				display.sy = Math.max((image.mHeight - display.sh) / 2, 0);
 				display.dx = 0;
 				display.dy = 0;
 				display.dw = canvas.width;
@@ -41,38 +40,23 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 			} else if (image.mHeight / canvas.height <= image.mWidth / canvas.width) {
 				image.scaleRatio = image.mHeight / canvas.height;
 				display.sh = image.mHeight;
-				display.sw = Math.floor(canvas.width * image.scaleRatio);
-				display.sx = max((image.mWidth - display.sw) / 2,0);
+				display.sw = canvas.width * image.scaleRatio;
+				display.sx = Math.max((image.mWidth - display.sw) / 2,0);
 				display.sy = 0;
 				display.dx = 0;
 				display.dy = 0;
 				display.dw = canvas.width;
 				display.dh = canvas.height;
 			}
-			drawImage(img, display);
-		}
-	};
-
-	function drawImage(img, display) {
-		if (!!img.src) {
-			ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
-							display.dx, display.dy, display.dw, display.dh);
+			drawImage(canvas, $scope.img, display);
 		}
 	};
 
 	function redrawImage() {
-		drawImage(img, display);
+		drawImage(canvas, $scope.img, display);
 	};
 
-	function max(a, b) {
-		return a > b ? a : b;
-	};
-
-	function min(a, b) {
-		return a > b ? b : a;
-	};
-
-	//Define dragable zones with respect to the canvas
+		//Define dragable zones with respect to the canvas
 	var topLeftCorner, topRightCorner, botLeftCorner, botRightCorner,
 			topEdge, leftEdge, rightEdge, botEdge, centerZone;
 
@@ -225,11 +209,11 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 
 		for (anchor in drag){
 			if (drag[anchor]){
-				var offsetCopy = angular.copy(offset);
-				var anchorCopy = angular.copy(anchor);
+ 				var offsetCopy = angular.copy(offset);
+ 				var anchorCopy = angular.copy(anchor);
 				window.requestAnimationFrame(function() {
 					redimension(canvas, offsetCopy, anchorCopy);
-					redrawImage();
+					drawImage(canvas, $scope.img, display);
 					resetZone();
 					updateFrame();
 				});
@@ -368,11 +352,6 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		$scope.frame.canvas.height = 100 * canvas.height / $scope.pheight;
 		$scope.frame.canvas.top = 100 * canvas.offsetTop / $scope.pheight;
 		$scope.frame.canvas.left = 100 * canvas.offsetLeft / $scope.pwidth;
-		
-// 		$scope.frame.canvas.width = canvas.width;
-// 		$scope.frame.canvas.height = canvas.height;
-// 		$scope.frame.canvas.top = canvas.offsetTop;
-// 		$scope.frame.canvas.left = canvas.offsetLeft;
 	};
 	
 	$scope.keyDown = function(evt) {
@@ -380,23 +359,23 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		switch (evt.keyCode) {
 			case 61: // if key + is pressed then zoom out 
 			case 187:
-				ImgService.zoomImage(canvas, img, image, display, 'out');
+				ImgService.zoomImage(canvas, $scope, 'out');
 				break;
 			case 173: // key -
 			case 189:
-				ImgService.zoomImage(canvas, img, image, display, 'in');
+				ImgService.zoomImage(canvas, $scope, 'in');
 				break;
 			case 37: //key left
-				moveImage('left');
+				ImgService.moveImage(canvas, $scope, 'left');
 				break;
 			case 38: //key up
-				moveImage('up');
+				ImgService.moveImage(canvas, $scope, 'up');
 				break;
 			case 39: //key right
-				moveImage('right');
+				ImgService.moveImage(canvas, $scope, 'right');
 				break;
 			case 40: //key down
-				moveImage('down');
+				ImgService.moveImage(canvas, $scope, 'down');
 				break;
 			case 46: //del
 				if (!evt.ctrlKey) {
@@ -405,41 +384,12 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 				break;
 		}
 		if (evt.ctrlKey && (evt.keyCode == 46)) {
-			ImgService.delImage(canvas, img, $scope.frame);
+			$scope.img = new Image();
+			$scope.frame.image = {};
+			ImgService.resetFrame(canvas);
 		}
 	};
 
-	
-	function moveImage(para) {
-		var offset = 10;
-		switch (para){
-			case 'left':
-				if (offset > display.sx) {
-					offset = display.sx;
-				}
-				display.sx -= offset;
-				break;
-			case 'right':
-				if (offset + display.sx + display.sw > image.mWidth) {
-					offset = image.mWidth - display.sx - display.sw;
-				}
-				display.sx += offset;
-				break;
-			case 'up':
-				if (offset > display.sy) {
-					offset = display.sy;
-				}
-				display.sy -= offset;
-				break;
-			case 'down':
-				if (offset + display.sy + display.sh > image.mHeight) {
-					offset = image.mHeight - display.sy - display.sh;
-				}
-				display.sy += offset;
-				break;
-		}
-		redrawImage();
-	};
 
 	$scope.allowDrop = function(ev) {
 		ev.preventDefault();
@@ -450,7 +400,7 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		var data = evt.dataTransfer;
 		var name = data.getData('name');
 		if (name == 'image') {
-			img.src = data.getData('URL');
+			$scope.img.src = data.getData('URL');
 		//update information for image in storage
 			image.src = data.getData('URL');
 			image.mHeight = parseInt(data.getData('mHeight'));
@@ -478,7 +428,7 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 			activeCanvas.removeClass('cActive');
 		}
 		angular.element(event.target).addClass('cActive');
-		if (!!img.src) {
+		if (!!$scope.img.src) {
 			$scope.current.onEditText = false;
 			$scope.current.onEditImage = true;
 		}
@@ -490,17 +440,23 @@ app.controller('ImageController', function($scope, ImgService) {
 
 	$scope.zoomImage = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
-			scope = angular.element(canvas).scope(),
-			display = scope.frame.display,
-			image = scope.frame.image,
-			img = new Image();
-		img.src = image.src;
-		ImgService.zoomImage(canvas, img, image, display, para);
+			scope = angular.element(canvas).scope();
+		ImgService.zoomImage(canvas, scope, para);
 	};
 	
 	$scope.removeImage = function() {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
- 		ImgService.delImage(canvas, scope.img, scope.frame);
+		scope.img = new Image();
+		scope.frame.image = {};
+		ImgService.resetFrame(canvas);
 	};
+	
+	$scope.go = function(para) {
+		var canvas = document.getElementsByClassName('cActive')[0],
+			scope = angular.element(canvas).scope();
+		ImgService.moveImage(canvas, scope, para);
+		
+	};
+	
 });

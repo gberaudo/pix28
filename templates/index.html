@@ -160,7 +160,7 @@
 				<!--head line-->
 						
 						
-					<div id = 'prev' class = 'link small'
+					<div id = 'prev' class = 'link'
 						ng-show =  'show.leftPage' 
 						ng-click = 'prevPage()'>
 						<img src = 'static/icons/prev.png'
@@ -170,7 +170,7 @@
 						previous
 					</div>
 					
-					<div id = 'next' class = 'link small'
+					<div id = 'next' class = 'link'
 						ng-show = 'show.rightPage' 
 						ng-click = 'nextPage()'>
 						<img src = 'static/icons/next.png'
@@ -182,39 +182,40 @@
 					
 					<div id = 'topMenu'>
 						<span id = 'addPage' 
-							class = 'link small'
+							class = 'link'
 							title = 'add a new double page'
 							ng-click = 'addNewPage()'>
-							<img src = 'static/icons/newpage.png'
+							<img src = 'static/icons/addpage.svg'
 								class = 'inline'
-								style = 'height: 150%'/> 
+								style = 'height: 130%'/> 
 						</span>
 						
 						<span id = 'removePage' 
-							class = 'link small'
+							class = 'link'
 							title = 'Delete this double page'
 							ng-click = 'removePage()'>
-							<img src = 'static/icons/deletepage.png'
+							<img src = 'static/icons/delpage.svg'
 								class = 'inline'
 								style = 'height: 150%'/>
 						</span>
 						
-						<span class = 'draggable link small'
+						<span class = 'draggable link'
 							id = 'addText'
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragText(event)'
 							title = 'Drag and drop into page to add a text field'>
-							<img  src = 'static/icons/text.png'
+							<img  src = 'static/icons/text.svg'
 								class = 'inline'
-								style = 'height: 150%'/>
+								style = 'height: 130%;'
+								/>
 						</span>
 						
-						<span class = 'draggable link small'
+						<span class = 'draggable link'
 							id = 'addFrame'
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragFrame(event)'
 							title = 'Drag and drop into page to add a new frame'>
-							<img src = 'static/icons/frame_edit.png'
+							<img src = 'static/icons/frame.svg'
 								class = 'inline'
 								style = 'height: 150%'/>
 						</span>
@@ -368,31 +369,78 @@
 								class = 'btn'
 								title = 'align text left'
 								ng-click = 'align("left")'>
-								<img src = 'static/icons/left.png' class = 'inline'/>
+								<img src = 'static/icons/left.svg' 
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 							<span
 								class = 'btn'
 								title = 'align text right'
 								ng-click = 'align("right")'>
-								<img src = 'static/icons/right.png' class = 'inline'/>
+								<img src = 'static/icons/right.svg'
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 							<span 
 								class = 'btn'
 								title = 'align text center'
 								ng-click = 'align("center")'>
-								<img src = 'static/icons/center.png' class = 'inline'/>
+								<img src = 'static/icons/center.svg' 
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 						</div>
 						
 						<div id = 'imageControl' ng-controller = 'ImageController'
 							ng-show = 'current.onEditImage'>
-							<span> Style image </span>
-							<button ng-click = 'zoomImage("out")'
-								class = 'inline'> + </button>
-							<button ng-click = 'zoomImage("in")'
-								class = 'inline'> - </button>
-							<button ng-click = 'removeImage()'
-								class = 'inline'> X </button>
+							<span style = 'font-size: 90%; font-weight: bold;
+								margin-left: 1em; margin-right: 0.5em'>
+								Style image
+							</span>
+							<span ng-click = 'zoomImage("out")'
+								title = 'Zoom image out. Hot key: +'
+								class = 'btn'
+								style = 'padding: 4px;'>
+								<img src = 'static/icons/plus.svg'
+									style = 'height: 100%'/> </span>
+							<span ng-click = 'zoomImage("in")'
+								title = 'Zoom image in. Hot key: -'
+								class = 'btn inline'
+								style = 'padding: 4px'>
+								<img src = 'static/icons/minus.svg'
+									style = 'height: 100%'/> </span>
+									
+							<span ng-click = 'go("left")'
+								title = 'See more left side. Hot key: Ctrl + arrow left.'
+								class = 'btn inline'>
+								Left
+							</span>
+							
+							<span ng-click = 'go("right")'
+								title = 'See more right side. Hot key: Ctrl + arrow right.'
+								class = 'btn inline'>
+								Right
+							</span>
+							
+							<span ng-click = 'go("up")'
+								title = 'See more top side. Hot key: Ctrl + arrow up.'
+								class = 'btn inline'>
+								Up
+							</span>
+							
+							<span ng-click = 'go("down")'
+								title = ' See more bottom side. Hot key: Ctrl + arrow down.'
+								class = 'btn inline'>
+								Down
+							</span>
+								
+							<span ng-click = 'removeImage()'
+								title = 'Delete image. Hot key: Ctrl + Del'
+								class = 'btn'
+								style = 'padding: 4px'> 
+								<img src = 'static/icons/trash.png'
+									style = 'height: 110%'/> </span>
+							
 						</div>
 					</div>
 					

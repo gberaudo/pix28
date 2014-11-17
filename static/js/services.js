@@ -267,8 +267,35 @@ app.service('ImgService', function() {
 		};
 	};
 	
-	this.zoomImage = function(canvas, img, image, display, para) {
-		var rate = 1.1;
+	function drawImage(canvas, img, display) {
+		var ctx = canvas.getContext('2d');
+		ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
+							display.dx, display.dy, display.dw, display.dh);
+		canvas.style.border = 'none';
+	};
+	
+	this.drawImage = drawImage;
+	
+	this.resetFrame  = function(canvas) {
+		var ctx = canvas.getContext('2d');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = '#EFEFEF';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = '#777';
+		ctx.fillText('Drop an image here', 5, 20);
+		canvas.style.border = '1px solid #CCC';
+	};
+	
+	this.delCanvas = function(el, $scope) {
+		$scope.current[el.parentNode.parentNode.id].frames.splice($scope.$index,1);
+	};
+	
+	this.zoomImage = function(canvas, scope, para) {
+		var rate = 1.1,
+		img = scope.img,
+		image = scope.frame.image,
+		display = scope.frame.display;
+		
 		if (para == 'out') {
 			zoom(1/rate);
 		}
@@ -297,26 +324,47 @@ app.service('ImgService', function() {
 			
 			display.sx += sChange.X;
 			display.sy += sChange.Y; 
-			display.sw = display.sw * realRate;
-			display.sh = display.sh * realRate;
+			display.sw = Math.min(display.sw * realRate, image.mWidth - display.sx);
+			display.sh = Math.min(display.sh * realRate, image.mHeight - display.sy);
 			image.scaleRatio = realRate * image.scaleRatio; //update scale
 			
-			var ctx = canvas.getContext('2d');
-			ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
-							display.dx, display.dy, display.dw, display.dh);
+			drawImage(canvas, img, display);
 		};
 	};
 
-	this.delImage  = function(canvas, img, frame) {
-		var ctx = canvas.getContext('2d');
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		img.src = null;
-		frame.image = {};
-		canvas.style.border = '1px solid #CCC';
-	};
-	
-	this.delCanvas = function(el, $scope) {
-		$scope.current[el.parentNode.parentNode.id].frames.splice($scope.$index,1);
+	this.moveImage = function(canvas, scope, para) {
+		var offset = 10,
+			img = scope.img,
+			image = scope.frame.image,
+			display = scope.frame.display;
+		
+		switch (para){
+			case 'left':
+				if (offset > display.sx) {
+					offset = display.sx;
+				}
+				display.sx -= offset;
+				break;
+			case 'right':
+				if (offset + display.sx + display.sw > image.mWidth) {
+					offset = image.mWidth - display.sx - display.sw;
+				}
+				display.sx += offset;
+				break;
+			case 'up':
+				if (offset > display.sy) {
+					offset = display.sy;
+				}
+				display.sy -= offset;
+				break;
+			case 'down':
+				if (offset + display.sy + display.sh > image.mHeight) {
+					offset = image.mHeight - display.sy - display.sh;
+				}
+				display.sy += offset;
+				break;
+		}
+		drawImage(canvas, img, display);
 	};
 });
 
