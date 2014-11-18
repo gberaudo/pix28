@@ -1,4 +1,5 @@
 app.controller('ImageLoaderController', 
+    ['$scope', '$timeout', 'ImgService', '$q', '$element',
 					function($scope, $timeout, ImgService, $q, $element) {
 	ImgService.loadImages($scope.current.albumId);
 	
@@ -202,7 +203,7 @@ app.controller('ImageLoaderController',
 	$scope.mouseLeave = function(event) {
 		$scope.bigImg.style.display = 'none';
 	};
-});
+}]);
 
 
 

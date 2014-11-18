@@ -1,4 +1,6 @@
-app.controller('PageController', function($scope, $timeout, $element, FrameObject) {
+app.controller('PageController',
+    ['$scope', '$timeout', '$element', 'FrameObject',
+    function($scope, $timeout, $element, FrameObject) {
 
 	$scope.pageFocus = function(event) {
 		$scope.activate();
@@ -109,4 +111,4 @@ app.controller('PageController', function($scope, $timeout, $element, FrameObjec
 				break;
 		}
 	};
-});
+}]);

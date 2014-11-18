@@ -1,4 +1,6 @@
-app.controller('TextBoxController', function($scope, $element, $timeout, $http, Init) {
+app.controller('TextBoxController',
+    ['$scope', '$element', '$timeout', '$http', 'Init',
+    function($scope, $element, $timeout, $http, Init) {
 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
 	Init.initTextArea($scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
@@ -194,10 +196,12 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 			$scope.textBox.box.top = 100 * ($scope.pheight - el.offsetHeight)/$scope.pheight;
 		}
 	};
-});
+}]);
 
 
-app.controller('TextController', function($scope, $timeout, $http, Fonts, Colors) {
+app.controller('TextController',
+    ['$scope', '$timeout', '$http', 'Fonts', 'Colors',
+    function($scope, $timeout, $http, Fonts, Colors) {
 	$scope.current.font.color = 'black';
 	$scope.current.font.style = 'normal';
 	$scope.current.font.weight = 'normal';
@@ -297,4 +301,4 @@ app.controller('TextController', function($scope, $timeout, $http, Fonts, Colors
 	};
 	
 	
-});
+}]);

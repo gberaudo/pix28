@@ -1,26 +1,41 @@
- <!DOCTYPE html> 
-<html>
+$def with (mode)
+<!DOCTYPE html> 
+<html ng-app = 'albumApp' ng-init = 'greeting = true' ng-strict-di='false'>
 <head>
-	 <meta charset="UTF-8">
-	<script src = 'static/js/angular_13.js'></script>
-	<script src = 'static/js/pdfkit.js'></script>
-	<script src = 'static/js/blob-stream.js'></script>
-	<script src = 'static/js/exif.js'></script>
-	<script src = 'static/js/siteController.js'></script>
-	<script src = 'static/js/albumController.js'></script>
-	<script src = 'static/js/pageController.js'></script>
-	<script src = 'static/js/canvasController.js'></script>
-	<script src = 'static/js/imageLoaderController.js'></script>
-	<script src = 'static/js/layoutController.js'></script>
-	<script src = 'static/js/textController.js'></script>
-	<script src = 'static/js/services.js'></script>
+	<meta charset="UTF-8">
+
+
+	$if mode == 'dev':
+		<script src = 'static/js/angular_13.js'></script>
+		<script src = 'static/js/angular-gettext.js'></script>
+		<script src = 'static/js/pdfkit.js'></script>
+		<script src = 'static/js/blob-stream.js'></script>
+		<script src = 'static/js/exif.js'></script>
+
+		<script src = 'static/js/siteController.js'></script>
+		<script src = 'static/js/albumController.js'></script>
+		<script src = 'static/js/pageController.js'></script>
+		<script src = 'static/js/canvasController.js'></script>
+		<script src = 'static/js/imageLoaderController.js'></script>
+		<script src = 'static/js/layoutController.js'></script>
+		<script src = 'static/js/textController.js'></script>
+		<script src = 'static/js/services.js'></script>
+	$else:
+		<script src = 'static/js/angular.min.js'></script>
+		<script src = 'static/js/angular-gettext.min.js'></script>
+		<script src = 'static/js/pdfkit.js'></script>
+		<script src = 'static/js/blob-stream.js'></script>
+		<script src = 'static/js/exif.js'></script>
+
+		<script src = 'static/build/album.js'></script>
+
 	<link rel="stylesheet" type="text/css" href="static/css/style.css" />
-	<title> Create your own story </title> 
+	<title translate>Create your own story</title> 
 </head>
 
-<body ng-app = 'albumApp' ng-init = 'greeting = true'>
+<body>
 
-	<div id = 'banner'> <span id = 'slogan'> Create your own story </span> </div>
+	<div id = 'banner'> <span id = 'slogan' translate>Create your own story</span> </div>
 	<div ng-if = 'greeting'>
 		<h2 style = 'position: absolute; top: {{0.05*screenWidth + "px"}}'> Welcome!</h2>
 	</div>

@@ -5,12 +5,12 @@ render = web.template.render('templates/')
 import base64
 
 urls = (
-	'/index', 'index',
+	'/', 'index',
 )
 
 class index:
 	def GET(self):
-		return render.index()
+		return render.index('dev')
 	
 
 if __name__ == "__main__":

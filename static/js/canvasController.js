@@ -1,4 +1,6 @@
-app.controller('CanvasController', function($scope, $element, $timeout, FrameObject, ImgService) {
+app.controller('CanvasController',
+    ['$scope', '$element', '$timeout', 'FrameObject', 'ImgService',
+    function($scope, $element, $timeout, FrameObject, ImgService) {
 	var display = $scope.frame.display,
 		canvas = $element[0].children[0],
 		ctx = canvas.getContext('2d');
@@ -439,9 +441,11 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		}
 	};
 
-});
+}]);
 
-app.controller('ImageController', function($scope, ImgService) {
+app.controller('ImageController',
+    ['$scope', 'ImgService',
+    function($scope, ImgService) {
 
 	$scope.zoomImage = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
@@ -462,5 +466,4 @@ app.controller('ImageController', function($scope, ImgService) {
 			scope = angular.element(canvas).scope();
 		ImgService.moveImage(canvas, scope, para);
 	};
-	
-});
+}]);

@@ -1,6 +1,8 @@
-var app = angular.module('albumApp', []);
-
-app.run(function($rootScope) {
+var app = angular.module('albumApp', ['gettext']);                                                                                                                                                                                    
+  
+app.run(
+    ['$rootScope', 'gettextCatalog',
+    function($rootScope, gettextCatalog) {
 	var defaultFontSize = 0.012*screen.width;
 	var banner = document.getElementById('banner');
 	document.body.style.fontSize = defaultFontSize + 'px';
@@ -9,7 +11,11 @@ app.run(function($rootScope) {
 	banner.style.height = 0.04*screen.width + 'px';
 	banner.style.fontSize = defaultFontSize + 'px';
 	$rootScope.screenWidth = screen.width;
-});
-app.controller('SiteController', function($scope) {
 
-});
+  gettextCatalog.setCurrentLanguage('fr');                              
+  gettextCatalog.loadRemote('static/build/locale/fr/album.json');                              
+  gettextCatalog.debug = true; 
+}]);
+app.controller('SiteController', ['$scope', function($scope) {
+
+}]);

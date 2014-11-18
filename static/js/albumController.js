@@ -1,4 +1,6 @@
-app.controller('AlbumController', function(
+app.controller('AlbumController',
+    ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 'DBServices', 'Misc',
+    function(
 	$scope, $timeout, $http, $element, $q, PageObject, DBServices, Misc
 ) {
 	
@@ -596,6 +598,6 @@ app.controller('AlbumController', function(
 		};
 	};
 	
-});
+}]);
 
 

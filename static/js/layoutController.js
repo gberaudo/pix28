@@ -1,6 +1,8 @@
 
 
-app.controller('LayoutController', function($scope, FrameObject, Layouts, Colors) {
+app.controller('LayoutController', 
+    ['$scope', 'FrameObject', 'Layouts', 'Colors',
+    function($scope, FrameObject, Layouts, Colors) {
 	$scope.colors = Colors;
 	$scope.showLayouts = function(type) {
 		$scope.layouts = Layouts[type];
@@ -44,9 +46,10 @@ app.controller('LayoutController', function($scope, FrameObject, Layouts, Colors
 		var activePage = document.getElementsByClassName('pActive')[0];
 		$scope.current[activePage.id].background = color;
 	}
-});
+}]);
 
 app.controller('minLayoutController',
+    ['$scope', '$element', 'FrameObject', 'TextBoxObject',
 					function($scope, $element, FrameObject, TextBoxObject) {
 	var canvas = $element[0];
 	var ctx = canvas.getContext('2d');
@@ -98,4 +101,4 @@ app.controller('minLayoutController',
 			}
 		}
 	};
-});
+}]);
