@@ -12,8 +12,8 @@ app.run(
 	banner.style.fontSize = defaultFontSize + 'px';
 	$rootScope.screenWidth = screen.width;
 
-  gettextCatalog.setCurrentLanguage('fr');                              
-  gettextCatalog.loadRemote('static/build/locale/fr/album.json');                              
+  gettextCatalog.setCurrentLanguage('vn');
+  gettextCatalog.loadRemote('static/build/locale/vn/album.json');
   gettextCatalog.debug = true; 
 }]);
 app.controller('SiteController', ['$scope', function($scope) {

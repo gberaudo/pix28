@@ -43,7 +43,7 @@ cleanall: clean
 	rm -rf node_modules
 
 .PHONY: compile-catalog
-compile-catalog: static/build/locale/fr/album.json
+compile-catalog: static/build/locale/fr/album.json static/build/locale/en/album.json static/build/locale/vn/album.json
 
 .PHONY: dist
 dist: build
