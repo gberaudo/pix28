@@ -99,6 +99,14 @@ body {
 	box-shadow: 3px 3px 5px 6px #ccc;
 }
 
+.textbox {
+	border: 1px solid #CEECF5;
+}
+
+textarea[name = 'textbox']:focus {
+	border: 1px solid #77F !important;
+}
+
 #prev {
 	position: absolute;
 	top: 40%;
@@ -136,13 +144,6 @@ body {
 	display: inline-block;
 	vertical-align: middle;
 }
-
-/*#textControl {
-	position: absolute;
-	top: 88%;
-	left: 0%;
-	width: 100%; 
-}*/
 
 #colorMenu {
 	z-index:2;

@@ -1,6 +1,5 @@
 app.controller('CanvasController', function($scope, $element, $timeout, FrameObject, ImgService) {
 	var display = $scope.frame.display,
-		image = $scope.frame.image,
 		canvas = $element[0].children[0],
 		ctx = canvas.getContext('2d');
 	var drawImage = ImgService.drawImage;
@@ -13,11 +12,11 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		canvas.height = $scope.frame.canvas.height * $scope.pheight / 100;
 		canvas.style.left = ($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
 		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
-		if (!!image.src) {
+		if (!!$scope.frame.image.src) {
 			$scope.img.onload = function() {
 				drawImage(canvas, $scope.img, display);
 			};
-			$scope.img.src = image.src;
+			$scope.img.src = $scope.frame.image.src;
 		} else {
 				ImgService.resetFrame(canvas);
 		}
@@ -27,21 +26,21 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		if (!!$scope.img.src) {
 			//Negative case to be checked
 			/* When an image is dragged into the canvas, fill canvas with image*/
-			if (image.mHeight / canvas.height > image.mWidth / canvas.width) {
-				image.scaleRatio = image.mWidth / canvas.width;
-				display.sw = image.mWidth;
-				display.sh = canvas.height * image.scaleRatio;
+			if ($scope.frame.image.mHeight / canvas.height > $scope.frame.image.mWidth / canvas.width) {
+				$scope.frame.image.scaleRatio = $scope.frame.image.mWidth / canvas.width;
+				display.sw = $scope.frame.image.mWidth;
+				display.sh = canvas.height * $scope.frame.image.scaleRatio;
 				display.sx = 0;
-				display.sy = Math.max((image.mHeight - display.sh) / 2, 0);
+				display.sy = Math.max(($scope.frame.image.mHeight - display.sh) / 2, 0);
 				display.dx = 0;
 				display.dy = 0;
 				display.dw = canvas.width;
 				display.dh = canvas.height;
-			} else if (image.mHeight / canvas.height <= image.mWidth / canvas.width) {
-				image.scaleRatio = image.mHeight / canvas.height;
-				display.sh = image.mHeight;
-				display.sw = canvas.width * image.scaleRatio;
-				display.sx = Math.max((image.mWidth - display.sw) / 2,0);
+			} else if ($scope.frame.image.mHeight / canvas.height <= $scope.frame.image.mWidth / canvas.width) {
+				$scope.frame.image.scaleRatio = $scope.frame.image.mHeight / canvas.height;
+				display.sh = $scope.frame.image.mHeight;
+				display.sw = canvas.width * $scope.frame.image.scaleRatio;
+				display.sx = Math.max(($scope.frame.image.mWidth - display.sw) / 2, 0);
 				display.sy = 0;
 				display.dx = 0;
 				display.dy = 0;
@@ -213,7 +212,12 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
  				var anchorCopy = angular.copy(anchor);
 				window.requestAnimationFrame(function() {
 					redimension(canvas, offsetCopy, anchorCopy);
-					drawImage(canvas, $scope.img, display);
+					if (!!$scope.img.src) {
+						drawImage(canvas, $scope.img, display);
+					}
+					else {
+						ImgService.resetFrame(canvas);
+					}
 					resetZone();
 					updateFrame();
 				});
@@ -229,6 +233,7 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 			cleft = parseFloat(cv.style.left),
 			pwidth = $scope.pwidth,
 			pheight = $scope.pheight,
+			image = $scope.frame.image,
 			off;
 
 		switch (anchor){
@@ -251,8 +256,8 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 				
 			case 'L':
 				off = offset.X; 
-				if (off > cv.width) {
-					off = cv.width;
+				if (off > cv.width - 30) {
+					off = cv.width - 30;
 				}
 				if (off < -cleft) {
 					off = -cleft;
@@ -271,8 +276,8 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 				
 			case 'R':
 				off = offset.X;
-				if (off < -cv.width) {
-					off = -cv.width;
+				if (off < -cv.width + 30) {
+					off = -cv.width + 30;
 				}
 				if (off + cv.width + cleft > pwidth) {
 					off = pwidth - cv.width - cleft;
@@ -289,8 +294,8 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 			
 			case 'T':
 				off = offset.Y;
-				if (off > cv.height) {
-					off = cv.height;
+				if (off > cv.height - 30) {
+					off = cv.height - 30;
 				}
 				if (off < -ctop) {
 					off = -ctop;
@@ -309,8 +314,8 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 			
 			case 'B':
 				off = offset.Y;
-				if (off < -cv.height) {
-					off = -cv.height;
+				if (off < -cv.height + 30) {
+					off = -cv.height + 30;
 				}
 				if (off + cv.height + ctop > pheight) {
 					off = pheight - cv.height - ctop;
@@ -402,10 +407,10 @@ app.controller('CanvasController', function($scope, $element, $timeout, FrameObj
 		if (name == 'image') {
 			$scope.img.src = data.getData('URL');
 		//update information for image in storage
-			image.src = data.getData('URL');
-			image.mHeight = parseInt(data.getData('mHeight'));
-			image.mWidth = parseInt(data.getData('mWidth'));
-			image.DbId = parseInt(data.getData('DbId'));
+			$scope.frame.image.src = data.getData('URL');
+			$scope.frame.image.mHeight = parseInt(data.getData('mHeight'));
+			$scope.frame.image.mWidth = parseInt(data.getData('mWidth'));
+			$scope.frame.image.DbId = parseInt(data.getData('DbId'));
 		//then draw image
 			firstDrawImage();
 		}
@@ -456,7 +461,6 @@ app.controller('ImageController', function($scope, ImgService) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
 		ImgService.moveImage(canvas, scope, para);
-		
 	};
 	
 });

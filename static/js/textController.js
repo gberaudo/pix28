@@ -2,10 +2,10 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
 	Init.initTextArea($scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
-		$scope.textArea.focus();
+ 		$scope.textArea.focus();
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
-		$scope.textArea.style.border =  "1px solid #77F";
+// 		$scope.textArea.style.border =  "1px solid #77F";
 		$scope.current.datumWithFocus = undefined;
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
@@ -74,7 +74,7 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
 		$scope.textArea.style.resize = 'both';
-		$scope.textArea.style.border =  "1px solid #77F";
+// 		$scope.textArea.style.border =  "1px solid #77F";
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
 			 activeTextArea = document.getElementsByClassName('tActive')[0]; 
@@ -97,9 +97,9 @@ app.controller('TextBoxController', function($scope, $element, $timeout, $http, 
 		if ($scope.textArea.value) {
 			$scope.textArea.style.border =  '1px solid transparent';
 		} 
-		else {
-			$scope.textArea.style.border =  '1px solid #CEECF5';
-		}
+// 		else {
+// 			$scope.textArea.style.border =  '1px solid #CEECF5';
+// 		}
 		$scope.textArea.style.resize = 'none';
 	};
 	
@@ -231,10 +231,6 @@ app.controller('TextController', function($scope, $timeout, $http, Fonts, Colors
 		if (!$scope.mouseInMenu) {
 			hideColorMenu();
 		}
-	};
-	
-	$scope.menuClick = function() {
-		$scope.menuClicked = true;
 	};
 
 	$scope.menuBlur = function() {

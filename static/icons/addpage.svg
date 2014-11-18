@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="53.84465"
-   height="28.341572"
+   width="54.772385"
+   height="28.337666"
    id="svg5073"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.4865144"
-     inkscape:cx="-93.286977"
-     inkscape:cy="-12.559997"
+     inkscape:cx="-77.495"
+     inkscape:cy="-12.5639"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -47,7 +47,7 @@
        enabled="true"
        snapvisiblegridlinesonly="true"
        originx="-221.21345px"
-       originy="-602.65729px" />
+       originy="-602.66119px" />
   </sodipodi:namedview>
   <metadata
      id="metadata5078">
@@ -81,14 +81,14 @@
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b14c47;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:Sans Bold"
-       x="254.56396"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#d08e00;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:Sans Bold"
+       x="252.56396"
        y="449.73224"
        id="text5595"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5597"
-         x="254.56396"
+         x="252.56396"
          y="449.73224">+</tspan></text>
     <rect
        style="fill:#a9b6a5;fill-opacity:1;stroke:#a9b6a5;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"

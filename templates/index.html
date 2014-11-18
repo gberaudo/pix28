@@ -204,9 +204,9 @@
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragText(event)'
 							title = 'Drag and drop into page to add a text field'>
-							<img  src = 'static/icons/text.svg'
+							<img  src = 'static/icons/text2.svg'
 								class = 'inline'
-								style = 'height: 130%;'
+								style = 'height: 150%;'
 								/>
 						</span>
 						
@@ -277,7 +277,7 @@
 						
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
 							ng-controller = 'TextBoxController'>
-							<textarea class = 'textAB'
+							<textarea name = 'textbox'
 								title = 'Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.'
 								ng-model = 'textBox.text'
 								ng-mousedown = 'mouseDown(\$event)'
@@ -336,9 +336,10 @@
 							<!--Color falldown menu -->
 							<div class = 'inline'>
 								<span 
+									tabindex = '0'
 									id = 'textColor'
 									class = 'btn'
-									ng-click = 'showColors()'
+									ng-focus = 'showColors()'
 									title = 'choose text color'
 									style = 'color: {{current.font.color}}'
 									ng-blur = 'cbBlur()'>
@@ -349,7 +350,6 @@
 									id = 'colorMenu'
 									ng-if = 'showColorMenu' 
 									ng-init = 'showColorMenu = false'
-									ng-click = 'menuClick()'
 									ng-blur = 'menuBlur()'
 									ng-mouseenter = 'mouseEnter()'
 									ng-mouseleave = 'mouseLeave()'>
@@ -401,14 +401,14 @@
 								title = 'Zoom image out. Hot key: +'
 								class = 'btn'
 								style = 'padding: 4px;'>
-								<img src = 'static/icons/plus.svg'
-									style = 'height: 100%'/> </span>
+								<img src = 'static/icons/zoomin.png'
+									style = 'height: 130%'/> </span>
 							<span ng-click = 'zoomImage("in")'
 								title = 'Zoom image in. Hot key: -'
 								class = 'btn inline'
 								style = 'padding: 4px'>
-								<img src = 'static/icons/minus.svg'
-									style = 'height: 100%'/> </span>
+								<img src = 'static/icons/zoomout.png'
+									style = 'height: 130%'/> </span>
 									
 							<span ng-click = 'go("left")'
 								title = 'See more left side. Hot key: Ctrl + arrow left.'
@@ -466,13 +466,14 @@
 	
 					<div id = 'pageBGcolor'>
 						<span class = 'btn'
+							tabindex = '0'
 							title = 'Choose page background color'
 							ng-click = 'showColors()'
 							ng-blur = 'cbBlur()'>
 							Page background
 						</span>
 						<br/>
-						<div tabindex = 0
+						<div tabindex = '0'
 							id = 'BGcolorMenu'
 							ng-if = 'showColorMenu' 
 							ng-init = 'showColorMenu = false'

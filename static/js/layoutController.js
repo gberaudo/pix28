@@ -12,14 +12,6 @@ app.controller('LayoutController', function($scope, FrameObject, Layouts, Colors
 		$scope.mouseInMenu = false;
 	};
 	
-	$scope.changeColor = function(color) {
-		$scope.current.font.color = color;
-		if (document.getElementsByClassName('tActive').length >0) {
-			var activeTextArea = document.getElementsByClassName('tActive')[0];
-			activeTextArea.style.color = color;
-		}
-	};
-	
 	function hideColorMenu() {
 		$scope.showColorMenu = false;
 	};
@@ -32,10 +24,6 @@ app.controller('LayoutController', function($scope, FrameObject, Layouts, Colors
 		if (!$scope.mouseInMenu) {
 			hideColorMenu();
 		}
-	};
-	
-	$scope.menuClick = function() {
-		$scope.menuClicked = true;
 	};
 
 	$scope.menuBlur = function() {
@@ -55,7 +43,6 @@ app.controller('LayoutController', function($scope, FrameObject, Layouts, Colors
 	$scope.changeBGColor = function(color) {
 		var activePage = document.getElementsByClassName('pActive')[0];
 		$scope.current[activePage.id].background = color;
-		
 	}
 });
 
