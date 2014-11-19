@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Albumit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Việt Hằng Nguyễn <viethangybvn@gmail.com>\n"
 "Language-Team: Guillaume <guillaume.beraudo@gmail.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,210 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+#: templates/index.html
+msgid "(photos/page)"
+msgstr "(photos/page)"
+
+#: templates/index.html
+msgid "Add a new double page"
+msgstr "Ajouter une nouvelle page double"
+
+#: templates/index.html
+msgid "Align text center"
+msgstr "Centrer text"
+
+#: templates/index.html
+msgid "Align text left"
+msgstr "Aligner text à gauche"
+
+#: templates/index.html
+msgid "Align text right"
+msgstr "Aligner text à droite"
+
+#: templates/index.html
+msgid ""
+"Choose a page first then click on the layout to load to the chosen page."
+msgstr ""
+"Choissisez d'abord une page puis cliquer sur la mise en page pour la charger "
+"à la page choisie."
+
+#: templates/index.html
+msgid "Choose page background color"
+msgstr "Choisir la couleur de fond de la page"
+
+#: templates/index.html
+msgid "Choose page layout"
+msgstr "Choisir une mise en page"
+
+#: templates/index.html
+msgid "Choose text color"
+msgstr "Choisir la couleur du texte"
+
+#: templates/index.html
+msgid "Choose text font"
+msgstr "Choisir une police"
+
+#: templates/index.html
+msgid "Click to go to album"
+msgstr "Cliquer pour aller au album"
+
+#: templates/index.html
+msgid "Click to load photos from your computer"
+msgstr "Cliquer pour charger des photos de votre ordinateur"
+
 # Faut-il tutoyer ou vouvoyer?
 #: templates/index.html
 msgid "Create your own story"
 msgstr "Crée ta propre histoire"
+
+#: templates/index.html
+msgid ""
+"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right "
+"corner to redimension."
+msgstr ""
+"Ctrl+Del pour supprimer. Ctrl +  flèche pour bouger le texte. Tirer le coin "
+"du bas à droite pour redimensioner."
+
+#: templates/index.html
+msgid "Delete this double page"
+msgstr "Supprimer cette page double."
+
+#: templates/index.html
+msgid "Down"
+msgstr "Descendre"
+
+#: templates/index.html
+msgid "Drag a conner or an edge to redimension the frame."
+msgstr "Tirer un coin ou un côté pour redimensioner le cadre."
+
+#: templates/index.html
+msgid "Drag and drop into page to add a new frame"
+msgstr "Glisser et déposer sur une page pour ajouter un nouveau cadre"
+
+#: templates/index.html
+msgid "Drag and drop into page to add a text field"
+msgstr "Glisser et déposer sur une page pour ajouter une boite de texte."
+
+#: templates/index.html
+msgid "Enter a description"
+msgstr "Entrer une description"
+
+#: templates/index.html
+msgid "Enter a title"
+msgstr "Entrer un title"
+
+#: templates/index.html
+msgid "Export pdf"
+msgstr "Exporter en pdf"
+
+#: templates/index.html
+msgid "Generating pdf..."
+msgstr "Génération de pdf en cours..."
+
+#: templates/index.html
+msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
+msgstr "Aller en bas de l'image. Raccourci: Ctrl + flèche bas"
+
+#: templates/index.html
+msgid "Go to the left of image. Hot key: Ctrl + arrow left."
+msgstr "Aller à la gauche de l'image. Hot key: Ctrl + flèche gauche."
+
+#: templates/index.html
+msgid "Go to the right of image. Hot key: Ctrl + arrow right."
+msgstr "Aller à droite de l'image. Raccourci: Cthl + flèche droite."
+
+#: templates/index.html
+msgid "Go to the top of image. Hot key: Ctrl + arrow up."
+msgstr "Aller en haut de l'image. Raccourci: Ctrl + flèche haute."
+
+#: templates/index.html
+msgid "Left"
+msgstr "G"
+
+#: templates/index.html
+msgid "New album"
+msgstr "Nouveau "
+
+#: templates/index.html
+msgid "Page background"
+msgstr "Fond de la p"
+
+#: templates/index.html
+msgid "Remove this album"
+msgstr "Supprimer cet "
+
+#: templates/index.html
+msgid "Right"
+msgstr "Droite"
+
+#: templates/index.html
+msgid "Style image"
+msgstr "Style "
+
+#: templates/index.html
+msgid "Style text"
+msgstr "Style texte"
+
+#: templates/index.html
+msgid "Text color"
+msgstr "Couleur de texte"
+
+#: templates/index.html
+msgid "Up"
+msgstr "Monter"
+
+#: templates/index.html
+msgid "Welcome!"
+msgstr "Bienvenu!"
+
+#: templates/index.html
+msgid "Your albums"
+msgstr "Vos albums"
+
+#: templates/index.html
+msgid "Zoom image in. Hot key: +"
+msgstr "Zoomer image plus large. Raccourci: +"
+
+#: templates/index.html
+msgid "Zoom image out. Hot key: -"
+msgstr "Zoomer image plus petite. Raccourci: -"
+
+#: templates/index.html
+msgid "change font size"
+msgstr "Changer la taille de police"
+
+#: templates/index.html
+msgid "download"
+msgstr "Télécharger"
+
+#: templates/index.html
+msgid "edit description"
+msgstr "Éditer la description"
+
+#: templates/index.html
+msgid "edit title"
+msgstr "Éditer le titre"
+
+#: templates/index.html
+msgid "finished"
+msgstr "fini!"
+
+#: templates/index.html
+msgid "go to the next page"
+msgstr "aller a la page suivante"
+
+#: templates/index.html
+msgid "go to the previous page"
+msgstr "aller à la page précédente"
+
+#: templates/index.html
+msgid "next"
+msgstr "s"
+
+#: templates/index.html
+msgid "previous"
+msgstr "précédent"
+
+#: templates/index.html
+msgid "processing page {{processPage}}"
+msgstr "procède page {{processPage}}"

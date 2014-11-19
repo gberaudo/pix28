@@ -14,5 +14,204 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: templates/index.html
+msgid "(photos/page)"
+msgstr ""
+
+#: templates/index.html
+msgid "Add a new double page"
+msgstr ""
+
+#: templates/index.html
+msgid "Align text center"
+msgstr ""
+
+#: templates/index.html
+msgid "Align text left"
+msgstr ""
+
+#: templates/index.html
+msgid "Align text right"
+msgstr ""
+
+#: templates/index.html
+msgid ""
+"Choose a page first then click on the layout to load to the chosen page."
+msgstr ""
+
+#: templates/index.html
+msgid "Choose page background color"
+msgstr ""
+
+#: templates/index.html
+msgid "Choose page layout"
+msgstr ""
+
+#: templates/index.html
+msgid "Choose text color"
+msgstr ""
+
+#: templates/index.html
+msgid "Choose text font"
+msgstr ""
+
+#: templates/index.html
+msgid "Click to go to album"
+msgstr ""
+
+#: templates/index.html
+msgid "Click to load photos from your computer"
+msgstr ""
+
+#: templates/index.html
 msgid "Create your own story"
+msgstr ""
+
+#: templates/index.html
+msgid ""
+"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right "
+"corner to redimension."
+msgstr ""
+
+#: templates/index.html
+msgid "Delete this double page"
+msgstr ""
+
+#: templates/index.html
+msgid "Down"
+msgstr ""
+
+#: templates/index.html
+msgid "Drag a conner or an edge to redimension the frame."
+msgstr ""
+
+#: templates/index.html
+msgid "Drag and drop into page to add a new frame"
+msgstr ""
+
+#: templates/index.html
+msgid "Drag and drop into page to add a text field"
+msgstr ""
+
+#: templates/index.html
+msgid "Enter a description"
+msgstr ""
+
+#: templates/index.html
+msgid "Enter a title"
+msgstr ""
+
+#: templates/index.html
+msgid "Export pdf"
+msgstr ""
+
+#: templates/index.html
+msgid "Generating pdf..."
+msgstr ""
+
+#: templates/index.html
+msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
+msgstr ""
+
+#: templates/index.html
+msgid "Go to the left of image. Hot key: Ctrl + arrow left."
+msgstr ""
+
+#: templates/index.html
+msgid "Go to the right of image. Hot key: Ctrl + arrow right."
+msgstr ""
+
+#: templates/index.html
+msgid "Go to the top of image. Hot key: Ctrl + arrow up."
+msgstr ""
+
+#: templates/index.html
+msgid "Left"
+msgstr ""
+
+#: templates/index.html
+msgid "New album"
+msgstr ""
+
+#: templates/index.html
+msgid "Page background"
+msgstr ""
+
+#: templates/index.html
+msgid "Remove this album"
+msgstr ""
+
+#: templates/index.html
+msgid "Right"
+msgstr ""
+
+#: templates/index.html
+msgid "Style image"
+msgstr ""
+
+#: templates/index.html
+msgid "Style text"
+msgstr ""
+
+#: templates/index.html
+msgid "Text color"
+msgstr ""
+
+#: templates/index.html
+msgid "Up"
+msgstr ""
+
+#: templates/index.html
+msgid "Welcome!"
+msgstr ""
+
+#: templates/index.html
+msgid "Your albums"
+msgstr ""
+
+#: templates/index.html
+msgid "Zoom image in. Hot key: +"
+msgstr ""
+
+#: templates/index.html
+msgid "Zoom image out. Hot key: -"
+msgstr ""
+
+#: templates/index.html
+msgid "change font size"
+msgstr ""
+
+#: templates/index.html
+msgid "download"
+msgstr ""
+
+#: templates/index.html
+msgid "edit description"
+msgstr ""
+
+#: templates/index.html
+msgid "edit title"
+msgstr ""
+
+#: templates/index.html
+msgid "finished"
+msgstr ""
+
+#: templates/index.html
+msgid "go to the next page"
+msgstr ""
+
+#: templates/index.html
+msgid "go to the previous page"
+msgstr ""
+
+#: templates/index.html
+msgid "next"
+msgstr ""
+
+#: templates/index.html
+msgid "previous"
+msgstr ""
+
+#: templates/index.html
+msgid "processing page {{processPage}}"
 msgstr ""
