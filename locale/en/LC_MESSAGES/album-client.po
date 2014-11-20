@@ -159,6 +159,10 @@ msgid "Page background"
 msgstr ""
 
 #: templates/index.html
+msgid "Remove text box"
+msgstr ""
+
+#: templates/index.html
 msgid "Remove this album"
 msgstr ""
 

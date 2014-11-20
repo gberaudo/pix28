@@ -23,7 +23,7 @@ msgstr "...fini !"
 
 #: templates/index.html
 msgid "...processing page {{processPage}}"
-msgstr "...procède page {{processPage}}"
+msgstr "...traite page {{processPage}}"
 
 #: templates/index.html
 msgid "Add a new double page"
@@ -31,27 +31,26 @@ msgstr "Ajouter une nouvelle page double"
 
 #: templates/index.html
 msgid "Align text center"
-msgstr "Centrer text"
+msgstr "Centrer le texte"
 
 #: templates/index.html
 msgid "Align text left"
-msgstr "Aligner text à gauche"
+msgstr "Aligner le texte à gauche"
 
 #: templates/index.html
 msgid "Align text right"
-msgstr "Aligner text à droite"
+msgstr "Aligner le texte à droite"
 
 #: templates/index.html
-#, fuzzy
 msgid "Back to home page"
-msgstr "aller à la page suivante"
+msgstr "Retourner à la page d'accueil"
 
 #: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
 msgstr ""
-"Choissisez d'abord une page puis cliquer sur la mise en page pour la charger "
-"à la page choisie."
+"Choissisez d'abord une page puis cliquez sur la mise en page pour charger la "
+"page choisie."
 
 #: templates/index.html
 msgid "Choose page background color"
@@ -71,11 +70,11 @@ msgstr "Choisir une police"
 
 #: templates/index.html
 msgid "Click to go to album"
-msgstr "Cliquer pour aller au album"
+msgstr "Cliquer pour aller à l'album"
 
 #: templates/index.html
 msgid "Click to load photos from your computer"
-msgstr "Cliquer pour charger des photos de votre ordinateur"
+msgstr "Cliquer pour charger des photos à partir de votre ordinateur"
 
 # Faut-il tutoyer ou vouvoyer?
 #: templates/index.html
@@ -87,15 +86,15 @@ msgid ""
 "Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right "
 "corner to redimension."
 msgstr ""
-"Ctrl+Del pour supprimer. Ctrl +  flèche pour bouger le texte. Tirer le coin "
-"du bas à droite pour redimensioner."
+"Ctrl+Del pour supprimer. Ctrl +  flèches pour bouger le texte. Tirer le coin "
+"en bas à droite pour redimensioner."
 
 #: templates/index.html
 msgid ""
 "Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its "
 "content."
 msgstr ""
-"Supprimer l'image. Raccourci : Ctrl+Del. Utiliser Del pour supprimer le "
+"Supprimer l'image. Raccourci : Ctrl+Supp. Utiliser Supp. pour supprimer le "
 "cadre et son contenu."
 
 #: templates/index.html
@@ -116,7 +115,7 @@ msgstr "Glisser et déposer sur une page pour ajouter un nouveau cadre"
 
 #: templates/index.html
 msgid "Drag and drop into page to add a text field"
-msgstr "Glisser et déposer sur une page pour ajouter une boite de texte."
+msgstr "Glisser et déposer sur une page pour ajouter une boîte de texte."
 
 #: static/js/services.js
 msgid "Drag and drop on a frame in album"
@@ -132,7 +131,7 @@ msgstr "Entrer une description"
 
 #: templates/index.html
 msgid "Enter a title"
-msgstr "Entrer un title"
+msgstr "Entrer un titre"
 
 #: templates/index.html
 msgid "Export pdf"
@@ -140,7 +139,7 @@ msgstr "Exporter en pdf"
 
 #: templates/index.html
 msgid "Generating pdf..."
-msgstr "Génération de pdf en cours..."
+msgstr "Génération du pdf en cours..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -160,11 +159,15 @@ msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
 
 #: templates/index.html
 msgid "New album"
-msgstr "Nouveau  album"
+msgstr "Nouvel  album"
 
 #: templates/index.html
 msgid "Page background"
 msgstr "Fond de la page"
+
+#: templates/index.html
+msgid "Remove text box"
+msgstr "Supprimer cette boîte de texte"
 
 #: templates/index.html
 msgid "Remove this album"
@@ -172,19 +175,19 @@ msgstr "Supprimer cet album"
 
 #: templates/index.html
 msgid "Style image"
-msgstr "Style "
+msgstr "Style de l'image"
 
 #: templates/index.html
 msgid "Style text"
-msgstr "Style texte"
+msgstr "Style du texte"
 
 #: templates/index.html
 msgid "Text color"
-msgstr "Couleur de texte"
+msgstr "Couleur du texte"
 
 #: templates/index.html
 msgid "Welcome!"
-msgstr "Bienvenu!"
+msgstr "Bienvenue!"
 
 #: templates/index.html
 msgid "Your albums"
@@ -216,7 +219,7 @@ msgstr "aller à la page suivante"
 
 #: templates/index.html
 msgid "go to the previous page"
-msgstr "aller à la page précédente"
+msgstr "retourner à la page précédente"
 
 #: static/js/imageLoaderController.js
 msgid "loading file..."

@@ -163,6 +163,11 @@ msgid "Page background"
 msgstr "Đặt nền trang"
 
 #: templates/index.html
+#, fuzzy
+msgid "Remove text box"
+msgstr "Xóa album này"
+
+#: templates/index.html
 msgid "Remove this album"
 msgstr "Xóa album này"
 
