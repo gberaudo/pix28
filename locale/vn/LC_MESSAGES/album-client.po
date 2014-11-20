@@ -18,6 +18,14 @@ msgid "(photos/page)"
 msgstr "ảnh/trang"
 
 #: templates/index.html
+msgid "...finished!"
+msgstr "...hoàn thành !"
+
+#: templates/index.html
+msgid "...processing page {{processPage}}"
+msgstr "...đang xử lí trang {{processPage}}"
+
+#: templates/index.html
 msgid "Add a new double page"
 msgstr "Thêm trang đôi"
 
@@ -71,16 +79,22 @@ msgid ""
 "Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right "
 "corner to redimension."
 msgstr ""
-"Ấn Ctrl+Del để xóa. Ctrl + mũi tên để dịch chuyện. Kéo góc dưới bên phải để "
+"Ấn Ctrl+Del để xóa. Ctrl + mũi tên để dịch chuyển. Kéo góc dưới bên phải để "
 "thay đổi kích cỡ hộp thoại."
+
+#: templates/index.html
+msgid ""
+"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its "
+"content."
+msgstr "Xóa ảnh. Phím tắt: Ctrl + Del. Nhấn Del để xóa cả ảnh và khung."
 
 #: templates/index.html
 msgid "Delete this double page"
 msgstr "Xóa trang đôi này"
 
 #: templates/index.html
-msgid "Down"
-msgstr "Xuống"
+msgid "Download"
+msgstr "Tải file về"
 
 #: templates/index.html
 msgid "Drag a conner or an edge to redimension the frame."
@@ -94,6 +108,14 @@ msgstr "Kéo thả vào trang để thêm khung hình."
 #: templates/index.html
 msgid "Drag and drop into page to add a text field"
 msgstr "Kéo thả vào trang để thêm văn bản."
+
+#: static/js/services.js
+msgid "Drag and drop on a frame in album"
+msgstr "Kéo thả vào khung trong album"
+
+#: static/js/services.js
+msgid "Drop an image here"
+msgstr "Thả ảnh vào đây"
 
 #: templates/index.html
 msgid "Enter a description"
@@ -113,23 +135,19 @@ msgstr "Đang tạo file pdf..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
-msgstr "Xuống dưới ảnh. Phím nóng : Ctrl + mũi tên xuống."
+msgstr "Xuống dưới ảnh. Phím tắt : Ctrl + mũi tên xuống."
 
 #: templates/index.html
 msgid "Go to the left of image. Hot key: Ctrl + arrow left."
-msgstr "Sang trái ảnh. Phím nóng : Ctrl + mũi tên trái."
+msgstr "Sang trái ảnh. Phím tắt : Ctrl + mũi tên trái."
 
 #: templates/index.html
 msgid "Go to the right of image. Hot key: Ctrl + arrow right."
-msgstr "Sang phải ảnh. Phím nóng : Ctrol + mũi tên phải."
+msgstr "Sang phải ảnh. Phím tắt : Ctrl + mũi tên phải."
 
 #: templates/index.html
 msgid "Go to the top of image. Hot key: Ctrl + arrow up."
-msgstr "Lên trên ảnh. Phím nóng :  Ctrl + mũi tên lên."
-
-#: templates/index.html
-msgid "Left"
-msgstr "Trái"
+msgstr "Lên trên ảnh. Phím tắt :  Ctrl + mũi tên lên."
 
 #: templates/index.html
 msgid "New album"
@@ -144,10 +162,6 @@ msgid "Remove this album"
 msgstr "Xóa album này"
 
 #: templates/index.html
-msgid "Right"
-msgstr "Phải"
-
-#: templates/index.html
 msgid "Style image"
 msgstr "Chỉnh ảnh"
 
@@ -160,10 +174,6 @@ msgid "Text color"
 msgstr "Màu chữ"
 
 #: templates/index.html
-msgid "Up"
-msgstr "Lên"
-
-#: templates/index.html
 msgid "Welcome!"
 msgstr "Chào bạn!"
 
@@ -173,19 +183,15 @@ msgstr "Album của bạn"
 
 #: templates/index.html
 msgid "Zoom image in. Hot key: +"
-msgstr "Phóng to ảnh. Phím nóng : +"
+msgstr "Phóng to ảnh. Phím tắt  : +"
 
 #: templates/index.html
 msgid "Zoom image out. Hot key: -"
-msgstr "Thu nhỏ ảnh. Phím nóng: -"
+msgstr "Thu nhỏ ảnh. Phím tắt : -"
 
 #: templates/index.html
 msgid "change font size"
 msgstr "Chỉnh cỡ phông chữ."
-
-#: templates/index.html
-msgid "download"
-msgstr "Tải file về"
 
 #: templates/index.html
 msgid "edit description"
@@ -196,16 +202,16 @@ msgid "edit title"
 msgstr "Sửa tên album."
 
 #: templates/index.html
-msgid "finished"
-msgstr "hoàn thành"
-
-#: templates/index.html
 msgid "go to the next page"
 msgstr "Đến trang sau"
 
 #: templates/index.html
 msgid "go to the previous page"
 msgstr "Đến trang trước"
+
+#: static/js/imageLoaderController.js
+msgid "loading file..."
+msgstr "đang tải file..."
 
 #: templates/index.html
 msgid "next"
@@ -215,9 +221,21 @@ msgstr "sau"
 msgid "previous"
 msgstr "trước"
 
-#: templates/index.html
-msgid "processing page {{processPage}}"
-msgstr "đang xử lí trang {{processPage}}"
+#~ msgid "Delete image. Hot key: Ctrl + Del"
+#~ msgstr ""
+#~ "Xóa ảnh. Phím nóng : Ctrl + Del. Nhấn phím Del để xóa cả ảnh và khung."
+
+#~ msgid "Down"
+#~ msgstr "Xuống"
+
+#~ msgid "Left"
+#~ msgstr "Trái"
+
+#~ msgid "Right"
+#~ msgstr "Phải"
+
+#~ msgid "Up"
+#~ msgstr "Lên"
 
 #~ msgid "Album&#39;s description"
 #~ msgstr "Mô tả album"

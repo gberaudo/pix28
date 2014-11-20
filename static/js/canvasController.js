@@ -1,12 +1,12 @@
 app.controller('CanvasController',
-    ['$scope', '$element', '$timeout', 'FrameObject', 'ImgService',
-    function($scope, $element, $timeout, FrameObject, ImgService) {
+    ['$scope', '$element', '$timeout', 'FrameObject', 
+	 'ImgService', 'Misc', 
+    function($scope, $element, $timeout, FrameObject, ImgService, Misc) {
 	var display = $scope.frame.display,
 		canvas = $element[0].children[0],
 		ctx = canvas.getContext('2d');
 	var drawImage = ImgService.drawImage;
 	
-	$scope.img = new Image();
 	initCanvas();
 	
 	function initCanvas(){
@@ -14,6 +14,9 @@ app.controller('CanvasController',
 		canvas.height = $scope.frame.canvas.height * $scope.pheight / 100;
 		canvas.style.left = ($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
 		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
+		$scope.canvasZone = {};
+		$scope.img = new Image();
+		resetZone($scope.canvasZone, canvas.width, canvas.height);
 		if (!!$scope.frame.image.src) {
 			$scope.img.onload = function() {
 				drawImage(canvas, $scope.img, display);
@@ -26,23 +29,24 @@ app.controller('CanvasController',
 
 	function firstDrawImage() {
 		if (!!$scope.img.src) {
+			var image = $scope.frame.image;
 			//Negative case to be checked
 			/* When an image is dragged into the canvas, fill canvas with image*/
-			if ($scope.frame.image.mHeight / canvas.height > $scope.frame.image.mWidth / canvas.width) {
-				$scope.frame.image.scaleRatio = $scope.frame.image.mWidth / canvas.width;
-				display.sw = $scope.frame.image.mWidth;
-				display.sh = canvas.height * $scope.frame.image.scaleRatio;
+			if (image.mHeight / canvas.height > image.mWidth / canvas.width) {
+				image.scaleRatio = image.mWidth / canvas.width;
+				display.sw = image.mWidth;
+				display.sh = canvas.height * image.scaleRatio;
 				display.sx = 0;
-				display.sy = Math.max(($scope.frame.image.mHeight - display.sh) / 2, 0);
+				display.sy = Math.max((image.mHeight - display.sh) / 2, 0);
 				display.dx = 0;
 				display.dy = 0;
 				display.dw = canvas.width;
 				display.dh = canvas.height;
-			} else if ($scope.frame.image.mHeight / canvas.height <= $scope.frame.image.mWidth / canvas.width) {
-				$scope.frame.image.scaleRatio = $scope.frame.image.mHeight / canvas.height;
-				display.sh = $scope.frame.image.mHeight;
-				display.sw = canvas.width * $scope.frame.image.scaleRatio;
-				display.sx = Math.max(($scope.frame.image.mWidth - display.sw) / 2, 0);
+			} else if (image.mHeight / canvas.height <= image.mWidth / canvas.width) {
+				image.scaleRatio =image.mHeight / canvas.height;
+				display.sh = image.mHeight;
+				display.sw = canvas.width * image.scaleRatio;
+				display.sx = Math.max((image.mWidth - display.sw) / 2, 0);
 				display.sy = 0;
 				display.dx = 0;
 				display.dy = 0;
@@ -58,78 +62,78 @@ app.controller('CanvasController',
 	};
 
 		//Define dragable zones with respect to the canvas
-	var topLeftCorner, topRightCorner, botLeftCorner, botRightCorner,
-			topEdge, leftEdge, rightEdge, botEdge, centerZone;
+// 	var topLeftCorner, topRightCorner, botLeftCorner, botRightCorner,
+// 			topEdge, leftEdge, rightEdge, botEdge, centerZone;
 
-	function resetZone() {
-		topLeftCorner = {
+	function resetZone(zone, width, height) {
+		zone.TL = {
 			left: 0,
-			right: canvas.width / 5,
-			bot: canvas.height / 5,
+			right: width / 5,
+			bot: height / 5,
 			top: 0
 		};
 
-		topRightCorner = {
-			left: 4 * canvas.width / 5,
-			right: canvas.width,
-			bot: canvas.height / 5,
+		zone.TR = {
+			left: 4 * width / 5,
+			right: width,
+			bot: height / 5,
 			top: 0
 		};
 
-		botRightCorner = {
-			left: 4 * canvas.width / 5,
-			right: canvas.width,
-			bot: canvas.height,
-			top: 4 * canvas.height / 5
+		zone.BR = {
+			left: 4 * width / 5,
+			right: width,
+			bot: height,
+			top: 4 * height / 5
 		};
 
-		botLeftCorner = {
+		zone.BL = {
 			left: 0,
-			right: canvas.width / 5,
-			bot: canvas.height,
-			top: 4 * canvas.height / 5
+			right: width / 5,
+			bot: height,
+			top: 4 * height / 5
 		};
 
-		topEdge = {
-			left: 2 * canvas.width / 5,
-			right: 3 * canvas.width / 5,
-			bot: canvas.height / 5,
+		zone.T = {
+			left: 2 * width / 5,
+			right: 3 * width / 5,
+			bot: height / 5,
 			top: 0
 		};
 
-		leftEdge = {
+		zone.L = {
 			left: 0,
-			right: canvas.width / 5,
-			bot: 3 * canvas.height / 5,
-			top: 2 * canvas.height / 5
+			right: width / 5,
+			bot: 3 * height / 5,
+			top: 2 * height / 5
 		};
 
-		rightEdge = {
-			left: 4 * canvas.width / 5,
-			right: canvas.width,
-			bot: 3 * canvas.height / 5,
-			top: 2 * canvas.height / 5
+		zone.R = {
+			left: 4 * width / 5,
+			right: width,
+			bot: 3 * height / 5,
+			top: 2 * height / 5
 		};
 
-		botEdge = {
-			left: 2 * canvas.width / 5,
-			right: 3 * canvas.width / 5,
-			bot: canvas.height,
-			top: 4 * canvas.height / 5
+		zone.B = {
+			left: 2 * width / 5,
+			right: 3 * width / 5,
+			bot: height,
+			top: 4 * height / 5
 		};
 
-		centerZone = {
-			left: canvas.width / 4,
-			right: 3 * canvas.width / 4,
-			bot: 3 * canvas.height / 4,
-			top: canvas.height / 4
+		zone.center = {
+			left: width / 4,
+			right: 3 * width / 4,
+			bot: 3 * height / 4,
+			top: height / 4
 		};
 	};
 
-	resetZone();
+	
 
 	var drag = {
-		all: false,
+		center: false,
 		TL: false,
 		TR: false,
 		BL: false,
@@ -140,60 +144,28 @@ app.controller('CanvasController',
 		B: false
 	};
 
-	/*when mouse is pressed, 
-	check mouse's position and set the corresponding anchor to true*/
+
 	$scope.mouseDown = function(evt) {
 		$scope.current.mouseIsUp = false;
-
-		var mouseRespectToCanvas = {
+		var mouseRtCanvas = {
 			X: evt.layerX,
 			Y: evt.layerY
 		};
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, centerZone)) {
-			drag.all = true;
-			$scope.current.cursor = 'move';
+		Misc.setCursor(mouseRtCanvas, $scope.canvasZone, $scope.current);
+		for (anchor in drag) {
+			if (Misc.inRect(mouseRtCanvas, $scope.canvasZone[anchor])) {
+				drag[anchor] = true;
+				break;
+			}
 		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, topLeftCorner)) {
-			drag.TL = true;
-			$scope.current.cursor = 'nw-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, topRightCorner)) {
-			drag.TR = true;
-			$scope.current.cursor = 'ne-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, botRightCorner)) {
-			drag.BR = true;
-			$scope.current.cursor = 'se-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, botLeftCorner)) {
-			drag.BL = true;
-			$scope.current.cursor = 'sw-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, topEdge)) {
-			drag.T = true;
-			$scope.current.cursor = 'n-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, rightEdge)) {
-			drag.R = true;
-			$scope.current.cursor = 'e-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, botEdge)) {
-			drag.B = true;
-			$scope.current.cursor = 's-resize';
-		}
-
-		if ($scope.mouseIsInRect(mouseRespectToCanvas, leftEdge)) {
-			drag.L = true;
-			$scope.current.cursor = 'w-resize';
-		}
+	};
+	
+	$scope.mouseMove = function(evt) {
+		var mouseRtCanvas = {
+			X: evt.layerX,
+			Y: evt.layerY
+		};
+		Misc.setCursor(mouseRtCanvas, $scope.canvasZone, $scope.current);
 	};
 
 	$scope.$watch('current.mouseIsUp', function() {
@@ -220,7 +192,7 @@ app.controller('CanvasController',
 					else {
 						ImgService.resetFrame(canvas);
 					}
-					resetZone();
+					resetZone($scope.canvasZone, canvas.width, canvas.height);
 					updateFrame();
 				});
 			}
@@ -239,7 +211,7 @@ app.controller('CanvasController',
 			off;
 
 		switch (anchor){
-			case 'all': 
+			case 'center': 
 				if (offset.X < -cleft) {
 					offset.X = -cleft;
 				}
@@ -272,8 +244,8 @@ app.controller('CanvasController',
 				cv.style.left = (cleft + off) + 'px';
 				cv.width -= off;
 				display.sx += sChange.X;
-				display.sw -= sChange.X;
-				display.dw -= off;
+				display.sw = Math.min(display.sw - sChange.X, image.mWidth);
+				display.dw = cv.width;
 				break;
 				
 			case 'R':
@@ -290,8 +262,8 @@ app.controller('CanvasController',
 					off = sChange.X / image.scaleRatio;
 				}
 				cv.width += off;
-				display.sw += sChange.X;
-				display.dw += off;
+				display.sw = Math.min(display.sw + sChange.X, image.mWidth);
+				display.dw = cv.width;
 				break;
 			
 			case 'T':
@@ -309,9 +281,9 @@ app.controller('CanvasController',
 				}
 				cv.style.top = (ctop + off) + 'px';
 				cv.height -= off;
-				display.sh -= sChange.Y;
 				display.sy += sChange.Y;
-				display.dh -= off;
+				display.sh = Math.min(display.sh - sChange.Y, image.mHeight);
+				display.dh = cv.height;
 				break;
 			
 			case 'B':
@@ -328,8 +300,8 @@ app.controller('CanvasController',
 					off = sChange.Y / image.scaleRatio;
 				}
 				cv.height += off;
-				display.sh += sChange.Y;
-				display.dh += off;
+				display.sh = Math.min(display.sh + sChange.Y, image.mHeight);
+				display.dh = cv.height;
 				break;
 
 			case 'TR':
@@ -366,11 +338,11 @@ app.controller('CanvasController',
 		switch (evt.keyCode) {
 			case 61: // if key + is pressed then zoom out 
 			case 187:
-				ImgService.zoomImage(canvas, $scope, 'out');
+				ImgService.zoomImage(canvas, $scope, 'in');
 				break;
 			case 173: // key -
 			case 189:
-				ImgService.zoomImage(canvas, $scope, 'in');
+				ImgService.zoomImage(canvas, $scope, 'out');
 				break;
 			case 37: //key left
 				ImgService.moveImage(canvas, $scope, 'left');
@@ -444,13 +416,23 @@ app.controller('CanvasController',
 }]);
 
 app.controller('ImageController',
-    ['$scope', 'ImgService',
-    function($scope, ImgService) {
-
+    ['$scope', 'ImgService', '$interval', '$timeout',
+    function($scope, ImgService, $interval, $timeout) {
 	$scope.zoomImage = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
-		ImgService.zoomImage(canvas, scope, para);
+ 		$scope.mouseDown = true;
+		var intervalPromise = $interval(function() {
+ 			if (!$scope.mouseDown) {
+				$interval.cancel(intervalPromise);
+ 			} else {
+				ImgService.zoomImage(canvas, scope, para);
+			}
+		}, 50);
+	};
+	
+	$scope.mouseUp = function() {
+		$scope.mouseDown = false;
 	};
 	
 	$scope.removeImage = function() {
@@ -464,6 +446,14 @@ app.controller('ImageController',
 	$scope.go = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
-		ImgService.moveImage(canvas, scope, para);
+		$scope.mouseDown = true;
+		var intervalPromise = $interval(function() {
+			if(!$scope.mouseDown) {
+				$interval.cancel(intervalPromise);
+			} else {
+				ImgService.moveImage(canvas, scope, para);
+			}
+		}, 50);
 	};
+	
 }]);

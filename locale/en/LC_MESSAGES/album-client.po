@@ -18,6 +18,14 @@ msgid "(photos/page)"
 msgstr ""
 
 #: templates/index.html
+msgid "...finished!"
+msgstr ""
+
+#: templates/index.html
+msgid "...processing page {{processPage}}"
+msgstr ""
+
+#: templates/index.html
 msgid "Add a new double page"
 msgstr ""
 
@@ -73,11 +81,17 @@ msgid ""
 msgstr ""
 
 #: templates/index.html
+msgid ""
+"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its "
+"content."
+msgstr ""
+
+#: templates/index.html
 msgid "Delete this double page"
 msgstr ""
 
 #: templates/index.html
-msgid "Down"
+msgid "Download"
 msgstr ""
 
 #: templates/index.html
@@ -90,6 +104,14 @@ msgstr ""
 
 #: templates/index.html
 msgid "Drag and drop into page to add a text field"
+msgstr ""
+
+#: static/js/services.js
+msgid "Drag and drop on a frame in album"
+msgstr ""
+
+#: static/js/services.js
+msgid "Drop an image here"
 msgstr ""
 
 #: templates/index.html
@@ -125,10 +147,6 @@ msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr ""
 
 #: templates/index.html
-msgid "Left"
-msgstr ""
-
-#: templates/index.html
 msgid "New album"
 msgstr ""
 
@@ -141,10 +159,6 @@ msgid "Remove this album"
 msgstr ""
 
 #: templates/index.html
-msgid "Right"
-msgstr ""
-
-#: templates/index.html
 msgid "Style image"
 msgstr ""
 
@@ -154,10 +168,6 @@ msgstr ""
 
 #: templates/index.html
 msgid "Text color"
-msgstr ""
-
-#: templates/index.html
-msgid "Up"
 msgstr ""
 
 #: templates/index.html
@@ -181,19 +191,11 @@ msgid "change font size"
 msgstr ""
 
 #: templates/index.html
-msgid "download"
-msgstr ""
-
-#: templates/index.html
 msgid "edit description"
 msgstr ""
 
 #: templates/index.html
 msgid "edit title"
-msgstr ""
-
-#: templates/index.html
-msgid "finished"
 msgstr ""
 
 #: templates/index.html
@@ -204,14 +206,14 @@ msgstr ""
 msgid "go to the previous page"
 msgstr ""
 
+#: static/js/imageLoaderController.js
+msgid "loading file..."
+msgstr ""
+
 #: templates/index.html
 msgid "next"
 msgstr ""
 
 #: templates/index.html
 msgid "previous"
-msgstr ""
-
-#: templates/index.html
-msgid "processing page {{processPage}}"
 msgstr ""

@@ -1,9 +1,7 @@
 app.controller('ImageLoaderController', 
-    ['$scope', '$timeout', 'ImgService', '$q', '$element',
-					function($scope, $timeout, ImgService, $q, $element) {
+    ['$scope', '$timeout', 'ImgService', '$q', '$element', 'gettextCatalog',
+					function($scope, $timeout, ImgService, $q, $element, gettextCatalog) {
 	ImgService.loadImages($scope.current.albumId);
-	
-
 	
 	$scope.handleFileSelect = function(evt) {
 		var files = evt.target.files;
@@ -14,8 +12,9 @@ app.controller('ImageLoaderController',
 		function readFile(file) {
 			var deferred = $q.defer();
 			if (file.type.match(/image.*/)){
+				var msg = gettextCatalog.getString('loading file... ');
 				$timeout(function() {
-					$scope.fileProcess = 'loading file...' + file.name; 
+					$scope.fileProcess = msg + file.name; 
 				});
 				var reader = new FileReader();
 				reader.onload = function(e) {
@@ -149,22 +148,7 @@ app.controller('ImageLoaderController',
 		};
 		
 		function showThumbnail(result) {
-			var output = document.getElementById('output'),
-				img = document.createElement('img'),
-				div = document.createElement('div');
-			div.appendChild(img);
-			output.appendChild(div);
-			div.setAttribute('class', 'thumb');
-			img.src = result[0].minSrc;
-			img.draggable='true';
-			img.setAttribute('class','thumb');
-			img.setAttribute('ondragstart','angular.element(this).scope().dragImage(event)');
-			img.setAttribute('mHeight', result[0].mHeight);
-			img.setAttribute('mWidth', result[0].mWidth);
-			img.setAttribute('DbId', result[1]);
- 			img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
- 			img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
- 			img.setAttribute('title', 'drag and drop on a frame in album'); 
+			ImgService.showThumbnail(result[0], result[1]);
 			i++;
 			if (i < files.length) {
 				putNextFile();

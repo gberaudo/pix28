@@ -16,6 +16,10 @@ app.run(
   gettextCatalog.loadRemote('static/build/locale/vn/album.json');
   gettextCatalog.debug = true; 
 }]);
-app.controller('SiteController', ['$scope', function($scope) {
-
+app.controller('SiteController', ['$scope', 'gettextCatalog', 
+	function($scope, gettextCatalog) {
+	$scope.changeLanguage = function(lang) {
+		gettextCatalog.setCurrentLanguage(lang);
+		gettextCatalog.loadRemote('static/build/locale/'+lang+'/album.json');
+	};
 }]);

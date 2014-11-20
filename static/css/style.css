@@ -24,7 +24,6 @@ body {
 	font-weight: 3;
 	font-family: UVNKeChuyen3;
 	left: 15%;
-	top: -20%;
 }
 
 #album {
@@ -240,6 +239,10 @@ div.thumb {
 
 canvas.frame {
 	position: absolute;
+}
+
+canvas.frame:focus {
+	border: 1px solid #FF1238 !important;
 }
 
 canvas.minframe {

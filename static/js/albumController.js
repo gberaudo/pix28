@@ -315,14 +315,7 @@ app.controller('AlbumController',
 		$scope.current.cursor = 'auto';
 	};
 	
-	$scope.mouseIsInRect = function(mouse, rect) {
-		return (
-			(mouse.X > rect.left) &&
-			(mouse.X < rect.right) &&
-			(mouse.Y > rect.top) &&
-			(mouse.Y < rect.bot)
-		);
-	};
+	
 	
 	$scope.descriptionBlur = function() {
 		if (!!$scope.album.description) {
@@ -359,7 +352,6 @@ app.controller('AlbumController',
 		$scope.processing = true;
 		$scope.showLink = false;
 		var albumJSON = angular.copy($scope.album.content);
-		console.log('generating pdf');
 		getFonts()
 			.then(function(fontsData) {
 				makePdfFromJSON(albumJSON, fontsData);
@@ -375,7 +367,6 @@ app.controller('AlbumController',
 					$scope.$apply(function() {
 						$scope.showLink = true;
 					});
-					console.log('pdf ouput');
 				});
 			};
 	
@@ -471,7 +462,7 @@ app.controller('AlbumController',
 				
 				function putNextPage() {
 					$timeout(function() {
-						$scope.exportProcess = 'processing page ' + (i+1);
+						$scope.processPage = i+1;
 					},2);
 					var page = json[i];
 					setBGColor(page);

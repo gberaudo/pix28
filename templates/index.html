@@ -33,11 +33,31 @@ $def with (mode)
 	<title translate>Create your own story</title> 
 </head>
 
-<body>
+<body ng-controller = 'SiteController'>
 
-	<div id = 'banner'> <span id = 'slogan' translate>Create your own story</span> </div>
+	<div id = 'banner'> 
+		<span id = 'slogan' translate>Create your own story</span> 
+		<div id = 'languages' class = 'inline'>
+			<div class = 'clickable inline'
+				title = 'English'
+				ng-click = 'changeLanguage("en")'>
+				<img src = 'static/icons/en.png' class = 'inline'>
+			</div>
+			<div class = 'clickable inline'
+				title = 'Français'
+				ng-click = 'changeLanguage("fr")'>
+				<img src = 'static/icons/fr.png' class = 'inline'>
+			</div>
+			<div class = 'clickable inline'
+				title = 'Tiếng Việt'
+				ng-click = 'changeLanguage("vn")'>
+				<img src = 'static/icons/vn.png' class = 'inline'>
+			</div>
+		</div>
+	</div>
 	<div ng-if = 'greeting'>
-		<h2 style = 'position: absolute; top: {{0.05*screenWidth + "px"}}'> Welcome!</h2>
+		<span style = 'position: absolute; top: {{0.05*screenWidth + "px"}}; 
+			font-size: 120%; font-weight: bold' translate> Welcome!</span>
 	</div>
 
 	<div ng-controller = 'AlbumController' ng-init = 'showAlbums = false'>
@@ -45,21 +65,21 @@ $def with (mode)
 	<!--__________________welcome screen____________________-->
 
 		<span class = 'link' ng-click = 'createAlbum()' 
-				
 				ng-show = 'showAlbums || greeting'
-				
-				style = 'position: absolute; left: 5%; top: {{0.1*screenWidth + "px"}}'> 
+				style = 'position: absolute; left: 5%; top: {{0.1*screenWidth + "px"}}'
+				translate> 
 				New album 
 		</span>	
 		<div ng-show = 'showAlbums'
 			id = 'albumList'
 			style = 'top: {{0.13*screenWidth + "px"}}'>
-			<span style = 'font-weight: bold'> Your albums </span>
+			<span style = 'font-weight: bold' translate> Your albums </span>
 			<ul> 
 				<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 13px'>
 					<span class = 'link'
 						ng-click = 'openAlbum(albumSC)'
-						ng-bind = 'albumSC.title||albumSC.date'></span> 
+						ng-bind = 'albumSC.title||albumSC.date'
+						title = '{{"Click to go to album" | translate}}'></span> 
 					<br/>
 					<span ng-bind = 'albumSC.description'
 						class = 'description'></span>
@@ -77,8 +97,8 @@ $def with (mode)
 						name = 'title'
 						ng-show = 'hasTitle'> 
 					</span>
-					<img src = 'static/icons/edit1.png'
-						title = 'edit title'
+					<img src = 'static/icons/edit.png'
+						title = '{{"edit title"|translate}}'
 						name = 'edit'
 						class = 'clickable'/>
 				</div>
@@ -91,7 +111,7 @@ $def with (mode)
 						ng-model = 'album.title'
 						ng-blur = 'titleBlur()'
 						maxlength = '20'
-						placeholder = "Album's title"
+						placeholder = '{{"Enter a title"| translate}}'
 						required
 						value = 'album.title'>
 					</input>
@@ -105,8 +125,8 @@ $def with (mode)
 					<span ng-bind = 'album.description'
 						class = 'description'>
 					</span>
-					<img src = 'static/icons/edit1.png'
-						title = 'edit description'
+					<img src = 'static/icons/edit.png'
+						title = '{{"edit description"|translate}}'
 						name = 'edit'
 						class = 'clickable'/>
 				</div>
@@ -120,7 +140,7 @@ $def with (mode)
 						ng-model = 'album.description'
 						ng-blur = 'descriptionBlur()'
 						maxlength = '40'
-						placeholder = "Album's description"
+						placeholder = '{{"Enter a description"|translate}}'
 						value = 'album.title'
 						>
 					</input>
@@ -130,37 +150,43 @@ $def with (mode)
 
 			<div id = 'sideMenu'>
 			
-				<span class = 'link' ng-click = 'createAlbum()'>
+				<span class = 'link' ng-click = 'createAlbum()' translate>
 					New album 
 				</span>
 				<br/> <br/>
 				<span class = 'link' id = 'allAlbums' 
-					ng-click = 'toAlbumList()'>
+					ng-click = 'toAlbumList()' translate>
 					Your albums
 				</span>
 				<br/> <br/>
 
 				<span class = 'link' 
-					ng-click = 'removeAlbum(current.albumId)'>
+					ng-click = 'removeAlbum(current.albumId)' translate>
 					Remove this album
 				</span>
 				<br/> <br/>
 				
 				<div id = 'export'>
-				<span class = 'btn' ng-click = 'generatePdf()'>
-					Generate Pdf
+				<span class = 'btn' ng-click = 'generatePdf()' translate>
+					Export pdf
 				</span>
 
-				<br>
-				<span ng-show = 'processing' style = 'font-size: 80%'>
-					Generating pdf... <br>
-					{{exportProcess}}
-				</span>
-				<br>
+				<div ng-show = 'processing' style = 'font-size: 80%' > 
+					<span translate>
+						Generating pdf...
+					</span>
+					<br/>
+					<span translate>
+						...processing page {{processPage}}
+					</span>
+					<br/>
+					<span ng-show = 'showLink' translate>...finished!</span>
+				</div>
+
 				<span ng-show = 'showLink'>
 					<a download = '{{album.title + ".pdf"}}' 
-						id = 'pdfoutput'>
-						download
+						id = 'pdfoutput' translate>
+						Download
 					</a>
 				</span>
 				
@@ -177,28 +203,28 @@ $def with (mode)
 						
 					<div id = 'prev' class = 'link'
 						ng-show =  'show.leftPage' 
-						ng-click = 'prevPage()'>
+						ng-click = 'prevPage()'
+						title = '{{"go to the previous page"|translate}}'>
 						<img src = 'static/icons/prev.png'
 								class = 'prevnext'
-								title = 'go to the previous page'
 								/>
-						previous
+						<span translate> previous </span>
 					</div>
 					
 					<div id = 'next' class = 'link'
 						ng-show = 'show.rightPage' 
-						ng-click = 'nextPage()'>
+						ng-click = 'nextPage()'
+						title = '{{"go to the next page"|translate}}'>
 						<img src = 'static/icons/next.png'
 								class = 'prevnext'
-								title = 'go to the next page'
-								/>
-						next
+								></img>
+						<span translate>next</translate>
 					</div>
 					
 					<div id = 'topMenu'>
 						<span id = 'addPage' 
 							class = 'link'
-							title = 'add a new double page'
+							title = '{{"Add a new double page"|translate}}'
 							ng-click = 'addNewPage()'>
 							<img src = 'static/icons/addpage.svg'
 								class = 'inline'
@@ -207,7 +233,7 @@ $def with (mode)
 						
 						<span id = 'removePage' 
 							class = 'link'
-							title = 'Delete this double page'
+							title = '{{"Delete this double page"|translate}}'
 							ng-click = 'removePage()'>
 							<img src = 'static/icons/delpage.svg'
 								class = 'inline'
@@ -218,7 +244,7 @@ $def with (mode)
 							id = 'addText'
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragText(event)'
-							title = 'Drag and drop into page to add a text field'>
+							title = '{{"Drag and drop into page to add a text field"|translate}}'>
 							<img  src = 'static/icons/text2.svg'
 								class = 'inline'
 								style = 'height: 150%;'
@@ -229,7 +255,7 @@ $def with (mode)
 							id = 'addFrame'
 							draggable = 'true'
 							ondragstart = 'angular.element(this).scope().dragFrame(event)'
-							title = 'Drag and drop into page to add a new frame'>
+							title = '{{"Drag and drop into page to add a new frame"|translate}}'>
 							<img src = 'static/icons/frame.svg'
 								class = 'inline'
 								style = 'height: 150%'/>
@@ -279,11 +305,11 @@ $def with (mode)
 							ng-style='{cursor: current.cursor}'>
 							<canvas tabindex = '0' 
 										class = 'frame'
-										ng-model = 'frame'
-										title = "Drop an image here. Click mouse near frame's corners or borders and drag to redimension the frame."
+										title = '{{"Drag a conner or an edge to redimension the frame."| translate}}'
 										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
 										ondragover = 'angular.element(this).scope().allowDrop(event)'
 										ng-mousedown = 'mouseDown(\$event)' 
+										ng-mousemove = 'mouseMove(\$event)'
 										ng-keydown = 'keyDown(\$event)'
 										ng-focus = 'canvasFocus(\$event)'
 										>
@@ -293,7 +319,7 @@ $def with (mode)
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
 							ng-controller = 'TextBoxController'>
 							<textarea name = 'textbox'
-								title = 'Ctrl+Del to delete. Ctrl + arrows to move it around. Redimension by drawing the bottom-right corner.'
+								title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
 								ng-model = 'textBox.text'
 								ng-mousedown = 'mouseDown(\$event)'
 								ng-keyup = 'autoResize(\$event)'
@@ -315,11 +341,11 @@ $def with (mode)
 							ng-show = 'current.onEditText'>
 							<span style = 'font-weight: bold; 
 									font-size: 90%; 
-									margin-right: 0.5em; margin-left: 1em;'>
+									margin-right: 0.5em; margin-left: 1em;' translate>
 									Style text
 							</span>
 							<select style = 'height: 2em' 
-								title = 'choose text font'
+								title = '{{"Choose text font"|translate}}'
 								ng-model = 'current.font.family' 
 								ng-change = 'changeFont(current.font.family)'>
 								<option ng-repeat = 'font in fonts'
@@ -331,7 +357,7 @@ $def with (mode)
 							
 							<select 
 								style = 'height: 2em'
-								title = 'change font size'
+								title = '{{"change font size"|translate}}'
 								ng-model = 'current.font.size'
 								ng-change = 'changeFontSize(current.font.size)'>
 								<option ng-repeat = 'i in [8, 10,12, 14, 16, 18, 20, 24, 30]'
@@ -355,9 +381,10 @@ $def with (mode)
 									id = 'textColor'
 									class = 'btn'
 									ng-focus = 'showColors()'
-									title = 'choose text color'
+									title = '{{"Choose text color"|translate}}'
 									style = 'color: {{current.font.color}}'
-									ng-blur = 'cbBlur()'>
+									ng-blur = 'cbBlur()'
+									translate>
 									Text color
 								</span>
 								<br/>
@@ -382,7 +409,7 @@ $def with (mode)
 							
 							<span 
 								class = 'btn'
-								title = 'align text left'
+								title = '{{"Align text left"|translate}}'
 								ng-click = 'align("left")'>
 								<img src = 'static/icons/left.svg' 
 									class = 'inline'
@@ -390,7 +417,7 @@ $def with (mode)
 							</span>
 							<span
 								class = 'btn'
-								title = 'align text right'
+								title = '{{"Align text right"|translate}}'
 								ng-click = 'align("right")'>
 								<img src = 'static/icons/right.svg'
 									class = 'inline'
@@ -398,7 +425,7 @@ $def with (mode)
 							</span>
 							<span 
 								class = 'btn'
-								title = 'align text center'
+								title = '{{"Align text center"|translate}}'
 								ng-click = 'align("center")'>
 								<img src = 'static/icons/center.svg' 
 									class = 'inline'
@@ -409,50 +436,69 @@ $def with (mode)
 						<div id = 'imageControl' ng-controller = 'ImageController'
 							ng-show = 'current.onEditImage'>
 							<span style = 'font-size: 90%; font-weight: bold;
-								margin-left: 1em; margin-right: 0.5em'>
+								margin-left: 1em; margin-right: 0.5em'
+								translate>
 								Style image
 							</span>
-							<span ng-click = 'zoomImage("out")'
-								title = 'Zoom image out. Hot key: +'
+							<span ng-mousedown = 'zoomImage("in")'
+								ng-mouseup = 'mouseUp()'
+								title = '{{"Zoom image in. Hot key: +"|translate}}'
 								class = 'btn'
 								style = 'padding: 4px;'>
 								<img src = 'static/icons/zoomin.png'
 									style = 'height: 130%'/> </span>
-							<span ng-click = 'zoomImage("in")'
-								title = 'Zoom image in. Hot key: -'
+							<span ng-mousedown = 'zoomImage("out")'
+								ng-mouseup = 'mouseUp()'
+								title = '{{"Zoom image out. Hot key: -"|translate}}'
 								class = 'btn inline'
 								style = 'padding: 4px'>
 								<img src = 'static/icons/zoomout.png'
 									style = 'height: 130%'/> </span>
 									
-							<span ng-click = 'go("left")'
-								title = 'See more left side. Hot key: Ctrl + arrow left.'
-								class = 'btn inline'>
-								Left
+							<span ng-mousedown = 'go("left")'
+								ng-mouseup = 'mouseUp()'
+								title = '{{"Go to the left of image. Hot key: Ctrl + arrow left."|translate}}'
+								class = 'btn inline'
+								style = 'padding: 4px'>
+								<img src = 'static/icons/goleft.png' 
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 							
-							<span ng-click = 'go("right")'
-								title = 'See more right side. Hot key: Ctrl + arrow right.'
-								class = 'btn inline'>
-								Right
+							<span ng-mousedown = 'go("right")'
+								ng-mouseup = 'mouseUp()'
+								title = '{{"Go to the right of image. Hot key: Ctrl + arrow right."|translate}}'
+								class = 'btn inline'
+								style = 'padding: 4px'>
+								<img src = 'static/icons/goright.png' 
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 							
-							<span ng-click = 'go("up")'
-								title = 'See more top side. Hot key: Ctrl + arrow up.'
-								class = 'btn inline'>
-								Up
+							<span ng-mousedown = 'go("up")'
+								ng-mouseup = 'mouseUp()'
+								title = '{{"Go to the top of image. Hot key: Ctrl + arrow up."|translate}}'
+								class = 'btn inline'
+								style = 'padding: 4px'>
+								<img src = 'static/icons/goup.png' 
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 							
-							<span ng-click = 'go("down")'
-								title = ' See more bottom side. Hot key: Ctrl + arrow down.'
-								class = 'btn inline'>
-								Down
+							<span ng-mousedown = 'go("down")'
+								ng-mouseup = 'mouseUp()'
+								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
+								class = 'btn inline'
+								style = 'padding: 4px'>
+								<img src = 'static/icons/godown.png' 
+									class = 'inline'
+									style = 'height: 100%'/>
 							</span>
 								
 							<span ng-click = 'removeImage()'
-								title = 'Delete image. Hot key: Ctrl + Del'
+								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
 								class = 'btn'
-								style = 'padding: 4px'> 
+								style = 'padding: 4px; margin-left: 4em'> 
 								<img src = 'static/icons/trash.png'
 									style = 'height: 110%'/> </span>
 							
@@ -464,10 +510,12 @@ $def with (mode)
 				<!--_______________select layout________________________-->
 				<div id = 'selectLayout'
 					ng-controller = 'LayoutController'>
-					<span style = 'font-weight: bold; font-size: 90%; margin-left: 1em' >
+					<span style = 'font-weight: bold; font-size: 90%; margin-left: 1em' 
+						translate>
 						Choose page layout
 					</span>
-					<span style = 'font-size: 80%'> (photos/page)</span> 
+					<span style = 'font-size: 80%'
+						translate> (photos/page)</span> 
 					
 					<div id = 'layoutSets'>
 						<span ng-repeat = 'i in [1,2,3,4,5,6,7,8,9,10]'
@@ -482,9 +530,10 @@ $def with (mode)
 					<div id = 'pageBGcolor'>
 						<span class = 'btn'
 							tabindex = '0'
-							title = 'Choose page background color'
+							title = '{{"Choose page background color"|translate}}'
 							ng-click = 'showColors()'
-							ng-blur = 'cbBlur()'>
+							ng-blur = 'cbBlur()'
+							translate>
 							Page background
 						</span>
 						<br/>
@@ -509,7 +558,7 @@ $def with (mode)
 	
 					<div id = 'layouts'>
 						<canvas ng-repeat = 'layout in layouts'
-							title = 'Choose page first then click on the layout to load to the chosen page.'
+							title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
 							ng-controller = 'minLayoutController'
 							ng-click = 'loadPageLayout(layout)'
 							class = 'clickable minframe'> 
@@ -523,7 +572,8 @@ $def with (mode)
 					ng-controller = 'ImageLoaderController'
 					ng-if = 'imgLoad'>
 					<label for = 'files' class = 'btn'
-						title = 'click to load photos from your computer'>
+						title = '{{"Click to load photos from your computer"|translate}}'
+						tranlate>
 					Load photos</label>
 					<span style = 'font-size: 80%'
 						ng-show = 'loading'>{{fileProcess}}</span>

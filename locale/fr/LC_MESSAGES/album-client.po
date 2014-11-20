@@ -18,6 +18,14 @@ msgid "(photos/page)"
 msgstr "(photos/page)"
 
 #: templates/index.html
+msgid "...finished!"
+msgstr "...fini !"
+
+#: templates/index.html
+msgid "...processing page {{processPage}}"
+msgstr "...procède page {{processPage}}"
+
+#: templates/index.html
 msgid "Add a new double page"
 msgstr "Ajouter une nouvelle page double"
 
@@ -78,12 +86,20 @@ msgstr ""
 "du bas à droite pour redimensioner."
 
 #: templates/index.html
+msgid ""
+"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its "
+"content."
+msgstr ""
+"Supprimer l'image. Raccourci : Ctrl+Del. Utiliser Del pour supprimer le "
+"cadre et son contenu."
+
+#: templates/index.html
 msgid "Delete this double page"
 msgstr "Supprimer cette page double."
 
 #: templates/index.html
-msgid "Down"
-msgstr "Descendre"
+msgid "Download"
+msgstr "Télécharger"
 
 #: templates/index.html
 msgid "Drag a conner or an edge to redimension the frame."
@@ -96,6 +112,14 @@ msgstr "Glisser et déposer sur une page pour ajouter un nouveau cadre"
 #: templates/index.html
 msgid "Drag and drop into page to add a text field"
 msgstr "Glisser et déposer sur une page pour ajouter une boite de texte."
+
+#: static/js/services.js
+msgid "Drag and drop on a frame in album"
+msgstr "Glisser et déposer sur un cadre dans l'album."
+
+#: static/js/services.js
+msgid "Drop an image here"
+msgstr "Glisser une image ici"
 
 #: templates/index.html
 msgid "Enter a description"
@@ -115,39 +139,31 @@ msgstr "Génération de pdf en cours..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
-msgstr "Aller en bas de l'image. Raccourci: Ctrl + flèche bas"
+msgstr "Aller en bas de l'image. Raccourci : Ctrl + flèche bas"
 
 #: templates/index.html
 msgid "Go to the left of image. Hot key: Ctrl + arrow left."
-msgstr "Aller à la gauche de l'image. Hot key: Ctrl + flèche gauche."
+msgstr "Aller à la gauche de l'image. Raccourci : Ctrl + flèche gauche."
 
 #: templates/index.html
 msgid "Go to the right of image. Hot key: Ctrl + arrow right."
-msgstr "Aller à droite de l'image. Raccourci: Cthl + flèche droite."
+msgstr "Aller à droite de l'image. Raccourci : Cthl + flèche droite."
 
 #: templates/index.html
 msgid "Go to the top of image. Hot key: Ctrl + arrow up."
-msgstr "Aller en haut de l'image. Raccourci: Ctrl + flèche haute."
-
-#: templates/index.html
-msgid "Left"
-msgstr "G"
+msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
 
 #: templates/index.html
 msgid "New album"
-msgstr "Nouveau "
+msgstr "Nouveau  album"
 
 #: templates/index.html
 msgid "Page background"
-msgstr "Fond de la p"
+msgstr "Fond de la page"
 
 #: templates/index.html
 msgid "Remove this album"
-msgstr "Supprimer cet "
-
-#: templates/index.html
-msgid "Right"
-msgstr "Droite"
+msgstr "Supprimer cet album"
 
 #: templates/index.html
 msgid "Style image"
@@ -162,10 +178,6 @@ msgid "Text color"
 msgstr "Couleur de texte"
 
 #: templates/index.html
-msgid "Up"
-msgstr "Monter"
-
-#: templates/index.html
 msgid "Welcome!"
 msgstr "Bienvenu!"
 
@@ -175,19 +187,15 @@ msgstr "Vos albums"
 
 #: templates/index.html
 msgid "Zoom image in. Hot key: +"
-msgstr "Zoomer image plus large. Raccourci: +"
+msgstr "Zoomer image plus large. Raccourci : +"
 
 #: templates/index.html
 msgid "Zoom image out. Hot key: -"
-msgstr "Zoomer image plus petite. Raccourci: -"
+msgstr "Zoomer image plus petite. Raccourci : -"
 
 #: templates/index.html
 msgid "change font size"
 msgstr "Changer la taille de police"
-
-#: templates/index.html
-msgid "download"
-msgstr "Télécharger"
 
 #: templates/index.html
 msgid "edit description"
@@ -198,25 +206,37 @@ msgid "edit title"
 msgstr "Éditer le titre"
 
 #: templates/index.html
-msgid "finished"
-msgstr "fini!"
-
-#: templates/index.html
 msgid "go to the next page"
-msgstr "aller a la page suivante"
+msgstr "aller à la page suivante"
 
 #: templates/index.html
 msgid "go to the previous page"
 msgstr "aller à la page précédente"
 
+#: static/js/imageLoaderController.js
+msgid "loading file..."
+msgstr "chargement..."
+
 #: templates/index.html
 msgid "next"
-msgstr "s"
+msgstr "suivant"
 
 #: templates/index.html
 msgid "previous"
 msgstr "précédent"
 
-#: templates/index.html
-msgid "processing page {{processPage}}"
-msgstr "procède page {{processPage}}"
+#, fuzzy
+#~ msgid "Delete image. Hot key: Ctrl + Del"
+#~ msgstr "Aller à la gauche de l'image. Hot key: Ctrl + flèche gauche."
+
+#~ msgid "Down"
+#~ msgstr "Descendre"
+
+#~ msgid "Left"
+#~ msgstr "G"
+
+#~ msgid "Right"
+#~ msgstr "Droite"
+
+#~ msgid "Up"
+#~ msgstr "Monter"

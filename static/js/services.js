@@ -226,7 +226,32 @@ app.service('DBServices', ['$q',  function($q) {
 
 /*---------------------------------------------------------*/
 
-app.service('ImgService', function() {
+app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
+	function showThumbnail(obj, id) {
+		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
+			img = document.createElement('img'),
+			div = document.createElement('div'),
+			output = document.getElementById('output');
+		img.src = obj.minSrc;
+		img.draggable = 'true';
+		img.setAttribute('class','thumb');
+		img.setAttribute(
+			'ondragstart',
+			'angular.element(this).scope().dragImage(event)'
+		);
+		img.setAttribute('mWidth', obj.mWidth);
+		img.setAttribute('mHeight', obj.mHeight);
+		img.setAttribute('DbId', id);
+		img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
+		img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
+		img.setAttribute('title', title); 
+		div.setAttribute('class', 'thumb');
+		div.appendChild(img);
+		output.appendChild(div);
+	}
+	
+	this.showThumbnail = showThumbnail;
+	
 	this.loadImages = function(id) {
 		var openRq = window.indexedDB.open('ImagesDB', 1);
 		openRq.onsuccess = function() {
@@ -237,27 +262,9 @@ app.service('ImgService', function() {
 				keyRange = IDBKeyRange.only(id),
 				openCursor = index.openCursor(keyRange);
 			openCursor.onsuccess = function(event) {
-				var output = document.getElementById('output'),
-					cursor = event.target.result;
+				var cursor = event.target.result;
 				if (cursor) {
-					var img = document.createElement('img');
-					img.src = cursor.value.minSrc,
-					img.draggable = 'true';
-					img.setAttribute('class','thumb');
-					img.setAttribute(
-						'ondragstart',
-						'angular.element(this).scope().dragImage(event)'
-					);
-					img.setAttribute('mWidth', cursor.value.mWidth);
-					img.setAttribute('mHeight',cursor.value.mHeight);
-					img.setAttribute('DbId', cursor.value.id);
-					img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
-					img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
-					img.setAttribute('title', 'drag and drop on a frame in album'); 
-					var div = document.createElement('div');
-					div.setAttribute('class', 'thumb');
-					div.appendChild(img);
-					output.appendChild(div);
+					showThumbnail(cursor.value, cursor.value.id);
 					cursor.continue();
 				}
 			};
@@ -278,11 +285,12 @@ app.service('ImgService', function() {
 	
 	this.resetFrame  = function(canvas) {
 		var ctx = canvas.getContext('2d');
+		var msg = gettextCatalog.getString('Drop an image here');
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#EFEFEF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#777';
-		ctx.fillText('Drop an image here', 5, 20);
+		ctx.fillText(msg, 5, 20);
 		canvas.style.border = '1px solid #CCC';
 	};
 	
@@ -291,15 +299,15 @@ app.service('ImgService', function() {
 	};
 	
 	this.zoomImage = function(canvas, scope, para) {
-		var rate = 1.1,
+		var rate = 1.01,
 		img = scope.img,
 		image = scope.frame.image,
 		display = scope.frame.display;
 		
-		if (para == 'out') {
+		if (para == 'in') {
 			zoom(1/rate);
 		}
-		if (para == 'in') {
+		if (para == 'out') {
 			zoom(rate);
 		}
 		
@@ -333,7 +341,7 @@ app.service('ImgService', function() {
 	};
 
 	this.moveImage = function(canvas, scope, para) {
-		var offset = 10,
+		var offset = 3,
 			img = scope.img,
 			image = scope.frame.image,
 			display = scope.frame.display;
@@ -366,7 +374,7 @@ app.service('ImgService', function() {
 		}
 		drawImage(canvas, img, display);
 	};
-});
+}]);
 
 /*-----------------------------------------------------------*/
 app.service('Misc', function() {
@@ -395,6 +403,47 @@ app.service('Misc', function() {
 			}
 		}
 		return result;
+	};
+	
+	function inRect(mouse, rect) {
+		return (
+			(mouse.X > rect.left) &&
+			(mouse.X < rect.right) &&
+			(mouse.Y > rect.top) &&
+			(mouse.Y < rect.bot)
+		);
+	};
+	
+	this.inRect = inRect;
+	
+	this.setCursor = function(mouse, zone, current) {
+		if (inRect(mouse, zone.center)) {
+			current.cursor = 'move';
+		}
+		if (inRect(mouse, zone.TL)) {
+			current.cursor = 'nw-resize';
+		}
+		if (inRect(mouse, zone.TR)) {
+			current.cursor = 'ne-resize';
+		}
+		if (inRect(mouse, zone.BR)) {
+			current.cursor = 'se-resize';
+		}
+		if (inRect(mouse, zone.BL)) {
+			current.cursor = 'sw-resize';
+		}
+		if (inRect(mouse, zone.T)) {
+			current.cursor = 'n-resize';
+		}
+		if (inRect(mouse, zone.R)) {
+			current.cursor = 'e-resize';
+		}
+		if (inRect(mouse, zone.B)) {
+			current.cursor = 's-resize';
+		}
+		if (inRect(mouse, zone.L)) {
+			current.cursor = 'w-resize';
+		}
 	};
 	
 });
