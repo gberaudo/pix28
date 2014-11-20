@@ -16,7 +16,7 @@ app.controller('CanvasController',
 		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
 		$scope.canvasZone = {};
 		$scope.img = new Image();
-		resetZone($scope.canvasZone, canvas.width, canvas.height);
+		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 		if (!!$scope.frame.image.src) {
 			$scope.img.onload = function() {
 				drawImage(canvas, $scope.img, display);
@@ -64,73 +64,6 @@ app.controller('CanvasController',
 		//Define dragable zones with respect to the canvas
 // 	var topLeftCorner, topRightCorner, botLeftCorner, botRightCorner,
 // 			topEdge, leftEdge, rightEdge, botEdge, centerZone;
-
-	function resetZone(zone, width, height) {
-		zone.TL = {
-			left: 0,
-			right: width / 5,
-			bot: height / 5,
-			top: 0
-		};
-
-		zone.TR = {
-			left: 4 * width / 5,
-			right: width,
-			bot: height / 5,
-			top: 0
-		};
-
-		zone.BR = {
-			left: 4 * width / 5,
-			right: width,
-			bot: height,
-			top: 4 * height / 5
-		};
-
-		zone.BL = {
-			left: 0,
-			right: width / 5,
-			bot: height,
-			top: 4 * height / 5
-		};
-
-		zone.T = {
-			left: 2 * width / 5,
-			right: 3 * width / 5,
-			bot: height / 5,
-			top: 0
-		};
-
-		zone.L = {
-			left: 0,
-			right: width / 5,
-			bot: 3 * height / 5,
-			top: 2 * height / 5
-		};
-
-		zone.R = {
-			left: 4 * width / 5,
-			right: width,
-			bot: 3 * height / 5,
-			top: 2 * height / 5
-		};
-
-		zone.B = {
-			left: 2 * width / 5,
-			right: 3 * width / 5,
-			bot: height,
-			top: 4 * height / 5
-		};
-
-		zone.center = {
-			left: width / 4,
-			right: 3 * width / 4,
-			bot: 3 * height / 4,
-			top: height / 4
-		};
-	};
-
-	
 
 	var drag = {
 		center: false,
@@ -192,7 +125,7 @@ app.controller('CanvasController',
 					else {
 						ImgService.resetFrame(canvas);
 					}
-					resetZone($scope.canvasZone, canvas.width, canvas.height);
+					Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 					updateFrame();
 				});
 			}

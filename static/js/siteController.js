@@ -16,10 +16,21 @@ app.run(
   gettextCatalog.loadRemote('static/build/locale/vn/album.json');
   gettextCatalog.debug = true; 
 }]);
-app.controller('SiteController', ['$scope', 'gettextCatalog', 
-	function($scope, gettextCatalog) {
+app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
+	function($scope, gettextCatalog, DBServices) {
+		
+	DBServices.initAlbumDB($scope);
+	
 	$scope.changeLanguage = function(lang) {
 		gettextCatalog.setCurrentLanguage(lang);
 		gettextCatalog.loadRemote('static/build/locale/'+lang+'/album.json');
+	};
+	
+	$scope.goHome = function() {
+		$scope.greeting = true;
+		$scope.inAlbum = false;
+		if ($scope.albumSCs.length > 0) {
+			$scope.showAlbums = true;
+		}
 	};
 }]);

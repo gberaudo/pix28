@@ -74,6 +74,7 @@ body {
 	box-shadow: 2px 2px 2px 2px #aaa; 
 }
 
+
 #doublepage {
 	position:absolute;
 	top: 0%;
@@ -105,12 +106,16 @@ body {
 	box-shadow: 3px 3px 5px 6px #ccc;
 }
 
-.textbox {
+/*.textbox {
 	border: 1px solid #CEECF5;
-}
+}*/
 
 textarea[name = 'textbox']:focus {
 	border: 1px solid #77F !important;
+}
+
+textarea[name = 'textbox'] {
+	cursor: default;
 }
 
 #prev {
@@ -361,7 +366,14 @@ span[name = 'title'] {
 	font-weight: bold;
 	cursor: pointer;
 }
-
+.color {
+	background-color: #07A;
+	color: #FFFFFF !important;
+	border: none !important;
+	font-weight: bold;
+	padding: 4px 4px !important;
+	height: 1.5em !important;
+}
 .btn {
 display: inline-block;
 padding: 4px 12px;

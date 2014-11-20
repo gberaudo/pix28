@@ -5,7 +5,7 @@ app.controller('AlbumController',
 ) {
 	
 	init();
-	DBServices.initAlbumDB($scope);
+	
 	DBServices.initImageDB();
 	setInterval(function() {
 			var id = $scope.current.albumId;
@@ -28,7 +28,6 @@ app.controller('AlbumController',
 			font: {size: '12px', family: 'UVNTinTuc_R'},
 			imgLoad: false
 		}; 
-		$scope.albumSCs = [];
 		$scope.show = {};
 		
 		//need to detect screen resolution here
@@ -60,8 +59,8 @@ app.controller('AlbumController',
  			$scope.album.description = '';
 			var date = new Date();
 			$scope.album.date = date.toDateString();
-			$scope.inAlbum = true;
-			$scope.showAlbums = false;
+			$scope.$parent.inAlbum = true;
+			$scope.$parent.showAlbums = false;
 			$scope.imgLoad = false;
 			$timeout(function() {
 				$scope.imgLoad = true;
@@ -101,8 +100,8 @@ app.controller('AlbumController',
 				}
 				$scope.$apply(function() {
 					$scope.current.albumId = null;
-					$scope.inAlbum = false;
-					$scope.showAlbums = true;
+					$scope.$parent.inAlbum = false;
+					$scope.$parent.showAlbums = true;
 				});
 			};
 			removeRq.onerror = function() {
@@ -135,12 +134,15 @@ app.controller('AlbumController',
 					$scope.current.rightPage = $scope.album.content[0];
 					$scope.$apply(function() {
 						makeTitle();
-						$scope.inAlbum = true;
+						$scope.$parent.inAlbum = true;
 						$scope.$parent.greeting = false;
-						$scope.showAlbums = false;
+						$scope.$parent.showAlbums = false;
 						$scope.current.pageNum = 0;
 						$scope.current.albumId = id;
-						$scope.imgLoad = true;
+						$scope.imgLoad = false;
+						$timeout(function() {
+							$scope.imgLoad = true;
+						}, 20);
 						updateView();
 					});
 				};
@@ -224,8 +226,9 @@ app.controller('AlbumController',
 	};
 
 	$scope.removePage = function() {
-		if ($scope.current.pageNum == 0) {
-			alert('Cannot remove cover page. Clear all images instead.');
+		if ($scope.current.pageNum == 0 || 
+			$scope.current.pageNum == $scope.album.content.length) {
+			alert('Cannot remove cover page.');
 		} else {
 			$scope.album.content.splice($scope.current.pageNum -1, 2);
 			$scope.current.pageNum -= 2;
@@ -303,9 +306,9 @@ app.controller('AlbumController',
 	$scope.toAlbumList = function() {
 		$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
 		$scope.currentAlbumSC.description = $scope.album.description;
-		$scope.inAlbum = false;
+		$scope.$parent.inAlbum = false;
 		$scope.newAlbum = true;
-		$scope.showAlbums = true;
+		$scope.$parent.showAlbums = true;
  	};
 	/*---------------- Mouse control-------------------------------*/
 
@@ -445,7 +448,7 @@ app.controller('AlbumController',
 							}
 							console.log('ratio',ratio);
 							var color = Misc.RGBtoHex(tb.font.color);
-							doc.fontSize(parseInt(tb.font.size)*ratio)
+							doc.fontSize(parseFloat(tb.font.size)*ratio)
 								.font(fontsData[tb.font.family])
 								.fillColor(color)
 								.text(tb.text, 
@@ -454,7 +457,9 @@ app.controller('AlbumController',
 									{
 										width: ratio * tb.box.width * $scope.pwidth/100,
 										align: tb.align,
-										margin: 0
+										margin: 0,
+// 										lineGap: 20
+// 										0.5*ratio*parseFloat(tb.font.size)
 									});
 						}
 					}

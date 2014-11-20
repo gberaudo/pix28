@@ -1,6 +1,6 @@
 app.controller('TextBoxController',
-    ['$scope', '$element', '$timeout', '$http', 'Init',
-    function($scope, $element, $timeout, $http, Init) {
+    ['$scope', '$element', '$timeout', '$http', 'Init', 'Misc',
+    function($scope, $element, $timeout, $http, Init, Misc) {
 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
 	Init.initTextArea($scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
@@ -76,7 +76,6 @@ app.controller('TextBoxController',
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
 		$scope.textArea.style.resize = 'both';
-// 		$scope.textArea.style.border =  "1px solid #77F";
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
 			 activeTextArea = document.getElementsByClassName('tActive')[0]; 
@@ -91,36 +90,76 @@ app.controller('TextBoxController',
 		$scope.current.font.size = $scope.textArea.style.fontSize;
 		$scope.current.font.family = $scope.textArea.style.fontFamily;
 		$scope.$parent.activate();
-	
 	};
 	
 
 	$scope.blur = function($event) {
 		if ($scope.textArea.value) {
 			$scope.textArea.style.border =  '1px solid transparent';
-		} 
-// 		else {
-// 			$scope.textArea.style.border =  '1px solid #CEECF5';
-// 		}
+		}
 		$scope.textArea.style.resize = 'none';
 	};
 	
-
 	
+	
+	$scope.TAZone = {};
+	var drag = {};
+	
+	$scope.mouseDown = function(event) {
+		if (drag.all) {
+		};
+		$scope.current.mouseIsUp = false;
+	};
+	
+	$scope.$watch('current.mousePos', function(newValue, oldValue) {
+		if (newValue != oldValue) {
+			offsetX = newValue.X - oldValue.X;
+			offsetY = newValue.Y - oldValue.Y;
+			console.log(drag.all);
+			if (!!drag.all & !$scope.current.mouseIsUp) {
+				moveText('horizontal', offsetX);
+				moveText('vertical', offsetY);
+			}
+		}
+	});
+	
+	$scope.$watch('current.mouseIsUp', function() {
+		if ($scope.current.mouseIsUp) {
+			for (anchor in drag) {drag[anchor] = false;}
+		}
+	});
+	
+	Misc.resetZone(
+		$scope.TAZone, $scope.textArea.offsetWidth, $scope.textArea.offsetHeight
+	);
+	
+	$scope.mouseMove = function(event) {
+		var mouseRtTA = {X: event.layerX, Y: event.layerY};
+		if (Misc.inRect(mouseRtTA, $scope.TAZone.TL)) {
+// 			event.preventDefault();
+			$scope.current.cursor = 'move';
+			drag.all = true;
+		} else {
+			$scope.current.cursor = 'auto'
+		}
+	};
+	
+
 	$scope.keyDown = function(event) {
+		var offset = 5;
 		if (event.ctrlKey) {
 			switch (event.keyCode) {
 				case 37: //key left
-					moveText('left');
+					moveText('horizontal', -offset);
 					break;
 				case 38: //key up
-					moveText('up');
+					moveText('vertical', -offset);
 					break;
 				case 39: //key right
-					moveText('right');
+					moveText('horizontal', offset);
 					break;
 				case 40: //key down
-					moveText('down');
+					moveText('vertical', offset);
 					break;
 				case 46: //del
 					removeTextArea(event.target);
@@ -129,8 +168,7 @@ app.controller('TextBoxController',
 		}
 	};
 	
-	function moveText(para) {
-		var offset = 5;
+	function moveText(para, offset) {
 		var pwidth = $scope.pwidth,
 			pheight = $scope.pheight,
 			DBbox = $scope.textBox.box,
@@ -142,34 +180,27 @@ app.controller('TextBoxController',
 			};
 			
 		switch (para) {
-			case 'left':
-				if (offset > box.left) {
+			case 'horizontal':
+				if (offset < -box.left) {
 					offset = box.left;
 				}
-				box.left -= offset;
-				$scope.textArea.style.left = box.left + "px";
-				break;
-			case 'right':
 				if (offset + box.left + box.width > pwidth) {
 					offset = pwidth - box.left - box.width;
 				}
 				box.left += offset;
 				$scope.textArea.style.left = box.left + "px";
 				break;
-			case 'up':
-				if (offset > box.top) {
+
+			case 'vertical':
+				if (offset < -box.top) {
 					offset = box.top;
 				}
-				box.top -= offset;
-				$scope.textArea.style.top = box.top + "px";
-				break;	
-			case 'down':
 				if (offset + box.top + box.height > pheight) {
 					offset = pheight - box.top - box.height;
 				}
 				box.top += offset;
 				$scope.textArea.style.top = box.top + "px";
-				break;
+				break;	
 		}
 		DBbox.left = 100 * box.left / pwidth;
 		DBbox.top = 100 * box.top / pheight;
@@ -300,5 +331,10 @@ app.controller('TextController',
 		}
 	};
 	
-	
+	$scope.removeTextArea = function() {
+		var el = document.getElementsByClassName('tActive')[0],
+			scope = angular.element(el).scope(),
+			page = el.parentNode.parentNode.id;
+		scope.current[page].textBoxes.splice(scope.$index,1);
+	};
 }]);

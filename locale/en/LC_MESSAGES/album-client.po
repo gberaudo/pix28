@@ -42,6 +42,10 @@ msgid "Align text right"
 msgstr ""
 
 #: templates/index.html
+msgid "Back to home page"
+msgstr ""
+
+#: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
 msgstr ""

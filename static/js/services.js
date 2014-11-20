@@ -92,6 +92,7 @@ app.service('Init', function() {
 		textArea.style.fontStyle = textBox.font.style;
 		textArea.style.fontSize = textBox.font.size;
 		textArea.style.textAlign = textBox.align;
+// 		textArea.style.lineHeight = 1.5;
 		if (textBox.text) {
 			textArea.style.border =  '1px solid transparent';
 		}
@@ -374,6 +375,8 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		}
 		drawImage(canvas, img, display);
 	};
+	
+	
 }]);
 
 /*-----------------------------------------------------------*/
@@ -420,30 +423,98 @@ app.service('Misc', function() {
 		if (inRect(mouse, zone.center)) {
 			current.cursor = 'move';
 		}
-		if (inRect(mouse, zone.TL)) {
+		else if (inRect(mouse, zone.TL)) {
 			current.cursor = 'nw-resize';
 		}
-		if (inRect(mouse, zone.TR)) {
+		else if (inRect(mouse, zone.TR)) {
 			current.cursor = 'ne-resize';
 		}
-		if (inRect(mouse, zone.BR)) {
+		else if (inRect(mouse, zone.BR)) {
 			current.cursor = 'se-resize';
 		}
-		if (inRect(mouse, zone.BL)) {
+		else if (inRect(mouse, zone.BL)) {
 			current.cursor = 'sw-resize';
 		}
-		if (inRect(mouse, zone.T)) {
+		else if (inRect(mouse, zone.T)) {
 			current.cursor = 'n-resize';
 		}
-		if (inRect(mouse, zone.R)) {
+		else if (inRect(mouse, zone.R)) {
 			current.cursor = 'e-resize';
 		}
-		if (inRect(mouse, zone.B)) {
+		else if (inRect(mouse, zone.B)) {
 			current.cursor = 's-resize';
 		}
-		if (inRect(mouse, zone.L)) {
+		else if (inRect(mouse, zone.L)) {
 			current.cursor = 'w-resize';
 		}
+		else {
+			current.cursor = 'default';
+		}
+	};
+	
+	this.resetZone = function(zone, width, height) {
+		zone.TL = {
+			left: 0,
+			right: 10,
+			bot: 10,
+			top: 0
+		};
+
+		zone.TR = {
+			left: width - 10,
+			right: width,
+			bot:  10,
+			top: 0
+		};
+
+		zone.BR = {
+			left: width -10,
+			right: width,
+			bot: height,
+			top: height - 10
+		};
+
+		zone.BL = {
+			left: 0,
+			right: 10,
+			bot: height,
+			top: height - 10
+		};
+
+		zone.T = {
+			left: 1 * width / 5,
+			right: 4 * width / 5,
+			bot: 10,
+			top: 0
+		};
+
+		zone.L = {
+			left: 0,
+			right: 10,
+			bot: 4 * height / 5,
+			top: 1 * height / 5
+		};
+
+		zone.R = {
+			left: width - 10,
+			right: width,
+			bot: 4 * height / 5,
+			top: 1 * height / 5
+		};
+
+		zone.B = {
+			left: 1 * width / 5,
+			right: 4 * width / 5,
+			bot: height,
+			top: height - 10
+		};
+
+		zone.center = {
+			left: width / 3,
+			right: 2 * width / 3,
+			bot: 2 * height / 3,
+			top: height / 3
+		};
 	};
 	
 });

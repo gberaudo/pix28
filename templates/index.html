@@ -55,22 +55,30 @@ $def with (mode)
 			</div>
 		</div>
 	</div>
+	<span style = 'position: absolute; top: 10%; left: 1%'>
+		<img src = 'static/icons/go-home.png'
+			class = 'clickable'
+			title = '{{"Back to home page"|translate}}'
+			ng-show = '!greeting' ng-click = 'goHome()'/>
+	</span> 
 	<div ng-if = 'greeting'>
 		<span style = 'position: absolute; top: {{0.05*screenWidth + "px"}}; 
 			font-size: 120%; font-weight: bold' translate> Welcome!</span>
 	</div>
 
-	<div ng-controller = 'AlbumController' ng-init = 'showAlbums = false'>
+	<div ng-controller = 'AlbumController' ng-init = '\$parent.showAlbums = false'>
 	
 	<!--__________________welcome screen____________________-->
 
-		<span class = 'link' ng-click = 'createAlbum()' 
-				ng-show = 'showAlbums || greeting'
-				style = 'position: absolute; left: 5%; top: {{0.1*screenWidth + "px"}}'
+		<span class = 'btn color' ng-click = 'createAlbum()' 
+				ng-show = '\$parent.showAlbums || greeting'
+				style = 'position: absolute; left: 5%;
+					top: {{0.1*screenWidth + "px"}};
+					padding: 4px 12px !important'
 				translate> 
 				New album 
 		</span>	
-		<div ng-show = 'showAlbums'
+		<div ng-show = '\$parent.showAlbums'
 			id = 'albumList'
 			style = 'top: {{0.13*screenWidth + "px"}}'>
 			<span style = 'font-weight: bold' translate> Your albums </span>
@@ -78,7 +86,7 @@ $def with (mode)
 				<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 13px'>
 					<span class = 'link'
 						ng-click = 'openAlbum(albumSC)'
-						ng-bind = 'albumSC.title||albumSC.date'
+						ng-bind = 'albumSC.title||albumSC.date||"Album"'
 						title = '{{"Click to go to album" | translate}}'></span> 
 					<br/>
 					<span ng-bind = 'albumSC.description'
@@ -88,7 +96,7 @@ $def with (mode)
 		</div>
 		
 		<!--_____________begin album__________________-->
-		<div ng-show = 'inAlbum'> 
+		<div ng-show = '\$parent.inAlbum'> 
 			<div id = 'abTitle'>
 				<div name = 'editTitle'
 						ng-show = 'hasTitle'
@@ -167,7 +175,7 @@ $def with (mode)
 				<br/> <br/>
 				
 				<div id = 'export'>
-				<span class = 'btn' ng-click = 'generatePdf()' translate>
+				<span class = 'btn color' ng-click = 'generatePdf()' translate>
 					Export pdf
 				</span>
 
@@ -262,27 +270,14 @@ $def with (mode)
 						</span>
 					</div>
 					
-		<!--			<img src = 'static/icons/first1.png'
-								class = 'headerIcon left'
-								title = 'go to the first page'
-								ng-show =  'show.leftPage' 
-								ng-click = 'goFirstPage()'
-								style = 'margin-left: 10px'/>-->
-						<!--<img src = 'static/icons/last1.png'
-								class = 'headerIcon right'
-								title = 'go to the last page'
-								ng-show = 'show.rightPage' 
-								ng-click = 'goLastPage()'
-								style = 'margin-right:10px'/>
-						-->
-						<span ng-show = 'show.leftPage'
-							id = 'leftPageNum'>
-							{{current.pageNum}}/{{album.content.length}}
-						</span>
-						<span ng-show = 'show.rightPage'
-							id = 'rightPageNum'>
-							{{current.pageNum + 1}}/{{album.content.length}}
-						</span>
+					<span ng-show = 'show.leftPage'
+						id = 'leftPageNum'>
+						{{current.pageNum}}/{{album.content.length}}
+					</span>
+					<span ng-show = 'show.rightPage'
+						id = 'rightPageNum'>
+						{{current.pageNum + 1}}/{{album.content.length}}
+					</span>
 
 
 					<!--______________________a page in album______________________-->
@@ -317,11 +312,14 @@ $def with (mode)
 						</div>
 						
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
-							ng-controller = 'TextBoxController'>
+							ng-controller = 'TextBoxController'
+							>
 							<textarea name = 'textbox'
+								ng-style='{cursor: current.cursor}'
 								title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
 								ng-model = 'textBox.text'
 								ng-mousedown = 'mouseDown(\$event)'
+								ng-mousemove = 'mouseMove(\$event)'
 								ng-keyup = 'autoResize(\$event)'
 								ng-focus = 'textFocus(\$event)'
 								ng-blur = 'blur(\$event)'
@@ -431,6 +429,16 @@ $def with (mode)
 									class = 'inline'
 									style = 'height: 100%'/>
 							</span>
+							
+							<span class = 'btn'
+								title = '{{"Remove text box"|translate}}'
+								ng-click = 'removeTextArea()'
+								style = 'margin-left: 3em'>
+								<img src = 'static/icons/trash.png'
+									class = 'inline'
+									style = 'height: 100%; '/>
+							</span>
+						
 						</div>
 						
 						<div id = 'imageControl' ng-controller = 'ImageController'

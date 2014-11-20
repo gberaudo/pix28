@@ -42,6 +42,11 @@ msgid "Align text right"
 msgstr "Căn phải"
 
 #: templates/index.html
+#, fuzzy
+msgid "Back to home page"
+msgstr "Đến trang sau"
+
+#: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
 msgstr "Nháy chuột lên trang rồi nhắp chọn dàn trang."
