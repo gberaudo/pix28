@@ -19,6 +19,7 @@ help:
 	@echo "- cleanall           Remove all the build artefacts"
 	@echo "- compile-catalog    Compile the translation catalog"
 	@echo "- build              Build the project"
+	@echo "- deploy             Deploy to cowaddict.org"
 	@echo "- lint               Check the JavaScript code with linters"
 	@echo "- serve              Run the development server"
 	@echo
@@ -145,4 +146,9 @@ static/js/pdfkit.js:.build/node_modules.timestamp
 
 .PHONY: node_deps
 node_deps: static/js/angular_13.js static/js/angular-gettext.js static/js/blob-stream.js static/js/exif.js static/js/pdfkit.js
+
+.PHONY: deploy
+deploy: dist
+	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
+	rsync -a dist/ guiber@cowaddict.org:public_html/Album && echo 'transfer done'
 
