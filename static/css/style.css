@@ -6,9 +6,9 @@ body {
 	position: absolute;
 	width: 100%;
 	color: #FFFFFF;
-	background: -webkit-linear-gradient(left, red , blue); /* For Safari 5.1 to 6.0 */ 
-	background: -o-linear-gradient(right, red, blue); /* For Opera 11.1 to 12.0 */ 
-	background: -moz-linear-gradient(right, red, blue); /* For Firefox 3.6 to 15 */
+	background: -webkit-linear-gradient(left, #CEECF5 , #0489B1); /* For Safari 5.1 to 6.0 */ 
+	background: -o-linear-gradient(right, #CEECF5 , #0489B1); /* For Opera 11.1 to 12.0 */ 
+	background: -moz-linear-gradient(right, #CEECF5 , #0489B1); /* For Firefox 3.6 to 15 */
 	background: linear-gradient(to bottom right, #CEECF5 , #0489B1);
 	padding: 0;
 }
@@ -397,19 +397,28 @@ border-radius: 4px;
 
 .respond:hover {
 	background-color: #EFF5FB;
-/*	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px*/;
 }
 
 .respond.color:hover{
 	background-color: #059 !important;
 }
 
-/*.btn {
-border-color: #c5c5c5;
-border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
-}*/
+.alert {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	z-index: 20;
+	font-size: 90%;
+	text-align: center;
+	position: fixed;
+	background-color: #CEECC5;
+	border: 1px solid #955;
+	box-shadow: 2px 2px 2px 2px #aaa;
+	padding: 20px 20px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+
 @font-face{
 	font-family: Calligraffiti;
 	src: url('../fonts/Calligraffiti.ttf') format('truetype');

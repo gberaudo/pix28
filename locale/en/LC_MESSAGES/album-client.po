@@ -42,6 +42,10 @@ msgid "Align text right"
 msgstr ""
 
 #: templates/index.html
+msgid "Are you sure to delete this album?"
+msgstr ""
+
+#: templates/index.html
 msgid "Back to home page"
 msgstr ""
 
@@ -127,7 +131,7 @@ msgid "Enter a title"
 msgstr ""
 
 #: templates/index.html
-msgid "Export pdf"
+msgid "Export pdf album"
 msgstr ""
 
 #: templates/index.html
@@ -155,6 +159,10 @@ msgid "New album"
 msgstr ""
 
 #: templates/index.html
+msgid "No, do not delete."
+msgstr ""
+
+#: templates/index.html
 msgid "Page background"
 msgstr ""
 
@@ -179,7 +187,15 @@ msgid "Text color"
 msgstr ""
 
 #: templates/index.html
+msgid "The album"
+msgstr ""
+
+#: templates/index.html
 msgid "Welcome!"
+msgstr ""
+
+#: templates/index.html
+msgid "Yes, delete it."
 msgstr ""
 
 #: templates/index.html
@@ -224,4 +240,8 @@ msgstr ""
 
 #: templates/index.html
 msgid "previous"
+msgstr ""
+
+#: templates/index.html
+msgid "will be removed definitely."
 msgstr ""

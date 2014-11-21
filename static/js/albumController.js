@@ -1,7 +1,8 @@
 app.controller('AlbumController',
-    ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 'DBServices', 'Misc',
+    ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 
+	 'DBServices', 'Misc', 'gettextCatalog',
     function(
-	$scope, $timeout, $http, $element, $q, PageObject, DBServices, Misc
+	$scope, $timeout, $http, $element, $q, PageObject, DBServices, Misc, gettextCatalog
 ) {
 	
 	init();
@@ -29,15 +30,10 @@ app.controller('AlbumController',
 			imgLoad: false
 		}; 
 		$scope.show = {};
-		
-		//need to detect screen resolution here
-// 		$scope.pheight = 0.2*screen.width;
-// 		$scope.pwidth = 0.2*screen.width;
+
 		var albumEl = document.getElementById('album');
 		albumEl.style.height =  0.52*albumEl.offsetWidth + 'px';
 		albumEl.style.top = 0.085*$scope.screenWidth + 'px';
-		
-		
 		$scope.pheight = $scope.pwidth = 0.3 * albumEl.offsetWidth;
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
@@ -228,7 +224,17 @@ app.controller('AlbumController',
 	$scope.removePage = function() {
 		if ($scope.current.pageNum == 0 || 
 			$scope.current.pageNum == $scope.album.content.length) {
-			alert('Cannot remove cover page.');
+			var msg = gettextCatalog.getString('Cannot remove cover page!');
+			var div = document.createElement('div');
+			div.setAttribute('class', 'alert');
+			div.innerHTML = msg;
+			div.style.width = screen.width/4 + 'px';
+			div.style.top = screen.width/12 + 'px';
+			div.style.left = screen.width/4 + 'px';
+			document.body.appendChild(div);
+			$timeout(function() {
+				document.body.removeChild(div);
+			}, 2000);
 		} else {
 			$scope.album.content.splice($scope.current.pageNum -1, 2);
 			$scope.current.pageNum -= 2;

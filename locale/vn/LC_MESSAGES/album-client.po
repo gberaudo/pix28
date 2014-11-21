@@ -42,6 +42,10 @@ msgid "Align text right"
 msgstr "Căn phải"
 
 #: templates/index.html
+msgid "Are you sure to delete this album?"
+msgstr "Bạn có chắc chắn muốn xóa album này?"
+
+#: templates/index.html
 msgid "Back to home page"
 msgstr "Về trang chủ"
 
@@ -130,7 +134,7 @@ msgid "Enter a title"
 msgstr "Nhập tên album"
 
 #: templates/index.html
-msgid "Export pdf"
+msgid "Export pdf album"
 msgstr "Xuất album pdf"
 
 #: templates/index.html
@@ -158,6 +162,10 @@ msgid "New album"
 msgstr "Tạo album mới "
 
 #: templates/index.html
+msgid "No, do not delete."
+msgstr "Không xóa."
+
+#: templates/index.html
 msgid "Page background"
 msgstr "Đặt nền trang"
 
@@ -182,8 +190,16 @@ msgid "Text color"
 msgstr "Màu chữ"
 
 #: templates/index.html
+msgid "The album"
+msgstr "Album"
+
+#: templates/index.html
 msgid "Welcome!"
 msgstr "Chào bạn!"
+
+#: templates/index.html
+msgid "Yes, delete it."
+msgstr "Đồng ý, xóa."
 
 #: templates/index.html
 msgid "Your albums"
@@ -228,6 +244,10 @@ msgstr "sau"
 #: templates/index.html
 msgid "previous"
 msgstr "trước"
+
+#: templates/index.html
+msgid "will be removed definitely."
+msgstr "sẽ bị xóa hoàn toàn."
 
 #~ msgid "Delete image. Hot key: Ctrl + Del"
 #~ msgstr ""

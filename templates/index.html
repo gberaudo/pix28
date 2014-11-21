@@ -38,7 +38,7 @@ $def with (mode)
 	<title>Create your own story</title> 
 </head>
 
-<body ng-controller = 'SiteController'>
+<body ng-controller = 'SiteController' ng-show = 'loaded'>
 
 	<div id = 'banner'> 
 		<span id = 'slogan' translate>Create your own story</span> 
@@ -174,14 +174,39 @@ $def with (mode)
 				<br/> <br/>
 
 				<span class = 'link respond' 
-					ng-click = 'removeAlbum(current.albumId)' translate>
+					ng-click = 'delAlbum = true' translate>
 					Remove this album
 				</span>
+				
+				<div  class = 'alert'
+						style = 'width: {{screenWidth/4 + "px"}}; 
+										left: {{screenWidth/4 + "px"}}; 
+										top: {{screenWidth/12 +"px"}}'
+						ng-show = 'delAlbum'>
+						<span style = 'color: red' translate>
+							The album 
+						</span>
+						<span style = 'font-weight: bold'> {{album.title}} </span> 
+						<span  style = 'color: red' translate>will be removed definitely.</span>
+						<br/>
+						<span style = 'color: red' translate>
+							Are you sure to delete this album?
+						</span>
+						<br/> <br/>
+						<button class = 'respond' ng-click = 'removeAlbum(current.albumId)'
+							style = 'float: left' translate>
+							Yes, delete it.
+						</button>
+						<button  class = 'respond' ng-click = 'delAlbum = false' 
+						style = 'float: right' translate>
+							No, do not delete.
+						</button>
+				</div>
 				<br/> <br/>
 				
 				<div id = 'export'>
 				<span class = 'btn color respond' ng-click = 'generatePdf()' translate>
-					Export pdf
+					Export pdf album
 				</span>
 
 				<div ng-show = 'processing' style = 'font-size: 80%' > 
