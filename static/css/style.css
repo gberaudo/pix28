@@ -110,12 +110,13 @@ body {
 	border: 1px solid #CEECF5;
 }*/
 
-textarea[name = 'textbox']:focus {
+[name = 'textbox']:focus {
 	border: 1px solid #77F !important;
 }
 
-textarea[name = 'textbox'] {
+[name = 'textbox'] {
 	cursor: default;
+	resize: none !important;
 }
 
 #prev {
@@ -392,6 +393,17 @@ border-bottom-color: #a2a2a2;
 -webkit-border-radius: 4px;
 -moz-border-radius: 4px;
 border-radius: 4px;
+}
+
+.respond:hover {
+	background-color: #EFF5FB;
+/*	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px*/;
+}
+
+.respond.color:hover{
+	background-color: #059 !important;
 }
 
 /*.btn {

@@ -1,13 +1,12 @@
 app.controller('TextBoxController',
-    ['$scope', '$element', '$timeout', '$http', 'Init', 'Misc',
-    function($scope, $element, $timeout, $http, Init, Misc) {
+    ['$scope', '$element', '$timeout', 'Init', 'Misc',
+    function($scope, $element, $timeout,Init, Misc) {
 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
 	Init.initTextArea($scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
  		$scope.textArea.focus();
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
-// 		$scope.textArea.style.border =  "1px solid #77F";
 		$scope.current.datumWithFocus = undefined;
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
@@ -17,32 +16,10 @@ app.controller('TextBoxController',
 		angular.element($scope.textArea).addClass('tActive');
 	}
 	
-	//update textBox.box
-	$scope.$watch('textArea.offsetHeight', 
-		function(newValue, oldValue) {
-			if (newValue != oldValue) {
-				if (newValue + parseFloat($scope.textArea.style.top) > $scope.pheight) {
-					var h = $scope.pheight - parseFloat($scope.textArea.style.top);
-					$scope.textArea.style.height= h + "px";
-				}
-				$scope.textBox.box.height = 100*$scope.textArea.offsetHeight/$scope.pheight;
-			}
-		});
-	
-	$scope.$watch('textArea.offsetWidth', function(newValue, oldValue) {
-		if  (newValue != oldValue) {
-			if (newValue + parseFloat($scope.textArea.style.left) > $scope.pwidth) {
-				var w = $scope.pwidth -parseFloat($scope.textArea.style.left);
-				$scope.textArea.style.width= w + "px";
-			}
-			$scope.textBox.box.width = 100*$scope.textArea.offsetWidth/$scope.pwidth;
-		}
-	});
-	
 	$scope.$watch('textArea.scrollHeight', function(newValue, oldValue) {
 		if (newValue != oldValue && $scope.textBox.text) {
 			$scope.textArea.style.height = $scope.textArea.scrollHeight + 'px';
-			$scope.textBox.box.height = 100 * $scope.textArea.offsetHeight/$scope.pheight;
+			$scope.textBox.box.height = 100 * parseFloat($scope.textArea.style.height)/$scope.pheight;
 			if ($scope.textBox.box.height + $scope.textBox.box.top > 100) {
 				$scope.textBox.box.top = 100 - $scope.textBox.box.height;
 				$scope.textArea.style.top = $scope.textBox.box.top * $scope.pheight /100 + 'px';
@@ -72,13 +49,12 @@ app.controller('TextBoxController',
 	/*----------------------------------------------------*/
 
 	$scope.textFocus = function(event) {
-		var activeTextArea;
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
 		$scope.textArea.style.resize = 'both';
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
-			 activeTextArea = document.getElementsByClassName('tActive')[0]; 
+			var activeTextArea = document.getElementsByClassName('tActive')[0]; 
 			activeTextArea.setAttribute('class', 'tInactive');
 		};
 		// activate the current focused element
@@ -103,44 +79,117 @@ app.controller('TextBoxController',
 	
 	
 	$scope.TAZone = {};
-	var drag = {};
+	var drag = {all: false, BR: false};
+	
+	function resetZone() {
+		$scope.TAZone.TL = {
+			left: 0,
+			right: 30,
+			bot: 10,
+			top: 0
+		};
+		
+		$scope.TAZone.BR = {
+			left: $scope.textArea.offsetWidth -20,
+			right: $scope.textArea.offsetWidth,
+			bot: $scope.textArea.offsetHeight,
+			top: $scope.textArea.offsetHeight - 20
+		};
+	};
+	resetZone();
 	
 	$scope.mouseDown = function(event) {
-		if (drag.all) {
-		};
 		$scope.current.mouseIsUp = false;
+		var mouseRtTA = {X: event.layerX, Y: event.layerY};
+		if (Misc.inRect(mouseRtTA, $scope.TAZone.TL)) {
+			$scope.current.cursor = 'move';
+			drag.all = true;
+		} else if (Misc.inRect(mouseRtTA, $scope.TAZone.BR)) {
+			$scope.current.cursor = 'se-resize';
+			drag.BR = true;
+			drag.all = false;
+		} else {
+			$scope.current.cursor = 'auto';
+			drag.all = false;
+			drag.BR = true;
+		}
 	};
 	
 	$scope.$watch('current.mousePos', function(newValue, oldValue) {
-		if (newValue != oldValue) {
+// 		if (newValue != oldValue) {
 			offsetX = newValue.X - oldValue.X;
 			offsetY = newValue.Y - oldValue.Y;
-			console.log(drag.all);
 			if (!!drag.all & !$scope.current.mouseIsUp) {
 				moveText('horizontal', offsetX);
 				moveText('vertical', offsetY);
+				resetZone();
+			} else if (!!drag.BR & !$scope.current.mouseIsUp) {
+				window.requestAnimationFrame(function() {
+					resizeText('horizontal', offsetX);
+					resizeText('vertical', offsetY);
+					resetZone();
+				});
 			}
-		}
+// 		}
 	});
 	
+	function resizeText(para, offset) {
+		 var pheight = $scope.pheight,
+			pwidth= $scope.pwidth,
+			DBbox = $scope.textBox.box,
+			box = {
+				left: DBbox.left * pwidth / 100,
+				top: DBbox.top * pheight / 100,
+				width: DBbox.width * pwidth / 100,
+				height: DBbox.height * pheight /100
+			};
+		switch (para) {
+			case 'horizontal':
+				if (offset < -box.width + 50) {
+					offset = -box.width + 50;
+				}
+				if (offset + box.width + box.left > pwidth) {
+					offset = pwidth - box.width - box.left;
+				}
+				box.width += offset;
+				$scope.textArea.style.width = box.width + 'px';
+				break;
+				
+			case 'vertical':
+				if (offset < -box.height + 30) {
+					offset = -box.height + 30;
+				}
+				if (offset + box.height + box.top > pheight) {
+					offset = pheight - box.height - box.top;
+				}
+				box.height += offset;
+				$scope.textArea.style.height = box.height + 'px';
+				break;
+		}
+		DBbox.left = 100 * box.left / pwidth;
+		DBbox.top = 100 * box.top / pheight;
+		DBbox.width = 100 * box.width /pwidth;
+		DBbox.height = 100 * box.height / pheight;
+	}
 	$scope.$watch('current.mouseIsUp', function() {
 		if ($scope.current.mouseIsUp) {
-			for (anchor in drag) {drag[anchor] = false;}
+			drag.all = false;
+			drag.BR = false;
 		}
 	});
-	
-	Misc.resetZone(
-		$scope.TAZone, $scope.textArea.offsetWidth, $scope.textArea.offsetHeight
-	);
 	
 	$scope.mouseMove = function(event) {
 		var mouseRtTA = {X: event.layerX, Y: event.layerY};
+		resetZone();
 		if (Misc.inRect(mouseRtTA, $scope.TAZone.TL)) {
-// 			event.preventDefault();
 			$scope.current.cursor = 'move';
 			drag.all = true;
+		} else if (Misc.inRect(mouseRtTA, $scope.TAZone.BR)) {
+			$scope.current.cursor = 'se-resize';
+			drag.BR = true;
+			drag.all = false;
 		} else {
-			$scope.current.cursor = 'auto'
+			$scope.current.cursor = 'default';
 		}
 	};
 	
@@ -178,7 +227,6 @@ app.controller('TextBoxController',
 				width: DBbox.width * pwidth / 100,
 				height: DBbox.height * pheight /100
 			};
-			
 		switch (para) {
 			case 'horizontal':
 				if (offset < -box.left) {
@@ -230,9 +278,8 @@ app.controller('TextBoxController',
 }]);
 
 
-app.controller('TextController',
-    ['$scope', '$timeout', '$http', 'Fonts', 'Colors',
-    function($scope, $timeout, $http, Fonts, Colors) {
+app.controller('TextController', ['$scope', '$timeout', 'Fonts', 'Colors',
+    function($scope, $timeout, Fonts, Colors) {
 	$scope.current.font.color = 'black';
 	$scope.current.font.style = 'normal';
 	$scope.current.font.weight = 'normal';

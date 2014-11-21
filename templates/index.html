@@ -1,7 +1,7 @@
 $def with (mode)
 <!DOCTYPE html> 
 <html ng-app = 'albumApp' ng-init = 'greeting = true' ng-strict-di='false'>
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 	<meta charset="UTF-8">
 
 
@@ -30,7 +30,12 @@ $def with (mode)
 		<script src = 'static/build/album.js'></script>
 
 	<link rel="stylesheet" type="text/css" href="static/css/style.css" />
-	<title translate>Create your own story</title> 
+	 
+	<link rel="icon" 
+      type="image/ico" 
+      href="static/icons/album.ico">
+
+	<title>Create your own story</title> 
 </head>
 
 <body ng-controller = 'SiteController'>
@@ -70,7 +75,7 @@ $def with (mode)
 	
 	<!--__________________welcome screen____________________-->
 
-		<span class = 'btn color' ng-click = 'createAlbum()' 
+		<span class = 'btn color respond' ng-click = 'createAlbum()' 
 				ng-show = '\$parent.showAlbums || greeting'
 				style = 'position: absolute; left: 5%;
 					top: {{0.1*screenWidth + "px"}};
@@ -84,7 +89,7 @@ $def with (mode)
 			<span style = 'font-weight: bold' translate> Your albums </span>
 			<ul> 
 				<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 13px'>
-					<span class = 'link'
+					<span class = 'link respond'
 						ng-click = 'openAlbum(albumSC)'
 						ng-bind = 'albumSC.title||albumSC.date||"Album"'
 						title = '{{"Click to go to album" | translate}}'></span> 
@@ -158,24 +163,24 @@ $def with (mode)
 
 			<div id = 'sideMenu'>
 			
-				<span class = 'link' ng-click = 'createAlbum()' translate>
+				<span class = 'link respond' ng-click = 'createAlbum()' translate>
 					New album 
 				</span>
 				<br/> <br/>
-				<span class = 'link' id = 'allAlbums' 
+				<span class = 'link respond' id = 'allAlbums' 
 					ng-click = 'toAlbumList()' translate>
 					Your albums
 				</span>
 				<br/> <br/>
 
-				<span class = 'link' 
+				<span class = 'link respond' 
 					ng-click = 'removeAlbum(current.albumId)' translate>
 					Remove this album
 				</span>
 				<br/> <br/>
 				
 				<div id = 'export'>
-				<span class = 'btn color' ng-click = 'generatePdf()' translate>
+				<span class = 'btn color respond' ng-click = 'generatePdf()' translate>
 					Export pdf
 				</span>
 
@@ -230,13 +235,13 @@ $def with (mode)
 					</div>
 					
 					<div id = 'topMenu'>
-						<span id = 'addPage' 
+						<span id = 'addPage ' 
 							class = 'link'
 							title = '{{"Add a new double page"|translate}}'
 							ng-click = 'addNewPage()'>
 							<img src = 'static/icons/addpage.svg'
-								class = 'inline'
-								style = 'height: 130%'/> 
+								class = 'inline respond'
+								style = 'height: 130%; margin-left: 2%'/> 
 						</span>
 						
 						<span id = 'removePage' 
@@ -244,17 +249,18 @@ $def with (mode)
 							title = '{{"Delete this double page"|translate}}'
 							ng-click = 'removePage()'>
 							<img src = 'static/icons/delpage.svg'
-								class = 'inline'
+								class = 'inline respond'
 								style = 'height: 150%'/>
 						</span>
 						
 						<span class = 'draggable link'
 							id = 'addText'
-							draggable = 'true'
-							ondragstart = 'angular.element(this).scope().dragText(event)'
+							
 							title = '{{"Drag and drop into page to add a text field"|translate}}'>
 							<img  src = 'static/icons/text2.svg'
-								class = 'inline'
+								draggable = 'true'
+								ondragstart = 'angular.element(this).scope().dragText(event)'
+								class = 'inline respond'
 								style = 'height: 150%;'
 								/>
 						</span>
@@ -265,7 +271,7 @@ $def with (mode)
 							ondragstart = 'angular.element(this).scope().dragFrame(event)'
 							title = '{{"Drag and drop into page to add a new frame"|translate}}'>
 							<img src = 'static/icons/frame.svg'
-								class = 'inline'
+								class = 'inline respond'
 								style = 'height: 150%'/>
 						</span>
 					</div>
@@ -300,7 +306,7 @@ $def with (mode)
 							ng-style='{cursor: current.cursor}'>
 							<canvas tabindex = '0' 
 										class = 'frame'
-										title = '{{"Drag a conner or an edge to redimension the frame."| translate}}'
+										title = '{{"Drag a corner or an edge to redimension the frame."| translate}}'
 										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
 										ondragover = 'angular.element(this).scope().allowDrop(event)'
 										ng-mousedown = 'mouseDown(\$event)' 
@@ -362,12 +368,12 @@ $def with (mode)
 									value = '{{i + "px"}}'> {{i}} </option>
 							</select>
 							
-							<span class = 'btn italic' 
+							<span class = 'btn respond  italic' 
 								ng-click = 'italicClick()'>
 								I
 							</span>
 							
-							<span class = 'btn bold'
+							<span class = 'btn respond  bold'
 								ng-click = 'boldClick()'>
 								B
 							</span>
@@ -377,7 +383,7 @@ $def with (mode)
 								<span 
 									tabindex = '0'
 									id = 'textColor'
-									class = 'btn'
+									class = 'btn respond '
 									ng-focus = 'showColors()'
 									title = '{{"Choose text color"|translate}}'
 									style = 'color: {{current.font.color}}'
@@ -406,7 +412,7 @@ $def with (mode)
 							<!-- end of color menu-->
 							
 							<span 
-								class = 'btn'
+								class = 'btn respond '
 								title = '{{"Align text left"|translate}}'
 								ng-click = 'align("left")'>
 								<img src = 'static/icons/left.svg' 
@@ -414,7 +420,7 @@ $def with (mode)
 									style = 'height: 100%'/>
 							</span>
 							<span
-								class = 'btn'
+								class = 'btn respond '
 								title = '{{"Align text right"|translate}}'
 								ng-click = 'align("right")'>
 								<img src = 'static/icons/right.svg'
@@ -422,7 +428,7 @@ $def with (mode)
 									style = 'height: 100%'/>
 							</span>
 							<span 
-								class = 'btn'
+								class = 'btn respond '
 								title = '{{"Align text center"|translate}}'
 								ng-click = 'align("center")'>
 								<img src = 'static/icons/center.svg' 
@@ -430,7 +436,7 @@ $def with (mode)
 									style = 'height: 100%'/>
 							</span>
 							
-							<span class = 'btn'
+							<span class = 'btn respond '
 								title = '{{"Remove text box"|translate}}'
 								ng-click = 'removeTextArea()'
 								style = 'margin-left: 3em'>
@@ -451,14 +457,14 @@ $def with (mode)
 							<span ng-mousedown = 'zoomImage("in")'
 								ng-mouseup = 'mouseUp()'
 								title = '{{"Zoom image in. Hot key: +"|translate}}'
-								class = 'btn'
+								class = 'btn respond '
 								style = 'padding: 4px;'>
 								<img src = 'static/icons/zoomin.png'
 									style = 'height: 130%'/> </span>
 							<span ng-mousedown = 'zoomImage("out")'
 								ng-mouseup = 'mouseUp()'
 								title = '{{"Zoom image out. Hot key: -"|translate}}'
-								class = 'btn inline'
+								class = 'btn respond  inline'
 								style = 'padding: 4px'>
 								<img src = 'static/icons/zoomout.png'
 									style = 'height: 130%'/> </span>
@@ -466,7 +472,7 @@ $def with (mode)
 							<span ng-mousedown = 'go("left")'
 								ng-mouseup = 'mouseUp()'
 								title = '{{"Go to the left of image. Hot key: Ctrl + arrow left."|translate}}'
-								class = 'btn inline'
+								class = 'btn respond  inline'
 								style = 'padding: 4px'>
 								<img src = 'static/icons/goleft.png' 
 									class = 'inline'
@@ -476,7 +482,7 @@ $def with (mode)
 							<span ng-mousedown = 'go("right")'
 								ng-mouseup = 'mouseUp()'
 								title = '{{"Go to the right of image. Hot key: Ctrl + arrow right."|translate}}'
-								class = 'btn inline'
+								class = 'btn respond  inline'
 								style = 'padding: 4px'>
 								<img src = 'static/icons/goright.png' 
 									class = 'inline'
@@ -486,7 +492,7 @@ $def with (mode)
 							<span ng-mousedown = 'go("up")'
 								ng-mouseup = 'mouseUp()'
 								title = '{{"Go to the top of image. Hot key: Ctrl + arrow up."|translate}}'
-								class = 'btn inline'
+								class = 'btn respond  inline'
 								style = 'padding: 4px'>
 								<img src = 'static/icons/goup.png' 
 									class = 'inline'
@@ -496,7 +502,7 @@ $def with (mode)
 							<span ng-mousedown = 'go("down")'
 								ng-mouseup = 'mouseUp()'
 								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
-								class = 'btn inline'
+								class = 'btn respond  inline'
 								style = 'padding: 4px'>
 								<img src = 'static/icons/godown.png' 
 									class = 'inline'
@@ -505,7 +511,7 @@ $def with (mode)
 								
 							<span ng-click = 'removeImage()'
 								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
-								class = 'btn'
+								class = 'btn respond '
 								style = 'padding: 4px; margin-left: 4em'> 
 								<img src = 'static/icons/trash.png'
 									style = 'height: 110%'/> </span>
@@ -536,7 +542,7 @@ $def with (mode)
 	<!--Choose page background color============================-->
 	
 					<div id = 'pageBGcolor'>
-						<span class = 'btn'
+						<span class = 'btn respond '
 							tabindex = '0'
 							title = '{{"Choose page background color"|translate}}'
 							ng-click = 'showColors()'
@@ -579,7 +585,7 @@ $def with (mode)
 				<div id = 'imageLoader'
 					ng-controller = 'ImageLoaderController'
 					ng-if = 'imgLoad'>
-					<label for = 'files' class = 'btn'
+					<label for = 'files' class = 'btn respond '
 						title = '{{"Click to load photos from your computer"|translate}}'
 						tranlate>
 					Load photos</label>

@@ -42,9 +42,8 @@ msgid "Align text right"
 msgstr "Căn phải"
 
 #: templates/index.html
-#, fuzzy
 msgid "Back to home page"
-msgstr "Đến trang sau"
+msgstr "Về trang chủ"
 
 #: templates/index.html
 msgid ""
@@ -102,7 +101,7 @@ msgid "Download"
 msgstr "Tải file về"
 
 #: templates/index.html
-msgid "Drag a conner or an edge to redimension the frame."
+msgid "Drag a corner or an edge to redimension the frame."
 msgstr ""
 "Dùng chuột kéo phía trong góc hoặc cạnh để thay đổi kích cỡ khung hình."
 
@@ -163,9 +162,8 @@ msgid "Page background"
 msgstr "Đặt nền trang"
 
 #: templates/index.html
-#, fuzzy
 msgid "Remove text box"
-msgstr "Xóa album này"
+msgstr "Xóa hộp văn bản này"
 
 #: templates/index.html
 msgid "Remove this album"

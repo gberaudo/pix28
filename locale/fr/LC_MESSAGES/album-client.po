@@ -106,7 +106,7 @@ msgid "Download"
 msgstr "Télécharger"
 
 #: templates/index.html
-msgid "Drag a conner or an edge to redimension the frame."
+msgid "Drag a corner or an edge to redimension the frame."
 msgstr "Tirer un coin ou un côté pour redimensioner le cadre."
 
 #: templates/index.html
