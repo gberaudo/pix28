@@ -14,31 +14,6 @@ app.factory('FrameObject', function() {
 	};
 })
 	
-	.factory('Layouts', function() {
-	var layouts = {};
-	layouts.x2 = [
-		{
-			frames:
-				[
-					{left: 10, top: 10, height: 35, width: 80},
-					{left: 10, top: 50, height: 40, width: 80}
-				],
-			boxes: []
-		},
-		{
-			frames: 
-				[
-					{left: 20, top: 10, width: 70, height: 50},
-					{left: 20, top: 65, width: 70, height: 30}
-				],
-			boxes: []
-		}
-	];
-	
-	
-	return layouts;
-})
-	
 	.factory('TextBoxObject', function() {
 		return function(box) {
 			this.box = box;

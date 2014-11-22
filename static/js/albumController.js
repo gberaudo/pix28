@@ -454,8 +454,8 @@ app.controller('AlbumController',
 		}
 		
 		function makePdfFromJSON(json, fontsData) {
-			var pdfWidth = 600,
-				pdfHeight = 600,
+			var pdfWidth = 720,
+				pdfHeight = 720,
 				ratio = pdfWidth/$scope.pwidth;
 			var doc = new PDFDocument({
 				size: [pdfWidth, pdfHeight],
@@ -602,9 +602,9 @@ app.controller('AlbumController',
 											break;
 									}
 									var outputImg = canvas.toDataURL();
-									doc.image(outputImg, 2*frame.canvas.left*$scope.pwidth/100, 
-													2*frame.canvas.top*$scope.pheight/100,
-													{width: display.dw*2});
+									doc.image(outputImg, ratio*frame.canvas.left*$scope.pwidth/100, 
+													ratio*frame.canvas.top*$scope.pheight/100,
+													{width: display.dw*ratio});
 									deferred1.resolve(null);
 								}
 								imgObj.src = img.src;

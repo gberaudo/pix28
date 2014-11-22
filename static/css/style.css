@@ -247,9 +247,9 @@ canvas.frame {
 	position: absolute;
 }
 
-canvas.frame:focus {
+/*canvas.frame:focus {
 	border: 1px solid #FF1238 !important;
-}
+}*/
 
 canvas.minframe {
 	border: 1px solid #CCC;
