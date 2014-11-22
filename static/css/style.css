@@ -403,6 +403,14 @@ border-radius: 4px;
 	background-color: #059 !important;
 }
 
+.pageDesactivate {
+	z-index: 19;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #444444;
+	opacity: 0.5;
+}
 .alert {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	z-index: 20;

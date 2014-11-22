@@ -49,6 +49,10 @@ msgstr "Bạn có chắc chắn muốn xóa album này?"
 msgid "Back to home page"
 msgstr "Về trang chủ"
 
+#: static/js/albumController.js
+msgid "Cannot remove cover page!"
+msgstr "Không xóa được trang bìa."
+
 #: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
@@ -69,6 +73,10 @@ msgstr "Chọn màu chữ"
 #: templates/index.html
 msgid "Choose text font"
 msgstr "Chọn phông chữ"
+
+#: templates/index.html
+msgid "Click to create a new album"
+msgstr "Nhắp chuột để tạo album mới"
 
 #: templates/index.html
 msgid "Click to go to album"
@@ -136,6 +144,10 @@ msgstr "Nhập tên album"
 #: templates/index.html
 msgid "Export pdf album"
 msgstr "Xuất album pdf"
+
+#: templates/index.html
+msgid "Export this album to pdf file to use on your computer or for printing"
+msgstr "Xuất album này ra file pdf để lưu trên máy hoặc in. "
 
 #: templates/index.html
 msgid "Generating pdf..."

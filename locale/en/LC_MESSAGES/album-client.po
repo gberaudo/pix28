@@ -49,6 +49,10 @@ msgstr ""
 msgid "Back to home page"
 msgstr ""
 
+#: static/js/albumController.js
+msgid "Cannot remove cover page!"
+msgstr ""
+
 #: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
@@ -68,6 +72,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Choose text font"
+msgstr ""
+
+#: templates/index.html
+msgid "Click to create a new album"
 msgstr ""
 
 #: templates/index.html
@@ -132,6 +140,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Export pdf album"
+msgstr ""
+
+#: templates/index.html
+msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr ""
 
 #: templates/index.html

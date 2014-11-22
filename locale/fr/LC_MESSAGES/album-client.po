@@ -49,6 +49,10 @@ msgstr "Vous êtes sure de vouloir le supprimer?"
 msgid "Back to home page"
 msgstr "Retourner à la page d'accueil"
 
+#: static/js/albumController.js
+msgid "Cannot remove cover page!"
+msgstr "Ne peut pas supprimer la page de couverture !"
+
 #: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
@@ -71,6 +75,10 @@ msgstr "Choisir la couleur du texte"
 #: templates/index.html
 msgid "Choose text font"
 msgstr "Choisir une police"
+
+#: templates/index.html
+msgid "Click to create a new album"
+msgstr "Cliquer pour créer un nouvel album"
 
 #: templates/index.html
 msgid "Click to go to album"
@@ -140,6 +148,12 @@ msgstr "Entrer un titre"
 #: templates/index.html
 msgid "Export pdf album"
 msgstr "Exporter en pdf"
+
+#: templates/index.html
+msgid "Export this album to pdf file to use on your computer or for printing"
+msgstr ""
+"Exporter cet album en fichier pdf pour l'utiliser sur votre ordinateur ou "
+"pour l'imprimer"
 
 #: templates/index.html
 msgid "Generating pdf..."

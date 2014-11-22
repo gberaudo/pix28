@@ -80,6 +80,7 @@ $def with (mode)
 				style = 'position: absolute; left: 5%;
 					top: {{0.1*screenWidth + "px"}};
 					padding: 4px 12px !important'
+				title = '{{"Click to create a new album"|translate}}'
 				translate> 
 				New album 
 		</span>	
@@ -163,7 +164,9 @@ $def with (mode)
 
 			<div id = 'sideMenu'>
 			
-				<span class = 'link respond' ng-click = 'createAlbum()' translate>
+				<span class = 'link respond' ng-click = 'createAlbum()' 
+					title = '{{"Click to create a new album"|translate}}'
+					translate>
 					New album 
 				</span>
 				<br/> <br/>
@@ -174,15 +177,22 @@ $def with (mode)
 				<br/> <br/>
 
 				<span class = 'link respond' 
-					ng-click = 'delAlbum = true' translate>
+					ng-click = 'delAlbumRq()' translate>
 					Remove this album
 				</span>
+				
+				<div ng-show = 'delAlbum' class = 'pageDesactivate'
+					tabindex = '0'
+					ng-keydown = 'alertKeydown(\$event)'
+					style = 'width: {{screenWidth + "px"}}; height: {{screenHeight + "px"}}'>
+				</div>
 				
 				<div  class = 'alert'
 						style = 'width: {{screenWidth/4 + "px"}}; 
 										left: {{screenWidth/4 + "px"}}; 
 										top: {{screenWidth/12 +"px"}}'
-						ng-show = 'delAlbum'>
+						ng-show = 'delAlbum'
+						ng-keydown = 'alertKeydown(\$event)'>
 						<span style = 'color: red' translate>
 							The album 
 						</span>
@@ -193,19 +203,26 @@ $def with (mode)
 							Are you sure to delete this album?
 						</span>
 						<br/> <br/>
-						<button class = 'respond' ng-click = 'removeAlbum(current.albumId)'
+						<button type = 'button' class = 'respond'
+							id = 'delAlbum'
+							ng-click = 'removeAlbum(current.albumId)'
 							style = 'float: left' translate>
 							Yes, delete it.
 						</button>
-						<button  class = 'respond' ng-click = 'delAlbum = false' 
-						style = 'float: right' translate>
+						<button type = 'button' class = 'respond' 
+							id = 'notDelAlbum'
+							ng-click = 'delAlbum = false' 
+							style = 'float: right' translate>
 							No, do not delete.
 						</button>
 				</div>
 				<br/> <br/>
 				
 				<div id = 'export'>
-				<span class = 'btn color respond' ng-click = 'generatePdf()' translate>
+				<span class = 'btn color respond' 
+					ng-click = 'generatePdf()' 
+					title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
+					translate>
 					Export pdf album
 				</span>
 
@@ -240,7 +257,7 @@ $def with (mode)
 						
 						
 					<div id = 'prev' class = 'link'
-						ng-show =  'show.leftPage' 
+						ng-show = 'show.leftPage' 
 						ng-click = 'prevPage()'
 						title = '{{"go to the previous page"|translate}}'>
 						<img src = 'static/icons/prev.png'
@@ -464,7 +481,7 @@ $def with (mode)
 							<span class = 'btn respond '
 								title = '{{"Remove text box"|translate}}'
 								ng-click = 'removeTextArea()'
-								style = 'margin-left: 3em'>
+								style = 'float: right; margin-right: 0.5em'>
 								<img src = 'static/icons/trash.png'
 									class = 'inline'
 									style = 'height: 100%; '/>

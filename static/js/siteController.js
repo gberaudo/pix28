@@ -13,7 +13,7 @@ app.run(['$rootScope', 'gettextCatalog',
 			langInList = false;
 	
 		for (i = 0; i < availLangs.length; i++) {
-			if (lang = availLangs[i]) {
+			if (lang == availLangs[i]) {
 				langInList = true;
 				break;
 			}
@@ -29,20 +29,31 @@ app.run(['$rootScope', 'gettextCatalog',
 				trans = db.transaction(['userInfo']),
 				store = trans.objectStore('userInfo')
 				var getRq = store.get(1);
-			getRq.onsuccess = function() {
-				lang = getRq.result.lang;
-				console.log('lang', lang);
+			getRq.onsuccess = function(event) {
+				lang = this.result.lang;
 				gettextCatalog.setCurrentLanguage(lang);
 				gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
 				$rootScope.loaded = true;
 			};
+			getRq.onerror = function() {
+				gettextCatalog.setCurrentLanguage(lang);
+				gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
+				$rootScope.loaded = true;
+				
+			};
+		};
+		
+		openRq.onerror = function() {
+			gettextCatalog.setCurrentLanguage(lang);
+			gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
+			$rootScope.loaded = true;
 		};
 
 		openRq.onupgradeneeded = function(event) {
 			console.log('created userDB');
 			gettextCatalog.setCurrentLanguage(lang);
 			gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
-			rootScope.loaded = true;
+			$rootScope.loaded = true;
 			var userInfStore = event.currentTarget.result.createObjectStore(
 				'userInfo', {keyPath: 'id'});
 			var addInfo = userInfStore.add({id: 1, lang: lang});
@@ -60,6 +71,7 @@ app.run(['$rootScope', 'gettextCatalog',
 	banner.style.height = 0.04*screen.width + 'px';
 	banner.style.fontSize = defaultFontSize + 'px';
 	$rootScope.screenWidth = screen.width;
+	$rootScope.screenHeight = screen.height;
 }]);
 
 app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices', 

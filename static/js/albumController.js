@@ -80,7 +80,15 @@ app.controller('AlbumController',
 	};
 	
 
+	$scope.delAlbumRq = function() {
+		$scope.delAlbum = true;
+		$timeout(function() {
+			document.getElementById('notDelAlbum').focus();
+		}, 200);
+	};
+	
 	$scope.removeAlbum = function(id) {
+		console.log('remove album');
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		openRq.onsuccess = function(event) {
 			var db = openRq.result;
@@ -98,18 +106,33 @@ app.controller('AlbumController',
 					$scope.current.albumId = null;
 					$scope.$parent.inAlbum = false;
 					$scope.$parent.showAlbums = true;
+					$scope.delAlbum = false;
 				});
 			};
 			removeRq.onerror = function() {
 				console.log('failed to remove album', id);
+				$scope.delAlbum = false;
 			};
 				
 		};
 		openRq.onerror = function() {
 			console.log('failed to open DB to removing album');
+			$scope.delAlbum = false;
 		};
 	};
 
+	$scope.alertKeydown = function(event) {
+		console.log('key down');
+		if (event.keyCode == 27) {
+			$scope.delAlbum = false;
+		}
+		if (event.keyCode == 37) {
+			document.getElementById('delAlbum').focus();
+		}
+		if  (event.keyCode == 39) {
+			document.getElementById('notDelAlbum').focus();
+		}
+	}
 		
 	$scope.openAlbum = function(albumSC) {
 		getAlbum(albumSC.id);
