@@ -364,6 +364,7 @@ $def with (mode)
 							ng-controller = 'TextBoxController'
 							>
 							<textarea name = 'textbox'
+								placeholder = '{{"Enter text here"| translate}}'
 								ng-style='{cursor: current.cursor}'
 								title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
 								ng-model = 'textBox.text'
@@ -407,7 +408,7 @@ $def with (mode)
 								title = '{{"change font size"|translate}}'
 								ng-model = 'current.font.size'
 								ng-change = 'changeFontSize(current.font.size)'>
-								<option ng-repeat = 'i in [8, 10,12, 14, 16, 18, 20, 24, 30]'
+								<option ng-repeat = 'i in [8, 10, 12, 14, 16, 18, 20, 24, 30]'
 									value = '{{i + "px"}}'> {{i}} </option>
 							</select>
 							
@@ -575,10 +576,10 @@ $def with (mode)
 						translate> (photos/page)</span> 
 					
 					<div id = 'layoutSets'>
-						<span ng-repeat = 'i in [1,2,3,4,5,6,7,8,9,10]'
+						<span ng-repeat = 'choice in layoutList'
 							class = 'link layout' 
-							ng-click = 'showLayouts("x"+i)'>
-							  {{'x'+ i}} 
+							ng-click = 'showLayouts(choice)'>
+							  {{choice}} 
 						</span>
 					</div>
 					

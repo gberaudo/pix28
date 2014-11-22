@@ -1,9 +1,9 @@
 app.controller('AlbumController',
     ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 
-	 'DBServices', 'Misc', 'gettextCatalog',
-    function(
-	$scope, $timeout, $http, $element, $q, PageObject, DBServices, Misc, gettextCatalog
-) {
+	 'DBServices', 'Misc', 'gettextCatalog', 'Layouts', 'FrameObject', 'TextBoxObject',
+    function($scope, $timeout, $http, $element, $q, PageObject, 
+		DBServices, Misc, gettextCatalog, Layouts, FrameObject, TextBoxObject
+	) {
 	
 	init();
 	
@@ -37,6 +37,11 @@ app.controller('AlbumController',
 		$scope.pheight = $scope.pwidth = 0.3 * albumEl.offsetWidth;
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
+		
+		$scope.layoutList = [
+			'x1', 'x2', 'x3', 'x4', 'x5'
+		];
+		
 	};
 	
 	
@@ -48,13 +53,13 @@ app.controller('AlbumController',
 				$scope.currentAlbumSC.date = $scope.album.date;
 		}
 		DBServices.addAlbum().then(function(id) {
+			var date = new Date();
 			$scope.current.albumId = id;
 			$scope.$parent.greeting = false;
-			$scope.album.content = []; 
  			$scope.album.title = '';
  			$scope.album.description = '';
-			var date = new Date();
 			$scope.album.date = date.toDateString();
+			makeRandomAlbum(20);
 			$scope.$parent.inAlbum = true;
 			$scope.$parent.showAlbums = false;
 			$scope.imgLoad = false;
@@ -72,13 +77,47 @@ app.controller('AlbumController',
 				date: $scope.album.date
 			};
 			$scope.albumSCs.push($scope.currentAlbumSC);
-			addCoverPages();
 			$timeout(function() {
 				document.getElementById('titleInput').focus();
 			}, 200);
 		});
 	};
 	
+	function makeRandomAlbum(num) {
+		function makeRandomPage(layoutList) {
+			var lset = Misc.randomFromList(layoutList);
+			var layouts = Layouts[lset],
+				layout = Misc.randomFromList(layouts),
+				page = new PageObject();
+			for (var k in layout.frames) {
+				var image = {},
+					canvas = angular.copy(layout.frames[k]),
+					frame = new FrameObject(canvas, image, {}); 
+				page.frames.push(frame);
+			}
+			for (var j in layout.boxes) {
+				var textbox = new TextBoxObject(layout.boxes[j]);
+				page.textBoxes.push(textbox);
+			}
+			return page;
+		}
+			
+		var frontPage = makeRandomPage(
+								[$scope.layoutList[0], $scope.layoutList[1]]),
+			backPage = makeRandomPage(
+								[$scope.layoutList[0], $scope.layoutList[1]]);
+		
+		$scope.album.content = [frontPage];
+		for (var i = 1; i < num-1; i++) {
+			var page = makeRandomPage($scope.layoutList);
+			$scope.album.content.push(page);
+		}
+		$scope.album.content.push(backPage);
+		
+		$scope.current.rightPage = $scope.album.content[0];
+		$scope.current.pageNum = 0;
+		updateView();
+	}
 
 	$scope.delAlbumRq = function() {
 		$scope.delAlbum = true;
@@ -198,13 +237,6 @@ app.controller('AlbumController',
 		}
 	}
 	
-	function addCoverPages() {
-		$scope.current.rightPage = new PageObject();
-		var backPage = new PageObject();
-		$scope.current.pageNum = 0;
-		$scope.album.content = [$scope.current.rightPage, backPage];
-		updateView();
-	}
 
 
 	$scope.addNewPage = function (){

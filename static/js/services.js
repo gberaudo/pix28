@@ -492,5 +492,9 @@ app.service('Misc', function() {
 		};
 	};
 	
+	this.randomFromList = function(list) {
+		var rand = Math.floor(Math.random()*list.length);
+		return list[rand];
+	};
 });
 
