@@ -323,14 +323,7 @@ app.controller('CanvasController',
 		}
 		//turn focus to and activate the frame and its page
 		evt.target.focus();
-		$scope.$parent.activate();
-		if (document.getElementsByClassName('cActive').length > 0) {
-			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
-			activeCanvas.removeClass('cActive');
-		}
-		angular.element(evt.target).addClass('cActive');
-		$scope.current.onEditText = false;
-		$scope.current.onEditImage = true;
+		$scope.canvasFocus(evt);
 	};
 	
 	$scope.canvasFocus = function(event) {
@@ -339,6 +332,11 @@ app.controller('CanvasController',
 			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
 			activeCanvas.removeClass('cActive');
 		}
+		if (document.getElementsByClassName('tActive').length > 0) {
+			var activeText = angular.element(document.getElementsByClassName('tActive')[0]);
+			activeText.removeClass('tActive');
+		}
+		
 		angular.element(event.target).addClass('cActive');
 		if (!!$scope.img.src) {
 			$scope.current.onEditText = false;

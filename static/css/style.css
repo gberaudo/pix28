@@ -106,12 +106,16 @@ body {
 	box-shadow: 3px 3px 5px 6px #ccc;
 }
 
-/*.textbox {
-	border: 1px solid #CEECF5;
-}*/
+.pActive {
+	box-shadow: 0px 0px 2px 2px  #0489B1 !important;
+}
 
-[name = 'textbox']:focus {
-	border: 1px solid #77F !important;
+.cActive {
+	box-shadow: 0px 0px 1px 1px #0489B1 !important;
+}
+
+.tActive {
+	box-shadow: 0px 0px 1px 1px #0489B1 !important;
 }
 
 [name = 'textbox'] {
@@ -171,7 +175,7 @@ body {
 	right: 1%;
 }
 #BGcolorMenu {
-	z-index:2;
+	z-index:10;
 	position: absolute;
 	width: 40%;
 	height: 6em;
@@ -180,7 +184,6 @@ body {
 
 
 .colorTable {
-	z-index:10;
 	width: 10%; 
 	height:1.5em;
 	float: left;
@@ -248,9 +251,7 @@ canvas.frame {
 	position: absolute;
 }
 
-canvas.frame:focus {
-	box-shadow: 0px 0px 3px 3px #CEECF5 !important;
-}
+
 
 canvas.minframe {
 	border: 1px solid #CCC;

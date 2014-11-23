@@ -13,6 +13,10 @@ app.controller('TextBoxController',
 			 activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
 			activeTextArea.removeClass('tActive');
 		}
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
+			activeCanvas.removeClass('cActive');
+		}
 		angular.element($scope.textArea).addClass('tActive');
 	}
 	
@@ -54,11 +58,16 @@ app.controller('TextBoxController',
 		$scope.textArea.style.resize = 'both';
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
-			var activeTextArea = document.getElementsByClassName('tActive')[0]; 
-			activeTextArea.setAttribute('class', 'tInactive');
+			var activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
+			activeTextArea.removeClass('tActive');
 		};
+		
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
+			activeCanvas.removeClass('cActive');
+		}
 		// activate the current focused element
-		$scope.textArea.setAttribute('class','tActive');
+		angular.element(event.target).addClass('tActive');
 		
 		$scope.current.font.color = $scope.textArea.style.color;
 		$scope.current.font.weight = $scope.textArea.style.fontWeight;

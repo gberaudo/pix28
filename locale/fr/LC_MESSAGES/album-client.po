@@ -180,6 +180,10 @@ msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
 
 #: templates/index.html
+msgid "Load photos"
+msgstr ""
+
+#: templates/index.html
 msgid "New album"
 msgstr "Nouvel  album"
 

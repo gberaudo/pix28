@@ -116,7 +116,7 @@ app.controller('AlbumController',
 		
 		$scope.current.rightPage = $scope.album.content[0];
 		$scope.current.pageNum = 0;
-		updateView();
+		updateView('prev');
 	}
 
 	$scope.delAlbumRq = function() {
@@ -201,7 +201,7 @@ app.controller('AlbumController',
 						$timeout(function() {
 							$scope.imgLoad = true;
 						}, 20);
-						updateView();
+						updateView('prev');
 					});
 				};
 				getRq.onerror = function() {
@@ -248,7 +248,7 @@ app.controller('AlbumController',
 			$scope.current.pageNum,0, 
 			$scope.current.leftPage, $scope.current.rightPage
 		);
-		updateView();
+		updateView('next');
 	};
 
 	function activate(id) {
@@ -264,7 +264,7 @@ app.controller('AlbumController',
 			$scope.current.leftPage = $scope.album.content[$scope.current.pageNum - 1];
 		}
 		$scope.current.rightPage = $scope.album.content[$scope.current.pageNum];
-		updateView();
+		updateView('prev');
 	};
 
 	$scope.nextPage = function() { //show next page and update pageNum
@@ -273,7 +273,7 @@ app.controller('AlbumController',
 			$scope.current.rightPage = $scope.album.content[$scope.current.pageNum];
 		}
 		$scope.current.leftPage =  $scope.album.content[$scope.current.pageNum - 1];
-		updateView();
+		updateView('next');
 	};
 
 	$scope.removePage = function() {
@@ -297,41 +297,45 @@ app.controller('AlbumController',
 			if ($scope.current.pageNum > 0) {
 				$scope.current.leftPage = $scope.album.content[$scope.current.pageNum - 1];
 			}
-			updateView();
+			updateView('next');
 		}
 	};
 	
-	$scope.goFirstPage = function() {
-		$scope.current.pageNum = 0;
-		$scope.current.rightPage = $scope.album.content[0];
-		updateView();
-	};
+// 	$scope.goFirstPage = function() {
+// 		$scope.current.pageNum = 0;
+// 		$scope.current.rightPage = $scope.album.content[0];
+// 		updateView();
+// 	};
+// 	
+// 	$scope.goLastPage = function() {
+// 		$scope.current.leftPage = $scope.album.content[$scope.album.content.length];
+// 		$scope.current.pageNum = $scope.album.content.length;
+// 		updateView();
+// 	};
 	
-	$scope.goLastPage = function() {
-		$scope.current.leftPage = $scope.album.content[$scope.album.content.length];
-		$scope.current.pageNum = $scope.album.content.length;
-		updateView();
-	};
 	
-	
-	function updateView() {
+	function updateView(dir) {
 		if ($scope.current.pageNum == 0) {
 			$scope.show.leftPage = false;
 			$scope.show.rightPage = true;
 			$timeout(function() {
 				activate('rightPage');
-			}, 200); //wait the page to load before focusing
+			}, 50); //wait the page to load before focusing
 		} else if ($scope.current.pageNum == $scope.album.content.length) {
 			$scope.show.rightPage = false;
 			$scope.show.leftPage = true;
 			$timeout(function() {
 				activate('leftPage');
-			}, 200);
+			}, 50);
 		} else {
 			$scope.show.leftPage = $scope.show.rightPage = true;
 			$timeout(function() {
-				activate('leftPage');
-			}, 200);
+				if (dir == 'next') {
+					activate('leftPage');
+				} else {
+					activate('rightPage');
+				}
+			}, 50);
 		}
 	};
  /*------------------title, description control-------------------*/

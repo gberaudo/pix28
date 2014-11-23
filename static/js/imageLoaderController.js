@@ -12,7 +12,7 @@ app.controller('ImageLoaderController',
 		function readFile(file) {
 			var deferred = $q.defer();
 			if (file.type.match(/image.*/)){
-				var msg = gettextCatalog.getString('loading file... ');
+				var msg = gettextCatalog.getString('loading file...');
 				$timeout(function() {
 					$scope.fileProcess = msg + file.name; 
 				});

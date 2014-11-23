@@ -171,6 +171,10 @@ msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr ""
 
 #: templates/index.html
+msgid "Load photos"
+msgstr ""
+
+#: templates/index.html
 msgid "New album"
 msgstr ""
 
