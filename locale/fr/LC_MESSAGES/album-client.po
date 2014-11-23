@@ -146,6 +146,10 @@ msgid "Enter a title"
 msgstr "Entrer un titre"
 
 #: templates/index.html
+msgid "Enter text here"
+msgstr "Entrer texte ici"
+
+#: templates/index.html
 msgid "Export pdf album"
 msgstr "Exporter en pdf"
 

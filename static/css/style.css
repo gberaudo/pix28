@@ -87,7 +87,7 @@ body {
 #leftPage {
 	position: absolute;
 	left: 10%; 
-	top: 10%; 
+	top: 11%;
 	border:1px solid #000000;
 	overflow: hidden;
 	box-shadow: 2px 3px 5px 6px #ccc;
@@ -98,7 +98,7 @@ body {
 #rightPage {
 	position: absolute;
 	left: 50%; 
-	top: 10%; 
+	top: 11%;
 	border:1px solid #000000;
 	border-right: 5px solid #555;
 	border-bottom: 3px solid #333;
@@ -197,15 +197,15 @@ body {
 
 #rightPageNum {
 	position: absolute;
-	top: 10%;
-	right: 5%;
+	top: 12%;
+	right: 3%;
 	font-size: 80%;
 }
 
 #leftPageNum {
 	position: absolute;
-	top: 10%;
-	left: 5%;
+	top: 12%;
+	left: 4%;
 	font-size: 80%;
 }
 
@@ -234,6 +234,7 @@ img.thumb {
  	max-height: 100%; 
 	max-width: 100%;
    margin: auto auto auto auto;
+	cursor: move;
 }
 div.thumb {
 	height: 3em;
@@ -247,9 +248,9 @@ canvas.frame {
 	position: absolute;
 }
 
-/*canvas.frame:focus {
-	border: 1px solid #FF1238 !important;
-}*/
+canvas.frame:focus {
+	box-shadow: 0px 0px 3px 3px #CEECF5 !important;
+}
 
 canvas.minframe {
 	border: 1px solid #CCC;
@@ -390,8 +391,6 @@ border: 1px solid #999999;
 border-color: #e6e6e6 #e6e6e6 #bfbfbf;
 border-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.5);
 border-bottom-color: #a2a2a2;
--webkit-border-radius: 4px;
--moz-border-radius: 4px;
 border-radius: 4px;
 }
 
@@ -421,8 +420,6 @@ border-radius: 4px;
 	border: 1px solid #955;
 	box-shadow: 2px 2px 2px 2px #aaa;
 	padding: 20px 20px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
 

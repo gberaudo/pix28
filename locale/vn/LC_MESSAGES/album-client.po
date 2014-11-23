@@ -142,6 +142,10 @@ msgid "Enter a title"
 msgstr "Nhập tên album"
 
 #: templates/index.html
+msgid "Enter text here"
+msgstr "Thêm văn bản"
+
+#: templates/index.html
 msgid "Export pdf album"
 msgstr "Xuất album pdf"
 
