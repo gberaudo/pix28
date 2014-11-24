@@ -61,10 +61,6 @@ app.controller('CanvasController',
 		drawImage(canvas, $scope.img, display);
 	};
 
-		//Define dragable zones with respect to the canvas
-// 	var topLeftCorner, topRightCorner, botLeftCorner, botRightCorner,
-// 			topEdge, leftEdge, rightEdge, botEdge, centerZone;
-
 	var drag = {
 		center: false,
 		TL: false,
@@ -352,9 +348,10 @@ app.controller('ImageController',
 	$scope.zoomImage = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
- 		$scope.mouseDown = true;
+ 		$scope.mouseIsDown = true;
+		$scope.mouseLeft = false;
 		var intervalPromise = $interval(function() {
- 			if (!$scope.mouseDown) {
+ 			if (!$scope.mouseIsDown || $scope.mouseLeft) {
 				$interval.cancel(intervalPromise);
  			} else {
 				ImgService.zoomImage(canvas, scope, para);
@@ -363,7 +360,11 @@ app.controller('ImageController',
 	};
 	
 	$scope.mouseUp = function() {
-		$scope.mouseDown = false;
+		$scope.mouseIsDown = false;
+	};
+	
+	$scope.mouseLeave = function() {
+		$scope.mouseLeft = true;
 	};
 	
 	$scope.removeImage = function() {
@@ -377,9 +378,10 @@ app.controller('ImageController',
 	$scope.go = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
-		$scope.mouseDown = true;
+		$scope.mouseIsDown = true;
+		$scope.mouseLeft = false;
 		var intervalPromise = $interval(function() {
-			if(!$scope.mouseDown) {
+			if(!$scope.mouseIsDown || $scope.mouseLeft) {
 				$interval.cancel(intervalPromise);
 			} else {
 				ImgService.moveImage(canvas, scope, para);

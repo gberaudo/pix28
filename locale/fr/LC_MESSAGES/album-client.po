@@ -181,7 +181,7 @@ msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
 
 #: templates/index.html
 msgid "Load photos"
-msgstr ""
+msgstr "Charger photos"
 
 #: templates/index.html
 msgid "New album"

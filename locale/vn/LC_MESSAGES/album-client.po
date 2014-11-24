@@ -175,7 +175,7 @@ msgstr "Lên trên ảnh. Phím tắt :  Ctrl + mũi tên lên."
 
 #: templates/index.html
 msgid "Load photos"
-msgstr ""
+msgstr "Tải ảnh"
 
 #: templates/index.html
 msgid "New album"

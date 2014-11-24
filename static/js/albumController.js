@@ -301,19 +301,6 @@ app.controller('AlbumController',
 		}
 	};
 	
-// 	$scope.goFirstPage = function() {
-// 		$scope.current.pageNum = 0;
-// 		$scope.current.rightPage = $scope.album.content[0];
-// 		updateView();
-// 	};
-// 	
-// 	$scope.goLastPage = function() {
-// 		$scope.current.leftPage = $scope.album.content[$scope.album.content.length];
-// 		$scope.current.pageNum = $scope.album.content.length;
-// 		updateView();
-// 	};
-	
-	
 	function updateView(dir) {
 		if ($scope.current.pageNum == 0) {
 			$scope.show.leftPage = false;
@@ -337,6 +324,8 @@ app.controller('AlbumController',
 				}
 			}, 50);
 		}
+		$scope.current.onEditText = false;
+		$scope.current.onEditImage = false;
 	};
  /*------------------title, description control-------------------*/
  
@@ -418,7 +407,9 @@ app.controller('AlbumController',
 
 	$scope.generatePdf = function() {
 		$scope.processing = true;
-		$scope.showLink = false;
+		$timeout(function() {
+			$scope.showLink = false;
+		});
 		var albumJSON = angular.copy($scope.album.content);
 		getFonts()
 			.then(function(fontsData) {
@@ -435,6 +426,9 @@ app.controller('AlbumController',
 					$scope.$apply(function() {
 						$scope.showLink = true;
 					});
+					$timeout(function() {
+						$scope.processing = false;
+					},500)
 				});
 			};
 	
@@ -444,7 +438,7 @@ app.controller('AlbumController',
 			var fonts = [];
 			for (var i = 0; i < albumJSON.length; i++) {
 				var page = albumJSON[i];
-				for (j = 0; j < page.textBoxes.length; j++) {
+				for (var j = 0; j < page.textBoxes.length; j++) {
 					var font = page.textBoxes[j].font.family;
 					if (!Misc.InList(font, fonts)) {
 						fonts.push(font);
@@ -473,13 +467,13 @@ app.controller('AlbumController',
 				fonts = getFontNames(),
 				promises = [];
 			
-			for (i = 0; i < fonts.length; i++) {
+			for (var i = 0; i < fonts.length; i++) {
 				promises.push(getFont(fonts[i]));
 			}
 			
 			$q.all(promises).then(function(result) {
 				var fontsData = {};
-				for (i = 0; i < result.length; i++) {
+				for (var i = 0; i < result.length; i++) {
 					if (result[i]) {
 						fontsData[fonts[i]] = result[i];
 					}
@@ -506,7 +500,7 @@ app.controller('AlbumController',
 				
 				function putTexts(page) {
 					if (page.textBoxes.length > 0) {
-						for (t = 0; t < page.textBoxes.length; t++) {
+						for (var t = 0; t < page.textBoxes.length; t++) {
 							var tb = page.textBoxes[t];
 							if (!tb.text) { 
 								continue;
@@ -523,17 +517,13 @@ app.controller('AlbumController',
 										width: ratio * tb.box.width * $scope.pwidth/100,
 										align: tb.align,
 										margin: 0,
-// 										lineGap: 20
-// 										0.5*ratio*parseFloat(tb.font.size)
 									});
 						}
 					}
 				}
 				
 				function putNextPage() {
-					$timeout(function() {
-						$scope.processPage = i+1;
-					},2);
+					$scope.processPage = i+1;
 					var page = json[i];
 					setBGColor(page);
 					putImages(page)

@@ -16,6 +16,7 @@ app.controller('LayoutController',
 	
 	function hideColorMenu() {
 		$scope.showColorMenu = false;
+		$scope.current.BGcolor = null;
 	};
 	$scope.colorBlur = function() {
 		if (!$scope.mouseInMenu) {
@@ -45,7 +46,32 @@ app.controller('LayoutController',
 	$scope.changeBGColor = function(color) {
 		var activePage = document.getElementsByClassName('pActive')[0];
 		$scope.current[activePage.id].background = color;
-	}
+		$scope.current.BGcolor = color;
+	};
+	
+	$scope.changeAlbumBGColor = function() {
+// 		if (!!$scope.current.BGcolor) {
+			for (i = 0; i < $scope.album.content.length; i++) {
+				$scope.album.content[i].background = $scope.current.BGcolor;
+				if (!!$scope.current.leftPage) {
+					$scope.current.leftPage.background = $scope.current.BGcolor;
+				}
+				if (!!$scope.current.rightPage) {
+					$scope.current.rightPage.background = $scope.current.BGcolor;
+					
+				}
+			}
+// 		}
+	};
+	
+	
+	$scope.getUserColor = function() {
+		if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i
+			.test($scope.userColor)){
+			$scope.changeBGColor($scope.userColor);
+		}
+		
+	};
 }]);
 
 app.controller('minLayoutController',

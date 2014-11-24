@@ -76,11 +76,11 @@ $def with (mode)
 	
 	<!--__________________welcome screen____________________-->
 
-		<span class = 'btn color respond' ng-click = 'createAlbum()' 
+		<span class = 'bigbtn respond' ng-click = 'createAlbum()' 
 				ng-show = '\$parent.showAlbums || greeting'
 				style = 'position: absolute; left: 5%;
 					top: {{0.1*screenWidth + "px"}};
-					padding: 4px 12px !important'
+					height: 1.5em'
 				title = '{{"Click to create a new album"|translate}}'
 				translate> 
 				New album 
@@ -159,7 +159,7 @@ $def with (mode)
 						value = 'album.title'
 						>
 					</input>
-				<form>
+				</form>
 				
 			</div>
 
@@ -220,7 +220,7 @@ $def with (mode)
 				<br/> <br/>
 				
 				<div id = 'export'>
-				<span class = 'btn color respond' 
+				<span class = 'bigbtn respond' 
 					ng-click = 'generatePdf()' 
 					title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
 					translate>
@@ -500,6 +500,7 @@ $def with (mode)
 							</span>
 							<span ng-mousedown = 'zoomImage("in")'
 								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Zoom image in. Hot key: +"|translate}}'
 								class = 'btn respond '
 								style = 'padding: 4px;'>
@@ -507,6 +508,7 @@ $def with (mode)
 									style = 'height: 130%'/> </span>
 							<span ng-mousedown = 'zoomImage("out")'
 								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()' 
 								title = '{{"Zoom image out. Hot key: -"|translate}}'
 								class = 'btn respond  inline'
 								style = 'padding: 4px'>
@@ -515,6 +517,7 @@ $def with (mode)
 									
 							<span ng-mousedown = 'go("left")'
 								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the left of image. Hot key: Ctrl + arrow left."|translate}}'
 								class = 'btn respond  inline'
 								style = 'padding: 4px'>
@@ -525,6 +528,7 @@ $def with (mode)
 							
 							<span ng-mousedown = 'go("right")'
 								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the right of image. Hot key: Ctrl + arrow right."|translate}}'
 								class = 'btn respond  inline'
 								style = 'padding: 4px'>
@@ -535,6 +539,7 @@ $def with (mode)
 							
 							<span ng-mousedown = 'go("up")'
 								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the top of image. Hot key: Ctrl + arrow up."|translate}}'
 								class = 'btn respond  inline'
 								style = 'padding: 4px'>
@@ -545,6 +550,7 @@ $def with (mode)
 							
 							<span ng-mousedown = 'go("down")'
 								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
 								class = 'btn respond  inline'
 								style = 'padding: 4px'>
@@ -556,7 +562,7 @@ $def with (mode)
 							<span ng-click = 'removeImage()'
 								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
 								class = 'btn respond '
-								style = 'padding: 4px; margin-left: 4em'> 
+								style = 'float: right; margin-right: 0.5em'> 
 								<img src = 'static/icons/trash.png'
 									style = 'height: 110%'/> </span>
 							
@@ -577,7 +583,7 @@ $def with (mode)
 					
 					<div id = 'layoutSets'>
 						<span ng-repeat = 'choice in layoutList'
-							class = 'link layout' 
+							class = 'link layout respond' 
 							ng-click = 'showLayouts(choice)'>
 							  {{choice}} 
 						</span>
@@ -597,21 +603,36 @@ $def with (mode)
 						<br/>
 						<div tabindex = '0'
 							id = 'BGcolorMenu'
-							ng-if = 'showColorMenu' 
+							ng-show = 'showColorMenu' 
 							ng-init = 'showColorMenu = false'
 							ng-click = 'menuClick()'
 							ng-blur = 'menuBlur()'
 							ng-mouseenter = 'mouseEnter()'
 							ng-mouseleave = 'mouseLeave()'>
-							<div class = 'colorTable'
+							<div class = 'colorTable link'
 								tabindex = 0 
 								ng-repeat = 'color in colors'
 								style = 'background-color:{{color}};'
 								ng-focus = 'changeBGColor(color)'
 								ng-blur = 'colorBlur()'>
 							</div>
-							<div> None </div>
-							<div style = 'display: inline-block'> Apply for all pages</div>
+							<div class = 'inline'
+								style = 'float: left; background-color: #FFFFFF
+									 height: 1.5em'>
+							<form class = 'inline' ng-submit = 'getUserColor()'>
+									<input type = 'text'
+										style = 'width: 7em'
+										ng-model = 'userColor'
+										placeholder = '#FFFFFF'>
+									</input>
+							</form>
+							</div>
+							<div class = 'link small respond'
+								style = 'text-align: center; line-height: 1.8em;
+									float: right'
+								ng-click = 'changeAlbumBGColor()' translate>
+								Apply for all pages
+							</div>
 							
 						</div>
 					</div>
@@ -632,12 +653,17 @@ $def with (mode)
 				<div id = 'imageLoader'
 					ng-controller = 'ImageLoaderController'
 					ng-if = 'imgLoad'>
-					<label for = 'files' class = 'btn respond '
+					<label for = 'files' class = 'medbtn'
+						id = 'loadPhotos'
 						title = '{{"Click to load photos from your computer"|translate}}'
-						translate>
-					Load photos</label>
-					<span style = 'font-size: 80%'
-						ng-show = 'loading'>{{fileProcess}}</span>
+						> 
+						<span style = 'margin-right: 1em' translate> Load photos </span> 
+						<!--<img class = 'inline'
+							 style = 'height: 130%' 
+							src = 'static/icons/folder-image.png'/>-->
+					</label>
+					<!--<span style = 'font-size: 80%'
+						ng-show = 'loading'>{{fileProcess}}</span>-->
 					<input type = 'file' id = 'files' 
 						style = 'display: none'
 						onchange = 'angular.element(this).scope().handleFileSelect(event)'
