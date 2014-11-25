@@ -73,7 +73,49 @@ $def with (mode)
 	</div>
 
 	<div ng-controller = 'AlbumController' ng-init = '\$parent.showAlbums = false'>
-	
+		<div ng-show = 'hideAlbum' class = 'pageDesactivate'
+					tabindex = '0'
+					ng-keydown = 'alertKeydown(\$event)'
+					style = 'width: {{screenWidth + "px"}}; height: {{screenHeight + "px"}}'>
+		</div>
+		
+		<div ng-show = 'previewMode' id = 'previewPage'
+			style = 'width: {{1.0*previewWidth + "px"}}; 
+			height: {{previewHeight + "px"}};
+			top: 5%; left: 5%'>
+			<div
+				id = 'leftPreview'
+				ng-show = 'viewPageNum != 0'
+				style = 'z-index: 21;
+					position: absolute; top: 0px; left: 0px; 
+					width: {{previewWidth/2 + "px"}}; 
+					height: {{previewHeight + "px"}}'>
+			</div>
+			<div
+				id = 'rightPreview'
+				ng-show = 'viewPageNum != album.content.length'
+				style = 'position: absolute; top: 0px;
+					left: {{(previewWidth/2 + 2) + "px"}};
+					width: {{previewWidth/2 + "px"}}; 
+					height: {{previewHeight + "px"}};
+					border-left: 2px solid #CCC;
+					border-right: 2px solid #CCC'>
+			</div>
+			<span style = 'margin-left: 100%' 
+			class = 'link'
+			ng-click = 'removePreview()'>Back</span>
+			<span style = 'position: absolute; left: 100%; top: 50%'
+				class = 'link' 
+				ng-show = 'viewPageNum != album.content.length'
+				ng-click = 'previewPage(viewPageNum + 2)'>
+			Next
+			</span>
+			<span style = 'position: absolute;
+				left:-3%; top: 50%'
+				ng-show = 'viewPageNum != 0'
+				class = 'link'
+				ng-click = 'previewPage(viewPageNum - 2)'>Prev</span>
+		</div>
 	<!--__________________welcome screen____________________-->
 
 		<span class = 'bigbtn respond' ng-click = 'createAlbum()' 
@@ -182,11 +224,6 @@ $def with (mode)
 					Remove this album
 				</span>
 				
-				<div ng-show = 'delAlbum' class = 'pageDesactivate'
-					tabindex = '0'
-					ng-keydown = 'alertKeydown(\$event)'
-					style = 'width: {{screenWidth + "px"}}; height: {{screenHeight + "px"}}'>
-				</div>
 				
 				<div  class = 'alert'
 						style = 'width: {{screenWidth/4 + "px"}}; 
@@ -212,7 +249,7 @@ $def with (mode)
 						</button>
 						<button type = 'button' class = 'respond' 
 							id = 'notDelAlbum'
-							ng-click = 'delAlbum = false' 
+							ng-click = 'delAlbum = false; hideAlbum = false' 
 							style = 'float: right' translate>
 							No, do not delete.
 						</button>
@@ -287,14 +324,7 @@ $def with (mode)
 								style = 'height: 130%; margin-left: 2%'/> 
 						</span>
 						
-						<span id = 'removePage' 
-							class = 'link'
-							title = '{{"Delete this double page"|translate}}'
-							ng-click = 'removePage()'>
-							<img src = 'static/icons/delpage.svg'
-								class = 'inline respond'
-								style = 'height: 150%'/>
-						</span>
+
 						
 						<span class = 'draggable link'
 							id = 'addText'
@@ -314,6 +344,20 @@ $def with (mode)
 							ondragstart = 'angular.element(this).scope().dragFrame(event)'
 							title = '{{"Drag and drop into page to add a new frame"|translate}}'>
 							<img src = 'static/icons/frame.svg'
+								class = 'inline respond'
+								style = 'height: 150%'/>
+						</span>
+						
+						
+						<span class = 'link'
+							ng-click = 'previewPage(current.pageNum)'>
+							Preview page
+						</span>
+						<span id = 'removePage' 
+							class = 'link'
+							title = '{{"Delete this double page"|translate}}'
+							ng-click = 'removePage()'>
+							<img src = 'static/icons/delpage.svg'
 								class = 'inline respond'
 								style = 'height: 150%'/>
 						</span>
@@ -643,6 +687,8 @@ $def with (mode)
 							title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
 							ng-controller = 'minLayoutController'
 							ng-click = 'loadPageLayout(layout)'
+							ng-mouseover = 'previewLayout(layout, \$event)'
+							ng-mouseleave = 'mouseLeave()'
 							class = 'clickable minframe'> 
 						</canvas>
 					</div>

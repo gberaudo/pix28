@@ -71,7 +71,7 @@ app.factory('Layouts', function() {
 			frames: 
 				[
 					{left: 20, top: 10, width: 70, height: 50},
-					{left: 20, top: 65, width: 70, height: 30}
+					{left: 20, top: 62, width: 70, height: 30}
 				],
 			boxes: []
 		},

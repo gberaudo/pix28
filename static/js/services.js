@@ -265,7 +265,8 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#EFEFEF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.fillStyle = '#777';
+		ctx.fillStyle = '#666';
+// 		ctx.font = '8pt Helvetica'
 		ctx.fillText(msg, 5, 20);
 		canvas.style.border = '1px solid #CCC';
 	};

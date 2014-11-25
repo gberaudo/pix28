@@ -77,38 +77,61 @@ app.controller('LayoutController',
 app.controller('minLayoutController',
     ['$scope', '$element', 'FrameObject', 'TextBoxObject',
 					function($scope, $element, FrameObject, TextBoxObject) {
-	var canvas = $element[0];
-	var ctx = canvas.getContext('2d');
-	var scale = 0.2;
-	canvas.width = scale * $scope.pwidth;
-	canvas.height = scale * $scope.pheight;
-	for (i = 0; i < $scope.layout.frames.length; i++) {
-		var rect = $scope.layout.frames[i];
-		ctx.beginPath();
-		ctx.lineWidth = '.2';
-		var left = scale * rect.left* $scope.pwidth / 100,
-			top = scale * rect.top * $scope.pheight / 100,
-			width = scale * rect.width * $scope.pwidth / 100,
-			height = scale * rect.height * $scope.pheight / 100;
-		ctx.rect(left, top, width, height);
-		ctx.stroke();
-		ctx.fillStyle = '#EEEEEE';
-		ctx.fillRect(left, top, width, height);
+	
+	var canvas = $element[0],
+		scale = 0.2;
+		
+	drawLayout(canvas, scale);
+
+	function drawLayout(canvas, scale) {
+		var ctx = canvas.getContext('2d');
+		canvas.width = scale * $scope.pwidth;
+		canvas.height = scale * $scope.pheight;
+		
+		for (i = 0; i < $scope.layout.frames.length; i++) {
+			var rect = $scope.layout.frames[i];
+			ctx.beginPath();
+			ctx.lineWidth = '.2';
+			var left = scale * rect.left* $scope.pwidth / 100,
+				top = scale * rect.top * $scope.pheight / 100,
+				width = scale * rect.width * $scope.pwidth / 100,
+				height = scale * rect.height * $scope.pheight / 100;
+			ctx.rect(left, top, width, height);
+			ctx.stroke();
+			ctx.fillStyle = '#EEEEEE';
+			ctx.fillRect(left, top, width, height);
+		}
+		
+		for (i = 0; i < $scope.layout.boxes.length; i++) {
+			var rect = $scope.layout.boxes[i];
+			ctx.beginPath();
+			ctx.lineWidth = '.2';
+			ctx.rect(scale * rect.left*$scope.pwidth/100, 
+						scale * rect.top * $scope.pheight/100,
+						scale * rect.width * $scope.pwidth/100,
+						scale * rect.height * $scope.pheight/100
+					);
+			ctx.strokeStyle = 'blue';
+			ctx.stroke();
+		}
 	}
 	
-	for (i = 0; i < $scope.layout.boxes.length; i++) {
-		var rect = $scope.layout.boxes[i];
-		ctx.beginPath();
-		ctx.lineWidth = '.2';
-		ctx.rect(scale * rect.left*$scope.pwidth/100, 
-					scale * rect.top * $scope.pheight/100,
-					scale * rect.width * $scope.pwidth/100,
-					scale * rect.height * $scope.pheight/100
-				  );
-		ctx.strokeStyle = 'blue';
-		ctx.stroke();
-	}
+	var previewLayout = document.createElement('canvas');
+	angular.element(previewLayout).addClass('preview');
+	document.body.appendChild(previewLayout);
+ 	$scope.previewLayout = function(layout, event) {
+		drawLayout(previewLayout, .6);
+		var mouseX = event.pageX,
+			mouseY = event.pageY;
+		previewLayout.style.bottom = (document.body.offsetHeight - mouseY + 50) + 'px';
+		previewLayout.style.left = (mouseX - 100) + 'px';
+		previewLayout.style.display = 'block';
+		previewLayout.style.border = '1px solid #CCC';
+	};
 	
+	$scope.mouseLeave = function() {
+		previewLayout.style.display = 'none';
+	};
 	
 	$scope.loadPageLayout = function(layout) {
 		var canvas, frame, box;

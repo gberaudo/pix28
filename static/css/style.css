@@ -310,6 +310,13 @@ span.italic {
 	font-family: "Times New Roman";
 }
 
+input {
+	font-size: 90%;
+}
+
+select {
+	font-size: 90%;
+}
 .layout {
 	width: 2.5em; 
 	margin-right: 0.5em;
@@ -476,7 +483,20 @@ span[name = 'title'] {
 	border-radius: 2px;
 }
 
+.preview {
+	position: absolute;
+	z-index: 20;
+	background-color: #FFFFFF;
+	box-shadow: 2px 2px 2px 2px #aaa; 
+	display: none;
+}
 
+#previewPage {
+	z-index: 20;
+	position: absolute;
+	background-color: #FFFFFF !important;
+	box-shadow: 2px 2px 2px 2px #aaa; 
+}
 @font-face{
 	font-family: Calligraffiti;
 	src: url('../fonts/Calligraffiti.ttf') format('truetype');

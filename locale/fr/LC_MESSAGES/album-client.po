@@ -42,6 +42,10 @@ msgid "Align text right"
 msgstr "Aligner le texte à droite"
 
 #: templates/index.html
+msgid "Apply for all pages"
+msgstr ""
+
+#: templates/index.html
 msgid "Are you sure to delete this album?"
 msgstr "Vous êtes sure de vouloir le supprimer?"
 

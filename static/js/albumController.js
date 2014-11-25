@@ -1,8 +1,10 @@
 app.controller('AlbumController',
     ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 
-	 'DBServices', 'Misc', 'gettextCatalog', 'Layouts', 'FrameObject', 'TextBoxObject',
+	 'DBServices', 'Misc', 'gettextCatalog', 'Layouts', 'FrameObject', 
+	 'ImgService', 'TextBoxObject',
     function($scope, $timeout, $http, $element, $q, PageObject, 
-		DBServices, Misc, gettextCatalog, Layouts, FrameObject, TextBoxObject
+		DBServices, Misc, gettextCatalog, Layouts, FrameObject, 
+		ImgService, TextBoxObject
 	) {
 	
 	init();
@@ -121,9 +123,10 @@ app.controller('AlbumController',
 
 	$scope.delAlbumRq = function() {
 		$scope.delAlbum = true;
+		$scope.hideAlbum = true;
 		$timeout(function() {
 			document.getElementById('notDelAlbum').focus();
-		}, 200);
+		}, 50);
 	};
 	
 	$scope.removeAlbum = function(id) {
@@ -146,11 +149,13 @@ app.controller('AlbumController',
 					$scope.$parent.inAlbum = false;
 					$scope.$parent.showAlbums = true;
 					$scope.delAlbum = false;
+					$scope.hideAlbum = false;
 				});
 			};
 			removeRq.onerror = function() {
 				console.log('failed to remove album', id);
 				$scope.delAlbum = false;
+				$scope.hideAlbum = false;
 			};
 				
 		};
@@ -164,6 +169,7 @@ app.controller('AlbumController',
 		console.log('key down');
 		if (event.keyCode == 27) {
 			$scope.delAlbum = false;
+			$scope.hideAlbum = false;
 		}
 		if (event.keyCode == 37) {
 			document.getElementById('delAlbum').focus();
@@ -274,6 +280,80 @@ app.controller('AlbumController',
 		}
 		$scope.current.leftPage =  $scope.album.content[$scope.current.pageNum - 1];
 		updateView('next');
+	};
+	
+	
+	$scope.previewPage = function(num) {
+		$scope.previewWidth = 0.8 * $scope.screenWidth;
+		$scope.previewHeight = 0.5 * $scope.previewWidth;
+		$scope.viewPageNum = num;
+		drawPage(num);
+ 		$scope.hideAlbum = true;
+		$scope.previewMode = true;
+	};
+	
+	function drawPage(num) {
+		document.getElementById('rightPreview').innerHTML = '';
+		document.getElementById('leftPreview').innerHTML = '';
+		var content = $scope.album.content;
+		if (num != 0) {
+			var leftPage = angular.copy(content[num - 1]),
+				leftView = document.getElementById('leftPreview');
+			showPage(leftPage, leftView);
+		}	
+		if (num != content.length) {
+			var rightPage = angular.copy(content[num]),
+				rightView = document.getElementById('rightPreview');
+			showPage(rightPage, rightView);
+		}
+		
+		function showPage(page, view) {
+			view.style.backgroundColor = page.background;
+			var pwidth = $scope.previewWidth/2,
+				pheight = $scope.previewHeight;
+			//draw images
+			for (var i = 0; i < page.frames.length; i++) {
+				var canvas = document.createElement('canvas'),
+					frame = page.frames[i],
+					display = angular.copy(frame.display),
+					img = new Image();
+				view.appendChild(canvas);
+				img.src = frame.image.src;
+				canvas.width = frame.canvas.width * pwidth / 100;
+				canvas.height = frame.canvas.height * pheight / 100;
+				canvas.style.top = frame.canvas.top * pheight / 100 + 'px';
+				canvas.style.left = frame.canvas.left * pwidth / 100 + 'px';
+				canvas.style.border = '1px solid #FFFFFF';
+				canvas.style.position = 'absolute';
+				display.dw = canvas.width;
+				display.dh = canvas.height;
+				ImgService.drawImage(canvas, img, display); 
+			}
+			//draw text
+			for (var i = 0 ; i < page.textBoxes.length; i++) {
+				var div = document.createElement('div'),
+					textBox = page.textBoxes[i];
+				div.innerHTML = textBox.text;
+				div.style.width = textBox.box.width * pwidth / 100 + 'px';
+				div.style.height = textBox.box.height * pheight / 100 + 'px';
+				div.style.top = textBox.box.top * pheight / 100 + 'px';
+				div.style.left = textBox.box.left * pwidth / 100 + 'px';
+				div.style.fontSize = (parseFloat(textBox.font.size) * pwidth/$scope.pwidth) + 'px';
+				div.style.fontStyle = textBox.font.fontStyle;
+				div.style.fontFamily = textBox.font.family;
+				div.style.color = textBox.font.color;
+				div.style.fontWeight = textBox.font.weight;
+				div.style.textAlign = textBox.align;
+				div.style.position = 'absolute';
+				view.appendChild(div);
+			}
+			
+		}
+	}
+	
+	$scope.removePreview = function() {
+		$scope.hideAlbum = false;
+		$scope.previewMode = false;
 	};
 
 	$scope.removePage = function() {
