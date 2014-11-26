@@ -120,7 +120,7 @@ app.controller('TextBoxController',
 		} else {
 			$scope.current.cursor = 'auto';
 			drag.all = false;
-			drag.BR = true;
+			drag.BR = false;
 		}
 	};
 	
@@ -192,11 +192,8 @@ app.controller('TextBoxController',
 		resetZone();
 		if (Misc.inRect(mouseRtTA, $scope.TAZone.TL)) {
 			$scope.current.cursor = 'move';
-			drag.all = true;
 		} else if (Misc.inRect(mouseRtTA, $scope.TAZone.BR)) {
 			$scope.current.cursor = 'se-resize';
-			drag.BR = true;
-			drag.all = false;
 		} else {
 			$scope.current.cursor = 'default';
 		}

@@ -75,19 +75,19 @@ $def with (mode)
 	<div ng-controller = 'AlbumController' ng-init = '\$parent.showAlbums = false'>
 		<div ng-show = 'hideAlbum' class = 'pageDesactivate'
 					tabindex = '0'
-					ng-keydown = 'alertKeydown(\$event)'
 					style = 'width: {{screenWidth + "px"}}; height: {{screenHeight + "px"}}'>
 		</div>
 		
-		<div ng-show = 'previewMode' id = 'previewPage'
-			style = 'width: {{1.0*previewWidth + "px"}}; 
+		<div tabindex = '0'
+			ng-show = 'previewMode' id = 'previewPage'
+			style = 'width: {{previewWidth + "px"}}; 
 			height: {{previewHeight + "px"}};
-			top: 5%; left: 5%'>
+			top: 7%; left: 8%'
+			>
 			<div
 				id = 'leftPreview'
 				ng-show = 'viewPageNum != 0'
-				style = 'z-index: 21;
-					position: absolute; top: 0px; left: 0px; 
+				style = 'position: absolute; top: 0px; left: 0px; 
 					width: {{previewWidth/2 + "px"}}; 
 					height: {{previewHeight + "px"}}'>
 			</div>
@@ -95,26 +95,29 @@ $def with (mode)
 				id = 'rightPreview'
 				ng-show = 'viewPageNum != album.content.length'
 				style = 'position: absolute; top: 0px;
-					left: {{(previewWidth/2 + 2) + "px"}};
+					left: {{previewWidth/2  + "px"}};
 					width: {{previewWidth/2 + "px"}}; 
 					height: {{previewHeight + "px"}};
-					border-left: 2px solid #CCC;
-					border-right: 2px solid #CCC'>
+					border-left: 1px solid #CCC;'>
 			</div>
-			<span style = 'margin-left: 100%' 
-			class = 'link'
-			ng-click = 'removePreview()'>Back</span>
-			<span style = 'position: absolute; left: 100%; top: 50%'
-				class = 'link' 
+			<img 
+				src = 'static/icons/window-close.png'
+				style = 'margin-left: 101%; margin-top: -3%' 
+				class = 'clickable'
+				ng-click = 'removePreview()'/>
+			<img 
+				src = 'static/icons/next.png'
+				style = 'position: absolute; left: 101%; top: 49%; width: 2%'
+				class = 'clickable' 
 				ng-show = 'viewPageNum != album.content.length'
-				ng-click = 'previewPage(viewPageNum + 2)'>
-			Next
-			</span>
-			<span style = 'position: absolute;
-				left:-3%; top: 50%'
+				ng-click = 'previewPage(viewPageNum + 2)'/>
+			<img 
+				src = 'static/icons/prev.png'
+				style = 'position: absolute;
+				left:-3%; top: 49%; width: 2%'
 				ng-show = 'viewPageNum != 0'
-				class = 'link'
-				ng-click = 'previewPage(viewPageNum - 2)'>Prev</span>
+				class = 'clickable'
+				ng-click = 'previewPage(viewPageNum - 2)'/>
 		</div>
 	<!--__________________welcome screen____________________-->
 
@@ -345,13 +348,17 @@ $def with (mode)
 							title = '{{"Drag and drop into page to add a new frame"|translate}}'>
 							<img src = 'static/icons/frame.svg'
 								class = 'inline respond'
-								style = 'height: 150%'/>
+								style = 'height: 140%'/>
 						</span>
 						
 						
 						<span class = 'link'
-							ng-click = 'previewPage(current.pageNum)'>
-							Preview page
+							ng-click = 'previewPage(current.pageNum)'
+							title = '{{"Preview album"|translate}}'
+							style = 'margin-left: 1em'>
+							<img src = 'static/icons/preview.svg'
+								class = 'inline respond'
+								style = 'height: 140%'/>
 						</span>
 						<span id = 'removePage' 
 							class = 'link'

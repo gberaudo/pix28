@@ -166,18 +166,13 @@ app.controller('AlbumController',
 	};
 
 	$scope.alertKeydown = function(event) {
-		console.log('key down');
-		if (event.keyCode == 27) {
-			$scope.delAlbum = false;
-			$scope.hideAlbum = false;
-		}
 		if (event.keyCode == 37) {
 			document.getElementById('delAlbum').focus();
 		}
 		if  (event.keyCode == 39) {
 			document.getElementById('notDelAlbum').focus();
 		}
-	}
+	};
 		
 	$scope.openAlbum = function(albumSC) {
 		getAlbum(albumSC.id);
@@ -283,9 +278,10 @@ app.controller('AlbumController',
 	};
 	
 	
+	$scope.previewWidth = 0.8 * $scope.screenWidth;
+	$scope.previewHeight = 0.5 * $scope.previewWidth;
+	
 	$scope.previewPage = function(num) {
-		$scope.previewWidth = 0.8 * $scope.screenWidth;
-		$scope.previewHeight = 0.5 * $scope.previewWidth;
 		$scope.viewPageNum = num;
 		drawPage(num);
  		$scope.hideAlbum = true;
@@ -308,26 +304,31 @@ app.controller('AlbumController',
 		}
 		
 		function showPage(page, view) {
-			view.style.backgroundColor = page.background;
+			view.style.backgroundColor = page.background || '#FFFFFF';
 			var pwidth = $scope.previewWidth/2,
 				pheight = $scope.previewHeight;
 			//draw images
 			for (var i = 0; i < page.frames.length; i++) {
-				var canvas = document.createElement('canvas'),
-					frame = page.frames[i],
-					display = angular.copy(frame.display),
-					img = new Image();
-				view.appendChild(canvas);
-				img.src = frame.image.src;
-				canvas.width = frame.canvas.width * pwidth / 100;
-				canvas.height = frame.canvas.height * pheight / 100;
-				canvas.style.top = frame.canvas.top * pheight / 100 + 'px';
-				canvas.style.left = frame.canvas.left * pwidth / 100 + 'px';
-				canvas.style.border = '1px solid #FFFFFF';
-				canvas.style.position = 'absolute';
-				display.dw = canvas.width;
-				display.dh = canvas.height;
-				ImgService.drawImage(canvas, img, display); 
+				function draw(frame) {
+					var canvas = document.createElement('canvas'),
+						display = angular.copy(frame.display),
+						img = new Image();
+					canvas.width = frame.canvas.width * pwidth / 100;
+					canvas.height = frame.canvas.height * pheight / 100;
+					canvas.style.top = frame.canvas.top * pheight / 100 + 'px';
+					canvas.style.left = frame.canvas.left * pwidth / 100 + 'px';
+					canvas.style.position = 'absolute';
+					display.dw = canvas.width;
+					display.dh = canvas.height;
+					img.onload = function() {
+						ImgService.drawImage(canvas, img, display); 
+					};
+					img.src = frame.image.src;
+					view.appendChild(canvas);
+				}
+				draw(page.frames[i]);
+
+				
 			}
 			//draw text
 			for (var i = 0 ; i < page.textBoxes.length; i++) {
@@ -351,11 +352,41 @@ app.controller('AlbumController',
 		}
 	}
 	
+	
 	$scope.removePreview = function() {
 		$scope.hideAlbum = false;
 		$scope.previewMode = false;
 	};
 
+	
+	document.addEventListener('keydown', handleKeyDown, true);
+	
+	function handleKeyDown(event) {
+		switch (event.keyCode){
+			case 27:
+				$timeout(function() {
+					$scope.hideAlbum = false;
+					$scope.delAlbum = false;
+					$scope.previewMode = false;
+				});
+				break;
+			case 39:
+				if ($scope.viewPageNum != $scope.album.content.length) {
+					$timeout(function(){
+						$scope.previewPage($scope.viewPageNum + 2);
+					});
+				}
+				break;
+			case 37:
+				if ($scope.viewPageNum != 0) {
+					$timeout(function(){
+						$scope.previewPage($scope.viewPageNum - 2);
+					});
+				}
+				break;
+		}
+	}
+	
 	$scope.removePage = function() {
 		if ($scope.current.pageNum == 0 || 
 			$scope.current.pageNum == $scope.album.content.length) {

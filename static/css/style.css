@@ -125,7 +125,7 @@ body {
 }
 
 .cActive {
-	box-shadow: 0px 0px 1px 1px #0489B1 !important;
+	box-shadow: 0px 0px 2px 2px #0489B1 !important;
 }
 
 .tActive {
@@ -467,8 +467,8 @@ span[name = 'title'] {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: #444444;
-	opacity: 0.5;
+	background-color: #333;
+	opacity: 0.9;
 }
 .alert {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -494,9 +494,15 @@ span[name = 'title'] {
 #previewPage {
 	z-index: 20;
 	position: absolute;
-	background-color: #FFFFFF !important;
-	box-shadow: 2px 2px 2px 2px #aaa; 
+/* 	background-color: #FFFFFF !important; */
+	box-shadow: 2px 2px 2px 2px #fff; 
 }
+
+#previewPage, #leftPage, #rightPage, .btn, .bigbtn, .medbtn:focus {
+	outline: 0;
+}
+
+
 @font-face{
 	font-family: Calligraffiti;
 	src: url('../fonts/Calligraffiti.ttf') format('truetype');

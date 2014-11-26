@@ -289,30 +289,40 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		}
 		
 		function zoom(rate) {
+			console.log('toto');
 			var sChange = {};
 			var canvasProp = canvas.height/canvas.width;
 			var realRate = rate;
-			sChange.X = -0.5 * (1 - 1 / realRate) * display.dw * realRate * image.scaleRatio;
+			sChange.X = -0.5 * (1 - 1 / realRate) * display.sw * realRate;
 			sChange.Y = sChange.X * canvasProp;
-
+			sChange.X1 = sChange.X;
+			sChange.Y1 = sChange.Y;
+			//first check if the edges top and left are attained
 			if (sChange.X < -display.sx) {
-				sChange.X = -display.sx;
-				sChange.Y =  sChange.X * canvasProp;
-				realRate = 1 + 2* sChange.X / (display.dw * image.scaleRatio);
+				sChange.X1 = -display.sx;
+				sChange.Y1 =  sChange.X1 * canvasProp;
+				realRate = 1 + 2* sChange.X1 / display.sw;
 			}
 			
-			if (sChange.Y < -display.sy) {
-				sChange.Y = -display.sy;
-				sChange.X = sChange.Y / canvasProp;
-				realRate = 1 + 2* sChange.X / (display.dw * image.scaleRatio);
+			if (sChange.Y1 < -display.sy) {
+				sChange.Y1 = -display.sy;
+				sChange.X1 = sChange.Y1 / canvasProp;
+				realRate = 1 + 2* sChange.X1 / display.sw;
 			}
 			
-			display.sx += sChange.X;
-			display.sy += sChange.Y; 
+			var resX = Math.min(sChange.X1 - sChange.X, 
+									  image.mWidth - display.sw - display.sx);
+			var resY = Math.min(sChange.Y1 - sChange.Y,
+									 image.mHeight - display.sh - display.sy);
+			var r = Math.min(1 + resX / display.sw , 1 + resY / display.sh);
+			
+
+			display.sx += sChange.X1;
+			display.sy += sChange.Y1; 
+			realRate = realRate * r;
 			display.sw = Math.min(display.sw * realRate, image.mWidth - display.sx);
-			display.sh = Math.min(display.sh * realRate, image.mHeight - display.sy);
+			display.sh = Math.min(canvasProp * display.sw, image.mHeight - display.sy);
 			image.scaleRatio = realRate * image.scaleRatio; //update scale
-			
 			drawImage(canvas, img, display);
 		};
 	};

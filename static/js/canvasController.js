@@ -162,36 +162,68 @@ app.controller('CanvasController',
 				if (off > cv.width - 30) {
 					off = cv.width - 30;
 				}
+				
 				if (off < -cleft) {
 					off = -cleft;
 				}
 				sChange.X = off * image.scaleRatio;
-				if (sChange.X < -display.sx){
-					sChange.X = -display.sx;
-					off = sChange.X / image.scaleRatio;
+				
+				if (sChange.X < -display.sx) {
+					if (display.sw - sChange.X > image.mWidth) {
+						var sRes = display.sw - sChange.X - image.mWidth;
+						var dr = sRes/image.mWidth;
+						image.scaleRatio = image.mWidth / (cv.width - off);
+						display.sy = display.sy + display.sh * dr/2;
+						display.sh -=  display.sh * dr;
+						display.sx = 0;
+						display.sw = image.mWidth;
+					} else {
+						display.sx = 0;
+						display.sw = Math.min(display.sw - sChange.X, image.mWidth);
+					}
+				} 
+				else {
+					display.sx += sChange.X; 
+					display.sw = Math.min(display.sw - sChange.X, image.mWidth - display.sx);
 				}
-				cv.style.left = (cleft + off) + 'px';
+				cv.style.left = (cleft + off) +'px';
 				cv.width -= off;
-				display.sx += sChange.X;
-				display.sw = Math.min(display.sw - sChange.X, image.mWidth);
 				display.dw = cv.width;
 				break;
 				
 			case 'R':
 				off = offset.X;
+				
+				//enlarge image when limit attained
 				if (off < -cv.width + 30) {
 					off = -cv.width + 30;
 				}
 				if (off + cv.width + cleft > pwidth) {
 					off = pwidth - cv.width - cleft;
 				}
+				
 				sChange.X = off * image.scaleRatio;
-				if (sChange.X + display.sw + display.sx > image.mWidth){
-					sChange.X = image.mWidth - display.sw - display.sx;
-					off = sChange.X / image.scaleRatio;
+				
+				if (display.sw + display.sx + sChange.X > image.mWidth) {
+					sChange.X1 = image.mWidth - display.sw - display.sx;
+					if (sChange.X - sChange.X1 > display.sx) {
+						var sRes = sChange.X - sChange.X1 - display.sx;
+						var dr = sRes/image.mWidth;
+						image.scaleRatio = image.mWidth / (cv.width + off);
+						display.sy = display.sy + display.sh * dr/2;
+						display.sh -=  display.sh * dr;
+						display.sx = 0;
+						display.sw = image.mWidth;
+					} else {
+						sChange.X2 = sChange.X - sChange.X1;
+						display.sx -= sChange.X2;
+						display.sw += sChange.X;
+					}
+				} 
+				else {
+					display.sw = Math.min(display.sw + sChange.X, image.mWidth - display.sx);
 				}
 				cv.width += off;
-				display.sw = Math.min(display.sw + sChange.X, image.mWidth);
 				display.dw = cv.width;
 				break;
 			
@@ -202,16 +234,30 @@ app.controller('CanvasController',
 				}
 				if (off < -ctop) {
 					off = -ctop;
-				};
-				sChange.Y = off * image.scaleRatio;
-				if (sChange.Y < -display.sy){
-					sChange.Y = -display.sy;
-					off = sChange.Y / image.scaleRatio;
 				}
-				cv.style.top = (ctop + off) + 'px';
+				
+				sChange.Y = off * image.scaleRatio;
+				
+				if (sChange.Y < -display.sy) {
+					if (display.sh - sChange.Y > image.mHeight) {
+						var sRes = display.sh - sChange.Y - image.mHeight;
+						var dr = sRes/image.mHeight;
+						image.scaleRatio = image.mHeight / (cv.height - off);
+						display.sx = display.sx + display.sw * dr/2;
+						display.sw -=  display.sw * dr;
+						display.sy = 0;
+						display.sh = image.mHeight;
+					} else {
+						display.sy = 0;
+						display.sh = Math.min(display.sh - sChange.Y, image.mHeight);
+					}
+				} 
+				else {
+					display.sy += sChange.Y; 
+					display.sh = Math.min(display.sh - sChange.Y, image.mHeight - display.sy);
+				}
+				cv.style.top = (ctop + off) +'px';
 				cv.height -= off;
-				display.sy += sChange.Y;
-				display.sh = Math.min(display.sh - sChange.Y, image.mHeight);
 				display.dh = cv.height;
 				break;
 			
@@ -224,12 +270,27 @@ app.controller('CanvasController',
 					off = pheight - cv.height - ctop;
 				}
 				sChange.Y = off * image.scaleRatio;
-				if (sChange.Y + display.sy + display.sh > image.mHeight){
-					sChange.Y = image.mHeight - display.sy - display.sh;
-					off = sChange.Y / image.scaleRatio;
+				
+				if (display.sh + display.sy + sChange.Y > image.mHeight) {
+					sChange.Y1 = image.mHeight - display.sh - display.sy;
+					if (sChange.Y - sChange.Y1 > display.sy) {
+						var sRes = sChange.Y - sChange.Y1 - display.sy;
+						var dr = sRes/image.mHeight;
+						image.scaleRatio = image.mHeight / (cv.height + off);
+						display.sx = display.sx + display.sw * dr/2;
+						display.sw -=  display.sw * dr;
+						display.sy = 0;
+						display.sh = image.mHeight;
+					} else {
+						sChange.Y2 = sChange.Y - sChange.Y1;
+						display.sy -= sChange.Y2;
+						display.sh += sChange.Y;
+					}
+				} 
+				else {
+					display.sh = Math.min(display.sh + sChange.Y, image.mHeight - display.sy);
 				}
 				cv.height += off;
-				display.sh = Math.min(display.sh + sChange.Y, image.mHeight);
 				display.dh = cv.height;
 				break;
 
@@ -265,7 +326,7 @@ app.controller('CanvasController',
 	$scope.keyDown = function(evt) {
 		console.log(evt.keyCode);
 		switch (evt.keyCode) {
-			case 61: // if key + is pressed then zoom out 
+			case 61: // key + 
 			case 187:
 				ImgService.zoomImage(canvas, $scope, 'in');
 				break;
