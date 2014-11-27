@@ -9,6 +9,26 @@ app.controller('CanvasController',
 	
 	initCanvas();
 	
+	setFocus();
+	
+	function setFocus() {
+		if ($scope.current.datumWithFocus === $scope.frame) {
+			canvas.focus();
+			$scope.current.onEditImage = false;
+			$scope.current.onEditText = false;
+			$scope.current.datumWithFocus = undefined;
+			if (document.getElementsByClassName('tActive').length != 0) {
+				//deactivate the current active element
+				activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
+				activeTextArea.removeClass('tActive');
+			}
+			if (document.getElementsByClassName('cActive').length > 0) {
+				var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
+				activeCanvas.removeClass('cActive');
+			}
+			angular.element(canvas).addClass('cActive');
+		}
+	}
 	function initCanvas(){
 		canvas.width = $scope.frame.canvas.width * $scope.pwidth / 100;
 		canvas.height = $scope.frame.canvas.height * $scope.pheight / 100;
@@ -381,6 +401,7 @@ app.controller('CanvasController',
 		//turn focus to and activate the frame and its page
 		evt.target.focus();
 		$scope.canvasFocus(evt);
+		$scope.$parent.activate();
 	};
 	
 	$scope.canvasFocus = function(event) {
@@ -395,12 +416,24 @@ app.controller('CanvasController',
 		}
 		
 		angular.element(event.target).addClass('cActive');
+		$scope.current.onEditText = false;
 		if (!!$scope.img.src) {
-			$scope.current.onEditText = false;
 			$scope.current.onEditImage = true;
 		}
+		document.addEventListener('mousedown', canvasBlurHandle, true);
 	};
-
+	
+	function canvasBlurHandle(event) {
+		var el = angular.element(event.target);
+		if (Misc.ancestorHasClass(el, 5, 'controls')) {
+			return;
+		} else {
+			angular.element(canvas).removeClass('cActive');
+			$scope.current.onEditImage = false;
+			document.removeEventListener('mousedown', canvasBlurHandle, true);
+		}
+	}
+	
 }]);
 
 app.controller('ImageController',

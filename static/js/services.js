@@ -289,7 +289,6 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		}
 		
 		function zoom(rate) {
-			console.log('toto');
 			var sChange = {};
 			var canvasProp = canvas.height/canvas.width;
 			var realRate = rate;
@@ -506,6 +505,20 @@ app.service('Misc', function() {
 	this.randomFromList = function(list) {
 		var rand = Math.floor(Math.random()*list.length);
 		return list[rand];
+	};
+	
+	this.ancestorHasClass = function(el, num, cl) {
+		var result = false,
+			ancestor = el;
+		for (i = 0; i < num; i++) {
+			if (ancestor.hasClass(cl)) {
+				result = true;
+				break;
+			} else { 
+				ancestor = ancestor.parent();
+			}
+		}
+		return result;
 	};
 });
 

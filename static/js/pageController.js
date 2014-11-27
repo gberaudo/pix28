@@ -1,10 +1,8 @@
 app.controller('PageController',
-    ['$scope', '$timeout', '$element', 'FrameObject',
-    function($scope, $timeout, $element, FrameObject) {
+    ['$scope', '$timeout', '$element', 'FrameObject', 'Misc',
+    function($scope, $timeout, $element, FrameObject, Mics) {
 
-	$scope.pageFocus = function(event) {
-		$scope.activate();
-	};
+
 	
 	$scope.activate = function() {
 		//deactivate the current active page
@@ -13,7 +11,32 @@ app.controller('PageController',
 		//activate this page
 		var page = angular.element($element[0]);
 		page.addClass('pActive');
+		document.addEventListener('mousedown', handleMouseDown, true);
 	};
+	
+	
+	function handleMouseDown(event) {
+		var ancestorHasClass = Mics.ancestorHasClass;
+		var el = angular.element(event.target);
+		if (ancestorHasClass(el, 5, 'page') || 
+			ancestorHasClass(el, 5, 'layoutCtrl') ||
+			ancestorHasClass(el, 5, 'controls')) {
+			return;
+		} else {
+			$scope.deactivate();
+			console.log('toto');
+			document.removeEventListener('mousedown', handleMouseDown, true);
+		}
+	}
+	
+	$scope.deactivate = function() {
+		angular.element($element[0]).removeClass('pActive');
+	};
+	
+	$scope.pageFocus = function(event) {
+		$scope.activate();
+	};
+
 	$scope.mouseMove = function(evt) {
 		$scope.current.mousePos = {X: evt.pageX, Y: evt.pageY};
 	};
@@ -66,6 +89,7 @@ app.controller('PageController',
 				};
 				var frame = new FrameObject(DBCanvas, {}, {});
 				$scope.$apply(function() {
+					$scope.current.datumWithFocus = frame;
 					$scope.current[page.id].frames.push(frame);
 				});
 

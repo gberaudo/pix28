@@ -1,9 +1,10 @@
 
 
 app.controller('LayoutController', 
-    ['$scope', 'FrameObject', 'Layouts', 'Colors',
-    function($scope, FrameObject, Layouts, Colors) {
+    ['$scope', 'FrameObject', 'Layouts', 'Colors', 'Misc',
+    function($scope, FrameObject, Layouts, Colors, Misc) {
 	$scope.colors = Colors;
+	
 	$scope.showLayouts = function(type) {
 		$scope.layouts = Layouts[type];
 	};
@@ -11,57 +12,41 @@ app.controller('LayoutController',
 	
 	$scope.showColors = function() {
 		$scope.showColorMenu = true;
-		$scope.mouseInMenu = false;
+		document.addEventListener('mousedown', BGMenuMouseDownHandle, true);
 	};
 	
-	function hideColorMenu() {
-		$scope.showColorMenu = false;
-		$scope.current.BGcolor = null;
-	};
-	$scope.colorBlur = function() {
-		if (!$scope.mouseInMenu) {
-			hideColorMenu();
+	function BGMenuMouseDownHandle(event) {
+		var el = angular.element(event.target);
+		if (Misc.ancestorHasClass(el, 4, 'BGcolorMenu')) {
+			return;
+		} else {
+			$scope.showColorMenu = false;
+			document.removeEventListener('mousedown', BGMenuMouseDownHandle, true);
 		}
-	};
-	$scope.cbBlur = function() {
-		if (!$scope.mouseInMenu) {
-			hideColorMenu();
-		}
-	};
+	}
 
-	$scope.menuBlur = function() {
-		if (!$scope.mouseInMenu) {
-			hideColorMenu();
-		}
-	};
-	
-	$scope.mouseEnter = function() {
-		$scope.mouseInMenu = true;
-	};
-	
-	$scope.mouseLeave = function() {
-		$scope.mouseInMenu = false;
-	};
 	
 	$scope.changeBGColor = function(color) {
-		var activePage = document.getElementsByClassName('pActive')[0];
-		$scope.current[activePage.id].background = color;
-		$scope.current.BGcolor = color;
+		if (document.getElementsByClassName('pActive').length > 0) {
+			var activePage = document.getElementsByClassName('pActive')[0];
+			$scope.current[activePage.id].background = color;
+			$scope.current.BGcolor = color;
+		} else {
+			//notify user to choose page
+		}
 	};
 	
 	$scope.changeAlbumBGColor = function() {
-// 		if (!!$scope.current.BGcolor) {
-			for (i = 0; i < $scope.album.content.length; i++) {
-				$scope.album.content[i].background = $scope.current.BGcolor;
-				if (!!$scope.current.leftPage) {
-					$scope.current.leftPage.background = $scope.current.BGcolor;
-				}
-				if (!!$scope.current.rightPage) {
-					$scope.current.rightPage.background = $scope.current.BGcolor;
-					
-				}
+		for (i = 0; i < $scope.album.content.length; i++) {
+			$scope.album.content[i].background = $scope.current.BGcolor;
+			if (!!$scope.current.leftPage) {
+				$scope.current.leftPage.background = $scope.current.BGcolor;
 			}
-// 		}
+			if (!!$scope.current.rightPage) {
+				$scope.current.rightPage.background = $scope.current.BGcolor;
+				
+			}
+		}
 	};
 	
 	
@@ -70,7 +55,6 @@ app.controller('LayoutController',
 			.test($scope.userColor)){
 			$scope.changeBGColor($scope.userColor);
 		}
-		
 	};
 }]);
 

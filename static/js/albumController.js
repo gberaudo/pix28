@@ -1,25 +1,15 @@
 app.controller('AlbumController',
     ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 
 	 'DBServices', 'Misc', 'gettextCatalog', 'Layouts', 'FrameObject', 
-	 'ImgService', 'TextBoxObject',
+	 'ImgService', 'TextBoxObject', '$interval',
     function($scope, $timeout, $http, $element, $q, PageObject, 
 		DBServices, Misc, gettextCatalog, Layouts, FrameObject, 
-		ImgService, TextBoxObject
+		ImgService, TextBoxObject, $interval
 	) {
 	
 	init();
 	
 	DBServices.initImageDB();
-	setInterval(function() {
-			var id = $scope.current.albumId;
-			if (id) {
-				DBServices.updateAlbumDB(
-					$scope.album.content, id,
-					$scope.album.title, $scope.album.description,
-					$scope.album.date
-				);
-			}
-	}, 10000);
 	$scope.guideMode = true;
 	
 	function init() {
@@ -46,7 +36,20 @@ app.controller('AlbumController',
 		
 	};
 	
-	
+	function setUpdateAlbum() {
+		var updateAlbum = $interval(function() {
+			if ($scope.$parent.inAlbum) {
+				DBServices.updateAlbumDB(
+					$scope.album.content, $scope.current.albumId,
+					$scope.album.title, $scope.album.description,
+					$scope.album.date
+				);
+				console.log('update Album');
+			} else {
+				$interval.cancel(updateAlbum);
+			}
+		}, 10000);
+	}
 	/*------------Album control----------------------------*/
 	$scope.createAlbum = function() {
 		if (!!$scope.current.albumId) {
@@ -82,6 +85,7 @@ app.controller('AlbumController',
 			$timeout(function() {
 				document.getElementById('titleInput').focus();
 			}, 200);
+			setUpdateAlbum();
 		});
 	};
 	
@@ -204,6 +208,7 @@ app.controller('AlbumController',
 						}, 20);
 						updateView('prev');
 					});
+					setUpdateAlbum();
 				};
 				getRq.onerror = function() {
 					console.log('Can not get this album from database');
@@ -505,6 +510,14 @@ app.controller('AlbumController',
 	
 	$scope.dragFrame = function(event) {
 		event.dataTransfer.setData('name','frame');
+	};
+	
+	$scope.controlsMouseDown = function() {
+		$scope.mouseInControls = true;
+	};
+	
+	$scope.controlsMouseLeave = function() {
+		$scope.mouseInControls = false;
 	};
 	
 	function max(a, b) {

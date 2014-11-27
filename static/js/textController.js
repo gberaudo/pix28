@@ -75,18 +75,25 @@ app.controller('TextBoxController',
 		$scope.current.font.size = $scope.textArea.style.fontSize;
 		$scope.current.font.family = $scope.textArea.style.fontFamily;
 		$scope.$parent.activate();
+		document.addEventListener('mousedown', textboxBlurHandle, true);
 	};
 	
 
-	$scope.blur = function($event) {
-		if ($scope.textArea.value) {
-			$scope.textArea.style.border =  '1px solid transparent';
+	function textboxBlurHandle(event) {
+		var el = angular.element(event.target);
+		if (Misc.ancestorHasClass(el, 5, 'controls')) {
+			return;
+		} else {
+			angular.element($scope.textArea).removeClass('tActive');
+			if ($scope.textArea.value) {
+				$scope.textArea.style.border =  '1px solid transparent';
+			}
+			$scope.textArea.style.resize = 'none';
+			$scope.current.onEditText = false;
+			document.removeEventListener('mousedown', textboxBlurHandle, true);
 		}
-		$scope.textArea.style.resize = 'none';
-	};
-	
-	
-	
+	}
+
 	$scope.TAZone = {};
 	var drag = {all: false, BR: false};
 	
@@ -283,9 +290,11 @@ app.controller('TextBoxController',
 	};
 }]);
 
+/*-----------------------Text Control board -------------------*/
 
-app.controller('TextController', ['$scope', '$timeout', 'Fonts', 'Colors',
-    function($scope, $timeout, Fonts, Colors) {
+app.controller('TextController', 
+					['$scope', '$timeout', 'Fonts', 'Colors', 'Misc',
+    function($scope, $timeout, Fonts, Colors, Misc) {
 	$scope.current.font.color = 'black';
 	$scope.current.font.style = 'normal';
 	$scope.current.font.weight = 'normal';
@@ -297,7 +306,19 @@ app.controller('TextController', ['$scope', '$timeout', 'Fonts', 'Colors',
 	$scope.showColors = function() {
 		$scope.showColorMenu = true;
 		$scope.mouseInMenu = false;
+		document.addEventListener('mousedown', cmMouseDownHandle, true); 
 	};
+	
+	function cmMouseDownHandle(event) {
+		var ancestorHasClass = Misc.ancestorHasClass,
+			el = angular.element(event.target);
+		if (ancestorHasClass(el, 4, 'textColorMenu')) {
+			return;
+		} else {
+			$scope.showColorMenu = false;
+			document.removeEventListener('mousedown', cmMouseDownHandle, true);
+		}
+	}
 	
 	$scope.changeColor = function(color) {
 		$scope.current.font.color = color;
@@ -307,33 +328,6 @@ app.controller('TextController', ['$scope', '$timeout', 'Fonts', 'Colors',
 		}
 	};
 	
-	function hideColorMenu() {
-		$scope.showColorMenu = false;
-	};
-	$scope.colorBlur = function() {
-		if (!$scope.mouseInMenu) {
-			hideColorMenu();
-		}
-	};
-	$scope.cbBlur = function() {
-		if (!$scope.mouseInMenu) {
-			hideColorMenu();
-		}
-	};
-
-	$scope.menuBlur = function() {
-		if (!$scope.mouseInMenu) {
-			hideColorMenu();
-		}
-	};
-	
-	$scope.mouseEnter = function() {
-		$scope.mouseInMenu = true;
-	};
-	
-	$scope.mouseLeave = function() {
-		$scope.mouseInMenu = false;
-	};
 	/*-----------------------------------------------------*/
 	
 	$scope.italicClick = function() {
