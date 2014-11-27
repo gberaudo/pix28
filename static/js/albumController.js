@@ -36,7 +36,7 @@ app.controller('AlbumController',
 		var albumEl = document.getElementById('album');
 		albumEl.style.height =  0.52*albumEl.offsetWidth + 'px';
 		albumEl.style.top = 0.085*$scope.screenWidth + 'px';
-		$scope.pheight = $scope.pwidth = 0.3 * albumEl.offsetWidth;
+		$scope.pheight = $scope.pwidth = Math.floor(0.3 * albumEl.offsetWidth);
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
 		
@@ -282,6 +282,7 @@ app.controller('AlbumController',
 	$scope.previewHeight = 0.5 * $scope.previewWidth;
 	
 	$scope.previewPage = function(num) {
+		document.addEventListener('keydown', handleKeyDown, true);
 		$scope.viewPageNum = num;
 		drawPage(num);
  		$scope.hideAlbum = true;
@@ -334,7 +335,7 @@ app.controller('AlbumController',
 			for (var i = 0 ; i < page.textBoxes.length; i++) {
 				var div = document.createElement('div'),
 					textBox = page.textBoxes[i];
-				div.innerHTML = textBox.text;
+				div.innerHTML = textBox.text || null;
 				div.style.width = textBox.box.width * pwidth / 100 + 'px';
 				div.style.height = textBox.box.height * pheight / 100 + 'px';
 				div.style.top = textBox.box.top * pheight / 100 + 'px';
@@ -354,21 +355,20 @@ app.controller('AlbumController',
 	
 	
 	$scope.removePreview = function() {
+		document.removeEventListener('keydown', handleKeyDown, true);
 		$scope.hideAlbum = false;
 		$scope.previewMode = false;
 	};
 
-	
-	document.addEventListener('keydown', handleKeyDown, true);
-	
 	function handleKeyDown(event) {
 		switch (event.keyCode){
-			case 27:
+			case 27: //ESC
 				$timeout(function() {
 					$scope.hideAlbum = false;
 					$scope.delAlbum = false;
 					$scope.previewMode = false;
 				});
+				document.removeEventListener('keydown', handleKeyDown, true);
 				break;
 			case 39:
 				if ($scope.viewPageNum != $scope.album.content.length) {

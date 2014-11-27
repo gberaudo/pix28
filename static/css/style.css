@@ -2,6 +2,22 @@ body {
 	font-family: Arial, Helvetica, sans-serif; 
 	position: absolute;
 }
+
+::-moz-selection { 
+	background-color: none;
+}
+
+* {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  -o-user-select: none;
+  user-select: none;         
+}
+
+::selection {
+	background-color: transparent;
+}
 #banner {
 	position: absolute;
 	width: 100%;
@@ -102,20 +118,20 @@ body {
 	position: absolute;
 	left: 10%; 
 	top: 11%;
-	border:1px solid #000000;
+/* 	border-right:1px solid #000000; */
 	overflow: hidden;
 	box-shadow: 2px 3px 5px 6px #ccc;
-	border-bottom: 3px solid #333;
+/* 	border-bottom: 3px solid #777; */
 
 }
 
 #rightPage {
 	position: absolute;
-	left: 50%; 
+	left: 50.2%; 
 	top: 11%;
-	border:1px solid #000000;
-	border-right: 5px solid #555;
-	border-bottom: 3px solid #333;
+/* 	border:1px solid #000000; */
+	border-right: 5px solid #999;
+/* 	border-bottom: 3px solid #777; */
 	overflow: hidden;
 	box-shadow: 3px 3px 5px 6px #ccc;
 }
@@ -423,6 +439,7 @@ span[name = 'title'] {
 	border-radius: 4px;
 }
 
+
 .medbtn {
 	display: table-cell;
 	padding: 4px 12px;
@@ -502,6 +519,9 @@ span[name = 'title'] {
 	outline: 0;
 }
 
+canvas.frame:focus {
+	outline-color: yellow;
+}
 
 @font-face{
 	font-family: Calligraffiti;
