@@ -59,6 +59,7 @@ dist: build
 	cp static/js/blob-stream.js dist/static/js/
 	cp node_modules/pdfkit/build/pdfkit.js dist/static/js/
 	cp static/build/album.js dist/static/build/album.js
+	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
 
 
 .PHONY: lint
@@ -149,6 +150,9 @@ node_deps: static/js/angular_13.js static/js/angular-gettext.js static/js/blob-s
 
 .PHONY: deploy
 deploy: dist
-	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
 	rsync -a dist/ guiber@cowaddict.org:public_html/Album && echo 'transfer done'
+
+.PHONY: cowtest
+cowtest: dist
+	rsync -a dist/ guiber@cowaddict.org:public_html/Testing && echo 'transfer done'
 
