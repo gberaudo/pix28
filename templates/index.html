@@ -89,16 +89,16 @@ $def with (mode)
 				ng-show = 'viewPageNum != 0'
 				style = 'position: absolute; top: 0px; left: 0px; 
 					width: {{previewWidth/2 + "px"}}; 
-					height: {{previewHeight + "px"}}'>
+					height: {{previewHeight + "px"}};
+					border-right: 1px solid #CCC;'>
 			</div>
 			<div
 				id = 'rightPreview'
 				ng-show = 'viewPageNum != album.content.length'
 				style = 'position: absolute; top: 0px;
-					left: {{previewWidth/2  + "px"}};
-					width: {{previewWidth/2 + "px"}}; 
-					height: {{previewHeight + "px"}};
-					border-left: 1px solid #CCC;'>
+					left: {{(previewWidth/2+1)  + "px"}};
+					width: {{(previewWidth/2 - 1) + "px"}}; 
+					height: {{previewHeight + "px"}};'>
 			</div>
 			<img 
 				src = 'static/icons/window-close.png'
@@ -446,30 +446,27 @@ $def with (mode)
 							
 							ng-controller = 'TextController'
 							ng-show = 'current.onEditText'>
-							<span 
+							<span class = 'textCtrl'
 								
 								style = 'font-weight: bold; 
 									font-size: 90%; 
 									margin-right: 0.5em; margin-left: 1em;' translate>
-									Style text
+									Text 
 							</span>
-							<select style = 'height: 2em' 
-								
+							<div class = 'textCtrl'>
+							<select style = 'height: 2em'
 								title = '{{"Choose text font"|translate}}'
 								ng-model = 'current.font.family' 
 								ng-change = 'changeFont(current.font.family)'>
-								<option
-									
-									ng-repeat = 'font in fonts'
-									value = {{font}}
-									style = 'font-family: {{font}}'>
+								<optgroup ng-repeat = 'font in fonts' class = '{{font}}'>
+								<option value = '{{font}}'>
 									{{font}}
 								</option> 
+								</optgroup>
 							</select> 
-							
-							<select 
-								
-								style = 'height: 2em'
+							</div>
+							<div  class = 'textCtrl'>
+							<select style = 'height: 2em'
 								title = '{{"change font size"|translate}}'
 								ng-model = 'current.font.size'
 								ng-change = 'changeFontSize(current.font.size)'>
@@ -478,30 +475,28 @@ $def with (mode)
 									ng-repeat = 'i in [8, 10, 12, 14, 16, 18, 20, 24, 30]'
 									value = '{{i + "px"}}'> {{i}} </option>
 							</select>
-							
-							<span class = 'btn respond  italic ' 
+							</div>
+							<span class = 'btn textCtrl respond  italic ' 
 								ng-click = 'italicClick()'>
 								I
 							</span>
 							
-							<span class = 'btn respond  bold '
+							<span class = 'btn textCtrl respond  bold '
 								ng-click = 'boldClick()'>
 								B
 							</span>
 							
 							<!--Color falldown menu -->
-							<div class = 'inline textColorMenu'>
 								<span 
-									id = 'textColor'
-									class = 'btn respond '
+									id = 'textColor textColorMenu'
+									class = 'btn textCtrl respond '
 									ng-click = 'showColors()'
 									title = '{{"Choose text color"|translate}}'
 									style = 'color: {{current.font.color}}'
 									translate>
 									Text color
 								</span>
-								<br/>
-								<div tabindex = 0
+								<div tabindex = 0 class = 'textColorMenu'
 									
 									id = 'colorMenu'
 									ng-if = 'showColorMenu' 
@@ -514,42 +509,35 @@ $def with (mode)
 										ng-focus = 'changeColor(color)'>
 									</div>
 								</div>
-							</div>
 							<!-- end of color menu-->
 							
-							<span 
-								class = 'btn respond '
+							<div 
+								class = 'btn textCtrl respond '
 								title = '{{"Align text left"|translate}}'
 								ng-click = 'align("left")'>
 								<img src = 'static/icons/left.svg' 
-									class = 'inline '
-									style = 'height: 100%'/>
-							</span>
-							<span
-								class = 'btn respond '
+									class = 'tCtrl'/>
+							</div>
+							<div	class = 'btn textCtrl respond '
 								title = '{{"Align text right"|translate}}'
 								ng-click = 'align("right")'>
 								<img src = 'static/icons/right.svg'
-									class = 'inline '
-									style = 'height: 100%'/>
-							</span>
-							<span 
-								class = 'btn respond '
+									class = 'tCtrl'/>
+							</div>
+							<div 
+								class = 'btn textCtrl respond '
 								title = '{{"Align text center"|translate}}'
 								ng-click = 'align("center")'>
 								<img src = 'static/icons/center.svg' 
-									class = 'inline '
-									style = 'height: 100%'/>
-							</span>
+									class = 'tCtrl'/>
+							</div>
 							
-							<span class = 'btn respond '
+							<div class = 'btn textCtrl respond '
 								title = '{{"Remove text box"|translate}}'
-								ng-click = 'removeTextArea()'
-								style = 'float: right; margin-right: 0.5em'>
+								ng-click = 'removeTextArea()'>
 								<img src = 'static/icons/trash.png'
-									class = 'inline '
-									style = 'height: 100%; '/>
-							</span>
+									class = 'tCtrl'>
+							</div>
 						
 						</div>
 						
@@ -557,87 +545,76 @@ $def with (mode)
 							
 							ng-controller = 'ImageController'
 							ng-show = 'current.onEditImage'>
-							<span 
-								
+							<span class = 'imgCtrl'
 								style = 'font-size: 90%; font-weight: bold;
 								margin-left: 1em; margin-right: 0.5em'
 								translate>
 								Style image
 							</span>
-							<span
+							<span 
 								ng-mousedown = 'zoomImage("in")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Zoom image in. Hot key: +"|translate}}'
-								class = 'btn respond control '
+								class = 'btn respond imgCtrl'
 								style = 'padding: 4px;'>
-								<img 
-									src = 'static/icons/zoomin.png'
-									style = 'height: 130%'/> </span>
-							<span
+								<img class = 'iCtrl'
+									src = 'static/icons/zoomin.png'/> 
+							</span>
+							<span 
 								ng-mousedown = 'zoomImage("out")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()' 
 								title = '{{"Zoom image out. Hot key: -"|translate}}'
-								class = 'btn respond  inline '
-								style = 'padding: 4px'>
+								class = 'btn respond imgCtrl'
+								>
 								<img
-									
+									class = 'iCtrl'
 									src = 'static/icons/zoomout.png'
-									style = 'height: 130%'/> </span>
+									/> </span>
 									
 							<span ng-mousedown = 'go("left")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the left of image. Hot key: Ctrl + arrow left."|translate}}'
-								class = 'btn respond  inline '
-								style = 'padding: 4px'>
+								class = 'btn respond imgCtrl'>
 								<img src = 'static/icons/goleft.png' 
-									class = 'inline '
-									style = 'height: 100%'/>
+									class = 'iCtrl'/>
 							</span>
 							
 							<span ng-mousedown = 'go("right")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the right of image. Hot key: Ctrl + arrow right."|translate}}'
-								class = 'btn respond  inline '
-								style = 'padding: 4px'>
+								class = 'btn respond imgCtrl'>
 								<img src = 'static/icons/goright.png' 
-									class = 'inline '
-									style = 'height: 100%'/>
+									class = 'iCtrl'/>
 							</span>
 							
 							<span ng-mousedown = 'go("up")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the top of image. Hot key: Ctrl + arrow up."|translate}}'
-								class = 'btn respond  inline '
-								style = 'padding: 4px'>
+								class = 'btn respond imgCtrl'>
 								<img src = 'static/icons/goup.png' 
-									class = 'inline '
-									style = 'height: 100%'/>
+									class = 'iCtrl'/>
 							</span>
 							
 							<span ng-mousedown = 'go("down")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
-								class = 'btn respond  inline '
-								style = 'padding: 4px'>
+								class = 'btn respond imgCtrl'>
 								<img src = 'static/icons/godown.png' 
-									class = 'inline '
-									style = 'height: 100%'/>
+									class = 'iCtrl'/>
 							</span>
 								
 							<span ng-click = 'removeImage()'
 								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
-								class = 'btn respond '
-								style = 'float: right; margin-right: 0.5em'> 
-								<img
-									
-									src = 'static/icons/trash.png'
-									style = 'height: 110%'/> </span>
+								class = 'btn respond imgCtrl'> 
+								<img class = 'iCtrl'
+									src = 'static/icons/trash.png'/>
+							</span>
 							
 						</div>
 					</div>

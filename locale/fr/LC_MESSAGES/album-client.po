@@ -200,6 +200,11 @@ msgid "Page background"
 msgstr "Fond de la page"
 
 #: templates/index.html
+#, fuzzy
+msgid "Preview album"
+msgstr "Nouvel  album"
+
+#: templates/index.html
 msgid "Remove text box"
 msgstr "Supprimer cette boîte de texte"
 
@@ -212,8 +217,8 @@ msgid "Style image"
 msgstr "Style de l'image"
 
 #: templates/index.html
-msgid "Style text"
-msgstr "Style du texte"
+msgid "Text"
+msgstr ""
 
 #: templates/index.html
 msgid "Text color"
@@ -278,6 +283,9 @@ msgstr "précédent"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "Style text"
+#~ msgstr "Style du texte"
 
 #, fuzzy
 #~ msgid "Delete image. Hot key: Ctrl + Del"

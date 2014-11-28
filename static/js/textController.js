@@ -81,7 +81,7 @@ app.controller('TextBoxController',
 
 	function textboxBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 5, 'controls')) {
+		if (Misc.ancestorHasClass(el, 5, 'controls')||(el.scope() == $scope)) {
 			return;
 		} else {
 			angular.element($scope.textArea).removeClass('tActive');
@@ -293,14 +293,16 @@ app.controller('TextBoxController',
 /*-----------------------Text Control board -------------------*/
 
 app.controller('TextController', 
-					['$scope', '$timeout', 'Fonts', 'Colors', 'Misc',
-    function($scope, $timeout, Fonts, Colors, Misc) {
+					['$scope', '$timeout', 'Fonts', 'Colors', 'Misc', '$element',
+    function($scope, $timeout, Fonts, Colors, Misc, $element) {
 	$scope.current.font.color = 'black';
 	$scope.current.font.style = 'normal';
 	$scope.current.font.weight = 'normal';
 	$scope.fonts = Fonts;
 	$scope.colors = Colors;
-	
+	$scope.ctrlHeight = document.getElementById('controls').offsetHeight;
+	console.log('ctrlHeight', $scope.ctrlHeight);
+
 	
 	/*---------Color menu ------------*/
 	$scope.showColors = function() {

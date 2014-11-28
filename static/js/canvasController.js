@@ -30,10 +30,10 @@ app.controller('CanvasController',
 		}
 	}
 	function initCanvas(){
-		canvas.width = $scope.frame.canvas.width * $scope.pwidth / 100;
-		canvas.height = $scope.frame.canvas.height * $scope.pheight / 100;
-		canvas.style.left = ($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
-		canvas.style.top = ($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
+		canvas.width = Math.floor($scope.frame.canvas.width * $scope.pwidth / 100);
+		canvas.height = Math.floor($scope.frame.canvas.height * $scope.pheight / 100);
+		canvas.style.left = Math.floor($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
+		canvas.style.top = Math.floor($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
 		$scope.canvasZone = {};
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
@@ -425,7 +425,7 @@ app.controller('CanvasController',
 	
 	function canvasBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 5, 'controls')) {
+		if (Misc.ancestorHasClass(el, 5, 'controls') || (el.scope() == $scope)) {
 			return;
 		} else {
 			angular.element(canvas).removeClass('cActive');

@@ -283,8 +283,8 @@ app.controller('AlbumController',
 	};
 	
 	
-	$scope.previewWidth = 0.8 * $scope.screenWidth;
-	$scope.previewHeight = 0.5 * $scope.previewWidth;
+	$scope.previewHeight = Math.floor(0.4 * $scope.screenWidth);
+	$scope.previewWidth = 2 * $scope.previewHeight + 1;
 	
 	$scope.previewPage = function(num) {
 		document.addEventListener('keydown', handleKeyDown, true);
@@ -321,8 +321,8 @@ app.controller('AlbumController',
 						img = new Image();
 					canvas.width = frame.canvas.width * pwidth / 100;
 					canvas.height = frame.canvas.height * pheight / 100;
-					canvas.style.top = frame.canvas.top * pheight / 100 + 'px';
-					canvas.style.left = frame.canvas.left * pwidth / 100 + 'px';
+					canvas.style.top = Math.ceil(frame.canvas.top * pheight / 100) + 'px';
+					canvas.style.left = Math.ceil(frame.canvas.left * pwidth / 100) + 'px';
 					canvas.style.position = 'absolute';
 					display.dw = canvas.width;
 					display.dh = canvas.height;

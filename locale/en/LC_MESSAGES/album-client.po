@@ -191,6 +191,10 @@ msgid "Page background"
 msgstr ""
 
 #: templates/index.html
+msgid "Preview album"
+msgstr ""
+
+#: templates/index.html
 msgid "Remove text box"
 msgstr ""
 
@@ -203,7 +207,7 @@ msgid "Style image"
 msgstr ""
 
 #: templates/index.html
-msgid "Style text"
+msgid "Text"
 msgstr ""
 
 #: templates/index.html

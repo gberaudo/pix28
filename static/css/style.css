@@ -111,29 +111,26 @@ body {
 	left: 0%;
 	width: 75%;
 	height: 75%;
-	
+/* 	background-color: #AAA; */
 }
 
 #leftPage {
 	position: absolute;
 	left: 10%; 
 	top: 11%;
-/* 	border-right:1px solid #000000; */
 	overflow: hidden;
 	box-shadow: 2px 3px 5px 6px #ccc;
-/* 	border-bottom: 3px solid #777; */
-
+	background-color: #FFFFFF;
 }
 
 #rightPage {
 	position: absolute;
 	left: 50.2%; 
 	top: 11%;
-/* 	border:1px solid #000000; */
 	border-right: 5px solid #999;
-/* 	border-bottom: 3px solid #777; */
 	overflow: hidden;
 	box-shadow: 3px 3px 5px 6px #ccc;
+	background-color: #FFFFFF;
 }
 
 .pActive {
@@ -184,6 +181,7 @@ body {
 	top: 92%;
 	left: 0%;
 	width: 100%; 
+	height: 8%;
 }
 
 .textCtrlBut {
@@ -420,17 +418,63 @@ span[name = 'title'] {
 	padding: 4px 4px !important;
 	height: 1.5em !important;
 }
+.textCtrl {
+	display: table-cell;
+	vertical-align: middle;
+	height: 1.2em; 
+	padding-top: 0px;
+	
+}
 
+img.tCtrl {
+/* 	margin-top: 10%; */
+	height: 100%;
+	display: block;
+}
+#textControl {
+	margin-top: -1%;
+	height: 90%;
+	display: table;
+	border-spacing: .2em;
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFFFFF;
+	border-radius: 4px;
+}
+
+.imgCtrl {
+	display: table-cell;
+	vertical-align: middle;
+	height: 1.5em;
+	padding-top: 0px;
+	
+}
+
+img.iCtrl {
+/* 	margin-top: 10%; */
+	height: 100%;
+	display: block;
+}
+#imageControl {
+	margin-top: -1%;
+	height: 90%;
+	display: table;
+	border-spacing: .2em;
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFFFFF;
+	border-radius: 4px;
+}
 .btn {
-	display: inline-block;
-	padding: 4px 12px;
+/*  	display: inline-block; */
 	margin-bottom: 0;
-	height: 1.2em;
+	padding: 0px 8px;
 	font-size: 90%;
-	line-height: 20px;
 	color: #333333;
 	text-align: center;
-	vertical-align: middle;
+	vertical-align: middle !important;
 	cursor: pointer;
 	border: 1px solid #999999;
 	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
@@ -522,6 +566,35 @@ span[name = 'title'] {
 canvas.frame:focus {
 	outline-color: yellow;
 }
+
+optgroup {
+	height: 1.5em;
+}
+option {
+	height: 1.5em;
+}
+	
+/*-------------------------------fonts -------------------*/
+
+.Calligraffiti {
+	font-family: Calligraffiti;
+}
+
+.UVNDoiMoi {
+	font-family: UVNDoiMoi;
+}
+.UVNKeChuyen3{
+	font-family: UVNKeChuyen3;
+}
+
+.UVNKyThuat{
+	font-family: UVNKyThuat;
+}
+
+.UVNTinTuc_R{
+	font-family: UVNTinTuc_R;
+}
+
 
 @font-face{
 	font-family: Calligraffiti;

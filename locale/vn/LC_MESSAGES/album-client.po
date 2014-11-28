@@ -194,6 +194,11 @@ msgid "Page background"
 msgstr "Đặt nền trang"
 
 #: templates/index.html
+#, fuzzy
+msgid "Preview album"
+msgstr "Tạo album mới "
+
+#: templates/index.html
 msgid "Remove text box"
 msgstr "Xóa hộp văn bản này"
 
@@ -206,8 +211,8 @@ msgid "Style image"
 msgstr "Chỉnh ảnh"
 
 #: templates/index.html
-msgid "Style text"
-msgstr "Chỉnh văn bản"
+msgid "Text"
+msgstr ""
 
 #: templates/index.html
 msgid "Text color"
@@ -272,6 +277,9 @@ msgstr "trước"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sẽ bị xóa hoàn toàn."
+
+#~ msgid "Style text"
+#~ msgstr "Chỉnh văn bản"
 
 #~ msgid "Delete image. Hot key: Ctrl + Del"
 #~ msgstr ""

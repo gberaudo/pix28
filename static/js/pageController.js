@@ -24,7 +24,6 @@ app.controller('PageController',
 			return;
 		} else {
 			$scope.deactivate();
-			console.log('toto');
 			document.removeEventListener('mousedown', handleMouseDown, true);
 		}
 	}
@@ -70,7 +69,7 @@ app.controller('PageController',
 				} else if (mouseY + canvas.height/2 > $scope.pheight) {
 					canvas.top = $scope.pheight - canvas.height;
 				} else {
-					canvas.top = mouseY - canvas.height/2;
+					canvas.top = Math.floor(mouseY - canvas.height/2);
 				}
 				
 				if (mouseX < canvas.width/2) {
@@ -78,7 +77,7 @@ app.controller('PageController',
 				} else if (mouseX + canvas.width/2 > $scope.pwidth) {
 					canvas.left = $scope.pwidth - canvas.width;
 				} else {
-					canvas.left = mouseX - canvas.width/2;
+					canvas.left = Math.floor(mouseX - canvas.width/2);
 				}
 				
 				var DBCanvas = {
@@ -92,7 +91,7 @@ app.controller('PageController',
 					$scope.current.datumWithFocus = frame;
 					$scope.current[page.id].frames.push(frame);
 				});
-
+				$scope.activate();
 				break;
 			case 'text':
 				var box = {};
@@ -131,7 +130,7 @@ app.controller('PageController',
 					$scope.current.datumWithFocus = newTextBox;
 					$scope.current[page.id].textBoxes.push(newTextBox);
 				});
-				
+				$scope.activate();
 				break;
 		}
 	};
