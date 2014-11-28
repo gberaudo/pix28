@@ -30,112 +30,53 @@ $def with (mode)
 
 		<script src = 'static/build/album.js'></script>
 
-	<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="static/css/style.css"/>
+	<link rel = "stylesheet" type = "text/css" href = "static/css/homepage.css">
 	 
-	<link rel="icon" 
-      type="image/ico" 
-      href="static/icons/album.ico">
+	<link rel="icon" type="image/ico" href="static/icons/album.ico">
 
 	<title>Create your own story</title> 
 </head>
 
 <body ng-controller = 'SiteController' ng-show = 'loaded' class = 'body'>
 
-	<div id = 'banner'> 
+	<div id = 'banner' class = 'container'> 
 		<span id = 'slogan' translate>Create your own story</span> 
-		<div id = 'languages' class = 'inline'>
-			<div class = 'clickable inline'
-				title = 'English'
-				ng-click = 'changeLanguage("en")'>
-				<img src = 'static/icons/en.png' class = 'inline'>
-			</div>
-			<div class = 'clickable inline'
-				title = 'Français'
-				ng-click = 'changeLanguage("fr")'>
-				<img src = 'static/icons/fr.png' class = 'inline'>
-			</div>
-			<div class = 'clickable inline'
-				title = 'Tiếng Việt'
-				ng-click = 'changeLanguage("vn")'>
-				<img src = 'static/icons/vn.png' class = 'inline'>
-			</div>
+		<div id = 'languages'>
+			<img title = 'English' class = 'clickable'
+				ng-click = 'changeLanguage("en")'
+				src = 'static/icons/en.png'/>
+			<img title = 'Français' class = 'clickable'
+				ng-click = 'changeLanguage("fr")'
+				src = 'static/icons/fr.png'/>
+			<img title = 'Tiếng Việt' class = 'clickable'
+				ng-click = 'changeLanguage("vn")'
+				src = 'static/icons/vn.png'/>
+		</div>
+		<div id = 'siteMenu'>
+			<span class = 'siteMenuItem'>
+				<img src = 'static/icons/go-home.png'
+					class = 'clickable'
+					title = '{{"Back to home page"|translate}}'
+					ng-show = '!greeting' ng-click = 'goHome()'/>
+			</span>
+			<span class = 'siteMenuItem clickable'>Guide</span>
+			<span class = 'siteMenuItem clickable'>FAQ</span>
+			
 		</div>
 	</div>
-	<span style = 'position: absolute; top: 10%; left: 1%'>
-		<img src = 'static/icons/go-home.png'
-			class = 'clickable'
-			title = '{{"Back to home page"|translate}}'
-			ng-show = '!greeting' ng-click = 'goHome()'/>
-	</span> 
-	<div ng-if = 'greeting'>
-		<span style = 'position: absolute; top: {{0.05*screenWidth + "px"}}; 
-			font-size: 120%; font-weight: bold' translate> Welcome!</span>
-	</div>
+	
 
 	<div ng-controller = 'AlbumController' ng-init = '\$parent.showAlbums = false'>
-		<div ng-show = 'hideAlbum' class = 'pageDesactivate'
-					tabindex = '0'
-					style = 'width: {{screenWidth + "px"}}; height: {{screenHeight + "px"}}'>
-		</div>
-		
-		<div tabindex = '0'
-			ng-show = 'previewMode' id = 'previewPage'
-			style = 'width: {{previewWidth + "px"}}; 
-			height: {{previewHeight + "px"}};
-			top: 7%; left: 8%'
-			>
-			<div
-				id = 'leftPreview'
-				ng-show = 'viewPageNum != 0'
-				style = 'position: absolute; top: 0px; left: 0px; 
-					width: {{previewWidth/2 + "px"}}; 
-					height: {{previewHeight + "px"}};
-					border-right: 1px solid #CCC;'>
-			</div>
-			<div
-				id = 'rightPreview'
-				ng-show = 'viewPageNum != album.content.length'
-				style = 'position: absolute; top: 0px;
-					left: {{(previewWidth/2+1)  + "px"}};
-					width: {{(previewWidth/2 - 1) + "px"}}; 
-					height: {{previewHeight + "px"}};'>
-			</div>
-			<img 
-				src = 'static/icons/window-close.png'
-				style = 'margin-left: 101%; margin-top: -3%' 
-				class = 'clickable'
-				ng-click = 'removePreview()'/>
-			<img 
-				src = 'static/icons/next.png'
-				style = 'position: absolute; left: 101%; top: 49%; width: 2%'
-				class = 'clickable' 
-				ng-show = 'viewPageNum != album.content.length'
-				ng-click = 'previewPage(viewPageNum + 2)'/>
-			<img 
-				src = 'static/icons/prev.png'
-				style = 'position: absolute;
-				left:-3%; top: 49%; width: 2%'
-				ng-show = 'viewPageNum != 0'
-				class = 'clickable'
-				ng-click = 'previewPage(viewPageNum - 2)'/>
-		</div>
+
 	<!--__________________welcome screen____________________-->
 
-		<span class = 'bigbtn respond' ng-click = 'createAlbum()' 
-				ng-show = 'showAlbums || greeting'
-				style = 'position: absolute; left: 5%;
-					top: {{0.1*screenWidth + "px"}};
-					height: 1.5em'
-				title = '{{"Click to create a new album"|translate}}'
-				translate> 
-				New album 
-		</span>	
+
 		<div ng-show = 'showAlbums'
-			id = 'albumList'
-			style = 'top: {{0.13*screenWidth + "px"}}'>
+			id = 'albumList'>
 			<span style = 'font-weight: bold' translate> Your albums </span>
 			<ul> 
-				<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 13px'>
+				<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 1em'>
 					<span class = 'link respond'
 						ng-click = 'openAlbum(albumSC)'
 						ng-bind = 'albumSC.title||albumSC.date||"Album"'
@@ -147,6 +88,32 @@ $def with (mode)
 			</ul>
 		</div>
 		
+		<div id = 'formats' ng-show = 'showAlbums'>			
+			<p> Album formats </p> <br/>
+
+			<div class = 'format container'> 
+				<div class="content">
+					<span class = 'header'> 15x15 </span> 
+					<div class = 'model'>
+						<img src = '' alt =''></img>
+					</div> 
+					<span class = 'newAlbum clickable'
+						ng-click = 'createAlbum()'> 
+						Create album</span>
+				</div>
+			</div>
+			<div class = 'format container'> 
+				<div class = 'content'>
+					<span class = 'header'> 21x21 </span> 
+					<div class = 'model'>
+						<img src = '' alt =''></img>
+					</div> 
+					<span class = 'newAlbum clickable' 
+						ng-click = 'createAlbum()'> 
+						Create album</span>
+				</div>
+			</div>
+		</div>
 		<!--_____________begin album__________________-->
 		<div ng-show = '\$parent.inAlbum'> 
 			<div id = 'abTitle'>
@@ -259,35 +226,80 @@ $def with (mode)
 				</div>
 				<br/> <br/>
 				
-				<div id = 'export'>
-				<span class = 'bigbtn respond' 
-					ng-click = 'generatePdf()' 
-					title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
-					translate>
-					Export pdf album
-				</span>
+				<div id = 'export' ng-controller = 'ExportController'>
+					<span class = 'bigbtn respond' 
+						ng-click = 'exportAlbum()' 
+						title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
+						translate>
+						Export this album
+					</span>
 
-				<div ng-show = 'processing' style = 'font-size: 80%' > 
-					<span translate>
-						Generating pdf...
-					</span>
-					<br/>
-					<span translate>
-						...processing page {{processPage}}
-					</span>
-					<br/>
-					<span ng-show = 'showLink' translate>...finished!</span>
+					<div id = 'exportWindow'
+						ng-show = 'showExportWindow'
+						>
+						<img 
+							src = 'static/icons/window-close.png'
+							style = 'margin-left: 100%; margin-top: -3%' 
+							class = 'clickable'
+							ng-click = 'closeExportWindow()'/>
+						<div id = 'exportMenu'
+							ng-show = 'showExportMenu'>
+							To which format would you like to export your album?
+							<ul> 
+								<li >
+									<img src = 'static/icons/computer.png'/> 
+									<span class = 'link'
+										ng-click = 'generatePdf(72)'>
+										Pdf 72dpi (to use on computer)
+									</span>
+								</li>
+								<li>
+									<img 
+										src = 'static/icons/printer.png'/>
+									<span class = link
+										ng-click = 'generatePdf(300)'>
+										Pdf 300dpi (for printing) 
+									</span>
+								</li>
+								<li> 
+									<img src = 'static/icons/printer.png'/>
+									<span class = 'link'
+										ng-click = 'generatePdf(400)'>
+										Pdf 400dpi (for printing) 
+									</span>
+								</li>
+								<li> 
+									<img src = 'static/icons/internet.png'/>
+									<span class = 'link'
+										ng-click = 'generateJpg()'>
+										Jpeg images
+									</span>
+								</li>
+							</ul>
+						</div>
+						<div ng-show = 'processingPdf' >
+							<span translate>
+								Generating pdf 72dpi. Please be patient...
+							</span>
+							<div style = 'font-size: 90%' > 
+						
+							<br/>
+							<span translate>
+								...processing page {{processPage}}
+							</span>
+							<br/>
+						</div>
+						</div>
+						<div ng-show = 'showLink'>
+							<p> Congratulation! <p>
+							<p>Your pdf album is created.<p>
+							<a download = '{{album.title + ".pdf"}}' 
+								id = 'pdfoutput' translate>
+								Download file
+							</a>
+						</div>
+					</div>
 				</div>
-
-				<span ng-show = 'showLink'>
-					<a download = '{{album.title + ".pdf"}}' 
-						id = 'pdfoutput' translate>
-						Download
-					</a>
-				</span>
-				
-				
-			</div>
 			
 			</div>
 
@@ -515,34 +527,29 @@ $def with (mode)
 								class = 'btn textCtrl respond '
 								title = '{{"Align text left"|translate}}'
 								ng-click = 'align("left")'>
-								<img src = 'static/icons/left.svg' 
-									class = 'tCtrl'/>
+								<img src = 'static/icons/left.svg'/>
 							</div>
 							<div	class = 'btn textCtrl respond '
 								title = '{{"Align text right"|translate}}'
 								ng-click = 'align("right")'>
-								<img src = 'static/icons/right.svg'
-									class = 'tCtrl'/>
+								<img src = 'static/icons/right.svg'/>
 							</div>
 							<div 
 								class = 'btn textCtrl respond '
 								title = '{{"Align text center"|translate}}'
 								ng-click = 'align("center")'>
-								<img src = 'static/icons/center.svg' 
-									class = 'tCtrl'/>
+								<img src = 'static/icons/center.svg'/>
 							</div>
 							
 							<div class = 'btn textCtrl respond '
 								title = '{{"Remove text box"|translate}}'
 								ng-click = 'removeTextArea()'>
-								<img src = 'static/icons/trash.png'
-									class = 'tCtrl'>
+								<img src = 'static/icons/trash.png'/>
 							</div>
 						
 						</div>
 						
 						<div id = 'imageControl' 
-							
 							ng-controller = 'ImageController'
 							ng-show = 'current.onEditImage'>
 							<span class = 'imgCtrl'
@@ -558,8 +565,7 @@ $def with (mode)
 								title = '{{"Zoom image in. Hot key: +"|translate}}'
 								class = 'btn respond imgCtrl'
 								style = 'padding: 4px;'>
-								<img class = 'iCtrl'
-									src = 'static/icons/zoomin.png'/> 
+								<img src = 'static/icons/zoomin.png'/> 
 							</span>
 							<span 
 								ng-mousedown = 'zoomImage("out")'
@@ -568,18 +574,14 @@ $def with (mode)
 								title = '{{"Zoom image out. Hot key: -"|translate}}'
 								class = 'btn respond imgCtrl'
 								>
-								<img
-									class = 'iCtrl'
-									src = 'static/icons/zoomout.png'
-									/> </span>
+								<img src = 'static/icons/zoomout.png'/> </span>
 									
 							<span ng-mousedown = 'go("left")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the left of image. Hot key: Ctrl + arrow left."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/goleft.png' 
-									class = 'iCtrl'/>
+								<img src = 'static/icons/goleft.png'/>
 							</span>
 							
 							<span ng-mousedown = 'go("right")'
@@ -587,8 +589,7 @@ $def with (mode)
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the right of image. Hot key: Ctrl + arrow right."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/goright.png' 
-									class = 'iCtrl'/>
+								<img src = 'static/icons/goright.png'/>
 							</span>
 							
 							<span ng-mousedown = 'go("up")'
@@ -596,8 +597,7 @@ $def with (mode)
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the top of image. Hot key: Ctrl + arrow up."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/goup.png' 
-									class = 'iCtrl'/>
+								<img src = 'static/icons/goup.png'/>
 							</span>
 							
 							<span ng-mousedown = 'go("down")'
@@ -605,15 +605,13 @@ $def with (mode)
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/godown.png' 
-									class = 'iCtrl'/>
+								<img src = 'static/icons/godown.png'/>
 							</span>
 								
 							<span ng-click = 'removeImage()'
 								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
 								class = 'btn respond imgCtrl'> 
-								<img class = 'iCtrl'
-									src = 'static/icons/trash.png'/>
+								<img src = 'static/icons/trash.png'/>
 							</span>
 							
 						</div>
@@ -708,15 +706,10 @@ $def with (mode)
 					ng-if = 'imgLoad'>
 					<label for = 'files' class = 'medbtn'
 						id = 'loadPhotos'
-						title = '{{"Click to load photos from your computer"|translate}}'
-						> 
-						<span style = 'margin-right: 1em' translate> Load photos </span> 
-						<!--<img class = 'inline'
-							 style = 'height: 130%' 
-							src = 'static/icons/folder-image.png'/>-->
+						title = '{{"Click to load photos from your computer"|translate}}'> 
+						<span translate> Load photos </span> 
+				
 					</label>
-					<!--<span style = 'font-size: 80%'
-						ng-show = 'loading'>{{fileProcess}}</span>-->
 					<input type = 'file' id = 'files' 
 						style = 'display: none'
 						onchange = 'angular.element(this).scope().handleFileSelect(event)'
@@ -725,8 +718,57 @@ $def with (mode)
 				</div>
 			</div>
 
-		</div>
+		
 
-	</div>
+	
+	<!-- ____________________________ notifications_________________________-->
+	
+			<div ng-show = 'hideAlbum' class = 'pageDesactivate'
+					tabindex = '0'
+					style = 'width: {{screenWidth + "px"}}; height: {{screenHeight + "px"}}'>
+		</div>
+		
+		<div tabindex = '0'
+			ng-show = 'previewMode' id = 'previewPage'
+			style = 'width: {{previewWidth + "px"}}; 
+			height: {{previewHeight + "px"}};
+			top: 7%; left: 8%'
+			>
+			<div
+				id = 'leftPreview'
+				ng-show = 'viewPageNum != 0'
+				style = 'position: absolute; top: 0px; left: 0px; 
+					width: {{previewWidth/2 + "px"}}; 
+					height: {{previewHeight + "px"}};
+					border-right: 1px solid #CCC;'>
+			</div>
+			<div
+				id = 'rightPreview'
+				ng-show = 'viewPageNum != album.content.length'
+				style = 'position: absolute; top: 0px;
+					left: {{(previewWidth/2+1)  + "px"}};
+					width: {{(previewWidth/2 - 1) + "px"}}; 
+					height: {{previewHeight + "px"}};'>
+			</div>
+			<img 
+				src = 'static/icons/window-close.png'
+				style = 'margin-left: 101%; margin-top: -3%' 
+				class = 'clickable'
+				ng-click = 'removePreview()'/>
+			<img 
+				src = 'static/icons/next.png'
+				style = 'position: absolute; left: 101%; top: 49%; width: 2%'
+				class = 'clickable' 
+				ng-show = 'viewPageNum != album.content.length'
+				ng-click = 'previewPage(viewPageNum + 2)'/>
+			<img 
+				src = 'static/icons/prev.png'
+				style = 'position: absolute;
+				left:-3%; top: 49%; width: 2%'
+				ng-show = 'viewPageNum != 0'
+				class = 'clickable'
+				ng-click = 'previewPage(viewPageNum - 2)'/>
+		</div>		
+		</div>
 </body>
 </html>

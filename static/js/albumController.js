@@ -512,28 +512,48 @@ app.controller('AlbumController',
 		event.dataTransfer.setData('name','frame');
 	};
 	
-	$scope.controlsMouseDown = function() {
-		$scope.mouseInControls = true;
+}]);
+
+app.controller('ExportController', 
+					['$scope', '$timeout', 'Misc', '$q', '$http',
+					function($scope, $timeout, Misc, $q, $http) {
+
+	var max = Math.max,
+		min = Math.min;
+	
+	function exportKeyDownHandle(event) {
+		if (event.keyCode == 27) {
+			$timeout(function() {
+				$scope.$parent.hideAlbum = false;
+				$scope.showExportWindow = false;
+				$scope.showExportMenu = false;
+			});
+			document.removeEventListener('keydown', exportKeyDownHandle, true);
+		} 
 	};
 	
-	$scope.controlsMouseLeave = function() {
-		$scope.mouseInControls = false;
+	$scope.exportAlbum = function() {
+		$scope.$parent.hideAlbum = true;
+		$scope.showLink = false;
+		$scope.showExportWindow = true;
+		$scope.showExportMenu = true;
+		document.addEventListener('keydown', exportKeyDownHandle, true);
 	};
 	
-	function max(a, b) {
-		return a > b ? a : b;
+		
+		
+	$scope.closeExportWindow = function() {
+		$scope.$parent.hideAlbum = false;
+		$scope.showExportWindow = false;
+		$scope.showExportMenu = false;
+		document.removeEventListener('keydown', exportKeyDownHandle, true);
 	};
-
-	function min(a, b) {
-		return a > b ? b : a;
-	};
-	/*----------------Generate Pdf--------------------------------*/
-
-	$scope.generatePdf = function() {
+	
+	$scope.generatePdf = function(resolution) {
+		$scope.showExportMenu = false;
+		$scope.processingPdf = true;
 		$scope.processing = true;
-		$timeout(function() {
-			$scope.showLink = false;
-		});
+		
 		var albumJSON = angular.copy($scope.album.content);
 		getFonts()
 			.then(function(fontsData) {
@@ -550,9 +570,6 @@ app.controller('AlbumController',
 					$scope.$apply(function() {
 						$scope.showLink = true;
 					});
-					$timeout(function() {
-						$scope.processing = false;
-					},500)
 				});
 			};
 	

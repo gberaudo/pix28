@@ -81,7 +81,7 @@ app.controller('TextBoxController',
 
 	function textboxBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 5, 'controls')||(el.scope() == $scope)) {
+		if (Misc.ancestorHasClass(el, 6, 'controls')||(el.scope() == $scope)) {
 			return;
 		} else {
 			angular.element($scope.textArea).removeClass('tActive');
@@ -314,7 +314,7 @@ app.controller('TextController',
 	function cmMouseDownHandle(event) {
 		var ancestorHasClass = Misc.ancestorHasClass,
 			el = angular.element(event.target);
-		if (ancestorHasClass(el, 4, 'textColorMenu')) {
+		if (ancestorHasClass(el, 6, 'textColorMenu')) {
 			return;
 		} else {
 			$scope.showColorMenu = false;

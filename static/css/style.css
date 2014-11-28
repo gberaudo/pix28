@@ -1,46 +1,3 @@
-body {
-	font-family: Arial, Helvetica, sans-serif; 
-	position: absolute;
-}
-
-::-moz-selection { 
-	background-color: none;
-}
-
-* {
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-  -o-user-select: none;
-  user-select: none;         
-}
-
-::selection {
-	background-color: transparent;
-}
-#banner {
-	position: absolute;
-	width: 100%;
-	color: #FFFFFF;
-	background: -webkit-linear-gradient(left, #CEECF5 , #0489B1); /* For Safari 5.1 to 6.0 */ 
-	background: -o-linear-gradient(right, #CEECF5 , #0489B1); /* For Opera 11.1 to 12.0 */ 
-	background: -moz-linear-gradient(right, #CEECF5 , #0489B1); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom right, #CEECF5 , #0489B1);
-	padding: 0;
-}
-
-#languages {
-	float: right;
-	margin-right: 3%;
-}
-
-#slogan {
-	position: absolute;
-	font-size: 180%;
-	font-weight: 3;
-	font-family: UVNKeChuyen3;
-	left: 15%;
-}
 
 #album {
 	position: absolute;
@@ -49,11 +6,7 @@ body {
 	border: 1px black solid;
 }
 
-#albumList {
-	position: absolute; 
-	left: 5%;
-	width: 20em;
-}
+
 
 #abTitle {
 	position: absolute;
@@ -227,6 +180,35 @@ body {
 	width: 10%;
 }
 
+#export {
+	height: 3em;
+	width: 7em;
+}
+
+#exportWindow {
+	z-index: 20;
+	width: 50%;
+	position: fixed;
+	top: 30%;
+	min-height: 30%;
+	background-color: #FFFFFF;
+	left: 25%;
+	text-align: center;
+}
+
+#exportMenu {
+	text-align: left;
+	margin-left: 10%;
+}
+
+#exportMenu ul {
+	line-height: 2em;
+	
+}
+
+#exportMenu img {
+	height: 1.5em;
+}
 
 #rightPageNum {
 	position: absolute;
@@ -418,15 +400,16 @@ span[name = 'title'] {
 	padding: 4px 4px !important;
 	height: 1.5em !important;
 }
+
 .textCtrl {
 	display: table-cell;
 	vertical-align: middle;
 	height: 1.2em; 
 	padding-top: 0px;
-	
+	min-width: 1em;
 }
 
-img.tCtrl {
+#textControl img {
 /* 	margin-top: 10%; */
 	height: 100%;
 	display: block;
@@ -451,7 +434,7 @@ img.tCtrl {
 	
 }
 
-img.iCtrl {
+#imageControl img {
 /* 	margin-top: 10%; */
 	height: 100%;
 	display: block;
@@ -487,12 +470,9 @@ img.iCtrl {
 .medbtn {
 	display: table-cell;
 	padding: 4px 12px;
-	margin-bottom: 0;
-	margin-top: 4px;
 	height: 1.5em;
 	font-size: 90%;
-	line-height: 20px;
-	color: #333333;
+	color: #FFFFFF;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;
@@ -502,10 +482,8 @@ img.iCtrl {
 .bigbtn {
 	display: table-cell;
 	padding: 8px 8px;
-	margin-bottom: 0;
 	height: 2em;
 	font-size: 90%;
-	line-height: 20px;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;
