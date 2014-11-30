@@ -287,43 +287,31 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		if (para == 'out') {
 			zoom(rate);
 		}
-		
+	
 		function zoom(rate) {
-			var sChange = {};
+			var realRate = Math.min(rate, image.mWidth / display.sw, image.mHeight / display.sh);
 			var canvasProp = canvas.height/canvas.width;
-			var realRate = rate;
-			sChange.X = -0.5 * (1 - 1 / realRate) * display.sw * realRate;
-			sChange.Y = sChange.X * canvasProp;
-			sChange.X1 = sChange.X;
-			sChange.Y1 = sChange.Y;
-			//first check if the edges top and left are attained
-			if (sChange.X < -display.sx) {
-				sChange.X1 = -display.sx;
-				sChange.Y1 =  sChange.X1 * canvasProp;
-				realRate = 1 + 2* sChange.X1 / display.sw;
+			var totalChangeX = (realRate - 1) * display.sw,
+				totalChangeY =  totalChangeX * canvasProp;
+			
+			var wl = image.mWidth - display.sw - display.sx,
+				hl = image.mHeight - display.sh - display.sy;
+				
+			if (display.sx > totalChangeX / 2) {
+				display.sx = display.sx - Math.max(totalChangeX / 2, totalChangeX - wl);
+			} else {
+				display.sx = 0;
 			}
 			
-			if (sChange.Y1 < -display.sy) {
-				sChange.Y1 = -display.sy;
-				sChange.X1 = sChange.Y1 / canvasProp;
-				realRate = 1 + 2* sChange.X1 / display.sw;
+			if (display.sy > totalChangeY / 2) {
+				display.sy = display.sy - Math.max(totalChangeY / 2, totalChangeY - hl);
+			} else {
+				display.sy = 0;
 			}
-			
-			var resX = Math.min(sChange.X1 - sChange.X, 
-									  image.mWidth - display.sw - display.sx);
-			var resY = Math.min(sChange.Y1 - sChange.Y,
-									 image.mHeight - display.sh - display.sy);
-			var r = Math.min(1 + resX / display.sw , 1 + resY / display.sh);
-			
-
-			display.sx += sChange.X1;
-			display.sy += sChange.Y1; 
-			realRate = realRate * r;
-			display.sw = Math.min(display.sw * realRate, image.mWidth - display.sx);
-			display.sh = Math.min(canvasProp * display.sw, image.mHeight - display.sy);
-			image.scaleRatio = realRate * image.scaleRatio; //update scale
+			display.sw = realRate * display.sw;
+			display.sh = display.sw * canvasProp;
 			drawImage(canvas, img, display);
-		};
+		}
 	};
 
 	this.moveImage = function(canvas, scope, para) {

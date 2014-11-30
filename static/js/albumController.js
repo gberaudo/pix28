@@ -25,7 +25,6 @@ app.controller('AlbumController',
 
 		var albumEl = document.getElementById('album');
 		albumEl.style.height =  0.52*albumEl.offsetWidth + 'px';
-		albumEl.style.top = 0.085*$scope.screenWidth + 'px';
 		$scope.pheight = $scope.pwidth = Math.floor(0.3 * albumEl.offsetWidth);
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
@@ -131,7 +130,18 @@ app.controller('AlbumController',
 		$timeout(function() {
 			document.getElementById('notDelAlbum').focus();
 		}, 50);
+		document.addEventListener('keydown', delAlbumKeyDownHandle, true);
 	};
+	
+	function delAlbumKeyDownHandle(event) {
+		if (event.keyCode == 27) {
+			$timeout(function() {
+				$scope.delAlbum = false;
+				$scope.hideAlbum = false;
+			});
+			document.removeEventListener('keydown', delAlbumKeyDownHandle, true);
+		}
+	}
 	
 	$scope.removeAlbum = function(id) {
 		console.log('remove album');

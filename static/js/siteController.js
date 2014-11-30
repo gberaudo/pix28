@@ -63,15 +63,9 @@ app.run(['$rootScope', 'gettextCatalog',
  
 	gettextCatalog.debug = true; 
 	
-	var defaultFontSize = Math.floor(0.012*screen.width),
-		banner = document.getElementById('banner');
+	var defaultFontSize = Math.floor(0.012*screen.width);
 	document.body.style.fontSize = defaultFontSize + 'px';
-	document.body.style.width = 0.95*screen.width + 'px';
-	document.body.style.height = 0.8*screen.height + 'px';
-	banner.style.height = 0.04*screen.width + 'px';
-	banner.style.fontSize = defaultFontSize + 'px';
 	$rootScope.screenWidth = screen.width;
-	$rootScope.screenHeight = screen.height;
 }]);
 
 app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices', 

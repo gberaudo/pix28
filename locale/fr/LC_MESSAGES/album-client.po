@@ -18,16 +18,17 @@ msgid "(photos/page)"
 msgstr "(photos/page)"
 
 #: templates/index.html
-msgid "...finished!"
-msgstr "...fini !"
-
-#: templates/index.html
 msgid "...processing page {{processPage}}"
 msgstr "...traite page {{processPage}}"
 
 #: templates/index.html
 msgid "Add a new double page"
 msgstr "Ajouter une nouvelle page double"
+
+#: templates/index.html
+#, fuzzy
+msgid "Add photos"
+msgstr "Charger photos"
 
 #: templates/index.html
 msgid "Align text center"
@@ -81,16 +82,17 @@ msgid "Choose text font"
 msgstr "Choisir une police"
 
 #: templates/index.html
+#, fuzzy
+msgid "Click to add photos from your computer"
+msgstr "Cliquer pour charger des photos à partir de votre ordinateur"
+
+#: templates/index.html
 msgid "Click to create a new album"
 msgstr "Cliquer pour créer un nouvel album"
 
 #: templates/index.html
 msgid "Click to go to album"
 msgstr "Cliquer pour aller à l'album"
-
-#: templates/index.html
-msgid "Click to load photos from your computer"
-msgstr "Cliquer pour charger des photos à partir de votre ordinateur"
 
 # Faut-il tutoyer ou vouvoyer?
 #: templates/index.html
@@ -118,7 +120,8 @@ msgid "Delete this double page"
 msgstr "Supprimer cette page double."
 
 #: templates/index.html
-msgid "Download"
+#, fuzzy
+msgid "Download file"
 msgstr "Télécharger"
 
 #: templates/index.html
@@ -154,7 +157,8 @@ msgid "Enter text here"
 msgstr "Entrer texte ici"
 
 #: templates/index.html
-msgid "Export pdf album"
+#, fuzzy
+msgid "Export this album"
 msgstr "Exporter en pdf"
 
 #: templates/index.html
@@ -164,8 +168,8 @@ msgstr ""
 "pour l'imprimer"
 
 #: templates/index.html
-msgid "Generating pdf..."
-msgstr "Génération du pdf en cours..."
+msgid "Generating pdf 72dpi. Please be patient..."
+msgstr ""
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -182,10 +186,6 @@ msgstr "Aller à droite de l'image. Raccourci : Cthl + flèche droite."
 #: templates/index.html
 msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
-
-#: templates/index.html
-msgid "Load photos"
-msgstr "Charger photos"
 
 #: templates/index.html
 msgid "New album"
@@ -227,10 +227,6 @@ msgstr "Couleur du texte"
 #: templates/index.html
 msgid "The album"
 msgstr "L'album"
-
-#: templates/index.html
-msgid "Welcome!"
-msgstr "Bienvenue!"
 
 #: templates/index.html
 msgid "Yes, delete it."
@@ -283,6 +279,15 @@ msgstr "précédent"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "...finished!"
+#~ msgstr "...fini !"
+
+#~ msgid "Generating pdf..."
+#~ msgstr "Génération du pdf en cours..."
+
+#~ msgid "Welcome!"
+#~ msgstr "Bienvenue!"
 
 #~ msgid "Style text"
 #~ msgstr "Style du texte"

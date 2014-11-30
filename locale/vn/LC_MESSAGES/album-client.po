@@ -18,16 +18,17 @@ msgid "(photos/page)"
 msgstr "ảnh/trang"
 
 #: templates/index.html
-msgid "...finished!"
-msgstr "...hoàn thành !"
-
-#: templates/index.html
 msgid "...processing page {{processPage}}"
 msgstr "...đang xử lí trang {{processPage}}"
 
 #: templates/index.html
 msgid "Add a new double page"
 msgstr "Thêm trang đôi"
+
+#: templates/index.html
+#, fuzzy
+msgid "Add photos"
+msgstr "Tải ảnh"
 
 #: templates/index.html
 msgid "Align text center"
@@ -79,16 +80,17 @@ msgid "Choose text font"
 msgstr "Chọn phông chữ"
 
 #: templates/index.html
+#, fuzzy
+msgid "Click to add photos from your computer"
+msgstr "Nhắp chuột để tải ảnh từ máy tính."
+
+#: templates/index.html
 msgid "Click to create a new album"
 msgstr "Nhắp chuột để tạo album mới"
 
 #: templates/index.html
 msgid "Click to go to album"
 msgstr "Nhắp chuột để đến album này"
-
-#: templates/index.html
-msgid "Click to load photos from your computer"
-msgstr "Nhắp chuột để tải ảnh từ máy tính."
 
 #: templates/index.html
 msgid "Create your own story"
@@ -113,7 +115,8 @@ msgid "Delete this double page"
 msgstr "Xóa trang đôi này"
 
 #: templates/index.html
-msgid "Download"
+#, fuzzy
+msgid "Download file"
 msgstr "Tải file về"
 
 #: templates/index.html
@@ -150,7 +153,8 @@ msgid "Enter text here"
 msgstr "Thêm văn bản"
 
 #: templates/index.html
-msgid "Export pdf album"
+#, fuzzy
+msgid "Export this album"
 msgstr "Xuất album pdf"
 
 #: templates/index.html
@@ -158,8 +162,8 @@ msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr "Xuất album này ra file pdf để lưu trên máy hoặc in. "
 
 #: templates/index.html
-msgid "Generating pdf..."
-msgstr "Đang tạo file pdf..."
+msgid "Generating pdf 72dpi. Please be patient..."
+msgstr ""
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -176,10 +180,6 @@ msgstr "Sang phải ảnh. Phím tắt : Ctrl + mũi tên phải."
 #: templates/index.html
 msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr "Lên trên ảnh. Phím tắt :  Ctrl + mũi tên lên."
-
-#: templates/index.html
-msgid "Load photos"
-msgstr "Tải ảnh"
 
 #: templates/index.html
 msgid "New album"
@@ -221,10 +221,6 @@ msgstr "Màu chữ"
 #: templates/index.html
 msgid "The album"
 msgstr "Album"
-
-#: templates/index.html
-msgid "Welcome!"
-msgstr "Chào bạn!"
 
 #: templates/index.html
 msgid "Yes, delete it."
@@ -277,6 +273,15 @@ msgstr "trước"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sẽ bị xóa hoàn toàn."
+
+#~ msgid "...finished!"
+#~ msgstr "...hoàn thành !"
+
+#~ msgid "Generating pdf..."
+#~ msgstr "Đang tạo file pdf..."
+
+#~ msgid "Welcome!"
+#~ msgstr "Chào bạn!"
 
 #~ msgid "Style text"
 #~ msgstr "Chỉnh văn bản"

@@ -1,61 +1,36 @@
 
-#album {
+#sideMenu {
 	position: absolute;
- 	width: 75%; 
- 	left: 12%; 
-	border: 1px black solid;
+	left: 2%; 
+	top: 7em; 
+	width: 10%;
 }
 
+#sideMenu ul{
+	list-style: none;
+	padding-left: 0;
+}
 
+#sideMenu li {
+	margin-bottom: 1.5em;
+}
 
 #abTitle {
-	position: absolute;
-	top: 14%;
-	height: 3%;
-	left: 12%;
+	position: relative;
+	height: 2em;
+	top: 2em;
+	left: 14%;
 	width: 75%;
 }
 
-#selectLayout {
-	position: absolute; 
-	width: 75%; 
-	height: 25%; 
-	left: 0; 
-	top: 75%; 
- 	border-top: 1px solid #AAA; 
+#album {
+	position: relative;
+	margin-top: 2em;
+ 	width: 75%; 
+ 	left: 14%; 
+	border: 1px black solid;
 }
 
-#imageLoader {
-	position: absolute;
-	left: 75%;
-	top: 0%;
-	width: 25%;
-	height: 100%;
-	border-left: 1px solid black; 
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-
-#loadPhotos {
-	margin-top: 0.5em !important; 
-	margin-left: 0.5em !important;
-	font-weight: bold;
-	color: #FFFFFF;
-	display: inline-block;
-	background-color: #07A;
-}
-
-#loadPhotos:hover{
-	background-color:#059 !important
-}
-
-.bigImg {
-	position: absolute;
-	max-height: 200px;
-	max-width: 200px;
-	display: none;
-	box-shadow: 2px 2px 2px 2px #aaa; 
-}
 
 
 #doublepage {
@@ -85,6 +60,117 @@
 	box-shadow: 3px 3px 5px 6px #ccc;
 	background-color: #FFFFFF;
 }
+
+[name = 'textbox'] {
+	position: absolute;
+	z-index: 1;
+	background-color: transparent;
+	padding: 0;
+	overflow: hidden
+}
+
+#controls {
+	position: absolute;
+	bottom: 2%;
+	left: 0;
+	width: 100%; 
+	height: 7%;
+}
+
+
+#textControl {
+	height: 100%;
+	display: table;
+	border-spacing: .2em;
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFFFFF;
+	border-radius: 4px;
+}
+
+.textCtrl {
+	display: table-cell;
+	vertical-align: middle;
+	height: 1.2em; 
+	padding-top: 0px;
+	min-width: 1em;
+}
+
+#textControl img {
+	height: 100%;
+	display: block;
+}
+
+#imageControl {
+	height: 100%;
+	display: table;
+	border-spacing: .2em;
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFFFFF;
+	border-radius: 4px;
+}
+
+.imgCtrl {
+	display: table-cell;
+	vertical-align: middle;
+	height: 1.2em;
+	padding-top: 0px;
+}
+
+#imageControl img {
+	height: 100%;
+	display: block;
+}
+
+
+#selectLayout {
+	position: absolute; 
+	width: 75%; 
+	height: 25%; 
+	left: 0; 
+	top: 75%; 
+ 	border-top: 1px solid #AAA; 
+}
+
+#imageLoader {
+	position: absolute;
+	left: 75%;
+	top: 0%;
+	width: 25%;
+	height: 100%;
+	border-left: 1px solid black; 
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#loadPhotos {
+	position: absolute;
+	top: 0.5em; 
+	left: 0.5em;
+	font-weight: bold;
+	color: #FFFFFF;
+	display: table-cell;
+	vertical-align: middle;
+	background-color: #07A;
+}
+
+#loadPhotos:hover{
+	background-color:#059 !important
+}
+
+.bigImg {
+	position: absolute;
+	max-height: 200px;
+	max-width: 200px;
+	display: none;
+	box-shadow: 2px 2px 2px 2px #aaa; 
+}
+
+
+
 
 .pActive {
 	box-shadow: 0px 0px 2px 2px  #0489B1 !important;
@@ -120,34 +206,32 @@
 	height: 7%;
 	text-align: center;
 	font-size: 80%;
+	display: block;
 }
 
-.prevnext {
+#prev img, #next img {
 	margin-left: auto;
 	margin-right: auto;
 	height: 80%;
 	display: block;
 }
 
-#controls {
-	position: absolute;
-	top: 92%;
-	left: 0%;
-	width: 100%; 
-	height: 8%;
-}
 
-.textCtrlBut {
-	display: inline-block;
-	vertical-align: middle;
-}
 
 #colorMenu {
-	z-index:2;
+	z-index: 2;
 	position: absolute;
+	background-color: #FFFFFF;
 	width: 40%;
 	height: 6em; 
 	border: 1px solid #888;
+}
+
+.colorTable {
+	width: 10%; 
+	height:1.5em;
+	float: left;
+	box-shadow: 0px 0px 0px 1px #CCC inset;
 }
 
 #pageBGcolor {
@@ -164,21 +248,6 @@
 	background-color: #FFFFFF;
 }
 
-
-.colorTable {
-	width: 10%; 
-	height:1.5em;
-	float: left;
-	box-shadow: 0px 0px 0px 1px #CCC inset;
-}
-
-#sideMenu {
-	position: absolute; 
-	left: 2%; 
-	top: 14%; 
-	height: 85%;
-	width: 10%;
-}
 
 #export {
 	height: 3em;
@@ -267,15 +336,13 @@ canvas.frame {
 	position: absolute;
 }
 
-
-
 canvas.minframe {
 	border: 1px solid #CCC;
 	display: inline-block;
 	margin-right: 10px;
 }
 
-span.description {
+.description {
 	font-size: 80%; 
 	font-style: italic
 }
@@ -294,13 +361,13 @@ button {
 	cursor: pointer;
 }
 
-span.bold {
+.bold {
 	font-size: 100%; 
 	font-weight: bold; 
 	font-family: 'Times New Roman';
 }
 
-span.italic {
+.italic {
 	font-size: 100%; 
 	font-style: italic; 
 	font-family: "Times New Roman";
@@ -313,6 +380,7 @@ input {
 select {
 	font-size: 90%;
 }
+
 .layout {
 	width: 2.5em; 
 	margin-right: 0.5em;
@@ -320,14 +388,7 @@ select {
 	display: inline-block;
 	text-align: center
 }
-#guide {
-	position: absolute;
-	font-size: 80%;
-	max-width: 15em;
-	text-align: center;
-	color: #0489B1;
-	text-shadow: 1px 1px 0 #FFF;
-}
+
 
 img[name = 'edit'] {
 	width: 25px;
@@ -342,50 +403,20 @@ div[name = 'editTitle'] {
 }
 
 #topMenu {
-	position: absolute;
+	position: relative;
 	top: 0.5%;
-	height: 6%;
+	height: 7.5%;
 	width: 100%;
 }
 
-#removePage {
-	height: 100%;
-	margin-right: 1em;
-	float: right;
-}
-
-#addPage {
+#topMenu img {
+	display: inline-block;
 	height: 100%;
 	margin-left: 1em;
-}
-
-#addText {
-	height: 100%; 
-	margin-left: 2em;
-}
-
-#addFrame {
-	height: 100%;
-	margin-left: 2em;
+	margin-right: 1em;
 }
 
 
-.small {
-	font-size: 80%;
-}
-
-.inline {
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.left {
-	float: left;
-}
-
-.right {
-	float: right;
-}
 
 span[name = 'title'] {
 	float: left; 
@@ -401,55 +432,7 @@ span[name = 'title'] {
 	height: 1.5em !important;
 }
 
-.textCtrl {
-	display: table-cell;
-	vertical-align: middle;
-	height: 1.2em; 
-	padding-top: 0px;
-	min-width: 1em;
-}
 
-#textControl img {
-/* 	margin-top: 10%; */
-	height: 100%;
-	display: block;
-}
-#textControl {
-	margin-top: -1%;
-	height: 90%;
-	display: table;
-	border-spacing: .2em;
-	vertical-align: middle;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: #FFFFFF;
-	border-radius: 4px;
-}
-
-.imgCtrl {
-	display: table-cell;
-	vertical-align: middle;
-	height: 1.5em;
-	padding-top: 0px;
-	
-}
-
-#imageControl img {
-/* 	margin-top: 10%; */
-	height: 100%;
-	display: block;
-}
-#imageControl {
-	margin-top: -1%;
-	height: 90%;
-	display: table;
-	border-spacing: .2em;
-	vertical-align: middle;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: #FFFFFF;
-	border-radius: 4px;
-}
 .btn {
 /*  	display: inline-block; */
 	margin-bottom: 0;
@@ -506,6 +489,8 @@ span[name = 'title'] {
 	position: fixed;
 	top: 0;
 	left: 0;
+	width: 100%;
+	height: 100%;
 	background-color: #333;
 	opacity: 0.9;
 }
@@ -533,11 +518,13 @@ span[name = 'title'] {
 #previewPage {
 	z-index: 20;
 	position: absolute;
-/* 	background-color: #FFFFFF !important; */
 	box-shadow: 2px 2px 2px 2px #fff; 
+	top: 7%;
+	left: 8%;
 }
 
-#previewPage, #leftPage, #rightPage, .btn, .bigbtn, .medbtn:focus {
+#previewPage, #leftPage, #rightPage,
+.btn, .bigbtn, .medbtn:focus {
 	outline: 0;
 }
 
@@ -552,6 +539,42 @@ option {
 	height: 1.5em;
 }
 	
+.small {
+	font-size: 80%;
+}
+
+.inline {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.close {
+	position: relative;
+	left: 101%; 
+	top: -3%;
+}
+
+#previewPage .next {
+	position: absolute;
+	left: 101%; 
+	top: 49%; 
+	width: 1em;
+}
+
+#previewPage .prev {
+	position: absolute;
+	left:-3%; 
+	top: 49%; 
+	width: 1em;
+}
 /*-------------------------------fonts -------------------*/
 
 .Calligraffiti {

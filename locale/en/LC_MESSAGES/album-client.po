@@ -18,15 +18,15 @@ msgid "(photos/page)"
 msgstr ""
 
 #: templates/index.html
-msgid "...finished!"
-msgstr ""
-
-#: templates/index.html
 msgid "...processing page {{processPage}}"
 msgstr ""
 
 #: templates/index.html
 msgid "Add a new double page"
+msgstr ""
+
+#: templates/index.html
+msgid "Add photos"
 msgstr ""
 
 #: templates/index.html
@@ -79,15 +79,15 @@ msgid "Choose text font"
 msgstr ""
 
 #: templates/index.html
+msgid "Click to add photos from your computer"
+msgstr ""
+
+#: templates/index.html
 msgid "Click to create a new album"
 msgstr ""
 
 #: templates/index.html
 msgid "Click to go to album"
-msgstr ""
-
-#: templates/index.html
-msgid "Click to load photos from your computer"
 msgstr ""
 
 #: templates/index.html
@@ -111,7 +111,7 @@ msgid "Delete this double page"
 msgstr ""
 
 #: templates/index.html
-msgid "Download"
+msgid "Download file"
 msgstr ""
 
 #: templates/index.html
@@ -147,7 +147,7 @@ msgid "Enter text here"
 msgstr ""
 
 #: templates/index.html
-msgid "Export pdf album"
+msgid "Export this album"
 msgstr ""
 
 #: templates/index.html
@@ -155,7 +155,7 @@ msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr ""
 
 #: templates/index.html
-msgid "Generating pdf..."
+msgid "Generating pdf 72dpi. Please be patient..."
 msgstr ""
 
 #: templates/index.html
@@ -172,10 +172,6 @@ msgstr ""
 
 #: templates/index.html
 msgid "Go to the top of image. Hot key: Ctrl + arrow up."
-msgstr ""
-
-#: templates/index.html
-msgid "Load photos"
 msgstr ""
 
 #: templates/index.html
@@ -216,10 +212,6 @@ msgstr ""
 
 #: templates/index.html
 msgid "The album"
-msgstr ""
-
-#: templates/index.html
-msgid "Welcome!"
 msgstr ""
 
 #: templates/index.html
