@@ -5,9 +5,9 @@ body {
 	min-height: 500px;
 }
 
-::-moz-selection { 
+/*::-moz-selection {
 	background-color: none;
-}
+}*/
 
 /** {
   -webkit-user-select: none; 
@@ -17,9 +17,9 @@ body {
   user-select: none;         
 }*/
 
-::selection {
+/*::selection {
 	background-color: transparent;
-}
+}*/
 
 .content {
 	position: absolute;

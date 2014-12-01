@@ -39,7 +39,8 @@ app.controller('CanvasController',
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 		if (!!$scope.frame.image.src) {
 			$scope.img.onload = function() {
-				drawImage(canvas, $scope.img, display);
+				drawImage(canvas, $scope.img, display,
+							 $scope.frame.image.ratio, $scope.pageRatio);
 			};
 			$scope.img.src = $scope.frame.image.src;
 		} else {
@@ -73,12 +74,12 @@ app.controller('CanvasController',
 				display.dw = canvas.width;
 				display.dh = canvas.height;
 			}
-			drawImage(canvas, $scope.img, display);
+			drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
 		}
 	};
 
 	function redrawImage() {
-		drawImage(canvas, $scope.img, display);
+		drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
 	};
 
 	var drag = {
@@ -136,7 +137,8 @@ app.controller('CanvasController',
 				window.requestAnimationFrame(function() {
 					redimension(canvas, offsetCopy, anchorCopy);
 					if (!!$scope.img.src) {
-						drawImage(canvas, $scope.img, display);
+						drawImage(canvas, $scope.img, display, 
+									 $scope.frame.image.ratio, $scope.pageRatio );
 					}
 					else {
 						ImgService.resetFrame(canvas);
@@ -344,7 +346,6 @@ app.controller('CanvasController',
 	};
 	
 	$scope.keyDown = function(evt) {
-		console.log(evt.keyCode);
 		switch (evt.keyCode) {
 			case 61: // key + 
 			case 187:
@@ -395,6 +396,7 @@ app.controller('CanvasController',
 			$scope.frame.image.mHeight = parseInt(data.getData('mHeight'));
 			$scope.frame.image.mWidth = parseInt(data.getData('mWidth'));
 			$scope.frame.image.DbId = parseInt(data.getData('DbId'));
+			$scope.frame.image.ratio = parseFloat(data.getData('ratio'));
 		//then draw image
 			firstDrawImage();
 		}

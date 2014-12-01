@@ -38,7 +38,9 @@ $def with (mode)
 	<title>Create your own story</title> 
 </head>
 
-<body ng-controller = 'SiteController' ng-show = 'loaded' class = 'body'>
+<body ng-controller = 'SiteController' 
+	ng-show = 'loaded'
+	ng-mouseup = 'mouseUp(\$event)'>
 
 	<div id = 'banner'> 
 		<div class = 'content'>
@@ -192,7 +194,7 @@ $def with (mode)
 						</div>
 						<div ng-show = 'processingPdf' >
 							<span translate>
-								Generating pdf 72dpi. Please be patient...
+								Generating pdf. Please be patient...
 							</span>
 							<div style = 'font-size: 90%' > 
 						
@@ -274,8 +276,7 @@ $def with (mode)
 			</div>
 
 
-			<div id = 'album'
-				ng-mouseup = 'mouseUp(\$event)'>
+			<div id = 'album'>
 				<div id = 'doublepage'>
 						
 					<div id = 'prev' class = 'link'
@@ -307,7 +308,8 @@ $def with (mode)
 								class = 'respond draggable'/>
 						
 						<img src = 'static/icons/frame.svg'
-								 ondragstart = 'angular.element(this).scope().dragFrame(event)'
+								draggable = 'true'
+								ondragstart = 'angular.element(this).scope().dragFrame(event)'
 								title = '{{"Drag and drop into page to add a new frame"|translate}}'
 								class = 'respond draggable'/>
 						
@@ -339,6 +341,7 @@ $def with (mode)
 					<div ng-repeat = 'page in ["leftPage", "rightPage"]'
 							id = '{{page}}'
 							class = 'page'
+							draggable = 'false'
 							ng-controller = 'PageController'
 							ng-if = 'show[page]'
 							tabindex = 0

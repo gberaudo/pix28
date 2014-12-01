@@ -69,8 +69,8 @@ app.run(['$rootScope', 'gettextCatalog',
 }]);
 
 app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices', 
-					'$rootScope',
-	function($scope, gettextCatalog, DBServices, $rootScope) {
+					'$rootScope', '$element',
+	function($scope, gettextCatalog, DBServices, $rootScope, $element) {
 		
 	DBServices.initAlbumDB($scope);
 	
@@ -101,5 +101,15 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 		if ($scope.albumSCs.length > 0) {
 			$scope.showAlbums = true;
 		}
+	};
+	
+	$element[0].onselectstart = function() {
+		return false;
+	};
+	
+	$scope.current = {};
+	$scope.mouseUp = function(evt) {
+		$scope.current.mouseIsUp = true;
+		$scope.current.cursor = 'auto';
 	};
 }]);

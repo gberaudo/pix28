@@ -218,6 +218,7 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		img.setAttribute('mWidth', obj.mWidth);
 		img.setAttribute('mHeight', obj.mHeight);
 		img.setAttribute('DbId', id);
+		img.setAttribute('ratio', obj.ratio);
 		img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
 		img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
 		img.setAttribute('title', title); 
@@ -250,11 +251,18 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		};
 	};
 	
-	function drawImage(canvas, img, display) {
+	function drawImage(canvas, img, display, imgRatio, pageRatio) {
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
 							display.dx, display.dy, display.dw, display.dh);
 		canvas.style.border = 'none';
+		if (display.sw * imgRatio < 4.2 * pageRatio * display.dw) {
+			bad = document.createElement('img');
+			bad.onload = function() {
+				ctx.drawImage(bad, 0, 0);
+			}
+			bad.src = 'static/icons/face-sad.png';
+		}
 	};
 	
 	this.drawImage = drawImage;
@@ -308,9 +316,9 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 			} else {
 				display.sy = 0;
 			}
-			display.sw = realRate * display.sw;
-			display.sh = display.sw * canvasProp;
-			drawImage(canvas, img, display);
+			display.sw = Math.min(realRate * display.sw, image.mWidth - display.sx);
+			display.sh = Math.min(display.sw * canvasProp, image.mHeight - display.sy);
+			drawImage(canvas, img, display, image.ratio, scope.pageRatio);
 		}
 	};
 
@@ -346,7 +354,7 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 				display.sy += offset;
 				break;
 		}
-		drawImage(canvas, img, display);
+		drawImage(canvas, img, display, image.ratio, scope.pageRatio );
 	};
 	
 	

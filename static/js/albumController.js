@@ -14,13 +14,10 @@ app.controller('AlbumController',
 	
 	function init() {
 		$scope.album = {};
-		$scope.current = {//store the current status
-			mouseIsUp: true, 
-			mousePos: {}, 
-			pageNum: -1,
-			font: {size: '12px', family: 'UVNTinTuc_R'},
-			imgLoad: false
-		}; 
+		$scope.current.mousePos = {};
+		$scope.current.pageNum = -1;
+		$scope.current.font = {size: '12px', family: 'UVNTinTuc_R'};
+		$scope.current.imgLoad = false;
 		$scope.show = {};
 
 		var albumEl = document.getElementById('album');
@@ -28,11 +25,13 @@ app.controller('AlbumController',
 		$scope.pheight = $scope.pwidth = Math.floor(0.3 * albumEl.offsetWidth);
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
+		$scope.pdfWidth = 720;
+		$scope.pdfHeight = 720;
+		$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
 		
 		$scope.layoutList = [
 			'x1', 'x2', 'x3', 'x4', 'x5'
 		];
-		
 	};
 	
 	function setUpdateAlbum() {
@@ -493,13 +492,6 @@ app.controller('AlbumController',
 	/*---------------- Mouse control-------------------------------*/
 
 
-	$scope.mouseUp = function(evt) {
-		$scope.current.mouseIsUp = true;
-		$scope.current.cursor = 'auto';
-	};
-	
-	
-	
 	$scope.descriptionBlur = function() {
 		if (!!$scope.album.description) {
 			$scope.enterDescription = false;
@@ -556,13 +548,14 @@ app.controller('ExportController',
 		$scope.$parent.hideAlbum = false;
 		$scope.showExportWindow = false;
 		$scope.showExportMenu = false;
+		$scope.processingPdf = false;
 		document.removeEventListener('keydown', exportKeyDownHandle, true);
 	};
 	
 	$scope.generatePdf = function(resolution) {
 		$scope.showExportMenu = false;
 		$scope.processingPdf = true;
-		$scope.processing = true;
+		var coeff = resolution / 72;
 		
 		var albumJSON = angular.copy($scope.album.content);
 		getFonts()
@@ -637,7 +630,7 @@ app.controller('ExportController',
 		function makePdfFromJSON(json, fontsData) {
 			var pdfWidth = 720,
 				pdfHeight = 720,
-				ratio = pdfWidth/$scope.pwidth;
+				pageRatio = pdfWidth/$scope.pwidth;
 			var doc = new PDFDocument({
 				size: [pdfWidth, pdfHeight],
 				margin: 0
@@ -656,16 +649,15 @@ app.controller('ExportController',
 							if (!tb.text) { 
 								continue;
 							}
-							console.log('ratio',ratio);
 							var color = Misc.RGBtoHex(tb.font.color);
-							doc.fontSize(parseFloat(tb.font.size)*ratio)
+							doc.fontSize(parseFloat(tb.font.size)*pageRatio)
 								.font(fontsData[tb.font.family])
 								.fillColor(color)
 								.text(tb.text, 
-										ratio * tb.box.left * $scope.pwidth/100, //to be calculated
-										ratio * tb.box.top * $scope.pheight/100, //to be calculated
+										tb.box.left * pdfWidth/100, //to be calculated
+										tb.box.top * pdfHeight/100, //to be calculated
 									{
-										width: ratio * tb.box.width * $scope.pwidth/100,
+										width: tb.box.width * pdfWidth/100,
 										align: tb.align,
 										margin: 0,
 									});
@@ -736,7 +728,14 @@ app.controller('ExportController',
 								//crop image on phantom canvas
 								var canvas = document.createElement('canvas'),
 									ctx = canvas.getContext('2d'),
-									scale = 0.2; //to be calculated
+									realWidth = pageRatio * display.dw;
+									console.log('realWidth', realWidth);
+								if (sw < coeff * realWidth) {
+									scale = 1;
+								} else {
+									scale = coeff * realWidth / sw;
+									console.log('scale', scale);
+								}
 								var imgObj = new Image();
 								imgObj.onload = function() {
 									canvas.width = scale * sw;
@@ -745,19 +744,19 @@ app.controller('ExportController',
 									switch (img.orientation) {
 										case 6:
 											rsx = sy;
-											rsy = max(img.rHeight - sw - sx, 0);
-											rsw = min(sh, img.rWidth -rsx);
-											rsh = min(sw, img.rHeight-rsy);
+											rsy = max(img.rWidth - sw - sx, 0);
+											rsw = min(sh, img.rHeight -sy);
+											rsh = min(sw, img.rWidth - rsy);
 											ctx.translate(canvas.width, 0);
 											ctx.rotate(Math.PI/2);
 											ctx.drawImage(imgObj, rsx, rsy, rsw, rsh, 
 																0, 0, canvas.height, canvas.width);
 											break;
 										case 8:
-											rsx = max(img.rWidth - sh -sy, 0);
+											rsx = max(img.rHeight - sh -sy, 0);
 											rsy = sx;
-											rsw = min(sh, img.rWidth - rsx);
-											rsh = min(sw, img.rHeight - rsy);
+											rsw = min(sh, img.rHeight - rsx);
+											rsh = min(sw, img.rWidth - sx);
 											ctx.translate(0, canvas.height);
 											ctx.rotate(-Math.PI/2);
 											ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
@@ -778,10 +777,14 @@ app.controller('ExportController',
 														0, 0, canvas.width, canvas.height);
 											break;
 									}
-									var outputImg = canvas.toDataURL();
-									doc.image(outputImg, ratio*frame.canvas.left*$scope.pwidth/100, 
-													ratio*frame.canvas.top*$scope.pheight/100,
-													{width: display.dw*ratio});
+									var outputImg = canvas.toDataURL('image/jpeg');
+								//	var outputImg = canvas.toDataURL('image/png');
+									doc.image(outputImg, frame.canvas.left * pdfWidth / 100, 
+													frame.canvas.top * pdfHeight/100,
+													{
+														width: frame.canvas.width * pdfWidth / 100,
+														height: frame.canvas.height * pdfHeight / 100
+													});
 									deferred1.resolve(null);
 								}
 								imgObj.src = img.src;

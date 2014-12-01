@@ -58,7 +58,7 @@ app.controller('ImageLoaderController',
 			var canvas = document.createElement('canvas');
 			var ctx = canvas.getContext('2d');
 			var orientation = 1;
-			var ratio;
+			var ratio, rWidth, rHeight;
 			imgObj.onload = function() {
 				EXIF.getData(imgObj, function() {
 					orientation = EXIF.getTag(imgObj, 'Orientation')||1;
@@ -72,7 +72,8 @@ app.controller('ImageLoaderController',
 							ctx.drawImage(imgObj, 
 										-canvas.width/2, -canvas.height/2,
 										canvas.width, canvas.height);
-							ratio = imgObj.width / canvas.width;
+							rWidth = imgObj.width;
+							rHeight = imgObj.height;
 							break;
 							
 						case 6:
@@ -83,7 +84,8 @@ app.controller('ImageLoaderController',
 							ctx.drawImage(imgObj, 
 										-canvas.height/2, -canvas.width/2, 
 										canvas.height, canvas.width);
-							ratio = imgObj.height / canvas.width;
+							rHeight = imgObj.width;
+							rWidth = imgObj.height;
 							break;
 							
 						case 8:
@@ -94,14 +96,16 @@ app.controller('ImageLoaderController',
 							ctx.drawImage(imgObj, 
 										-canvas.height/2, -canvas.width/2, 
 										canvas.height, canvas.width);
-							ratio = imgObj.height / canvas.width;
+							rHeight = imgObj.width;
+							rWidth = imgObj.height;
 							break;
 						
 						default:
 							canvas.width = 400;
 							canvas.height = canvas.width * imgObj.height / imgObj.width;
 							ctx.drawImage(imgObj, 0, 0, canvas.width, canvas.height);
-							ratio = imgObj.width / canvas.width;
+							rWidth = imgObj.width;
+							rHeight = imgObj.height;
 							break;
 					}
 				});
@@ -110,10 +114,10 @@ app.controller('ImageLoaderController',
 					minSrc: canvas.toDataURL(),
 					mHeight: canvas.height,
 					mWidth: canvas.width,
-					rWidth: imgObj.width,
-					rHeight: imgObj.height,
+					rWidth: rWidth,
+					rHeight: rHeight,
 					orientation: orientation,
-					ratio: ratio
+					ratio: rWidth/canvas.width
 				};
 				deferred.resolve(result);
 			};
@@ -165,6 +169,7 @@ app.controller('ImageLoaderController',
 		ev.dataTransfer.setData(
 			'mWidth', ev.target.getAttribute('mWidth')
 		);
+		ev.dataTransfer.setData('ratio', ev.target.getAttribute('ratio'));
 		ev.dataTransfer.setData('DbId', ev.target.getAttribute('DbId'));
 		ev.dataTransfer.setData('name', 'image');
 		
