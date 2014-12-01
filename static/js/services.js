@@ -282,44 +282,45 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 	this.delCanvas = function(el, $scope) {
 		$scope.current[el.parentNode.parentNode.id].frames.splice($scope.$index,1);
 	};
-	
+
+	this.computeZoomedDisplay = function(canvas, image, display, rate) {
+		var realRate = Math.min(rate, image.mWidth / display.sw, image.mHeight / display.sh);
+		var canvasProp = canvas.height/canvas.width;
+		var totalChangeX = (realRate - 1) * display.sw;
+		var	totalChangeY =  totalChangeX * canvasProp;
+
+		var wl = image.mWidth - display.sw - display.sx,
+			hl = image.mHeight - display.sh - display.sy;
+
+		if (display.sx > totalChangeX / 2) {
+			display.sx = display.sx - Math.max(totalChangeX / 2, totalChangeX - wl);
+		} else {
+			display.sx = 0;
+		}
+
+		if (display.sy > totalChangeY / 2) {
+			display.sy = display.sy - Math.max(totalChangeY / 2, totalChangeY - hl);
+		} else {
+			display.sy = 0;
+		}
+		display.sw = Math.min(realRate * display.sw, image.mWidth - display.sx);
+		display.sh = Math.min(display.sw * canvasProp, image.mHeight - display.sy);
+	}
+
 	this.zoomImage = function(canvas, scope, para) {
 		var rate = 1.01,
 		img = scope.img,
 		image = scope.frame.image,
 		display = scope.frame.display;
-		
-		if (para == 'in') {
-			zoom(1/rate);
-		}
-		if (para == 'out') {
-			zoom(rate);
-		}
-	
-		function zoom(rate) {
-			var realRate = Math.min(rate, image.mWidth / display.sw, image.mHeight / display.sh);
-			var canvasProp = canvas.height/canvas.width;
-			var totalChangeX = (realRate - 1) * display.sw,
-				totalChangeY =  totalChangeX * canvasProp;
-			
-			var wl = image.mWidth - display.sw - display.sx,
-				hl = image.mHeight - display.sh - display.sy;
-				
-			if (display.sx > totalChangeX / 2) {
-				display.sx = display.sx - Math.max(totalChangeX / 2, totalChangeX - wl);
-			} else {
-				display.sx = 0;
-			}
-			
-			if (display.sy > totalChangeY / 2) {
-				display.sy = display.sy - Math.max(totalChangeY / 2, totalChangeY - hl);
-			} else {
-				display.sy = 0;
-			}
-			display.sw = Math.min(realRate * display.sw, image.mWidth - display.sx);
-			display.sh = Math.min(display.sw * canvasProp, image.mHeight - display.sy);
-			drawImage(canvas, img, display, image.ratio, scope.pageRatio);
-		}
+
+                if (para == 'in') {
+                        this.computeZoomedDisplay(canvas, image, display, 1/rate);
+                }
+                if (para == 'out') {
+                        this.computeZoomedDisplay(canvas, image, display, rate);
+                }
+
+		drawImage(canvas, img, display, image.ratio, scope.pageRatio);
 	};
 
 	this.moveImage = function(canvas, scope, para) {

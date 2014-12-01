@@ -61,6 +61,10 @@ dist: build
 	cp static/build/album.js dist/static/build/album.js
 	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
 
+.PHONY: test
+test: .build/node_modules.timestamp
+	./node_modules/karma/bin/karma start karma-conf.js --single-run
+
 
 .PHONY: lint
 lint: .build/venv/bin/gjslint .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
