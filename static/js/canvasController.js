@@ -14,6 +14,7 @@ app.controller('CanvasController',
 	function setFocus() {
 		if ($scope.current.datumWithFocus === $scope.frame) {
 			canvas.focus();
+			ImgService.drawAnchors(canvas);
 			$scope.current.onEditImage = false;
 			$scope.current.onEditText = false;
 			$scope.current.datumWithFocus = undefined;
@@ -23,8 +24,14 @@ app.controller('CanvasController',
 				activeTextArea.removeClass('tActive');
 			}
 			if (document.getElementsByClassName('cActive').length > 0) {
-				var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
-				activeCanvas.removeClass('cActive');
+				var activeCanvas = document.getElementsByClassName('cActive')[0];
+				var ngActiveCanvas = angular.element(activeCanvas);
+				ngActiveCanvas.removeClass('cActive');
+				var activeScope = ngActiveCanvas.scope();
+				//redraw this canvas to remove anchors
+				drawImage(activeCanvas, activeScope.img, 
+							 activeScope.frame.display,
+							activeScope.frame.image.ratio, $scope.pageRatio);
 			}
 			angular.element(canvas).addClass('cActive');
 		}
@@ -75,11 +82,13 @@ app.controller('CanvasController',
 				display.dh = canvas.height;
 			}
 			drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
+			ImgService.drawAnchors(canvas);
 		}
 	};
 
 	function redrawImage() {
 		drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
+		ImgService.drawAnchors(canvas);
 	};
 
 	var drag = {
@@ -91,7 +100,7 @@ app.controller('CanvasController',
 		L: false,
 		R: false,
 		T: false,
-		B: false
+		B: false,
 	};
 
 
@@ -102,11 +111,14 @@ app.controller('CanvasController',
 			Y: evt.layerY
 		};
 		Misc.setCursor(mouseRtCanvas, $scope.canvasZone, $scope.current);
+		$scope.dragimage = true;
 		for (anchor in drag) {
 			if (Misc.inRect(mouseRtCanvas, $scope.canvasZone[anchor])) {
 				drag[anchor] = true;
+				$scope.dragimage = false;
 				break;
-			}
+			} 
+			
 		}
 	};
 	
@@ -120,8 +132,12 @@ app.controller('CanvasController',
 
 	$scope.$watch('current.mouseIsUp', function() {
 		if ($scope.current.mouseIsUp) {
-			for (anchor in drag) {drag[anchor] = false;}
-		}
+			for (anchor in drag) {
+				drag[anchor] = false;
+			}
+			$scope.dragimage = false;
+		} 
+		
 	});
 
 	$scope.$watch('current.mousePos', function(newValue, oldValue, scope) {
@@ -130,7 +146,7 @@ app.controller('CanvasController',
 			Y: newValue.Y - oldValue.Y
 		};
 
-		for (anchor in drag){
+		for (anchor in drag) {
 			if (drag[anchor]){
  				var offsetCopy = angular.copy(offset);
  				var anchorCopy = angular.copy(anchor);
@@ -139,17 +155,43 @@ app.controller('CanvasController',
 					if (!!$scope.img.src) {
 						drawImage(canvas, $scope.img, display, 
 									 $scope.frame.image.ratio, $scope.pageRatio );
+						ImgService.drawAnchors(canvas);
 					}
 					else {
 						ImgService.resetFrame(canvas);
+						ImgService.drawAnchors(canvas);
 					}
 					Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 					updateFrame();
 				});
 			}
-		};
+		}
+		if ($scope.dragimage) {
+				moveImageInCanvas(offset);
+		}
 	});
 
+	function moveImageInCanvas(offset) {
+		var image = $scope.frame.image;
+		var sChangeX = -offset.X * image.mWidth / canvas.width,
+			sChangeY = -offset.Y * image.mHeight / canvas.height;
+		if (sChangeX < -display.sx) {
+			display.sx = 0;
+		} else if (sChangeX + display.sx + display.sw > image.mWidth) {
+			display.sx = image.mWidth - display.sw;
+		} else {
+			display.sx += sChangeX;
+		}
+		if (sChangeY < -display.sy) {
+			display.sy = 0;
+		} else if (sChangeY + display.sy + display.sh > image.mHeight) {
+			display.sy = image.mHeight - display.sh;
+		} else {
+			display.sy += sChangeY;
+		}
+		drawImage(canvas, $scope.img, display, image.ratio, $scope.pageRatio);
+		ImgService.drawAnchors(canvas);
+	}
 
 	function redimension(cv, offset, anchor){
 		var sChange = {},
@@ -159,7 +201,8 @@ app.controller('CanvasController',
 			pwidth = $scope.pwidth,
 			pheight = $scope.pheight,
 			image = $scope.frame.image,
-			off;
+			off,
+			minSize = pwidth / 6;
 
 		switch (anchor){
 			case 'center': 
@@ -181,8 +224,8 @@ app.controller('CanvasController',
 				
 			case 'L':
 				off = offset.X; 
-				if (off > cv.width - 30) {
-					off = cv.width - 30;
+				if (off > cv.width - minSize) {
+					off = cv.width - minSize;
 				}
 				
 				if (off < -cleft) {
@@ -217,8 +260,8 @@ app.controller('CanvasController',
 				off = offset.X;
 				
 				//enlarge image when limit attained
-				if (off < -cv.width + 30) {
-					off = -cv.width + 30;
+				if (off < -cv.width + minSize) {
+					off = -cv.width + minSize;
 				}
 				if (off + cv.width + cleft > pwidth) {
 					off = pwidth - cv.width - cleft;
@@ -251,8 +294,8 @@ app.controller('CanvasController',
 			
 			case 'T':
 				off = offset.Y;
-				if (off > cv.height - 30) {
-					off = cv.height - 30;
+				if (off > cv.height - minSize) {
+					off = cv.height - minSize;
 				}
 				if (off < -ctop) {
 					off = -ctop;
@@ -285,8 +328,8 @@ app.controller('CanvasController',
 			
 			case 'B':
 				off = offset.Y;
-				if (off < -cv.height + 30) {
-					off = -cv.height + 30;
+				if (off < -cv.height + minSize) {
+					off = -cv.height + minSize;
 				}
 				if (off + cv.height + ctop > pheight) {
 					off = pheight - cv.height - ctop;
@@ -422,6 +465,7 @@ app.controller('CanvasController',
 		if (!!$scope.img.src) {
 			$scope.current.onEditImage = true;
 		}
+		redrawImage();
 		document.addEventListener('mousedown', canvasBlurHandle, true);
 	};
 	
@@ -432,6 +476,11 @@ app.controller('CanvasController',
 		} else {
 			angular.element(canvas).removeClass('cActive');
 			$scope.current.onEditImage = false;
+			if (!!$scope.img.src) {
+				drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
+			} else {
+				ImgService.resetFrame(canvas);
+			}
 			document.removeEventListener('mousedown', canvasBlurHandle, true);
 		}
 	}

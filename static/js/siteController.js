@@ -72,6 +72,7 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 					'$rootScope', '$element',
 	function($scope, gettextCatalog, DBServices, $rootScope, $element) {
 		
+	$scope.showHome = true;
 	DBServices.initAlbumDB($scope);
 	
 	$scope.changeLanguage = function(lang) {
@@ -96,7 +97,7 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 	};
 
 	$scope.goHome = function() {
-		$scope.greeting = true;
+		$scope.showHome = true;
 		$scope.inAlbum = false;
 		if ($scope.albumSCs.length > 0) {
 			$scope.showAlbums = true;

@@ -56,11 +56,11 @@ app.factory('FrameObject', function() {
 /*------------------------------------------------------*/
 
 app.service('Init', function() {
-	this.initTextArea = function(textArea, textBox, $scope) {
-		textArea.style.height = (textBox.box.height * $scope.pheight/100) + "px";
-		textArea.style.width = (textBox.box.width * $scope.pwidth/100) + "px";
-		textArea.style.top = (textBox.box.top * $scope.pheight/100) + "px";
-		textArea.style.left = (textBox.box.left * $scope.pwidth/100) + "px";
+	this.initTextArea = function(div, textArea, textBox, $scope) {
+		div.style.height = textArea.style.height = (textBox.box.height * $scope.pheight/100) + "px";
+		div.style.width = textArea.style.width = (textBox.box.width * $scope.pwidth/100) + "px";
+		div.style.top = (textBox.box.top * $scope.pheight/100) + "px";
+		div.style.left = (textBox.box.left * $scope.pwidth/100) + "px";
 		textArea.style.color = textBox.font.color;
 		textArea.style.fontFamily = textBox.font.family;
 		textArea.style.fontWeight = textBox.font.weight;
@@ -69,10 +69,12 @@ app.service('Init', function() {
 		textArea.style.textAlign = textBox.align;
 // 		textArea.style.lineHeight = 1.5;
 		if (textBox.text) {
-			textArea.style.border =  '1px solid transparent';
+			div.style.outline = '0';
+// 			textArea.style.border =  '1px solid transparent';
 		}
 		else {
-			textArea.style.border =  '1px solid #CEECF5	';
+			div.style.outline = '#CEECF5 solid 1px';
+// 			textArea.style.border =  '1px solid #CEECF5	';
 		}
 		textArea.style.resize = 'none';
 	};
@@ -251,6 +253,23 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		};
 	};
 	
+	function drawAnchors(canvas) {
+		var color = 'darkred',
+			size = 6,
+			ctx = canvas.getContext('2d');
+		ctx.rect(0,0, size, size); //top left
+		ctx.rect(canvas.width - size, 0 , size, size); //top right
+		ctx.rect(canvas.width - size, canvas.height - size, size, size); //bottom right
+		ctx.rect(0, canvas.height - size, size, size); //bottom left
+		ctx.rect(canvas.width/2 - size/2, 0, size, size); //top
+		ctx.rect(canvas.width - size, canvas.height/2 - size/2, size, size);//right
+		ctx.rect(canvas.width/2 - size/2, canvas.height - size, size, size); //bottom
+		ctx.rect(0, canvas.height/2 - size/2, size, size); //left
+		ctx.rect(canvas.width/2 - size/2, canvas.height/2 - size/2, size, size); //center
+		ctx.fillStyle = color;
+		ctx.fill();
+	}
+	
 	function drawImage(canvas, img, display, imgRatio, pageRatio) {
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
@@ -259,13 +278,15 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		if (display.sw * imgRatio < 4.2 * pageRatio * display.dw) {
 			bad = document.createElement('img');
 			bad.onload = function() {
-				ctx.drawImage(bad, 0, 0);
+				ctx.drawImage(bad, 10, 10);
 			}
 			bad.src = 'static/icons/face-sad.png';
 		}
 	};
 	
 	this.drawImage = drawImage;
+	
+	this.drawAnchors = drawAnchors;
 	
 	this.resetFrame  = function(canvas) {
 		var ctx = canvas.getContext('2d');
@@ -287,24 +308,24 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		var realRate = Math.min(rate, image.mWidth / display.sw, image.mHeight / display.sh);
 		var canvasProp = canvas.height/canvas.width;
 		var totalChangeX = (realRate - 1) * display.sw;
-		var	totalChangeY =  totalChangeX * canvasProp;
+		var totalChangeY =  totalChangeX * canvasProp;
 
-		var wl = image.mWidth - display.sw - display.sx,
-			hl = image.mHeight - display.sh - display.sy;
+                var wl = image.mWidth - display.sw - display.sx,
+                        hl = image.mHeight - display.sh - display.sy;
 
-		if (display.sx > totalChangeX / 2) {
-			display.sx = display.sx - Math.max(totalChangeX / 2, totalChangeX - wl);
-		} else {
-			display.sx = 0;
-		}
+                if (display.sx > totalChangeX / 2) {
+                        display.sx = Math.max(display.sx - Math.max(totalChangeX / 2, totalChangeX - wl), 0);
+                } else {
+                        display.sx = 0;
+                }
 
-		if (display.sy > totalChangeY / 2) {
-			display.sy = display.sy - Math.max(totalChangeY / 2, totalChangeY - hl);
-		} else {
-			display.sy = 0;
-		}
-		display.sw = Math.min(realRate * display.sw, image.mWidth - display.sx);
-		display.sh = Math.min(display.sw * canvasProp, image.mHeight - display.sy);
+                if (display.sy > totalChangeY / 2) {
+                        display.sy = Math.max(display.sy - Math.max(totalChangeY / 2, totalChangeY - hl), 0);
+                } else {
+                        display.sy = 0;
+                }
+                display.sw = Math.min(realRate * display.sw, image.mWidth - display.sx);
+                display.sh = Math.min(display.sw * canvasProp, image.mHeight - display.sy);
 	}
 
 	this.zoomImage = function(canvas, scope, para) {
@@ -321,6 +342,7 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
                 }
 
 		drawImage(canvas, img, display, image.ratio, scope.pageRatio);
+                drawAnchors(canvas);
 	};
 
 	this.moveImage = function(canvas, scope, para) {
@@ -356,6 +378,7 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 				break;
 		}
 		drawImage(canvas, img, display, image.ratio, scope.pageRatio );
+		drawAnchors(canvas);
 	};
 	
 	
@@ -403,7 +426,7 @@ app.service('Misc', function() {
 	
 	this.setCursor = function(mouse, zone, current) {
 		if (inRect(mouse, zone.center)) {
-			current.cursor = 'move';
+			current.cursor = 'crosshair';
 		}
 		else if (inRect(mouse, zone.TL)) {
 			current.cursor = 'nw-resize';
@@ -430,72 +453,73 @@ app.service('Misc', function() {
 			current.cursor = 'w-resize';
 		}
 		else {
-			current.cursor = 'default';
+			current.cursor = 'move';
 		}
 	};
 	
 	this.resetZone = function(zone, width, height) {
+		var size = 10;
 		zone.TL = {
 			left: 0,
-			right: 10,
-			bot: 10,
+			right: size,
+			bot: size,
 			top: 0
 		};
 
 		zone.TR = {
-			left: width - 10,
+			left: width - size,
 			right: width,
-			bot:  10,
+			bot:  size,
 			top: 0
 		};
 
 		zone.BR = {
-			left: width -10,
+			left: width -size,
 			right: width,
 			bot: height,
-			top: height - 10
+			top: height - size
 		};
 
 		zone.BL = {
 			left: 0,
-			right: 10,
+			right: size,
 			bot: height,
-			top: height - 10
+			top: height - size
 		};
 
 		zone.T = {
-			left: 1 * width / 5,
-			right: 4 * width / 5,
-			bot: 10,
+			left: width / 2 - size / 2,
+			right: width / 2  + size / 2,
+			bot: size,
 			top: 0
 		};
 
 		zone.L = {
 			left: 0,
-			right: 10,
-			bot: 4 * height / 5,
-			top: 1 * height / 5
+			right: size,
+			bot: height / 2 + size / 2,
+			top: height / 2 - size / 2
 		};
 
 		zone.R = {
-			left: width - 10,
+			left: width - size,
 			right: width,
-			bot: 4 * height / 5,
-			top: 1 * height / 5
+			bot: height / 2 + size / 2,
+			top: height / 2 - size / 2
 		};
 
 		zone.B = {
-			left: 1 * width / 5,
-			right: 4 * width / 5,
+			left: width / 2 - size / 2,
+			right: width / 2 + size / 2,
 			bot: height,
-			top: height - 10
+			top: height - size
 		};
 
 		zone.center = {
-			left: width / 3,
-			right: 2 * width / 3,
-			bot: 2 * height / 3,
-			top: height / 3
+			left: width / 2 - size,
+			right: width / 2 + size,
+			bot: height / 2 + size,
+			top: height / 2 - size
 		};
 	};
 	

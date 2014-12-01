@@ -65,7 +65,7 @@ app.controller('ImageLoaderController',
 					console.log(orientation);
 					switch (orientation) {
 						case 3:
-							canvas.width = 400;
+							canvas.width = 800;
 							canvas.height = canvas.width * imgObj.height / imgObj.width;
 							ctx.translate(canvas.width/2, canvas.height/2);
 							ctx.rotate(Math.PI);
@@ -77,7 +77,7 @@ app.controller('ImageLoaderController',
 							break;
 							
 						case 6:
-							canvas.height = 400;
+							canvas.height = 800;
 							canvas.width = canvas.height * imgObj.height / imgObj.width;
 							ctx.translate(canvas.width/2, canvas.height/2);
 							ctx.rotate(Math.PI / 2);
@@ -101,7 +101,7 @@ app.controller('ImageLoaderController',
 							break;
 						
 						default:
-							canvas.width = 400;
+							canvas.width = 800;
 							canvas.height = canvas.width * imgObj.height / imgObj.width;
 							ctx.drawImage(imgObj, 0, 0, canvas.width, canvas.height);
 							rWidth = imgObj.width;
@@ -111,7 +111,7 @@ app.controller('ImageLoaderController',
 				});
 				var result = {
 					src: imgURL,
-					minSrc: canvas.toDataURL(),
+					minSrc: canvas.toDataURL('image/jpeg'),
 					mHeight: canvas.height,
 					mWidth: canvas.width,
 					rWidth: rWidth,

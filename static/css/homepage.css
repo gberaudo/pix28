@@ -5,21 +5,21 @@ body {
 	min-height: 500px;
 }
 
-/*::-moz-selection {
+::-moz-selection {
 	background-color: none;
-}*/
+}
 
-/** {
+ {
   -webkit-user-select: none; 
   -moz-user-select: none;   
   -ms-user-select: none;   
   -o-user-select: none;
   user-select: none;         
-}*/
+}
 
-/*::selection {
+::selection {
 	background-color: transparent;
-}*/
+}
 
 .content {
 	position: absolute;
@@ -117,7 +117,7 @@ body {
 .format:before {
 	content: "";
 	display: block;
-	padding-top: 100%; /* initial ratio of 1:1*/
+	padding-top: 25%; /* initial ratio of 1:1*/
 }
 
 span.header {
@@ -141,4 +141,8 @@ span.newAlbum {
 	border-bottom-right-radius: 4px;
 	text-align: center;
 	font-weight: bold;
+}
+
+span.newAlbum:hover{
+	background-color: #0444B1;
 }

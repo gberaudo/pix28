@@ -58,7 +58,7 @@ app.controller('AlbumController',
 		DBServices.addAlbum().then(function(id) {
 			var date = new Date();
 			$scope.current.albumId = id;
-			$scope.$parent.greeting = false;
+			$scope.$parent.showHome = false;
  			$scope.album.title = '';
  			$scope.album.description = '';
 			$scope.album.date = date.toDateString();
@@ -160,7 +160,10 @@ app.controller('AlbumController',
 				$scope.$apply(function() {
 					$scope.current.albumId = null;
 					$scope.$parent.inAlbum = false;
-					$scope.$parent.showAlbums = true;
+					if ($scope.albumSCs.length > 0) {
+						$scope.$parent.showAlbums = true;
+					}
+					$scope.$parent.showHome = true;
 					$scope.delAlbum = false;
 					$scope.hideAlbum = false;
 				});
@@ -207,7 +210,7 @@ app.controller('AlbumController',
 					$scope.$apply(function() {
 						makeTitle();
 						$scope.$parent.inAlbum = true;
-						$scope.$parent.greeting = false;
+						$scope.$parent.showHome = false;
 						$scope.$parent.showAlbums = false;
 						$scope.current.pageNum = 0;
 						$scope.current.albumId = id;
@@ -260,7 +263,7 @@ app.controller('AlbumController',
 		$scope.current.pageNum += 2;
 		 //insert a new page to the album
 		$scope.album.content.splice(
-			$scope.current.pageNum,0, 
+			$scope.current.pageNum +1 ,0, 
 			$scope.current.leftPage, $scope.current.rightPage
 		);
 		updateView('next');

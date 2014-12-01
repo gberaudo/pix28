@@ -168,8 +168,9 @@ msgstr ""
 "pour l'imprimer"
 
 #: templates/index.html
-msgid "Generating pdf 72dpi. Please be patient..."
-msgstr ""
+#, fuzzy
+msgid "Generating pdf. Please be patient..."
+msgstr "Génération du pdf en cours..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -282,9 +283,6 @@ msgstr "sera supprimé définitivement."
 
 #~ msgid "...finished!"
 #~ msgstr "...fini !"
-
-#~ msgid "Generating pdf..."
-#~ msgstr "Génération du pdf en cours..."
 
 #~ msgid "Welcome!"
 #~ msgstr "Bienvenue!"

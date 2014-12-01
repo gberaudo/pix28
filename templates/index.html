@@ -71,7 +71,7 @@ $def with (mode)
 	</div>
 	
 
-	<div ng-controller = 'AlbumController' ng-init = '\$parent.showAlbums = false'>
+	<div ng-controller = 'AlbumController'>
 
 	<!--__________________welcome screen____________________-->
 
@@ -94,7 +94,7 @@ $def with (mode)
 			</div>
 		</div>
 		
-		<div id = 'formats' ng-if = 'showAlbums'>			
+		<div id = 'formats' ng-if = 'showHome'>		
 			<h4> Album formats </h4> 
 
 			<div class = 'format container'> 
@@ -368,9 +368,9 @@ $def with (mode)
 						</div>
 						
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
-								ng-controller = 'TextBoxController'>
+								ng-controller = 'TextBoxController'
+								class = 'tbContainer'>
 							<textarea name = 'textbox'
-									class = 'inPage'
 									placeholder = '{{"Enter text here"| translate}}'
 									ng-style='{cursor: current.cursor}'
 									title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
@@ -382,6 +382,10 @@ $def with (mode)
 									ng-blur = 'blur(\$event)'
 									ng-keydown = 'keyDown(\$event)'>
 							</textarea>
+							<span  ng-show = 'active'
+								class = 'textHandle-br'></span>
+							<span ng-show = 'active' 
+								class = 'textHandle-tl'></span>
 						</div>
 
 					</div>

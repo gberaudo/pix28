@@ -162,8 +162,9 @@ msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr "Xuất album này ra file pdf để lưu trên máy hoặc in. "
 
 #: templates/index.html
-msgid "Generating pdf 72dpi. Please be patient..."
-msgstr ""
+#, fuzzy
+msgid "Generating pdf. Please be patient..."
+msgstr "Đang tạo file pdf..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -276,9 +277,6 @@ msgstr "sẽ bị xóa hoàn toàn."
 
 #~ msgid "...finished!"
 #~ msgstr "...hoàn thành !"
-
-#~ msgid "Generating pdf..."
-#~ msgstr "Đang tạo file pdf..."
 
 #~ msgid "Welcome!"
 #~ msgstr "Chào bạn!"
