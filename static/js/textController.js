@@ -33,6 +33,8 @@ app.controller('TextBoxController',
 	
 	Init.initTextArea(TAcontainer, $scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
+		$scope.textBox.font.size = 24;
+		$scope.textArea.style.fontSize = $scope.textBox.font.size * $scope.pwidth / $scope.pdfWidth + 'px';
  		$scope.current.datumWithFocus = undefined;
 		activateTA();
 	}
@@ -294,8 +296,9 @@ app.controller('TextBoxController',
 /*-----------------------Text Control board -------------------*/
 
 app.controller('TextController', 
-					['$scope', '$timeout', 'Fonts', 'Colors', 'Misc', '$element',
-    function($scope, $timeout, Fonts, Colors, Misc, $element) {
+					['$scope', '$timeout', 'Fonts', 'Colors', 
+					'Misc', '$element', '$interval',
+    function($scope, $timeout, Fonts, Colors, Misc, $element, $interval) {
 	$scope.current.font.color = 'black';
 	$scope.current.font.style = 'normal';
 	$scope.current.font.weight = 'normal';
@@ -399,4 +402,39 @@ app.controller('TextController',
 			page = el.parentNode.parentNode.parentNode.id;
 		scope.current[page].textBoxes.splice(scope.$index,1);
 	};
+	
+	$scope.mouseUp = function() {
+		$scope.mouseIsDown = false;
+	};
+	
+	$scope.mouseLeave = function() {
+		$scope.mouseLeft = true;
+	};
+	
+	$scope.rotate = function(para) {
+		var textArea = document.getElementsByClassName('tActive')[0];
+		var scope = angular.element(textArea).scope();
+		$scope.mouseIsDown = true;
+		$scope.mouseLeft = false;
+		var intervalPromise = $interval(function() {
+			if(!$scope.mouseIsDown || $scope.mouseLeft) {
+				$interval.cancel(intervalPromise);
+			} else {
+				rotate(textArea, para, scope);
+			}
+		}, 50);
+	};
+	
+	function rotate(textArea, para, scope) {
+		var angle = 3;
+		switch (para) {
+			case 'right':
+				scope.textBox.angle += angle; 
+				break;
+			case 'left':
+				scope.textBox.angle -= angle; 
+				break;
+		}
+		textArea.parentNode.style.transform = 'rotate(' + scope.textBox.angle + 'deg)';
+	}
 }]);

@@ -65,13 +65,18 @@ app.service('Init', function() {
 		textArea.style.fontFamily = textBox.font.family;
 		textArea.style.fontWeight = textBox.font.weight;
 		textArea.style.fontStyle = textBox.font.style;
-		var size = textBox.font.size || 20;
+		var size = textBox.font.size || 24;
 		textArea.style.fontSize = (size * $scope.pwidth/$scope.pdfWidth) + 'px';
 		textArea.style.textAlign = textBox.align;
+		if (!!textBox.angle) {
+			textArea.parentNode.style.transform = 'rotate(' + textBox.angle + 'deg)';
+		} else {
+			textBox.angle = 0;
+		}
+		
 		if (textBox.text) {
 			div.style.outline = '0';
-		}
-		else {
+		} else {
 			div.style.outline = '#CEECF5 solid 1px';
 		}
 		textArea.style.resize = 'none';

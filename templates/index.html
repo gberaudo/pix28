@@ -492,7 +492,21 @@ $def with (mode)
 								ng-click = 'removeTextArea()'>
 								<img src = 'static/icons/trash.png'/>
 							</div>
-						
+							
+							<div class = 'btn textCtrl respond '
+								title = '{{"Rotate text box right"|translate}}'
+								ng-mousedown = 'rotate("right")'
+								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'>
+								<span> RR</span>
+							</div>
+							<div class = 'btn textCtrl respond '
+								title = '{{"Rotate text box left"|translate}}'
+								ng-mousedown = 'rotate("left")'
+								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'>
+								<span> RL</span>
+							</div>
 						</div>
 						
 						<div id = 'imageControl' 
@@ -552,6 +566,22 @@ $def with (mode)
 								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
 								class = 'btn respond imgCtrl'>
 								<img src = 'static/icons/godown.png'/>
+							</div>
+							
+							<div ng-mousedown = 'rotate("right")'
+								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
+								title = '{{"Rotate image right"|translate}}'
+								class = 'btn respond imgCtrl'>
+								<span>Rotate right</span>
+							</div>
+							
+							<div ng-mousedown = 'rotate("left")'
+								ng-mouseup = 'mouseUp()'
+								ng-mouseleave = 'mouseLeave()'
+								title = '{{"Rotate image left"|translate}}'
+								class = 'btn respond imgCtrl'>
+								<span>Rotate left</span>
 							</div>
 								
 							<div ng-click = 'removeImage()'

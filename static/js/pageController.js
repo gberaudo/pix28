@@ -2,8 +2,6 @@ app.controller('PageController',
     ['$scope', '$timeout', '$element', 'FrameObject', 'Misc',
     function($scope, $timeout, $element, FrameObject, Mics) {
 
-
-	
 	$scope.activate = function() {
 		//deactivate the current active page
 		var active = angular.element(document.getElementsByClassName('pActive')[0]);

@@ -4,8 +4,11 @@ app.controller('CanvasController',
     function($scope, $element, $timeout, FrameObject, ImgService, Misc) {
 	var display = $scope.frame.display,
 		canvas = $element[0].children[0],
-		ctx = canvas.getContext('2d');
-	var drawImage = ImgService.drawImage;
+		ctx = canvas.getContext('2d'),
+		frame = $scope.frame,
+		pwidth = $scope.pwidth,
+		pheight = $scope.pheight,
+		drawImage = ImgService.drawImage;
 	
 	initCanvas();
 	
@@ -37,10 +40,15 @@ app.controller('CanvasController',
 		}
 	}
 	function initCanvas(){
-		canvas.width = Math.floor($scope.frame.canvas.width * $scope.pwidth / 100);
-		canvas.height = Math.floor($scope.frame.canvas.height * $scope.pheight / 100);
-		canvas.style.left = Math.floor($scope.frame.canvas.left * $scope.pwidth / 100) + 'px';
-		canvas.style.top = Math.floor($scope.frame.canvas.top * $scope.pheight / 100) + 'px';
+		canvas.width = Math.floor(frame.canvas.width * pwidth / 100);
+		canvas.height = Math.floor(frame.canvas.height * pheight / 100);
+		canvas.style.left = Math.floor(frame.canvas.left * pwidth / 100) + 'px';
+		canvas.style.top = Math.floor(frame.canvas.top * pheight / 100) + 'px';
+		if (!!frame.angle) {
+			canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
+		} else {
+			frame.angle = 0;
+		}
 		$scope.canvasZone = {};
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
@@ -532,5 +540,33 @@ app.controller('ImageController',
 			}
 		}, 50);
 	};
+	
+	$scope.rotate = function(para) {
+		var canvas = document.getElementsByClassName('cActive')[0];
+		var scope = angular.element(canvas).scope();
+		$scope.mouseIsDown = true;
+		$scope.mouseLeft = false;
+		var intervalPromise = $interval(function() {
+			if(!$scope.mouseIsDown || $scope.mouseLeft) {
+				$interval.cancel(intervalPromise);
+			} else {
+				rotate(canvas, para, scope);
+			}
+		}, 50);
+	};
+	
+	function rotate(canvas, para, scope) {
+		var angle = 3;
+		switch (para) {
+			case 'right':
+				scope.frame.angle += angle; 
+				canvas.style.transform = 'rotate(' + scope.frame.angle + 'deg)';
+				break;
+			case 'left':
+				scope.frame.angle -= angle; 
+				canvas.style.transform = 'rotate(' + scope.frame.angle + 'deg)';
+				break;
+		}
+	}
 	
 }]);

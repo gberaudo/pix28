@@ -653,6 +653,9 @@ app.controller('ExportController',
 								continue;
 							}
 							var color = Misc.RGBtoHex(tb.font.color);
+							var centerX = (tb.box.left + tb.box.width / 2) * pdfWidth /100;
+							var centerY = (tb.box.top + tb.box.height / 2) * pdfHeight /100;
+							doc.rotate(tb.angle, {origin : [centerX, centerY]});
 							doc.fontSize(tb.font.size)
 								.font(fontsData[tb.font.family])
 								.fillColor(color)
@@ -664,6 +667,7 @@ app.controller('ExportController',
 										align: tb.align,
 										margin: 0,
 									});
+							doc.rotate(-tb.angle, {origin : [centerX, centerY]});
 						}
 					}
 				}
@@ -782,12 +786,16 @@ app.controller('ExportController',
 									}
 									var outputImg = canvas.toDataURL('image/jpeg');
 								//	var outputImg = canvas.toDataURL('image/png');
+									var centerX = (frame.canvas.left + frame.canvas.width / 2) * pdfWidth /100;
+									var centerY = (frame.canvas.top + frame.canvas.height / 2) * pdfHeight /100;
+									doc.rotate(frame.angle, {origin : [centerX, centerY]});
 									doc.image(outputImg, frame.canvas.left * pdfWidth / 100, 
 													frame.canvas.top * pdfHeight/100,
 													{
 														width: frame.canvas.width * pdfWidth / 100,
 														height: frame.canvas.height * pdfHeight / 100
 													});
+									doc.rotate(-frame.angle, {origin : [centerX, centerY]});
 									deferred1.resolve(null);
 								}
 								imgObj.src = img.src;
