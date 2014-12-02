@@ -22,6 +22,8 @@ help:
 	@echo "- deploy             Deploy to cowaddict.org"
 	@echo "- lint               Check the JavaScript code with linters"
 	@echo "- serve              Run the development server"
+	@echo "- test               Run the unit tests"
+	@echo "- protractor         Run the e2e tests"
 	@echo
 
 .PHONY: check
@@ -60,13 +62,23 @@ dist: build
 	cp node_modules/pdfkit/build/pdfkit.js dist/static/js/
 	cp static/build/album.js dist/static/build/album.js
 	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
+	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/angular.min.js
+	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/angular-gettext.min.js
+	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/pdfkit.js
+
 
 .PHONY: test
 test: .build/node_modules.timestamp
 	./node_modules/karma/bin/karma start karma-conf.js --single-run
 
+.PHONY: protractor
+protractor: .build/node_modules.timestamp
+	echo 'LAUNCH MANUALLY ./node_modules/protractor/bin/protractor start'
+	echo 'LAUNCH MANUALLY make serve-dev or make serve-prod'
+	./node_modules/protractor/bin/webdriver-manager update
+	./node_modules/protractor/bin/protractor test/protractor/conf.js
 
-.PHONY: lint
+PHONY: lint
 lint: .build/venv/bin/gjslint .build/node_modules.timestamp .build/gjslint.timestamp .build/jshint.timestamp
 
 
