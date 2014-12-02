@@ -63,9 +63,10 @@ $def with (mode)
 						title = '{{"Back to home page"|translate}}'
 						ng-show = '!greeting' ng-click = 'goHome()'/>
 				</span>
+<!--
 				<span class = 'siteMenuItem clickable'>Guide</span>
 				<span class = 'siteMenuItem clickable'>FAQ</span>
-				
+-->
 			</div>
 		</div>
 	</div>
@@ -95,7 +96,7 @@ $def with (mode)
 		</div>
 		
 		<div id = 'formats' ng-if = 'showHome'>		
-			<h4> Album formats </h4> 
+			<h4 translate> Album formats </h4> 
 
 			<div class = 'format container'> 
 				<div class="content">
@@ -104,7 +105,8 @@ $def with (mode)
 						<img src = '' alt =''/>
 					</div> 
 					<span class = 'newAlbum clickable'
-						ng-click = 'createAlbum()'> 
+						ng-click = 'createAlbum()'
+						translate> 
 						Create album</span>
 				</div>
 			</div>
@@ -115,7 +117,8 @@ $def with (mode)
 						<img src = '' alt =''>
 					</div> 
 					<span class = 'newAlbum clickable' 
-						ng-click = 'createAlbum()'> 
+						ng-click = 'createAlbum()'
+						translate> 
 						Create album</span>
 				</div>
 			</div>
@@ -159,35 +162,30 @@ $def with (mode)
 							ng-click = 'closeExportWindow()'/>
 						<div id = 'exportMenu'
 							ng-show = 'showExportMenu'>
-							To which format would you like to export your album?
+							<span translate>To which format would you like to export your album?</span>
 							<ul> 
 								<li >
 									<img src = 'static/icons/computer.png'/> 
 									<span class = 'link'
-										ng-click = 'generatePdf(72)'>
-										Pdf 72dpi (to use on computer)
+										ng-click = 'generatePdf(72)'
+										translate>
+										PDF 72dpi (to use on computer)
 									</span>
 								</li>
 								<li>
-									<img 
-										src = 'static/icons/printer.png'/>
-									<span class = link
-										ng-click = 'generatePdf(300)'>
-										Pdf 300dpi (for printing) 
-									</span>
-								</li>
-								<li> 
 									<img src = 'static/icons/printer.png'/>
-									<span class = 'link'
-										ng-click = 'generatePdf(400)'>
-										Pdf 400dpi (for printing) 
+									<span class = link
+										ng-click = 'generatePdf(300)'
+										translate>
+										PDF 300dpi (for printing) 
 									</span>
 								</li>
 								<li> 
 									<img src = 'static/icons/internet.png'/>
 									<span class = 'link'
-										ng-click = 'generateJpg()'>
-										Jpeg images
+										ng-click = 'generateJpg()'
+										translate>
+										JPEG images
 									</span>
 								</li>
 							</ul>
@@ -206,8 +204,8 @@ $def with (mode)
 						</div>
 						</div>
 						<div ng-show = 'showLink'>
-							<p> Congratulation! <p>
-							<p>Your pdf album is created.<p>
+							<p translate> Congratulation! <p>
+							<p translate>Your PDF album is ready.<p>
 							<a download = '{{album.title + ".pdf"}}' 
 								id = 'pdfoutput' translate>
 								Download file

@@ -31,6 +31,10 @@ msgid "Add photos"
 msgstr "Tải ảnh"
 
 #: templates/index.html
+msgid "Album formats"
+msgstr ""
+
+#: templates/index.html
 msgid "Align text center"
 msgstr "Căn giữa"
 
@@ -91,6 +95,15 @@ msgstr "Nhắp chuột để tạo album mới"
 #: templates/index.html
 msgid "Click to go to album"
 msgstr "Nhắp chuột để đến album này"
+
+#: templates/index.html
+msgid "Congratulation!"
+msgstr ""
+
+#: templates/index.html
+#, fuzzy
+msgid "Create album"
+msgstr "Tạo album mới "
 
 #: templates/index.html
 msgid "Create your own story"
@@ -183,12 +196,20 @@ msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr "Lên trên ảnh. Phím tắt :  Ctrl + mũi tên lên."
 
 #: templates/index.html
-msgid "New album"
-msgstr "Tạo album mới "
+msgid "JPEG images"
+msgstr ""
 
 #: templates/index.html
 msgid "No, do not delete."
 msgstr "Không xóa."
+
+#: templates/index.html
+msgid "PDF 300dpi (for printing)"
+msgstr ""
+
+#: templates/index.html
+msgid "PDF 72dpi (to use on computer)"
+msgstr ""
 
 #: templates/index.html
 msgid "Page background"
@@ -208,6 +229,24 @@ msgid "Remove this album"
 msgstr "Xóa album này"
 
 #: templates/index.html
+msgid "Rotate image left"
+msgstr ""
+
+#: templates/index.html
+msgid "Rotate image right"
+msgstr ""
+
+#: templates/index.html
+#, fuzzy
+msgid "Rotate text box left"
+msgstr "Xóa hộp văn bản này"
+
+#: templates/index.html
+#, fuzzy
+msgid "Rotate text box right"
+msgstr "Xóa hộp văn bản này"
+
+#: templates/index.html
 msgid "Style image"
 msgstr "Chỉnh ảnh"
 
@@ -224,8 +263,17 @@ msgid "The album"
 msgstr "Album"
 
 #: templates/index.html
+msgid "To which format would you like to export your album?"
+msgstr ""
+
+#: templates/index.html
 msgid "Yes, delete it."
 msgstr "Đồng ý, xóa."
+
+#: templates/index.html
+#, fuzzy
+msgid "Your PDF album is ready."
+msgstr "Album của bạn"
 
 #: templates/index.html
 msgid "Your albums"
@@ -274,6 +322,9 @@ msgstr "trước"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sẽ bị xóa hoàn toàn."
+
+#~ msgid "New album"
+#~ msgstr "Tạo album mới "
 
 #~ msgid "...finished!"
 #~ msgstr "...hoàn thành !"

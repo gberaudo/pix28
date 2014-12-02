@@ -30,6 +30,10 @@ msgid "Add photos"
 msgstr ""
 
 #: templates/index.html
+msgid "Album formats"
+msgstr ""
+
+#: templates/index.html
 msgid "Align text center"
 msgstr ""
 
@@ -88,6 +92,14 @@ msgstr ""
 
 #: templates/index.html
 msgid "Click to go to album"
+msgstr ""
+
+#: templates/index.html
+msgid "Congratulation!"
+msgstr ""
+
+#: templates/index.html
+msgid "Create album"
 msgstr ""
 
 #: templates/index.html
@@ -175,11 +187,19 @@ msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr ""
 
 #: templates/index.html
-msgid "New album"
+msgid "JPEG images"
 msgstr ""
 
 #: templates/index.html
 msgid "No, do not delete."
+msgstr ""
+
+#: templates/index.html
+msgid "PDF 300dpi (for printing)"
+msgstr ""
+
+#: templates/index.html
+msgid "PDF 72dpi (to use on computer)"
 msgstr ""
 
 #: templates/index.html
@@ -199,6 +219,22 @@ msgid "Remove this album"
 msgstr ""
 
 #: templates/index.html
+msgid "Rotate image left"
+msgstr ""
+
+#: templates/index.html
+msgid "Rotate image right"
+msgstr ""
+
+#: templates/index.html
+msgid "Rotate text box left"
+msgstr ""
+
+#: templates/index.html
+msgid "Rotate text box right"
+msgstr ""
+
+#: templates/index.html
 msgid "Style image"
 msgstr ""
 
@@ -215,7 +251,15 @@ msgid "The album"
 msgstr ""
 
 #: templates/index.html
+msgid "To which format would you like to export your album?"
+msgstr ""
+
+#: templates/index.html
 msgid "Yes, delete it."
+msgstr ""
+
+#: templates/index.html
+msgid "Your PDF album is ready."
 msgstr ""
 
 #: templates/index.html

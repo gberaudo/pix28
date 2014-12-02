@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Albumit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Việt Hằng Nguyễn <viethangybvn@gmail.com>\n"
+"Last-Translator: Guillaume Beraudo <guillaume.beraudo@gmail.com>\n"
 "Language-Team: Guillaume <guillaume.beraudo@gmail.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -26,9 +26,12 @@ msgid "Add a new double page"
 msgstr "Ajouter une nouvelle page double"
 
 #: templates/index.html
-#, fuzzy
 msgid "Add photos"
-msgstr "Charger photos"
+msgstr "Ajouter des photos"
+
+#: templates/index.html
+msgid "Album formats"
+msgstr "Formats d'album"
 
 #: templates/index.html
 msgid "Align text center"
@@ -44,7 +47,7 @@ msgstr "Aligner le texte à droite"
 
 #: templates/index.html
 msgid "Apply for all pages"
-msgstr ""
+msgstr "Appliquer à toutes les pages"
 
 #: templates/index.html
 msgid "Are you sure to delete this album?"
@@ -82,9 +85,8 @@ msgid "Choose text font"
 msgstr "Choisir une police"
 
 #: templates/index.html
-#, fuzzy
 msgid "Click to add photos from your computer"
-msgstr "Cliquer pour charger des photos à partir de votre ordinateur"
+msgstr "Cliquer pour ajouter des photos à partir de votre ordinateur"
 
 #: templates/index.html
 msgid "Click to create a new album"
@@ -93,6 +95,14 @@ msgstr "Cliquer pour créer un nouvel album"
 #: templates/index.html
 msgid "Click to go to album"
 msgstr "Cliquer pour aller à l'album"
+
+#: templates/index.html
+msgid "Congratulation!"
+msgstr "Félicitations!"
+
+#: templates/index.html
+msgid "Create album"
+msgstr "Nouvel  album"
 
 # Faut-il tutoyer ou vouvoyer?
 #: templates/index.html
@@ -120,7 +130,6 @@ msgid "Delete this double page"
 msgstr "Supprimer cette page double."
 
 #: templates/index.html
-#, fuzzy
 msgid "Download file"
 msgstr "Télécharger"
 
@@ -157,9 +166,8 @@ msgid "Enter text here"
 msgstr "Entrer texte ici"
 
 #: templates/index.html
-#, fuzzy
 msgid "Export this album"
-msgstr "Exporter en pdf"
+msgstr "Exporter l'album"
 
 #: templates/index.html
 msgid "Export this album to pdf file to use on your computer or for printing"
@@ -168,9 +176,8 @@ msgstr ""
 "pour l'imprimer"
 
 #: templates/index.html
-#, fuzzy
 msgid "Generating pdf. Please be patient..."
-msgstr "Génération du pdf en cours..."
+msgstr "Génération du pdf. Soyez patients..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -189,21 +196,28 @@ msgid "Go to the top of image. Hot key: Ctrl + arrow up."
 msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
 
 #: templates/index.html
-msgid "New album"
-msgstr "Nouvel  album"
+msgid "JPEG images"
+msgstr "Images JPEG"
 
 #: templates/index.html
 msgid "No, do not delete."
 msgstr "Non, ne supprime pas."
 
 #: templates/index.html
+msgid "PDF 300dpi (for printing)"
+msgstr "PDF 300dpi (pour impression)"
+
+#: templates/index.html
+msgid "PDF 72dpi (to use on computer)"
+msgstr "PDF 72dpi (pour affichage à l'écran)"
+
+#: templates/index.html
 msgid "Page background"
 msgstr "Fond de la page"
 
 #: templates/index.html
-#, fuzzy
 msgid "Preview album"
-msgstr "Nouvel  album"
+msgstr "Aperçu de l' album"
 
 #: templates/index.html
 msgid "Remove text box"
@@ -214,12 +228,28 @@ msgid "Remove this album"
 msgstr "Supprimer cet album"
 
 #: templates/index.html
+msgid "Rotate image left"
+msgstr "Pivoter l'image vers la gauche"
+
+#: templates/index.html
+msgid "Rotate image right"
+msgstr "Pivoter l'image vers la droite"
+
+#: templates/index.html
+msgid "Rotate text box left"
+msgstr "Pivoter cette boîte de texte vers la gauche"
+
+#: templates/index.html
+msgid "Rotate text box right"
+msgstr "Pivoter cette boîte de texte vers la droite"
+
+#: templates/index.html
 msgid "Style image"
 msgstr "Style de l'image"
 
 #: templates/index.html
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: templates/index.html
 msgid "Text color"
@@ -230,8 +260,16 @@ msgid "The album"
 msgstr "L'album"
 
 #: templates/index.html
+msgid "To which format would you like to export your album?"
+msgstr "Vers quels formats voulez-vous exporter votre album?"
+
+#: templates/index.html
 msgid "Yes, delete it."
 msgstr "Oui, supprime le."
+
+#: templates/index.html
+msgid "Your PDF album is ready."
+msgstr "Votre album PDF est prêt."
 
 #: templates/index.html
 msgid "Your albums"
@@ -280,6 +318,9 @@ msgstr "précédent"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "New album"
+#~ msgstr "Nouvel  album"
 
 #~ msgid "...finished!"
 #~ msgstr "...fini !"
