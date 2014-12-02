@@ -442,11 +442,10 @@ app.controller('CanvasController',
 			$scope.frame.image.ratio = parseFloat(data.getData('ratio'));
 		//then draw image
 			firstDrawImage();
+			evt.target.focus();
+			$scope.canvasFocus(evt);
+			$scope.$parent.activate();
 		}
-		//turn focus to and activate the frame and its page
-		evt.target.focus();
-		$scope.canvasFocus(evt);
-		$scope.$parent.activate();
 	};
 	
 	$scope.canvasFocus = function(event) {

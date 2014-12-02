@@ -65,16 +65,14 @@ app.service('Init', function() {
 		textArea.style.fontFamily = textBox.font.family;
 		textArea.style.fontWeight = textBox.font.weight;
 		textArea.style.fontStyle = textBox.font.style;
-		textArea.style.fontSize = textBox.font.size;
+		var size = textBox.font.size || 20;
+		textArea.style.fontSize = (size * $scope.pwidth/$scope.pdfWidth) + 'px';
 		textArea.style.textAlign = textBox.align;
-// 		textArea.style.lineHeight = 1.5;
 		if (textBox.text) {
 			div.style.outline = '0';
-// 			textArea.style.border =  '1px solid transparent';
 		}
 		else {
 			div.style.outline = '#CEECF5 solid 1px';
-// 			textArea.style.border =  '1px solid #CEECF5	';
 		}
 		textArea.style.resize = 'none';
 	};
@@ -295,7 +293,6 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		ctx.fillStyle = '#EFEFEF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#666';
-// 		ctx.font = '8pt Helvetica'
 		ctx.fillText(msg, 5, 20);
 		canvas.style.border = '1px solid #CCC';
 	};

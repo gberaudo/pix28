@@ -355,9 +355,9 @@ app.controller('AlbumController',
 				div.innerHTML = textBox.text || null;
 				div.style.width = textBox.box.width * pwidth / 100 + 'px';
 				div.style.height = textBox.box.height * pheight / 100 + 'px';
-				div.style.top = textBox.box.top * pheight / 100 + 'px';
+				div.style.top = (textBox.box.top * pheight / 100 + 4) + 'px';
 				div.style.left = textBox.box.left * pwidth / 100 + 'px';
-				div.style.fontSize = (parseFloat(textBox.font.size) * pwidth/$scope.pwidth) + 'px';
+				div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
 				div.style.fontStyle = textBox.font.fontStyle;
 				div.style.fontFamily = textBox.font.family;
 				div.style.color = textBox.font.color;
@@ -653,12 +653,12 @@ app.controller('ExportController',
 								continue;
 							}
 							var color = Misc.RGBtoHex(tb.font.color);
-							doc.fontSize(parseFloat(tb.font.size)*pageRatio)
+							doc.fontSize(tb.font.size)
 								.font(fontsData[tb.font.family])
 								.fillColor(color)
 								.text(tb.text, 
 										tb.box.left * pdfWidth/100, //to be calculated
-										tb.box.top * pdfHeight/100, //to be calculated
+										tb.box.top * pdfHeight/100 + 1.5*pageRatio, //to be calculated
 									{
 										width: tb.box.width * pdfWidth/100,
 										align: tb.align,

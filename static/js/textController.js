@@ -1,14 +1,15 @@
 app.controller('TextBoxController',
     ['$scope', '$element', '$timeout', 'Init', 'Misc',
     function($scope, $element, $timeout,Init, Misc) {
- 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
-	$scope.div = $element[0];
-	Init.initTextArea($scope.div, $scope.textArea, $scope.textBox, $scope);
-	if ($scope.current.datumWithFocus === $scope.textBox) {
- 		$scope.textArea.focus();
+ 	$scope.textArea = $element[0].children[0].children[0];; //the current textarea DOM element
+	var TAcontainer = $element[0].children[0];
+ 	var previewText = $element[0].children[1];
+	
+	function activateTA() {
+		var style = $scope.textArea.style;
+		$scope.textArea.focus();
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
-		$scope.current.datumWithFocus = undefined;
 		if (document.getElementsByClassName('tActive').length != 0) {
 			//deactivate the current active element
 			 activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
@@ -19,68 +20,52 @@ app.controller('TextBoxController',
 			activeCanvas.removeClass('cActive');
 		}
 		angular.element($scope.textArea).addClass('tActive');
+		$scope.current.font.color = style.color;
+		$scope.current.font.weight = style.fontWeight;
+		$scope.current.font.style = style.fontStyle;
+		$scope.current.font.size = $scope.textBox.font.size;
+		$scope.current.font.family = style.fontFamily;
+		$scope.$parent.activate();
 		$scope.active = true;
+		document.addEventListener('mousedown', textboxBlurHandle, true);
 	}
+		
+	
+	Init.initTextArea(TAcontainer, $scope.textArea, $scope.textBox, $scope);
+	if ($scope.current.datumWithFocus === $scope.textBox) {
+ 		$scope.current.datumWithFocus = undefined;
+		activateTA();
+	}
+	
+	if (Misc.ancestorHasClass(angular.element(previewText), 4, 'leftPage')) {
+		previewText.style.width = $scope.pwidth + 'px';
+		previewText.style.minHeight = $scope.pheight / 4 + 'px';
+		previewText.style.left =  ($scope.pwidth + 5) + 'px';
+	} else {
+		previewText.style.width = $scope.pwidth + 'px';
+		previewText.style.minHeight = $scope.pheight / 4 + 'px';
+		previewText.style.left =  (-$scope.pwidth - 10) + 'px';
+	}
+	
+
 	
 	$scope.$watch('textArea.scrollHeight', function(newValue, oldValue) {
 		if (newValue != oldValue && $scope.textBox.text) {
-			$scope.div.style.height = $scope.textArea.style.height 
-				= $scope.textArea.scrollHeight + 'px';
+			var textArea = $scope.textArea,
+				box = $scope.textBox.box;
+			TAcontainer.style.height = textArea.style.height = textArea.scrollHeight + 'px';
 			
-			$scope.textBox.box.height = 100 * parseFloat($scope.textArea.style.height)/$scope.pheight;
-			if ($scope.textBox.box.height + $scope.textBox.box.top > 100) {
-				$scope.textBox.box.top = 100 - $scope.textBox.box.height;
-				$scope.div.style.top = $scope.textBox.box.top * $scope.pheight /100 + 'px';
+			box.height = 100 * parseFloat(textArea.style.height)/$scope.pheight;
+			if (box.height + box.top > 100) {
+				box.top = 100 - box.height;
+				TAcontainer.style.top = box.top * $scope.pheight /100 + 'px';
 			}	
 		}
 	});
 	
-	//update textBox.font and textBox.align
-	$scope.$watchGroup([
-			'textArea.style.fontWeight', 
-			'textArea.style.fontFamily', 
-			'textArea.style.fontStyle',
-			'textArea.style.fontSize',
-			'textArea.style.color',
-			'textArea.style.textAlign'
-			],
-			function(newValue, oldValue) {
-				if (newValue != oldValue) {
-					$scope.textBox.font.weight = $scope.textArea.style.fontWeight;
-					$scope.textBox.font.size = $scope.textArea.style.fontSize;
-					$scope.textBox.font.style = $scope.textArea.style.fontStyle;
-					$scope.textBox.font.family = $scope.textArea.style.fontFamily;
-					$scope.textBox.font.color = $scope.textArea.style.color;
-					$scope.textBox.align = $scope.textArea.style.textAlign;
-				}
-	});
-	/*----------------------------------------------------*/
 
 	$scope.textFocus = function(event) {
-		$scope.current.onEditImage = false;
-		$scope.current.onEditText = true;
-		$scope.textArea.style.resize = 'both';
-		if (document.getElementsByClassName('tActive').length != 0) {
-			//deactivate the current active element
-			var activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
-			activeTextArea.removeClass('tActive');
-		};
-		
-		if (document.getElementsByClassName('cActive').length > 0) {
-			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
-			activeCanvas.removeClass('cActive');
-		}
-		// activate the current focused element
-		angular.element(event.target).addClass('tActive');
-		$scope.active = true;
-		
-		$scope.current.font.color = $scope.textArea.style.color;
-		$scope.current.font.weight = $scope.textArea.style.fontWeight;
-		$scope.current.font.style = $scope.textArea.style.fontStyle;
-		$scope.current.font.size = $scope.textArea.style.fontSize;
-		$scope.current.font.family = $scope.textArea.style.fontFamily;
-		$scope.$parent.activate();
-		document.addEventListener('mousedown', textboxBlurHandle, true);
+		activateTA();
 	};
 	
 
@@ -91,7 +76,9 @@ app.controller('TextBoxController',
 		} else {
 			angular.element($scope.textArea).removeClass('tActive');
 			if ($scope.textArea.value) {
-				$scope.div.style.outline =  '0';
+				TAcontainer.style.outline =  '0';
+			} else {
+				TAcontainer.style.outline = '#CEECF5 solid 1px';
 			}
 			$scope.active = false;
 			$scope.current.onEditText = false;
@@ -158,6 +145,7 @@ app.controller('TextBoxController',
 		 var pheight = $scope.pheight,
 			pwidth= $scope.pwidth,
 			DBbox = $scope.textBox.box,
+			textArea = $scope.textArea,
 			box = {
 				left: DBbox.left * pwidth / 100,
 				top: DBbox.top * pheight / 100,
@@ -173,7 +161,7 @@ app.controller('TextBoxController',
 					offset = pwidth - box.width - box.left;
 				}
 				box.width += offset;
-				$scope.div.style.width = $scope.textArea.style.width = box.width + 'px';
+				TAcontainer.style.width = textArea.style.width = box.width + 'px';
 				break;
 				
 			case 'vertical':
@@ -184,7 +172,7 @@ app.controller('TextBoxController',
 					offset = pheight - box.height - box.top;
 				}
 				box.height += offset;
-				$scope.div.style.height = $scope.textArea.style.height = box.height + 'px';
+				TAcontainer.style.height = textArea.style.height = box.height + 'px';
 				break;
 		}
 		DBbox.left = 100 * box.left / pwidth;
@@ -254,7 +242,7 @@ app.controller('TextBoxController',
 					offset = pwidth - box.left - box.width;
 				}
 				box.left += offset;
-				$scope.div.style.left = box.left + "px";
+				TAcontainer.style.left = box.left + "px";
 				break;
 
 			case 'vertical':
@@ -265,7 +253,7 @@ app.controller('TextBoxController',
 					offset = pheight - box.top - box.height;
 				}
 				box.top += offset;
-				$scope.div.style.top = box.top + "px";
+				TAcontainer.style.top = box.top + "px";
 				break;	
 		}
 		DBbox.left = 100 * box.left / pwidth;
@@ -275,28 +263,31 @@ app.controller('TextBoxController',
 	};
 	
 	function removeTextArea(el) {
-		var page = el.parentNode.parentNode.id;
+		var page = el.parentNode.parentNode.parentNode.id;
 		$scope.current[page].textBoxes.splice($scope.$index,1);
 	};
 	
-// 	$scope.watch('textArea.scrollHeight', function() {
-// 			var scrollHeight = $scope.textArea.scrollHeight;
-// 			$scope.textArea.style.height = $scope.div.style.height = scrollHeight + 'px';
-// 	});
-// 	
 	$scope.autoResize = function(event) {
+		var pheight = $scope.pheight,
+			pwidth = $scope.pwidth,
+			box = $scope.textBox.box;
 		var el = event.target;
-		if (el.scrollHeight > $scope.pheight) {
-			el.style.height = $scope.pheight + 'px';
-			$scope.textBox.box.height = 100;
+		if (el.scrollHeight > pheight) {
+			el.style.height = pheight + 'px';
+			box.height = 100;
 		} else {
 			el.style.height = (el.scrollHeight)  + "px";
-			$scope.textBox.box.height = 100 * el.scrollHeight/$scope.pheight;
+			box.height = 100 * el.scrollHeight/pheight;
 		}
-		if (el.offsetHeight + el.offsetTop > $scope.pheight) {
-			el.style.top = ($scope.pheight - el.offsetHeight) + "px";
-			$scope.textBox.box.top = 100 * ($scope.pheight - el.offsetHeight)/$scope.pheight;
+		if (el.offsetHeight + el.offsetTop > pheight) {
+			el.style.top = (pheight - el.offsetHeight) + "px";
+			box.top = 100 * (pheight - el.offsetHeight)/pheight;
 		}
+	};
+	
+	$scope.dropInTA = function(event) {
+		event.preventDefault();
+		activateTA();
 	};
 }]);
 
@@ -310,8 +301,8 @@ app.controller('TextController',
 	$scope.current.font.weight = 'normal';
 	$scope.fonts = Fonts;
 	$scope.colors = Colors;
-	$scope.ctrlHeight = document.getElementById('controls').offsetHeight;
-	console.log('ctrlHeight', $scope.ctrlHeight);
+	var pageRatio = $scope.pdfWidth / $scope.pwidth;
+// 	$scope.ctrlHeight = document.getElementById('controls').offsetHeight;
 
 	
 	/*---------Color menu ------------*/
@@ -336,7 +327,9 @@ app.controller('TextController',
 		$scope.current.font.color = color;
 		if (document.getElementsByClassName('tActive').length >0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
+			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.color = color;
+			textBox.font.color = color;
 		}
 	};
 	
@@ -351,7 +344,9 @@ app.controller('TextController',
 		}
 		if (document.getElementsByClassName('tActive').length > 0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
+			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.fontStyle = $scope.current.font.style;
+			textBox.font.style = $scope.current.font.style;
 		}
 	};
 	
@@ -365,14 +360,19 @@ app.controller('TextController',
 		}
 		if (document.getElementsByClassName('tActive').length >0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
+			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.fontWeight = $scope.current.font.weight;
+			textBox.font.weight = $scope.current.font.weight
 		}
 	};
 	
 	$scope.changeFontSize = function(size) {
+		console.log('toto', size, pageRatio);
 		if (document.getElementsByClassName('tActive').length > 0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
-			activeTextArea.style.fontSize = size;
+			var textBox = angular.element(activeTextArea).scope().textBox;
+			activeTextArea.style.fontSize = (size/pageRatio) + 'px';
+			textBox.font.size = size;
 		}
 	};
 	
@@ -380,20 +380,23 @@ app.controller('TextController',
 		if (document.getElementsByClassName('tActive').length > 0 && fontName) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
 			activeTextArea.style.fontFamily = fontName;
+			angular.element(activeTextArea).scope().textBox.font.family = fontName;
 		}
 	};
 	
 	$scope.align = function(para) {
 		if (document.getElementsByClassName('tActive').length > 0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
+			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.textAlign = para;
+			textBox.align = para;
 		}
 	};
 	
 	$scope.removeTextArea = function() {
 		var el = document.getElementsByClassName('tActive')[0],
 			scope = angular.element(el).scope(),
-			page = el.parentNode.parentNode.id;
+			page = el.parentNode.parentNode.parentNode.id;
 		scope.current[page].textBoxes.splice(scope.$index,1);
 	};
 }]);

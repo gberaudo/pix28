@@ -126,11 +126,11 @@ $def with (mode)
 			<div id = 'sideMenu'>
 			
 				<ul>
-					<li class = 'link respond' ng-click = 'createAlbum()' 
+					<!--<li class = 'link respond' ng-click = 'createAlbum()' 
 						title = '{{"Click to create a new album"|translate}}'
 						translate>
 						New album 
-					</li>
+					</li>-->
 					<li class = 'link respond' id = 'allAlbums' 
 						ng-click = 'toAlbumList()' translate>
 						Your albums
@@ -340,7 +340,7 @@ $def with (mode)
 
 					<div ng-repeat = 'page in ["leftPage", "rightPage"]'
 							id = '{{page}}'
-							class = 'page'
+							class = 'page {{page}}'
 							draggable = 'false'
 							ng-controller = 'PageController'
 							ng-if = 'show[page]'
@@ -348,6 +348,7 @@ $def with (mode)
 							ondrop = 'angular.element(this).scope().dropInPage(event)' 
 							ondragover = 'angular.element(this).scope().allowDropInPage(event)'
 							ng-mousemove = 'mouseMove(\$event)'
+							ng-click = 'pageFocus(\$event)'
 							ng-focus = 'pageFocus(\$event)'
 							style = 'width: {{pageWidth}}; height: {{pageHeight}}; 
 								background-color: {{current[page].background}}'>
@@ -363,29 +364,36 @@ $def with (mode)
 										ng-mousedown = 'mouseDown(\$event)' 
 										ng-mousemove = 'mouseMove(\$event)'
 										ng-keydown = 'keyDown(\$event)'
+										ng-click = 'canvasFocus(\$event)'
 										ng-focus = 'canvasFocus(\$event)'
 										ng-blur = 'canvasBlur(\$event)'/>
 						</div>
 						
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
-								ng-controller = 'TextBoxController'
-								class = 'tbContainer'>
-							<textarea name = 'textbox'
-									placeholder = '{{"Enter text here"| translate}}'
-									ng-style='{cursor: current.cursor}'
-									title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
-									ng-model = 'textBox.text'
-									ng-mousedown = 'mouseDown(\$event)'
-									ng-mousemove = 'mouseMove(\$event)'
-									ng-keyup = 'autoResize(\$event)'
-									ng-focus = 'textFocus(\$event)'
-									ng-blur = 'blur(\$event)'
-									ng-keydown = 'keyDown(\$event)'>
-							</textarea>
-							<span  ng-show = 'active'
-								class = 'textHandle-br'></span>
-							<span ng-show = 'active' 
-								class = 'textHandle-tl'></span>
+								ng-controller = 'TextBoxController'>
+							<div class = 'tbContainer'>
+								<textarea name = 'textbox'
+										placeholder = '{{"Enter text here"| translate}}'
+										ng-style='{cursor: current.cursor}'
+										title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
+										ng-model = 'textBox.text'
+										ng-mousedown = 'mouseDown(\$event)'
+										ng-mousemove = 'mouseMove(\$event)'
+										ondrop = 'angular.element(this).scope().dropInTA(event)'
+										ng-keyup = 'autoResize(\$event)'
+										ng-click = 'textFocus(\$event)'
+										ng-focus = 'textFocus(\$event)'
+										ng-blur = 'blur(\$event)'
+										ng-keydown = 'keyDown(\$event)'>
+								</textarea>
+								<span  ng-show = 'active'
+									class = 'textHandle-br'></span>
+								<span ng-show = 'active' 
+									class = 'textHandle-tl'></span>
+							</div>
+							<div class = 'previewText'
+								ng-show = 'active'>
+								<span style = 'padding: 1em 1em'>{{textBox.text}}</span></div>
 						</div>
 
 					</div>
@@ -424,7 +432,7 @@ $def with (mode)
 								ng-change = 'changeFontSize(current.font.size)'>
 								<option 
 									ng-repeat = 'i in [8, 10, 12, 14, 16, 18, 20, 24, 30]'
-									value = '{{i + "px"}}'> {{i}} </option>
+									ng-value = 'i'> {{i}} </option>
 							</select>
 							</div>
 							<span class = 'btn textCtrl respond  italic ' 
