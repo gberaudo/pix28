@@ -174,24 +174,24 @@ msgid "Generating pdf. Please be patient..."
 msgstr "Đang tạo file pdf. Xin vui lòng chờ..."
 
 #: templates/index.html
-msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
-msgstr "Xuống dưới ảnh. Phím tắt : Ctrl + mũi tên xuống."
-
-#: templates/index.html
-msgid "Go to the left of image. Hot key: Ctrl + arrow left."
-msgstr "Sang trái ảnh. Phím tắt : Ctrl + mũi tên trái."
-
-#: templates/index.html
-msgid "Go to the right of image. Hot key: Ctrl + arrow right."
-msgstr "Sang phải ảnh. Phím tắt : Ctrl + mũi tên phải."
-
-#: templates/index.html
-msgid "Go to the top of image. Hot key: Ctrl + arrow up."
-msgstr "Lên trên ảnh. Phím tắt :  Ctrl + mũi tên lên."
-
-#: templates/index.html
 msgid "JPEG images"
 msgstr "Ảnh JPEG"
+
+#: templates/index.html
+msgid "Move image zone down. Hot key: Ctrl + arrow down."
+msgstr "Dịch  khung hình xuống dưới . Phím tắt : Ctrl + mũi tên xuống."
+
+#: templates/index.html
+msgid "Move image zone left. Hot key: Ctrl + arrow left."
+msgstr "Dịch khung hình sang trái. Phím tắt : Ctrl + mũi tên trái."
+
+#: templates/index.html
+msgid "Move image zone right. Hot key: Ctrl + arrow right."
+msgstr "Dịch khung hình sang phải. Phím tắt : Ctrl + mũi tên phải."
+
+#: templates/index.html
+msgid "Move image zone up. Hot key: Ctrl + arrow up."
+msgstr "Dịch khung hình lên trên. Phím tắt :  Ctrl + mũi tên lên."
 
 #: templates/index.html
 msgid "No, do not delete."
@@ -302,16 +302,14 @@ msgid "loading file..."
 msgstr "đang tải file..."
 
 #: templates/index.html
-msgid "next"
-msgstr "sau"
-
-#: templates/index.html
-msgid "previous"
-msgstr "trước"
-
-#: templates/index.html
 msgid "will be removed definitely."
 msgstr "sẽ bị xóa hoàn toàn."
+
+#~ msgid "next"
+#~ msgstr "sau"
+
+#~ msgid "previous"
+#~ msgstr "trước"
 
 #~ msgid "New album"
 #~ msgstr "Tạo album mới "

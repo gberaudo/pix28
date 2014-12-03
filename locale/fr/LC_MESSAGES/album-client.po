@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Albumit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Guillaume Beraudo <guillaume.beraudo@gmail.com>\n"
+"Last-Translator: Việt Hằng Nguyễn <viethangybvn@gmail.com>\n"
 "Language-Team: Guillaume <guillaume.beraudo@gmail.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -180,24 +180,27 @@ msgid "Generating pdf. Please be patient..."
 msgstr "Génération du pdf. Soyez patients..."
 
 #: templates/index.html
-msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
-msgstr "Aller en bas de l'image. Raccourci : Ctrl + flèche bas"
-
-#: templates/index.html
-msgid "Go to the left of image. Hot key: Ctrl + arrow left."
-msgstr "Aller à la gauche de l'image. Raccourci : Ctrl + flèche gauche."
-
-#: templates/index.html
-msgid "Go to the right of image. Hot key: Ctrl + arrow right."
-msgstr "Aller à droite de l'image. Raccourci : Cthl + flèche droite."
-
-#: templates/index.html
-msgid "Go to the top of image. Hot key: Ctrl + arrow up."
-msgstr "Aller en haut de l'image. Raccourci : Ctrl + flèche haute."
-
-#: templates/index.html
 msgid "JPEG images"
 msgstr "Images JPEG"
+
+#: templates/index.html
+msgid "Move image zone down. Hot key: Ctrl + arrow down."
+msgstr "Déplacer la zone d'image vers le bas. Raccourci : Ctrl + flèche bas"
+
+#: templates/index.html
+msgid "Move image zone left. Hot key: Ctrl + arrow left."
+msgstr ""
+"Déplacer la zone d'image vers la gauche. Raccourci : Ctrl + flèche gauche."
+
+#: templates/index.html
+msgid "Move image zone right. Hot key: Ctrl + arrow right."
+msgstr ""
+"Déplacer la zone d'image vers la droite. Raccourci : Cthl + flèche droite."
+
+#: templates/index.html
+msgid "Move image zone up. Hot key: Ctrl + arrow up."
+msgstr ""
+"Déplacer la zone d'image vers le haut. Raccourci : Ctrl + flèche haute."
 
 #: templates/index.html
 msgid "No, do not delete."
@@ -308,16 +311,14 @@ msgid "loading file..."
 msgstr "chargement..."
 
 #: templates/index.html
-msgid "next"
-msgstr "suivant"
-
-#: templates/index.html
-msgid "previous"
-msgstr "précédent"
-
-#: templates/index.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "next"
+#~ msgstr "suivant"
+
+#~ msgid "previous"
+#~ msgstr "précédent"
 
 #~ msgid "New album"
 #~ msgstr "Nouvel  album"

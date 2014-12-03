@@ -10,7 +10,7 @@ app.factory('Layouts', function() {
 				[
 					{
 						box: {left: 15, top: 80, width: 70, height: 10},
-						font: {size: 30, style: 'italic'}
+						font: {size: 30}
 					}
 				]
 		},
@@ -24,7 +24,7 @@ app.factory('Layouts', function() {
 				[
 					{
 						box: {left: 15, top: 10, width: 70, height:10},
-						font: {size: 30, weight: 'bold'}
+						font: {size: 30}
 					}
 				]
 		},

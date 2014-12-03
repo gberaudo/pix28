@@ -100,7 +100,7 @@ app.controller('AlbumController',
 				page.frames.push(frame);
 			}
 			for (var j in layout.boxes) {
-				var textbox = new TextBoxObject(layout.boxes[j]);
+				var textbox = new TextBoxObject(layout.boxes[j].box,layout.boxes[j].font );
 				page.textBoxes.push(textbox);
 			}
 			return page;
@@ -490,7 +490,7 @@ app.controller('AlbumController',
 		$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
 		$scope.currentAlbumSC.description = $scope.album.description;
 		$scope.$parent.inAlbum = false;
-		$scope.newAlbum = true;
+		$scope.$parent.showHome = true;
 		$scope.$parent.showAlbums = true;
  	};
 	/*---------------- Mouse control-------------------------------*/

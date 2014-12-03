@@ -31,10 +31,11 @@ $def with (mode)
 		<script src = 'static/build/album.js'></script>
 
 	<link rel="stylesheet" type="text/css" href="static/css/style.css"/>
-	<link rel = "stylesheet" type = "text/css" href = "static/css/homepage.css">
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> 
-	<link rel="icon" type="image/ico" href="static/icons/album.ico">
-	<link rel="stylesheet" type="text/css" href="static/css/elusive-webfont.css" />
+	<link rel = "stylesheet" type = "text/css" href = "static/css/homepage.css"/>
+	<link rel="stylesheet" type="text/css" href="static/css/fontfaces.css"/>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/> 
+	<link rel="icon" type="image/ico" href="static/icons/album.ico"/>
+<!-- 	<link rel="stylesheet" type="text/css" href="static/css/elusive-webfont.css" /> -->
 	<title>Create your own story</title> 
 </head>
 
@@ -98,8 +99,8 @@ $def with (mode)
 		<div id = 'formats' ng-if = 'showHome'>		
 			<h4 translate> Album formats </h4> 
 
-			<div class = 'format container'> 
-<!--				<div class="content">
+<!--				<div class = 'format container'> 
+			<div class="content">
 					<span class = 'header'> 15cmx15cm </span> 
 					<div class = 'model'>
 						<img src = '' alt =''/>
@@ -108,8 +109,8 @@ $def with (mode)
 						ng-click = 'createAlbum()'
 						translate> 
 						Create album</span>
-				</div>-->
-			</div>
+				</div>
+			</div>-->
 			<div class = 'format container'> 
 				<div class = 'content'>
 					<span class = 'header'> 21cmx21cm </span> 
@@ -281,7 +282,7 @@ $def with (mode)
 						ng-show = 'show.leftPage' 
 						ng-click = 'prevPage()'
 						title = '{{"go to the previous page"|translate}}'>
-						<span class = 'el-icon-chevron-left'> <span>
+						<span class = 'fa fa-chevron-left'> <span>
 						<!--<img src = 'static/icons/prev.png'/>
 						<span translate> previous </span>-->
 					</div>
@@ -290,7 +291,7 @@ $def with (mode)
 						ng-show = 'show.rightPage' 
 						ng-click = 'nextPage()'
 						title = '{{"go to the next page"|translate}}'>
-						<span class = 'el-icon-chevron-right'> <span>
+						<span class = 'fa fa-chevron-right'> <span>
 						<!--<img src = 'static/icons/next.png'/>
 						<span translate>next</span>-->
 					</div>
@@ -432,14 +433,14 @@ $def with (mode)
 							</select>
 							</div>
 							
-							<div class = 'btn textCtrl respond' 
+							<!--<div class = 'btn textCtrl respond' 
 							ng-click = 'italicClick()'>
 								<span  class = 'fa fa-italic ctrlIcon'></span>
 							</div>
 							<div class = 'btn textCtrl respond' 
 								ng-click = 'boldClick()'>
 								<span class = 'fa fa-bold ctrlIcon'></span>
-							</div>
+							</div>-->
 							
 							<!--Color falldown menu -->
 							<div id = 'textColor'

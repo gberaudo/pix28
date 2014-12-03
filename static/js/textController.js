@@ -21,8 +21,8 @@ app.controller('TextBoxController',
 		}
 		angular.element($scope.textArea).addClass('tActive');
 		$scope.current.font.color = style.color;
-		$scope.current.font.weight = style.fontWeight;
-		$scope.current.font.style = style.fontStyle;
+// 		$scope.current.font.weight = style.fontWeight;
+// 		$scope.current.font.style = style.fontStyle;
 		$scope.current.font.size = $scope.textBox.font.size;
 		$scope.current.font.family = style.fontFamily;
 		$scope.$parent.activate();
@@ -233,24 +233,27 @@ app.controller('TextBoxController',
 				width: DBbox.width * pwidth / 100,
 				height: DBbox.height * pheight /100
 			};
+		var marginX = pwidth / 50,
+			marginY = pheight / 50;
+		
 		switch (para) {
 			case 'horizontal':
-				if (offset < -box.left) {
-					offset = box.left;
+				if (offset < -box.left + marginX) {
+					offset = -box.left + marginX;
 				}
-				if (offset + box.left + box.width > pwidth) {
-					offset = pwidth - box.left - box.width;
+				if (offset + box.left + box.width > pwidth - marginX) {
+					offset = pwidth - box.left - box.width - marginX;
 				}
 				box.left += offset;
 				TAcontainer.style.left = box.left + "px";
 				break;
 
 			case 'vertical':
-				if (offset < -box.top) {
-					offset = box.top;
+				if (offset < -box.top + marginY) {
+					offset = -box.top + marginY;
 				}
-				if (offset + box.top + box.height > pheight) {
-					offset = pheight - box.top - box.height;
+				if (offset + box.top + box.height > pheight - marginY) {
+					offset = pheight - box.top - box.height - marginY;
 				}
 				box.top += offset;
 				TAcontainer.style.top = box.top + "px";

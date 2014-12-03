@@ -19,10 +19,10 @@ app.factory('FrameObject', function() {
 			this.box = box;
 			this.text = '';
 			this.font = {
-				style: font.style || 'normal',
-				family: font.family || 'UVNTinTuc_R',
-				weight: font.weight ||'normal',
-				color: font.color || '#000000',
+// 				style: 'normal',
+				family: 'UVNTinTuc_R',
+// 				weight: font.weight ||'normal',
+				color: '#000000',
 				size: font.size || 20
 			};
 			this.align = 'left';
@@ -35,7 +35,19 @@ app.factory('FrameObject', function() {
 		'UVNKyThuat',
 		'Calligraffiti',
 		'UVNDoiMoi',
-		'UVNKeChuyen3'
+		'UVNKeChuyen3',
+		'ArDaughter',
+		'Belligerent',
+		'Drawvetica',
+		'Komtxt',
+		'Komtxtb',
+		'Komtxtbi',
+		'Komtxti',
+		'Komtxtk',
+		'Komtxtkb',
+		'SpecialElite',
+		'WCSoldOutB',
+		'Floralia'
 	];
 })
 
@@ -63,8 +75,8 @@ app.service('Init', function() {
 		div.style.left = (textBox.box.left * $scope.pwidth/100) + "px";
 		textArea.style.color = textBox.font.color;
 		textArea.style.fontFamily = textBox.font.family;
-		textArea.style.fontWeight = textBox.font.weight;
-		textArea.style.fontStyle = textBox.font.style;
+// 		textArea.style.fontWeight = textBox.font.weight;
+// 		textArea.style.fontStyle = textBox.font.style;
 		var size = textBox.font.size || 24;
 		textArea.style.fontSize = (size * $scope.pwidth/$scope.pdfWidth) + 'px';
 		textArea.style.textAlign = textBox.align;
