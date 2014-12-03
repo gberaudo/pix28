@@ -681,6 +681,9 @@ $def with (mode)
 			<!--___________________image loader_____________________________-->
 				<div id = 'imageLoader'
 					ng-controller = 'ImageLoaderController'
+					ondrop = 'angular.element(this).scope().handleFileSelect(event)'
+					ondragover = 'return false;'
+					ondragenter = 'return false;'
 					ng-if = 'imgLoad'>
 					<label for = 'files' class = 'medbtn'
 						id = 'loadPhotos'

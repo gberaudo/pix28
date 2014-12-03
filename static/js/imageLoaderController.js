@@ -4,7 +4,9 @@ app.controller('ImageLoaderController',
 	ImgService.loadImages($scope.current.albumId);
 	
 	$scope.handleFileSelect = function(evt) {
-		var files = evt.target.files;
+		var files = evt.target.files || evt.dataTransfer.files;
+		evt.preventDefault();
+
 		$timeout(function() {
 			$scope.loading = true;
 		});
