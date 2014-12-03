@@ -3,7 +3,7 @@ app.controller('TextBoxController',
     function($scope, $element, $timeout,Init, Misc) {
  	$scope.textArea = $element[0].children[0].children[0];; //the current textarea DOM element
 	var TAcontainer = $element[0].children[0];
- 	var previewText = $element[0].children[1];
+ 	var previewText = document.getElementById('previewText');
 	
 	function activateTA() {
 		var style = $scope.textArea.style;
@@ -27,6 +27,10 @@ app.controller('TextBoxController',
 		$scope.current.font.family = style.fontFamily;
 		$scope.$parent.activate();
 		$scope.active = true;
+		previewText.style.display = 'block';
+		$scope.$watch('textArea.value', function(newValue, oldValue) {
+				previewText.innerHTML = $scope.textArea.value;
+		});
 		document.addEventListener('mousedown', textboxBlurHandle, true);
 	}
 		
@@ -38,16 +42,7 @@ app.controller('TextBoxController',
  		$scope.current.datumWithFocus = undefined;
 		activateTA();
 	}
-	
-	if (Misc.ancestorHasClass(angular.element(previewText), 4, 'leftPage')) {
-		previewText.style.width = $scope.pwidth + 'px';
-		previewText.style.minHeight = $scope.pheight / 4 + 'px';
-		previewText.style.left =  ($scope.pwidth + 5) + 'px';
-	} else {
-		previewText.style.width = $scope.pwidth + 'px';
-		previewText.style.minHeight = $scope.pheight / 4 + 'px';
-		previewText.style.left =  (-$scope.pwidth - 10) + 'px';
-	}
+
 	
 
 	
@@ -83,6 +78,7 @@ app.controller('TextBoxController',
 				TAcontainer.style.outline = '#CEECF5 solid 1px';
 			}
 			$scope.active = false;
+			previewText.style.display = 'none';
 			$scope.current.onEditText = false;
 			document.removeEventListener('mousedown', textboxBlurHandle, true);
 		}

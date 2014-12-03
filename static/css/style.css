@@ -46,7 +46,7 @@
 	position: absolute;
 	left: 10%; 
 	top: 11%;
-/*  	overflow: hidden;  */
+ 	overflow: hidden; 
 	box-shadow: 2px 3px 5px 6px #ccc;
 	background-color: #FFFFFF;
 }
@@ -56,7 +56,7 @@
 	left: 50.2%; 
 	top: 11%;
 	border-right: 5px solid #999;
-/*  	overflow: hidden;  */
+ 	overflow: hidden; 
 	box-shadow: 3px 3px 5px 6px #ccc;
 	background-color: #FFFFFF;
 }
@@ -97,14 +97,18 @@
 	background-color: darkred;
 }
 
-.previewText {
+#previewText {
 	z-index: 1000;
 	position: absolute;
-	top: 50px;
+	top: 100%;
+	width: 40%;
+	left: 30%;
+	min-height: 20%;
 	background-color: #CCC;
 	border: 3px groove #666;
 	box-shadow: 2px 2px 2px 2px #aaa;
 	overflow: hidden;
+	display: none;
 }
 #controls {
 	position: absolute;
@@ -564,6 +568,7 @@ span[name = 'title'] {
 	z-index: 20;
 	position: absolute;
 	box-shadow: 2px 2px 2px 2px #fff; 
+	background-color: #000000;
 	top: 7%;
 	left: 8%;
 }

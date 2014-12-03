@@ -143,7 +143,6 @@ app.controller('AlbumController',
 	}
 	
 	$scope.removeAlbum = function(id) {
-		console.log('remove album');
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		openRq.onsuccess = function(event) {
 			var db = openRq.result;
@@ -336,6 +335,7 @@ app.controller('AlbumController',
 					canvas.style.top = Math.ceil(frame.canvas.top * pheight / 100) + 'px';
 					canvas.style.left = Math.ceil(frame.canvas.left * pwidth / 100) + 'px';
 					canvas.style.position = 'absolute';
+					canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
 					display.dw = canvas.width;
 					display.dh = canvas.height;
 					img.onload = function() {
@@ -364,6 +364,7 @@ app.controller('AlbumController',
 				div.style.fontWeight = textBox.font.weight;
 				div.style.textAlign = textBox.align;
 				div.style.position = 'absolute';
+				div.style.transform = 'rotate(' + textBox.angle + 'deg)';
 				view.appendChild(div);
 			}
 			
@@ -540,6 +541,7 @@ app.controller('ExportController',
 	$scope.exportAlbum = function() {
 		$scope.$parent.hideAlbum = true;
 		$scope.showLink = false;
+		$scope.processingPdf = false;
 		$scope.showExportWindow = true;
 		$scope.showExportMenu = true;
 		document.addEventListener('keydown', exportKeyDownHandle, true);
@@ -652,13 +654,15 @@ app.controller('ExportController',
 							if (!tb.text) { 
 								continue;
 							}
-							var color = Misc.RGBtoHex(tb.font.color);
+// 							var color = Misc.RGBtoHex(tb.font.color);
+// 							console.log('color', color);
+// 							console.log(tb.font);
 							var centerX = (tb.box.left + tb.box.width / 2) * pdfWidth /100;
 							var centerY = (tb.box.top + tb.box.height / 2) * pdfHeight /100;
 							doc.rotate(tb.angle, {origin : [centerX, centerY]});
 							doc.fontSize(tb.font.size)
 								.font(fontsData[tb.font.family])
-								.fillColor(color)
+								.fillColor(tb.font.color)
 								.text(tb.text, 
 										tb.box.left * pdfWidth/100, //to be calculated
 										tb.box.top * pdfHeight/100 + 1.5*pageRatio, //to be calculated
@@ -736,12 +740,10 @@ app.controller('ExportController',
 								var canvas = document.createElement('canvas'),
 									ctx = canvas.getContext('2d'),
 									realWidth = pageRatio * display.dw;
-									console.log('realWidth', realWidth);
 								if (sw < coeff * realWidth) {
 									scale = 1;
 								} else {
 									scale = coeff * realWidth / sw;
-									console.log('scale', scale);
 								}
 								var imgObj = new Image();
 								imgObj.onload = function() {
