@@ -26,13 +26,12 @@ msgid "Add a new double page"
 msgstr "Thêm trang đôi"
 
 #: templates/index.html
-#, fuzzy
 msgid "Add photos"
-msgstr "Tải ảnh"
+msgstr "Thêm "
 
 #: templates/index.html
 msgid "Album formats"
-msgstr ""
+msgstr "Dạng album"
 
 #: templates/index.html
 msgid "Align text center"
@@ -48,7 +47,7 @@ msgstr "Căn phải"
 
 #: templates/index.html
 msgid "Apply for all pages"
-msgstr ""
+msgstr "Áp dụng cho mọi trang"
 
 #: templates/index.html
 msgid "Are you sure to delete this album?"
@@ -84,7 +83,6 @@ msgid "Choose text font"
 msgstr "Chọn phông chữ"
 
 #: templates/index.html
-#, fuzzy
 msgid "Click to add photos from your computer"
 msgstr "Nhắp chuột để tải ảnh từ máy tính."
 
@@ -98,10 +96,9 @@ msgstr "Nhắp chuột để đến album này"
 
 #: templates/index.html
 msgid "Congratulation!"
-msgstr ""
+msgstr "Chúc mừng !"
 
 #: templates/index.html
-#, fuzzy
 msgid "Create album"
 msgstr "Tạo album mới "
 
@@ -128,7 +125,6 @@ msgid "Delete this double page"
 msgstr "Xóa trang đôi này"
 
 #: templates/index.html
-#, fuzzy
 msgid "Download file"
 msgstr "Tải file về"
 
@@ -166,18 +162,16 @@ msgid "Enter text here"
 msgstr "Thêm văn bản"
 
 #: templates/index.html
-#, fuzzy
 msgid "Export this album"
-msgstr "Xuất album pdf"
+msgstr "Xuất album này"
 
 #: templates/index.html
 msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr "Xuất album này ra file pdf để lưu trên máy hoặc in. "
 
 #: templates/index.html
-#, fuzzy
 msgid "Generating pdf. Please be patient..."
-msgstr "Đang tạo file pdf..."
+msgstr "Đang tạo file pdf. Xin vui lòng chờ..."
 
 #: templates/index.html
 msgid "Go to the bottom of image. Hot key: Ctrl + arrow down."
@@ -197,7 +191,7 @@ msgstr "Lên trên ảnh. Phím tắt :  Ctrl + mũi tên lên."
 
 #: templates/index.html
 msgid "JPEG images"
-msgstr ""
+msgstr "Ảnh JPEG"
 
 #: templates/index.html
 msgid "No, do not delete."
@@ -205,20 +199,19 @@ msgstr "Không xóa."
 
 #: templates/index.html
 msgid "PDF 300dpi (for printing)"
-msgstr ""
+msgstr "PDF 300dpi (để in)"
 
 #: templates/index.html
 msgid "PDF 72dpi (to use on computer)"
-msgstr ""
+msgstr "PDF 72dpi (để xem trên máy tính)"
 
 #: templates/index.html
 msgid "Page background"
 msgstr "Đặt nền trang"
 
 #: templates/index.html
-#, fuzzy
 msgid "Preview album"
-msgstr "Tạo album mới "
+msgstr "Xem thử "
 
 #: templates/index.html
 msgid "Remove text box"
@@ -230,21 +223,19 @@ msgstr "Xóa album này"
 
 #: templates/index.html
 msgid "Rotate image left"
-msgstr ""
+msgstr "Xoay trái ảnh"
 
 #: templates/index.html
 msgid "Rotate image right"
-msgstr ""
+msgstr "Xoay phải "
 
 #: templates/index.html
-#, fuzzy
 msgid "Rotate text box left"
-msgstr "Xóa hộp văn bản này"
+msgstr "Quay trái hộp văn b"
 
 #: templates/index.html
-#, fuzzy
 msgid "Rotate text box right"
-msgstr "Xóa hộp văn bản này"
+msgstr "Quay phải hộp văn bản này"
 
 #: templates/index.html
 msgid "Style image"
@@ -252,7 +243,7 @@ msgstr "Chỉnh ảnh"
 
 #: templates/index.html
 msgid "Text"
-msgstr ""
+msgstr "Văn b"
 
 #: templates/index.html
 msgid "Text color"
@@ -264,16 +255,15 @@ msgstr "Album"
 
 #: templates/index.html
 msgid "To which format would you like to export your album?"
-msgstr ""
+msgstr "Bạn muốn xuất album ra định dạng nào?"
 
 #: templates/index.html
 msgid "Yes, delete it."
 msgstr "Đồng ý, xóa."
 
 #: templates/index.html
-#, fuzzy
 msgid "Your PDF album is ready."
-msgstr "Album của bạn"
+msgstr "Album PDF của bạn đã hoàn thành."
 
 #: templates/index.html
 msgid "Your albums"

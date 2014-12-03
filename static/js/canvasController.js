@@ -536,10 +536,48 @@ app.controller('ImageController',
 			if(!$scope.mouseIsDown || $scope.mouseLeft) {
 				$interval.cancel(intervalPromise);
 			} else {
-				ImgService.moveImage(canvas, scope, para);
+				moveCanvas(canvas, scope, para);
 			}
 		}, 50);
 	};
+	
+	function moveCanvas(canvas, scope, para) {
+		var off = 2;
+		var pwidth = $scope.pwidth;
+		switch (para) {
+			case 'left':
+				if (off > canvas.offsetLeft) {
+					off = canvas.offsetLeft;
+				}
+				scope.frame.canvas.left -=  off * 100 / pwidth;
+				canvas.style.left = (canvas.offsetLeft - off) + 'px';
+				break;
+			
+			case 'right':
+				if (off > $scope.pwidth - canvas.offsetLeft - canvas.offsetWidth) {
+					off = $scope.pwidth - canvas.offsetLeft -canvas.offsetWidth;
+				}
+				scope.frame.canvas.left +=  off * 100 / pwidth;
+				canvas.style.left = (canvas.offsetLeft + off) + 'px';
+				break;
+			
+			case 'up':
+				if (off > canvas.offsetTop) {
+					off = canvas.offsetTop;
+				}
+				scope.frame.canvas.top -= off * 100 / pwidth;
+				canvas.style.top = (canvas.offsetTop - off) + 'px';
+				break;
+				
+			case 'down':
+				if (off > $scope.pheight - canvas.offsetTop - canvas.offsetHeight) {
+					off = $scope.pheight - canvas.offsetTop -canvas.offsetHeight;
+				}
+				scope.frame.canvas.top +=  off * 100 / pwidth;
+				canvas.style.top = (canvas.offsetTop + off) + 'px';
+				break;
+		}
+	}
 	
 	$scope.rotate = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0];
@@ -552,11 +590,11 @@ app.controller('ImageController',
 			} else {
 				rotate(canvas, para, scope);
 			}
-		}, 50);
+		}, 100);
 	};
 	
 	function rotate(canvas, para, scope) {
-		var angle = 3;
+		var angle = 2;
 		switch (para) {
 			case 'right':
 				scope.frame.angle += angle; 

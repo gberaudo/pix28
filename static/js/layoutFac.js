@@ -8,7 +8,10 @@ app.factory('Layouts', function() {
 				],
 			boxes: 
 				[
-					{left: 15, top: 80, width: 70, height: 10}
+					{
+						box: {left: 15, top: 80, width: 70, height: 10},
+						font: {size: 30, style: 'italic'}
+					}
 				]
 		},
 			
@@ -19,7 +22,10 @@ app.factory('Layouts', function() {
 				],
 			boxes: 
 				[
-					{left: 15, top: 10, width: 70, height:10}
+					{
+						box: {left: 15, top: 10, width: 70, height:10},
+						font: {size: 30, weight: 'bold'}
+					}
 				]
 		},
 			
@@ -94,7 +100,10 @@ app.factory('Layouts', function() {
 				
 			boxes: 
 				[
-					{left: 20, top: 45, width: 60, height: 10}
+					{
+						box: {left: 20, top: 45, width: 60, height: 10},
+						font: {size: 24}
+					}
 				]
 		},
 		

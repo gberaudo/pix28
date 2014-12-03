@@ -25,8 +25,8 @@ app.controller('AlbumController',
 		$scope.pheight = $scope.pwidth = Math.floor(0.3 * albumEl.offsetWidth);
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
-		$scope.pdfWidth = 720;
-		$scope.pdfHeight = 720;
+		$scope.pdfWidth = 595;
+		$scope.pdfHeight = 595;
 		$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
 		
 		$scope.layoutList = [
@@ -358,7 +358,7 @@ app.controller('AlbumController',
 				div.style.top = (textBox.box.top * pheight / 100 + 4) + 'px';
 				div.style.left = textBox.box.left * pwidth / 100 + 'px';
 				div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
-				div.style.fontStyle = textBox.font.fontStyle;
+				div.style.fontStyle = textBox.font.style;
 				div.style.fontFamily = textBox.font.family;
 				div.style.color = textBox.font.color;
 				div.style.fontWeight = textBox.font.weight;
@@ -670,6 +670,7 @@ app.controller('ExportController',
 										width: tb.box.width * pdfWidth/100,
 										align: tb.align,
 										margin: 0,
+										style: 'italic'
 									});
 							doc.rotate(-tb.angle, {origin : [centerX, centerY]});
 						}
@@ -786,7 +787,7 @@ app.controller('ExportController',
 														0, 0, canvas.width, canvas.height);
 											break;
 									}
-									var outputImg = canvas.toDataURL('image/jpeg');
+									var outputImg = canvas.toDataURL('image/jpeg', 1.0);
 								//	var outputImg = canvas.toDataURL('image/png');
 									var centerX = (frame.canvas.left + frame.canvas.width / 2) * pdfWidth /100;
 									var centerY = (frame.canvas.top + frame.canvas.height / 2) * pdfHeight /100;

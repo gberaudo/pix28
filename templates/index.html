@@ -32,9 +32,9 @@ $def with (mode)
 
 	<link rel="stylesheet" type="text/css" href="static/css/style.css"/>
 	<link rel = "stylesheet" type = "text/css" href = "static/css/homepage.css">
-	 
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> 
 	<link rel="icon" type="image/ico" href="static/icons/album.ico">
-
+	<link rel="stylesheet" type="text/css" href="static/css/elusive-webfont.css" />
 	<title>Create your own story</title> 
 </head>
 
@@ -99,8 +99,8 @@ $def with (mode)
 			<h4 translate> Album formats </h4> 
 
 			<div class = 'format container'> 
-				<div class="content">
-					<span class = 'header'> 15x15 </span> 
+<!--				<div class="content">
+					<span class = 'header'> 15cmx15cm </span> 
 					<div class = 'model'>
 						<img src = '' alt =''/>
 					</div> 
@@ -108,11 +108,11 @@ $def with (mode)
 						ng-click = 'createAlbum()'
 						translate> 
 						Create album</span>
-				</div>
+				</div>-->
 			</div>
 			<div class = 'format container'> 
 				<div class = 'content'>
-					<span class = 'header'> 21x21 </span> 
+					<span class = 'header'> 21cmx21cm </span> 
 					<div class = 'model'>
 						<img src = '' alt =''>
 					</div> 
@@ -167,7 +167,7 @@ $def with (mode)
 								<li >
 									<img src = 'static/icons/computer.png'/> 
 									<span class = 'link'
-										ng-click = 'generatePdf(72)'
+										ng-click = 'generatePdf(150)'
 										translate>
 										PDF 72dpi (to use on computer)
 									</span>
@@ -204,8 +204,8 @@ $def with (mode)
 						</div>
 						</div>
 						<div ng-show = 'showLink'>
-							<p translate> Congratulation! <p>
-							<p translate>Your PDF album is ready.<p>
+							<p translate> Congratulation! </p>
+							<p translate>Your PDF album is ready.</p>
 							<a download = '{{album.title + ".pdf"}}' 
 								id = 'pdfoutput' translate>
 								Download file
@@ -281,16 +281,18 @@ $def with (mode)
 						ng-show = 'show.leftPage' 
 						ng-click = 'prevPage()'
 						title = '{{"go to the previous page"|translate}}'>
-						<img src = 'static/icons/prev.png'/>
-						<span translate> previous </span>
+						<span class = 'el-icon-chevron-left'> <span>
+						<!--<img src = 'static/icons/prev.png'/>
+						<span translate> previous </span>-->
 					</div>
 					
 					<div id = 'next' class = 'link'
 						ng-show = 'show.rightPage' 
 						ng-click = 'nextPage()'
 						title = '{{"go to the next page"|translate}}'>
-						<img src = 'static/icons/next.png'/>
-						<span translate>next</span>
+						<span class = 'el-icon-chevron-right'> <span>
+						<!--<img src = 'static/icons/next.png'/>
+						<span translate>next</span>-->
 					</div>
 					
 					<div id = 'topMenu'>
@@ -385,9 +387,9 @@ $def with (mode)
 										ng-keydown = 'keyDown(\$event)'>
 								</textarea>
 								<span  ng-show = 'active'
-									class = 'textHandle-br'></span>
+									class = 'textHandle-br fa fa-arrows-h'></span>
 								<span ng-show = 'active' 
-									class = 'textHandle-tl'></span>
+									class = 'textHandle-tl fa fa-arrows'></span>
 							</div>
 						</div>
 
@@ -402,13 +404,12 @@ $def with (mode)
 							ng-controller = 'TextController'
 							ng-show = 'current.onEditText'>
 							<span class = 'textCtrl'
-								
 								style = 'font-weight: bold; 
 									font-size: 90%; 
 									margin-right: 0.5em; margin-left: 1em;' translate>
 									Text 
 							</span>
-							<div class = 'textCtrl'>
+							<div class = 'textSelect'>
 							<select style = 'height: 2em'
 								title = '{{"Choose text font"|translate}}'
 								ng-model = 'current.font.family' 
@@ -420,36 +421,34 @@ $def with (mode)
 								</optgroup>
 							</select> 
 							</div>
-							<div  class = 'textCtrl'>
-							<select style = 'height: 2em'
+							<div  class = 'textSelect'>
+							<select 
+								style = 'height: 2em'
 								title = '{{"change font size"|translate}}'
 								ng-model = 'current.font.size'
-								ng-change = 'changeFontSize(current.font.size)'>
-								<option 
-									ng-repeat = 'i in [8, 10, 12, 14, 16, 18, 20, 24, 30]'
-									ng-value = 'i'> {{i}} </option>
+								ng-change = 'changeFontSize(current.font.size)'
+								ng-options = 'i for i in [8, 10, 12, 14, 16, 18, 20, 24, 30]'
+								ng-value = 'i'> {{i}}
 							</select>
 							</div>
-							<span class = 'btn textCtrl respond  italic ' 
-								ng-click = 'italicClick()'>
-								I
-							</span>
 							
-							<span class = 'btn textCtrl respond  bold '
+							<div class = 'btn textCtrl respond' 
+							ng-click = 'italicClick()'>
+								<span  class = 'fa fa-italic ctrlIcon'></span>
+							</div>
+							<div class = 'btn textCtrl respond' 
 								ng-click = 'boldClick()'>
-								B
-							</span>
+								<span class = 'fa fa-bold ctrlIcon'></span>
+							</div>
 							
 							<!--Color falldown menu -->
-								<span 
-									id = 'textColor'
+							<div id = 'textColor'
 									class = 'btn textCtrl respond '
 									ng-click = 'showColors()'
 									title = '{{"Choose text color"|translate}}'
-									style = 'color: {{current.font.color}}'
-									translate>
-									Text color
-								</span>
+									style = 'color: {{current.font.color}}'>
+								<span translate>Text color</span>
+							</div>
 								<div tabindex = 0 
 									class = 'textColorMenu'
 									id = 'colorMenu'
@@ -468,39 +467,43 @@ $def with (mode)
 								class = 'btn textCtrl respond '
 								title = '{{"Align text left"|translate}}'
 								ng-click = 'align("left")'>
-								<img src = 'static/icons/left.svg'/>
+								<span class = 'fa fa-align-left ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/left.svg'/> -->
 							</div>
 							<div	class = 'btn textCtrl respond '
 								title = '{{"Align text right"|translate}}'
 								ng-click = 'align("right")'>
-								<img src = 'static/icons/right.svg'/>
+								<span class = 'fa fa-align-right ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/right.svg'/> -->
 							</div>
 							<div 
 								class = 'btn textCtrl respond '
 								title = '{{"Align text center"|translate}}'
 								ng-click = 'align("center")'>
-								<img src = 'static/icons/center.svg'/>
+								<span class = 'fa fa-align-center ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/center.svg'/> -->
 							</div>
-							
-							<div class = 'btn textCtrl respond '
-								title = '{{"Remove text box"|translate}}'
-								ng-click = 'removeTextArea()'>
-								<img src = 'static/icons/trash.png'/>
-							</div>
-							
 							<div class = 'btn textCtrl respond '
 								title = '{{"Rotate text box right"|translate}}'
 								ng-mousedown = 'rotate("right")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'>
-								<span> RR</span>
+								<span class = 'fa fa-rotate-right ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/rotate-right.png'/> -->
 							</div>
 							<div class = 'btn textCtrl respond '
 								title = '{{"Rotate text box left"|translate}}'
 								ng-mousedown = 'rotate("left")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'>
-								<span> RL</span>
+								<span class = 'fa fa-rotate-left ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/rotate-left.png'/> -->
+							</div>
+							<div class = 'btn textCtrl respond '
+								title = '{{"Remove text box"|translate}}'
+								ng-click = 'removeTextArea()'>
+								<span class = 'fa fa-trash ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/trash.png'/> -->
 							</div>
 						</div>
 						
@@ -518,9 +521,9 @@ $def with (mode)
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Zoom image in. Hot key: +"|translate}}'
-								class = 'btn respond imgCtrl'
-								style = 'padding: 4px;'>
-								<img src = 'static/icons/zoomin.png'/> 
+								class = 'btn respond imgCtrl'>
+									<span class = 'fa fa-search-plus ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/zoomin.png'/>  -->
 							</div>
 							<div 
 								ng-mousedown = 'zoomImage("out")'
@@ -528,39 +531,44 @@ $def with (mode)
 								ng-mouseleave = 'mouseLeave()' 
 								title = '{{"Zoom image out. Hot key: -"|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/zoomout.png'/> 
+								<span class = 'fa fa-search-minus ctrlIcon'></span>
+								<!--<img src = 'static/icons/zoomout.png'/> -->
 							</div>
 									
 							<div ng-mousedown = 'go("left")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
-								title = '{{"Go to the left of image. Hot key: Ctrl + arrow left."|translate}}'
+								title = '{{"Move image zone left. Hot key: Ctrl + arrow left."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/goleft.png'/>
+								<span class = 'fa fa-arrow-left ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/goleft.png'/> -->
 							</div>
 							
 							<div ng-mousedown = 'go("right")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
-								title = '{{"Go to the right of image. Hot key: Ctrl + arrow right."|translate}}'
+								title = '{{"Move image zone right. Hot key: Ctrl + arrow right."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/goright.png'/>
+								<span class = 'fa fa-arrow-right ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/goright.png'/> -->
 							</div>
 							
 							<div ng-mousedown = 'go("up")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
-								title = '{{"Go to the top of image. Hot key: Ctrl + arrow up."|translate}}'
+								title = '{{"Move image zone up. Hot key: Ctrl + arrow up."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/goup.png'/>
+								<span class = 'fa fa-arrow-up ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/goup.png'/> -->
 							</div>
 							
 							<div ng-mousedown = 'go("down")'
 								ng-mouseup = 'mouseUp()'
 								ng-mouseleave = 'mouseLeave()'
-								title = '{{"Go to the bottom of image. Hot key: Ctrl + arrow down."|translate}}'
+								title = '{{"Move image zone down. Hot key: Ctrl + arrow down."|translate}}'
 								class = 'btn respond imgCtrl'>
-								<img src = 'static/icons/godown.png'/>
+								<span class = 'fa fa-arrow-down ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/godown.png'/> -->
 							</div>
 							
 							<div ng-mousedown = 'rotate("right")'
@@ -568,7 +576,7 @@ $def with (mode)
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Rotate image right"|translate}}'
 								class = 'btn respond imgCtrl'>
-								<span>Rotate right</span>
+								<span class = 'fa fa-rotate-right ctrlIcon'></span>
 							</div>
 							
 							<div ng-mousedown = 'rotate("left")'
@@ -576,13 +584,15 @@ $def with (mode)
 								ng-mouseleave = 'mouseLeave()'
 								title = '{{"Rotate image left"|translate}}'
 								class = 'btn respond imgCtrl'>
-								<span>Rotate left</span>
+								<span class = 'fa fa-rotate-left ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/rotate-left.png'/> -->
 							</div>
 								
 							<div ng-click = 'removeImage()'
 								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
 								class = 'btn respond imgCtrl'> 
-								<img src = 'static/icons/trash.png'/>
+								<span class = 'fa fa-trash ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/trash.png'/> -->
 							</div>
 							
 						</div>
@@ -734,12 +744,10 @@ $def with (mode)
 			ng-show = 'previewMode' id = 'previewPage'
 			style = 'width: {{previewWidth + "px"}}; 
 			height: {{previewHeight + "px"}};'>
-			<img src = 'static/icons/prev.png'
-					ng-show = 'viewPageNum != 0'
-					class = 'clickable prev'
-					ng-click = 'previewPage(viewPageNum - 2)'/>
-			<div
-				id = 'leftPreview'
+			<span ng-show = 'viewPageNum != 0'
+					class = 'link prev fa fa-chevron-left'
+					ng-click = 'previewPage(viewPageNum - 2)'> </span>
+			<div id = 'leftPreview'
 				ng-show = 'viewPageNum != 0'
 				style = 'position: absolute; top: 0px; left: 0px; 
 					width: {{previewWidth/2 + "px"}}; 
@@ -754,14 +762,12 @@ $def with (mode)
 					height: {{previewHeight + "px"}};'>
 			</div>
 			
-			<img src = 'static/icons/next.png'
-					class = 'clickable next' 
+			<span	class = 'link next fa fa-chevron-right' 
 					ng-show = 'viewPageNum != album.content.length'
-					ng-click = 'previewPage(viewPageNum + 2)'/>
+					ng-click = 'previewPage(viewPageNum + 2)'> </span>
 			
-			<img src = 'static/icons/window-close.png'
-					class = 'clickable close'
-					ng-click = 'removePreview()'/>
+			<span class = 'clickable close fa fa-remove'
+					ng-click = 'removePreview()'> </span>
 		</div>		
 	</div>
 	</div>

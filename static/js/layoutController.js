@@ -87,7 +87,7 @@ app.controller('minLayoutController',
 		}
 		
 		for (i = 0; i < $scope.layout.boxes.length; i++) {
-			var rect = $scope.layout.boxes[i];
+			var rect = $scope.layout.boxes[i].box;
 			ctx.beginPath();
 			ctx.lineWidth = '.2';
 			ctx.rect(scale * rect.left*$scope.pwidth/100, 
@@ -131,7 +131,7 @@ app.controller('minLayoutController',
 				$scope.current[activePage.id].frames.push(frame);
 			}
 			for (var j in layout.boxes) {
-				var textbox = new TextBoxObject(layout.boxes[j]);
+				var textbox = new TextBoxObject(layout.boxes[j].box, layout.boxes[j].font);
 				$scope.current[activePage.id].textBoxes.push(textbox);
 			}
 		}

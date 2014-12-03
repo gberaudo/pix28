@@ -15,15 +15,15 @@ app.factory('FrameObject', function() {
 })
 	
 	.factory('TextBoxObject', function() {
-		return function(box) {
+		return function(box, font) {
 			this.box = box;
 			this.text = '';
 			this.font = {
-				style: 'normal',
-				family: 'UVNTinTuc_R',
-				weight: 'normal',
-				color: '#000000',
-				size: '8px'
+				style: font.style || 'normal',
+				family: font.family || 'UVNTinTuc_R',
+				weight: font.weight ||'normal',
+				color: font.color || '#000000',
+				size: font.size || 20
 			};
 			this.align = 'left';
 		};

@@ -27,9 +27,11 @@ app.controller('TextBoxController',
 		$scope.current.font.family = style.fontFamily;
 		$scope.$parent.activate();
 		$scope.active = true;
+		TAcontainer.style.outline = '0';
 		previewText.style.display = 'block';
 		$scope.$watch('textArea.value', function(newValue, oldValue) {
 				previewText.innerHTML = $scope.textArea.value;
+				previewText.style.fontFamily = $scope.textArea.style.fontFamily;
 		});
 		document.addEventListener('mousedown', textboxBlurHandle, true);
 	}
@@ -366,7 +368,6 @@ app.controller('TextController',
 	};
 	
 	$scope.changeFontSize = function(size) {
-		console.log('toto', size, pageRatio);
 		if (document.getElementsByClassName('tActive').length > 0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
 			var textBox = angular.element(activeTextArea).scope().textBox;
@@ -418,11 +419,11 @@ app.controller('TextController',
 			} else {
 				rotate(textArea, para, scope);
 			}
-		}, 50);
+		}, 100);
 	};
 	
 	function rotate(textArea, para, scope) {
-		var angle = 3;
+		var angle = 2;
 		switch (para) {
 			case 'right':
 				scope.textBox.angle += angle; 
