@@ -167,6 +167,10 @@ msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr ""
 
 #: templates/index.html
+msgid "Generating Jpg. Please be patient..."
+msgstr ""
+
+#: templates/index.html
 msgid "Generating pdf. Please be patient..."
 msgstr ""
 

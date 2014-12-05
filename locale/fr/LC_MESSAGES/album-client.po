@@ -176,6 +176,11 @@ msgstr ""
 "pour l'imprimer"
 
 #: templates/index.html
+#, fuzzy
+msgid "Generating Jpg. Please be patient..."
+msgstr "Génération du pdf. Soyez patients..."
+
+#: templates/index.html
 msgid "Generating pdf. Please be patient..."
 msgstr "Génération du pdf. Soyez patients..."
 

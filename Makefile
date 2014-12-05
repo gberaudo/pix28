@@ -61,6 +61,8 @@ dist: build
 	cp static/js/blob-stream.js dist/static/js/
 	cp node_modules/pdfkit/build/pdfkit.js dist/static/js/
 	cp static/build/album.js dist/static/build/album.js
+	cp static/js/jszip.min.js dist/static/js/
+	cp static/js/FileSaver.min.js dist/static/js/
 	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
 	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/angular.min.js
 	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/angular-gettext.min.js
