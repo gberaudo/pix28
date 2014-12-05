@@ -533,19 +533,28 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 		}
 	}
 	
+	var dataUrlToBlob = function(dataurl) {
+		var matched = dataurl.match(new RegExp('data:(.*);base64,(.*)'));
+		var binary = atob(matched[2]);
+		var len = binary.length;
+		var buffer = new ArrayBuffer(len);
+		var view = new Uint8Array(buffer);
+		for (var i = 0; i < len; i++) {
+			view[i] = binary.charCodeAt(i);
+		}
+		var blob = new Blob( [view], { type: matched[1] });
+		return blob;
+	};
+
 	$scope.toJPEG = function(pageNum) {
 		var content = $scope.album.content;
 		if (pageNum == 0) {
 			var canvas = document.createElement('canvas');
 			ImgService.drawPage(content[0], canvas, $scope)
 			.then(function() {
-// 				var image = canvas.toDataURL('image/jpeg');
-			
-//				window.open(image);
-				canvas.toBlob(function(blob) {
-					outputImage(blob, pageNum);
-				}, "image/jpeg");
-				
+				var image = canvas.toDataURL('image/jpeg');
+				var blob = dataUrlToBlob(image);
+				outputImage(blob, pageNum);
 			});
 		} else if (pageNum == content.length) {
 			var canvas = document.createElement('canvas');
