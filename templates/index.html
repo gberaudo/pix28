@@ -11,6 +11,7 @@ $def with (mode)
 		<script src = 'static/js/pdfkit.js'></script>
 		<script src = 'static/js/blob-stream.js'></script>
 		<script src = 'static/js/exif.js'></script>
+		<script src = 'static/js/jszip.min.js'></script>
 
 		<script src = 'static/js/siteController.js'></script>
 		<script src = 'static/js/albumController.js'></script>
@@ -35,7 +36,7 @@ $def with (mode)
 	<link rel="stylesheet" type="text/css" href="static/css/fontfaces.css"/>
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/> 
 	<link rel="icon" type="image/ico" href="static/icons/album.ico"/>
-<!-- 	<link rel="stylesheet" type="text/css" href="static/css/elusive-webfont.css" /> -->
+	<link rel="stylesheet" type="text/css" href="static/css/elusive-webfont.css" />
 	<title>Create your own story</title> 
 </head>
 
@@ -156,17 +157,13 @@ $def with (mode)
 
 					<div id = 'exportWindow'
 						ng-show = 'showExportWindow'>
-						<img 
-							src = 'static/icons/window-close.png'
-							style = 'margin-left: 100%; margin-top: -3%' 
-							class = 'clickable'
-							ng-click = 'closeExportWindow()'/>
+						
 						<div id = 'exportMenu'
 							ng-show = 'showExportMenu'>
-							<span translate>To which format would you like to export your album?</span>
+							<p translate>To which format would you like to export your album?</p>
 							<ul> 
 								<li >
-									<img src = 'static/icons/computer.png'/> 
+									<span class = 'icon fa fa-laptop'></span> 
 									<span class = 'link'
 										ng-click = 'generatePdf(150)'
 										translate>
@@ -174,7 +171,7 @@ $def with (mode)
 									</span>
 								</li>
 								<li>
-									<img src = 'static/icons/printer.png'/>
+									<span class = 'icon fa fa-print'> </span>
 									<span class = link
 										ng-click = 'generatePdf(300)'
 										translate>
@@ -182,7 +179,7 @@ $def with (mode)
 									</span>
 								</li>
 								<li> 
-									<img src = 'static/icons/internet.png'/>
+									<span class = 'icon el-icon-network'> </span>
 									<span class = 'link'
 										ng-click = 'generateJpg()'
 										translate>
@@ -191,28 +188,51 @@ $def with (mode)
 								</li>
 							</ul>
 						</div>
-						<div ng-show = 'processingPdf' >
-							<span translate>
-								Generating pdf. Please be patient...
-							</span>
-							<div style = 'font-size: 90%' > 
 						
-							<br/>
-							<span translate>
-								...processing page {{processPage}}
-							</span>
-							<br/>
-						</div>
+						<!--=========================================-->
+						<div ng-show = 'processingPdf' >
+							<p translate>
+								Generating pdf. Please be patient...
+							</p>
+							<div style = 'font-size: 90%' > 
+								<span translate>
+									...processing page {{processPage}}
+								</span>
+								<br/>
+								<span class = 'icon fa fa-spinner fa-spin'> </span>
+							</div>
 						</div>
 						<div ng-show = 'showLink'>
 							<p translate> Congratulation! </p>
 							<p translate>Your PDF album is ready.</p>
+							<span class = 'icon fa fa-download'> </span>
 							<a download = '{{album.title + ".pdf"}}' 
 								id = 'pdfoutput' translate>
 								Download file
 							</a>
 						</div>
+						
+					<div ng-show = 'processingJpg' >
+						<p translate>
+							Generating Jpg. Please be patient...
+						</p>
+						<div style = 'font-size: 90%' > 
+							<!--<span translate>
+								...processing page {{processPage}}
+							</span>
+							<br/>-->
+							<span class = 'icon fa fa-spinner fa-spin'> </span>
+						</div>
 					</div>
+					<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
+					</div>
+						<span class = 'clickable close fa fa-remove'
+							ng-click = 'closeExportWindow()'></span>
+					</div>
+					
+					<!--==================================-->
+					
+				
 				</div>
 			</div>
 			
@@ -428,7 +448,8 @@ $def with (mode)
 								title = '{{"change font size"|translate}}'
 								ng-model = 'current.font.size'
 								ng-change = 'changeFontSize(current.font.size)'
-								ng-options = 'i for i in [8, 10, 12, 14, 16, 18, 20, 24, 30]'
+								ng-options = 'i for i in [10, 11, 12, 13, 
+								14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 54, 60]'
 								ng-value = 'i'> {{i}}
 							</select>
 							</div>
@@ -751,27 +772,36 @@ $def with (mode)
 			<span ng-show = 'viewPageNum != 0'
 					class = 'link prev fa fa-chevron-left'
 					ng-click = 'previewPage(viewPageNum - 2)'> </span>
-			<div id = 'leftPreview'
-				ng-show = 'viewPageNum != 0'
-				style = 'position: absolute; top: 0px; left: 0px; 
-					width: {{previewWidth/2 + "px"}}; 
-					height: {{previewHeight + "px"}};
-					border-right: 1px solid #CCC;'>
+			<div xmlns="http://www.w3.org/1999/xhtml"  id = 'prePageCont'>
+				<div id = 'leftPreview'
+					ng-show = 'viewPageNum != 0'
+					style = 'position: absolute; top: 0px; left: 0px; 
+						width: {{previewWidth/2 + "px"}}; 
+						height: {{previewHeight + "px"}};
+						border-right: 1px solid #CCC;'>
+				</div>
+				<div id = 'rightPreview'
+					ng-show = 'viewPageNum != album.content.length'
+					style = 'position: absolute; top: 0px;
+						left: {{(previewWidth/2+1)  + "px"}};
+						width: {{(previewWidth/2 - 1) + "px"}}; 
+						height: {{previewHeight + "px"}};'>
+				</div>
 			</div>
-			<div id = 'rightPreview'
-				ng-show = 'viewPageNum != album.content.length'
-				style = 'position: absolute; top: 0px;
-					left: {{(previewWidth/2+1)  + "px"}};
-					width: {{(previewWidth/2 - 1) + "px"}}; 
-					height: {{previewHeight + "px"}};'>
-			</div>
-			
 			<span	class = 'link next fa fa-chevron-right' 
 					ng-show = 'viewPageNum != album.content.length'
 					ng-click = 'previewPage(viewPageNum + 2)'> </span>
 			
 			<span class = 'clickable close fa fa-remove'
 					ng-click = 'removePreview()'> </span>
+			<div id = 'exportJPEG' >
+				<span class = 'link'
+					ng-click = 'toJPEG()'> Export this page to JPEG</span>
+				<a style = 'margin-left: 2em;' id = 'JpgLink'
+					download = '{{album.title + "_p" + viewPageNum + "_"
+					+ (viewPageNum + 1)}} + ".jpeg"'
+					ng-show = 'showJpgLink'> Save image </a>
+			</div>
 		</div>		
 	</div>
 	</div>

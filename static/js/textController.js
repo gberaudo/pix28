@@ -30,7 +30,8 @@ app.controller('TextBoxController',
 		TAcontainer.style.outline = '0';
 		previewText.style.display = 'block';
 		$scope.$watch('textArea.value', function(newValue, oldValue) {
-				previewText.innerHTML = $scope.textArea.value;
+				var innerHTML = $scope.textArea.value.replace(/\n\r?/g, '<br />');
+				previewText.innerHTML = innerHTML;
 				previewText.style.fontFamily = $scope.textArea.style.fontFamily;
 		});
 		document.addEventListener('mousedown', textboxBlurHandle, true);
@@ -51,14 +52,21 @@ app.controller('TextBoxController',
 	$scope.$watch('textArea.scrollHeight', function(newValue, oldValue) {
 		if (newValue != oldValue && $scope.textBox.text) {
 			var textArea = $scope.textArea,
-				box = $scope.textBox.box;
-			TAcontainer.style.height = textArea.style.height = textArea.scrollHeight + 'px';
+				box = $scope.textBox.box,
+				pheight = $scope.pheight,
+				marginY = Math.floor(0.02 * pheight);
+				
+			if (textArea.scrollHeight > pheight - 2 * marginY) {
+				TAcontainer.style.height = textArea.style.height = (pheight - 2 * marginY) + 'px';
+				TAcontainer.style.top = marginY + 'px';
+			} else if (TAcontainer.offsetHeight + TAcontainer.offsetTop > pheight - marginY) {
+				TAcontainer.style.top = (pheight - marginY - TAcontainer.offsetHeight) + 'px';
+			} else	{
+				TAcontainer.style.height = textArea.style.height = textArea.scrollHeight + 'px';
+			}
 			
-			box.height = 100 * parseFloat(textArea.style.height)/$scope.pheight;
-			if (box.height + box.top > 100) {
-				box.top = 100 - box.height;
-				TAcontainer.style.top = box.top * $scope.pheight /100 + 'px';
-			}	
+			box.height = 100 * TAcontainer.offsetHeight / pheight;
+			box.top = 100 * TAcontainer.offsetTop / pheight;
 		}
 	});
 	
@@ -146,6 +154,10 @@ app.controller('TextBoxController',
 			pwidth= $scope.pwidth,
 			DBbox = $scope.textBox.box,
 			textArea = $scope.textArea,
+			marginX = 0.02 * $scope.pwidth,
+			marginY = 0.02 * $scope.pheight,
+			minWidth = 50,
+			minHeight = 30,
 			box = {
 				left: DBbox.left * pwidth / 100,
 				top: DBbox.top * pheight / 100,
@@ -154,22 +166,22 @@ app.controller('TextBoxController',
 			};
 		switch (para) {
 			case 'horizontal':
-				if (offset < -box.width + 50) {
-					offset = -box.width + 50;
+				if (offset < -box.width + minWidth) {
+					offset = -box.width + minWidth;
 				}
-				if (offset + box.width + box.left > pwidth) {
-					offset = pwidth - box.width - box.left;
+				if (offset + box.width + box.left > pwidth - marginX) {
+					offset = pwidth - box.width - box.left - marginX;
 				}
 				box.width += offset;
 				TAcontainer.style.width = textArea.style.width = box.width + 'px';
 				break;
 				
 			case 'vertical':
-				if (offset < -box.height + 30) {
-					offset = -box.height + 30;
+				if (offset < -box.height + minHeight) {
+					offset = -box.height + minHeight;
 				}
-				if (offset + box.height + box.top > pheight) {
-					offset = pheight - box.height - box.top;
+				if (offset + box.height + box.top > pheight - marginY) {
+					offset = pheight - box.height - box.top - marginY;
 				}
 				box.height += offset;
 				TAcontainer.style.height = textArea.style.height = box.height + 'px';
@@ -270,23 +282,30 @@ app.controller('TextBoxController',
 		$scope.current[page].textBoxes.splice($scope.$index,1);
 	};
 	
-	$scope.autoResize = function(event) {
-		var pheight = $scope.pheight,
-			pwidth = $scope.pwidth,
-			box = $scope.textBox.box;
-		var el = event.target;
-		if (el.scrollHeight > pheight) {
-			el.style.height = pheight + 'px';
-			box.height = 100;
-		} else {
-			el.style.height = (el.scrollHeight)  + "px";
-			box.height = 100 * el.scrollHeight/pheight;
-		}
-		if (el.offsetHeight + el.offsetTop > pheight) {
-			el.style.top = (pheight - el.offsetHeight) + "px";
-			box.top = 100 * (pheight - el.offsetHeight)/pheight;
-		}
-	};
+// 	$scope.autoResize = function(event) {
+// 		var pheight = $scope.pheight,
+// 			pwidth = $scope.pwidth,
+// 			box = $scope.textBox.box;
+// 		var marginX = Math.floor(pwidth / 50),
+// 			marginY = Math.floor(pheight / 50);
+// 		var el = event.target;
+// 		if (el.scrollHeight > pheight - 2 * marginY) {
+// 			el.style.height = (pheight - 2 * marginY) + 'px';
+// 			el.style.top = marginY + 'px';
+// 			box.height = el.offsetHeight * 100 / pheight;
+// 			box.top = marginY * 100 / pheight;
+// 			el.style.top = marginY + 'px';
+// 		} else if (el.scrollHeight + el.offsetTop > pheight - marginY) {
+// 			el.style.height = (pheight - 2 * marginY) + 'px';
+// 			el.style.top = marginY + "px";
+// 			box.top = 100 * marginY / pheight;
+// 			box.height = 100 * (pheight - 2 * marginY) / pheight;
+// 		} else {
+// 			el.style.height = (el.scrollHeight)  + "px";
+// 			box.height = 100 * el.offsetHeight/pheight;
+// 		}
+// 		
+// 	};
 	
 	$scope.dropInTA = function(event) {
 		event.preventDefault();
@@ -384,6 +403,7 @@ app.controller('TextController',
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
 			activeTextArea.style.fontFamily = fontName;
 			angular.element(activeTextArea).scope().textBox.font.family = fontName;
+			previewText.style.fontFamily = fontName;
 		}
 	};
 	

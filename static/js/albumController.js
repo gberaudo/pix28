@@ -352,20 +352,24 @@ app.controller('AlbumController',
 			for (var i = 0 ; i < page.textBoxes.length; i++) {
 				var div = document.createElement('div'),
 					textBox = page.textBoxes[i];
-				div.innerHTML = textBox.text || null;
-				div.style.width = textBox.box.width * pwidth / 100 + 'px';
-				div.style.height = textBox.box.height * pheight / 100 + 'px';
-				div.style.top = (textBox.box.top * pheight / 100 + 4) + 'px';
-				div.style.left = textBox.box.left * pwidth / 100 + 'px';
-				div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
-				div.style.fontStyle = textBox.font.style;
-				div.style.fontFamily = textBox.font.family;
-				div.style.color = textBox.font.color;
-				div.style.fontWeight = textBox.font.weight;
-				div.style.textAlign = textBox.align;
-				div.style.position = 'absolute';
-				div.style.transform = 'rotate(' + textBox.angle + 'deg)';
-				view.appendChild(div);
+					
+				if (!!textBox.text) {
+					var innerHTML = textBox.text.replace(/\n\r?/g, '<br />');
+					div.innerHTML =  innerHTML || null;
+					div.style.width = textBox.box.width * pwidth / 100 + 'px';
+					div.style.height = textBox.box.height * pheight / 100 + 'px';
+					div.style.top = (textBox.box.top * pheight / 100 + 2 * pheight/$scope.pheight) + 'px';
+					div.style.left = textBox.box.left * pwidth / 100 + 'px';
+					div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
+					div.style.fontStyle = textBox.font.style;
+					div.style.fontFamily = textBox.font.family;
+					div.style.color = textBox.font.color;
+					div.style.fontWeight = textBox.font.weight;
+					div.style.textAlign = textBox.align;
+					div.style.position = 'absolute';
+					div.style.transform = 'rotate(' + textBox.angle + 'deg)';
+					view.appendChild(div);
+				}
 			}
 			
 		}
@@ -518,6 +522,46 @@ app.controller('AlbumController',
 		event.dataTransfer.setData('name','frame');
 	};
 	
+	$scope.toJPEG = function() {
+		console.log('exporting');
+		var pageData = document.getElementById('prePageCont').outerHTML;
+		var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="'  + 
+		$scope.previewWidth + '" height="' +
+		$scope.previewHeight + '">' +
+           '<foreignObject width="100%" height="100%">'  +
+				pageData +
+				'</foreignObject>' +
+           '</svg>';
+		var DOMURL = window.URL || window.webkitURL || window;
+
+		var img = new Image();
+		console.log(svgData);
+		var svg = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+		var url = DOMURL.createObjectURL(svg);
+		var canvas = document.createElement('canvas');
+		canvas.width = $scope.previewWidth;
+		canvas.height = $scope.previewHeight;
+		
+		img.onload = function () {
+			console.log('drawing');
+			var ctx = canvas.getContext('2d');
+			ctx.drawImage(img, 0, 0);
+			DOMURL.revokeObjectURL(url);
+			var result = canvas.toDataURL('image/jpeg');
+			var anc = document.getElementById('JpgLink');
+			anc.setAttribute('href', result);
+			$scope.showJpgLink = true;
+			console.log('finished');
+			console.log(result);
+		};
+		img.src = url;
+		
+	};
+	var canvas = document.createElement('canvas');
+		canvas.width = $scope.previewWidth;
+		canvas.height = $scope.previewHeight;
+	var ctx = canvas.getContext('2d');
+	
 }]);
 
 app.controller('ExportController', 
@@ -542,6 +586,7 @@ app.controller('ExportController',
 		$scope.$parent.hideAlbum = true;
 		$scope.showLink = false;
 		$scope.processingPdf = false;
+		$scope.processingJpg = false;
 		$scope.showExportWindow = true;
 		$scope.showExportMenu = true;
 		document.addEventListener('keydown', exportKeyDownHandle, true);
@@ -554,6 +599,8 @@ app.controller('ExportController',
 		$scope.showExportWindow = false;
 		$scope.showExportMenu = false;
 		$scope.processingPdf = false;
+		$scope.showJpgLink = false;
+		$scope.processingJpg = false;
 		document.removeEventListener('keydown', exportKeyDownHandle, true);
 	};
 	
@@ -576,6 +623,7 @@ app.controller('ExportController',
 					$scope.link = stream.toBlobURL('application/pdf');
 					el.setAttribute('href', $scope.link);
 					$scope.$apply(function() {
+						$scope.processingPdf = false;
 						$scope.showLink = true;
 					});
 				});
@@ -633,8 +681,8 @@ app.controller('ExportController',
 		}
 		
 		function makePdfFromJSON(json, fontsData) {
-			var pdfWidth = 720,
-				pdfHeight = 720,
+			var pdfWidth = $scope.pdfWidth,
+				pdfHeight = $scope.pdfHeight,
 				pageRatio = pdfWidth/$scope.pwidth;
 			var doc = new PDFDocument({
 				size: [pdfWidth, pdfHeight],
@@ -657,6 +705,7 @@ app.controller('ExportController',
 // 							var color = Misc.RGBtoHex(tb.font.color);
 // 							console.log('color', color);
 // 							console.log(tb.font);
+							doc.save();
 							var centerX = (tb.box.left + tb.box.width / 2) * pdfWidth /100;
 							var centerY = (tb.box.top + tb.box.height / 2) * pdfHeight /100;
 							doc.rotate(tb.angle, {origin : [centerX, centerY]});
@@ -665,14 +714,15 @@ app.controller('ExportController',
 								.fillColor(tb.font.color)
 								.text(tb.text, 
 										tb.box.left * pdfWidth/100, //to be calculated
-										tb.box.top * pdfHeight/100 + 1.5*pageRatio, //to be calculated
+										tb.box.top * pdfHeight/100 + 2*pdfHeight/$scope.pheight, //to be calculated
 									{
 										width: tb.box.width * pdfWidth/100,
 										align: tb.align,
-										margin: 0,
-										style: 'italic'
+										margin: 0
+// 										lineGap: 1.5 * tb.font.size
 									});
-							doc.rotate(-tb.angle, {origin : [centerX, centerY]});
+								doc.restore();
+// 							doc.rotate(-tb.angle, {origin : [centerX, centerY]});
 						}
 					}
 				}
@@ -816,6 +866,111 @@ app.controller('ExportController',
 			};
 		};
 	};
+
+	$scope.generateJpg = function() {
+		$scope.showExportMenu = false;
+		$scope.processingJpg = true;
+		var result = {};
+		makeJpg().then(function(res) {
+/
+			var output = document.createElement('div');
+			for (num in result) {
+				var fileName = $scope.album.title + '_p' + (parseInt(num) + 1) + '.jpeg ';
+				var anc = document.createElement('a');
+				anc.setAttribute('href', result[num]);
+				anc.setAttribute('download', fileName);
+				anc.setAttribute('style', 'margin-left: 1em');
+				anc.innerHTML = 'Page' + (parseInt(num) + 1);
+				output.appendChild(anc);
+			}
+			$scope.processingJpg = false;
+			$scope.showJpgLink = true;
+			document.getElementById('exportJpgAlbum').appendChild(output);
+		});
+		
+		function makeJpg() {
+			var deferred = $q.defer(),
+					promises = [];
+			var album = angular.copy($scope.album.content);
+			for (var i = 0; i < album.length; i++) {
+				promises.push(drawPage(album[i], i));
+			}
+			$q.all(promises).then(function(res) {
+				deferred.resolve(res);
+			});
+			return deferred.promise;
+		}
+		
+		function drawPage(page, num) {
+			var deferred1 = $q.defer(),
+				promises1 = [];
+			var pageCanvas = document.createElement('canvas');
+			var ctx = pageCanvas.getContext('2d');
+			
+			pageCanvas.width = 800;
+			pageCanvas.height = pageCanvas.width * $scope.pheight/$scope.pwidth;
+			for (var i = 0; i < page.frames.length; i++) {
+				promises1.push(drawImage(page.frames[i]));
+			}
+			
+			$q.all(promises1).then(function(res) {
+// 				for ( j = 0; j < page.textBoxes.length; j++) {
+// 					drawText(page.textBoxes[j]);
+// 				}
+// 				addWatermark(pageCanvas);
+				var image = pageCanvas.toDataURL('image/jpeg');
+				result[num] = image;
+				deferred1.resolve(null);
+			});
+			
+			return deferred1.promise;
+			
+			function drawImage(frame) {
+				var deferred2 = $q.defer();
+				if (!!frame.image.src) {
+					var img = new Image();
+					
+					img.onload = function() {
+						var display = frame.display;
+						var top = frame.canvas.top * pageCanvas.height / 100,
+							left = frame.canvas.left * pageCanvas.width / 100,
+							width = frame.canvas.width * pageCanvas.width / 100,
+							height = frame.canvas.height * pageCanvas.height /100;
+						ctx.save();
+						var centerX = left + width / 2,
+							centerY = top + height / 2;
+						ctx.translate(centerX, centerY);
+						ctx.rotate(frame.angle * Math.PI / 180);
+						ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
+										-width/2, -height/2, width, height);
+						console.log(display, width, height);
+						ctx.restore();
+						deferred2.resolve(null);
+					};						
+					img.src = frame.image.src;
+				} else {
+					deferred2.resolve(null);
+				}
+				return deferred2.promise;
+			}
+			
+// 			function drawText(textBox) {
+// 				var box = textBox.box,
+// 					cheight = pageCanvas.height,
+// 					cwidth = pageCanvas.width;
+// 				
+// 				var top = box.top * cheight / 100,
+// 						left = box.left * cwidth / 100,
+// 						width = box.width * cwidth / 100,
+// 						height = box.height * cheight /100;
+// 				
+// 			}
+			
+			
+		}
+		
+	};
+	
 	
 }]);
 
