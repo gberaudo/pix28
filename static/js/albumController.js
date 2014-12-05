@@ -294,120 +294,7 @@ app.controller('AlbumController',
 	};
 	
 	
-	$scope.previewHeight = Math.floor(0.4 * $scope.screenWidth);
-	$scope.previewWidth = 2 * $scope.previewHeight + 1;
 	
-	$scope.previewPage = function(num) {
-		document.addEventListener('keydown', handleKeyDown, true);
-		$scope.viewPageNum = num;
-		drawPage(num);
- 		$scope.hideAlbum = true;
-		$scope.previewMode = true;
-	};
-	
-	function drawPage(num) {
-		document.getElementById('rightPreview').innerHTML = '';
-		document.getElementById('leftPreview').innerHTML = '';
-		var content = $scope.album.content;
-		if (num != 0) {
-			var leftPage = angular.copy(content[num - 1]),
-				leftView = document.getElementById('leftPreview');
-			showPage(leftPage, leftView);
-		}	
-		if (num != content.length) {
-			var rightPage = angular.copy(content[num]),
-				rightView = document.getElementById('rightPreview');
-			showPage(rightPage, rightView);
-		}
-		
-		function showPage(page, view) {
-			view.style.backgroundColor = page.background || '#FFFFFF';
-			var pwidth = $scope.previewWidth/2,
-				pheight = $scope.previewHeight;
-			//draw images
-			for (var i = 0; i < page.frames.length; i++) {
-				function draw(frame) {
-					var canvas = document.createElement('canvas'),
-						display = angular.copy(frame.display),
-						img = new Image();
-					canvas.width = frame.canvas.width * pwidth / 100;
-					canvas.height = frame.canvas.height * pheight / 100;
-					canvas.style.top = Math.ceil(frame.canvas.top * pheight / 100) + 'px';
-					canvas.style.left = Math.ceil(frame.canvas.left * pwidth / 100) + 'px';
-					canvas.style.position = 'absolute';
-					canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
-					display.dw = canvas.width;
-					display.dh = canvas.height;
-					img.onload = function() {
-						ImgService.drawImage(canvas, img, display); 
-					};
-					img.src = frame.image.src;
-					view.appendChild(canvas);
-				}
-				draw(page.frames[i]);
-
-				
-			}
-			//draw text
-			for (var i = 0 ; i < page.textBoxes.length; i++) {
-				var div = document.createElement('div'),
-					textBox = page.textBoxes[i];
-					
-				if (!!textBox.text) {
-					var innerHTML = textBox.text.replace(/\n\r?/g, '<br />');
-					div.innerHTML =  innerHTML || null;
-					div.style.width = textBox.box.width * pwidth / 100 + 'px';
-					div.style.height = textBox.box.height * pheight / 100 + 'px';
-					div.style.top = (textBox.box.top * pheight / 100 + 2 * pheight/$scope.pheight) + 'px';
-					div.style.left = textBox.box.left * pwidth / 100 + 'px';
-					div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
-					div.style.fontStyle = textBox.font.style;
-					div.style.fontFamily = textBox.font.family;
-					div.style.color = textBox.font.color;
-					div.style.fontWeight = textBox.font.weight;
-					div.style.textAlign = textBox.align;
-					div.style.position = 'absolute';
-					div.style.transform = 'rotate(' + textBox.angle + 'deg)';
-					view.appendChild(div);
-				}
-			}
-			
-		}
-	}
-	
-	
-	$scope.removePreview = function() {
-		document.removeEventListener('keydown', handleKeyDown, true);
-		$scope.hideAlbum = false;
-		$scope.previewMode = false;
-	};
-
-	function handleKeyDown(event) {
-		switch (event.keyCode){
-			case 27: //ESC
-				$timeout(function() {
-					$scope.hideAlbum = false;
-					$scope.delAlbum = false;
-					$scope.previewMode = false;
-				});
-				document.removeEventListener('keydown', handleKeyDown, true);
-				break;
-			case 39:
-				if ($scope.viewPageNum != $scope.album.content.length) {
-					$timeout(function(){
-						$scope.previewPage($scope.viewPageNum + 2);
-					});
-				}
-				break;
-			case 37:
-				if ($scope.viewPageNum != 0) {
-					$timeout(function(){
-						$scope.previewPage($scope.viewPageNum - 2);
-					});
-				}
-				break;
-		}
-	}
 	
 	$scope.removePage = function() {
 		if ($scope.current.pageNum == 0 || 
@@ -488,8 +375,6 @@ app.controller('AlbumController',
 		});
 	};
 	
-	
-	
 	$scope.toAlbumList = function() {
 		$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
 		$scope.currentAlbumSC.description = $scope.album.description;
@@ -497,7 +382,6 @@ app.controller('AlbumController',
 		$scope.$parent.showHome = true;
 		$scope.$parent.showAlbums = true;
  	};
-	/*---------------- Mouse control-------------------------------*/
 
 
 	$scope.descriptionBlur = function() {
@@ -522,51 +406,194 @@ app.controller('AlbumController',
 		event.dataTransfer.setData('name','frame');
 	};
 	
-	$scope.toJPEG = function() {
-		console.log('exporting');
-		var pageData = document.getElementById('prePageCont').outerHTML;
-		var svgData = '<svg xmlns="http://www.w3.org/2000/svg" width="'  + 
-		$scope.previewWidth + '" height="' +
-		$scope.previewHeight + '">' +
-           '<foreignObject width="100%" height="100%">'  +
-				pageData +
-				'</foreignObject>' +
-           '</svg>';
-		var DOMURL = window.URL || window.webkitURL || window;
-
-		var img = new Image();
-		console.log(svgData);
-		var svg = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
-		var url = DOMURL.createObjectURL(svg);
-		var canvas = document.createElement('canvas');
-		canvas.width = $scope.previewWidth;
-		canvas.height = $scope.previewHeight;
-		
-		img.onload = function () {
-			console.log('drawing');
-			var ctx = canvas.getContext('2d');
-			ctx.drawImage(img, 0, 0);
-			DOMURL.revokeObjectURL(url);
-			var result = canvas.toDataURL('image/jpeg');
-			var anc = document.getElementById('JpgLink');
-			anc.setAttribute('href', result);
-			$scope.showJpgLink = true;
-			console.log('finished');
-			console.log(result);
-		};
-		img.src = url;
-		
+	$scope.previewPage = function(num) {
+		var scope = angular.element(document.getElementById('previewPage')).scope();
+		scope.previewPage(num);
 	};
-	var canvas = document.createElement('canvas');
-		canvas.width = $scope.previewWidth;
-		canvas.height = $scope.previewHeight;
-	var ctx = canvas.getContext('2d');
-	
+
 }]);
 
+app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
+					function($scope, $q, $timeout, ImgService) {
+	
+	$scope.previewHeight = Math.floor(0.4 * $scope.screenWidth);
+	$scope.previewWidth = 2 * $scope.previewHeight + 1;
+	
+	$scope.previewPage = function(num) {
+		document.addEventListener('keydown', handleKeyDown, true);
+		$scope.viewPageNum = num;
+		drawPage(num);
+ 		$scope.$parent.hideAlbum = true;
+		$scope.$parent.previewMode = true;
+	};
+	
+	function drawPage(num) {
+		document.getElementById('rightPreview').innerHTML = '';
+		document.getElementById('leftPreview').innerHTML = '';
+		var content = $scope.album.content;
+		if (num != 0) {
+			var leftPage = angular.copy(content[num - 1]),
+				leftView = document.getElementById('leftPreview');
+			showPage(leftPage, leftView);
+		}	
+		if (num != content.length) {
+			var rightPage = angular.copy(content[num]),
+				rightView = document.getElementById('rightPreview');
+			showPage(rightPage, rightView);
+		}
+		
+		function showPage(page, view) {
+			view.style.backgroundColor = page.background || '#FFFFFF';
+			var pwidth = $scope.previewWidth/2,
+				pheight = $scope.previewHeight;
+			//draw images
+			for (var i = 0; i < page.frames.length; i++) {
+				function draw(frame) {
+					var canvas = document.createElement('canvas'),
+						display = angular.copy(frame.display),
+						img = new Image();
+					canvas.width = frame.canvas.width * pwidth / 100;
+					canvas.height = frame.canvas.height * pheight / 100;
+					canvas.style.top = Math.ceil(frame.canvas.top * pheight / 100) + 'px';
+					canvas.style.left = Math.ceil(frame.canvas.left * pwidth / 100) + 'px';
+					canvas.style.position = 'absolute';
+					canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
+					display.dw = canvas.width;
+					display.dh = canvas.height;
+					img.onload = function() {
+						ImgService.drawImage(canvas, img, display); 
+					};
+					img.src = frame.image.src;
+					view.appendChild(canvas);
+				}
+				draw(page.frames[i]);
+
+				
+			}
+			//draw text
+			for (var i = 0 ; i < page.textBoxes.length; i++) {
+				var div = document.createElement('div'),
+					textBox = page.textBoxes[i];
+					
+				if (!!textBox.text) {
+					var innerHTML = textBox.text.replace(/\n\r?/g, '<br />');
+					div.innerHTML =  innerHTML || null;
+					div.style.width = textBox.box.width * pwidth / 100 + 'px';
+					div.style.height = textBox.box.height * pheight / 100 + 'px';
+					div.style.top = (textBox.box.top * pheight / 100 + 2 * pheight/$scope.pheight) + 'px';
+					div.style.left = textBox.box.left * pwidth / 100 + 'px';
+					div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
+					div.style.fontStyle = textBox.font.style;
+					div.style.fontFamily = textBox.font.family;
+					div.style.color = textBox.font.color;
+					div.style.fontWeight = textBox.font.weight;
+					div.style.textAlign = textBox.align;
+					div.style.position = 'absolute';
+					div.style.transform = 'rotate(' + textBox.angle + 'deg)';
+					view.appendChild(div);
+				}
+			}
+			
+		}
+	}
+	
+	
+	$scope.removePreview = function() {
+		document.removeEventListener('keydown', handleKeyDown, true);
+		$scope.$parent.hideAlbum = false;
+		$scope.$parent.previewMode = false;
+	};
+
+	function handleKeyDown(event) {
+		console.log(event.keyCode);
+		switch (event.keyCode){
+			case 27: //ESC
+				$timeout(function() {
+					$scope.$parent.hideAlbum = false;
+					$scope.$parent.previewMode = false;
+				});
+				document.removeEventListener('keydown', handleKeyDown, true);
+				break;
+			case 39:
+				event.preventDefault();
+				if ($scope.viewPageNum != $scope.album.content.length) {
+					$timeout(function(){
+						$scope.previewPage($scope.viewPageNum + 2);
+					});
+				}
+				break;
+			case 37:
+				event.preventDefault();
+				if ($scope.viewPageNum != 0) {
+					$timeout(function(){
+						$scope.previewPage($scope.viewPageNum - 2);
+					});
+				}
+				break;
+		}
+	}
+	
+	$scope.toJPEG = function(pageNum) {
+		var content = $scope.album.content;
+		if (pageNum == 0) {
+			var canvas = document.createElement('canvas');
+			ImgService.drawPage(content[0], canvas, $scope)
+			.then(function() {
+// 				var image = canvas.toDataURL('image/jpeg');
+			
+//				window.open(image);
+				canvas.toBlob(function(blob) {
+					outputImage(blob, pageNum);
+				}, "image/jpeg");
+				
+			});
+		} else if (pageNum == content.length) {
+			var canvas = document.createElement('canvas');
+			ImgService.drawPage(content[length-1], canvas, $scope)
+			.then(function() {
+// 				outputImage(image,pageNum);
+			});
+		} else {
+			var canvas1 = document.createElement('canvas'),
+				canvas2 = document.createElement('canvas');
+			
+			ImgService.drawPage(content[pageNum], canvas1, $scope)
+			.then(function() {
+				var imgData1 = canvas1.toDataURL();
+				ImgService.drawPage(content[pageNum + 1], canvas2, $scope)
+				.then(function() {
+					var imgData2 = canvas2.toDataURL();
+					var canvas = document.createElement('canvas'),
+						ctx = canvas.getContext('2d');
+					canvas.width = 2 * canvas1.width;
+					canvas.height = canvas1.height;
+					var img1 = new Image(),
+						img1 = new Image();
+					img1.onload = function() {
+						ctx.drawImage(img1, 0, 0);
+						img2.onload = function() {
+							ctx.drawImage(img2, canvas1.width, 0);
+							var image = canvas.toBlob();
+							ouputImage(image, pageNum);
+						}
+						img2.src = imgData2;
+					};
+					img1.src = imgData1;
+				});
+			});
+			
+		}
+		function outputImage(image, pageNum) {
+			saveAs(image, pageNum + '.jpg');
+		}
+	};
+}]);
+
+/*-----------------------------------------------------------------------------*/
+
 app.controller('ExportController', 
-					['$scope', '$timeout', 'Misc', '$q', '$http',
-					function($scope, $timeout, Misc, $q, $http) {
+					['$scope', '$timeout', 'Misc', '$q', '$http', 'ImgService',
+					function($scope, $timeout, Misc, $q, $http, ImgService) {
 
 	var max = Math.max,
 		min = Math.min;
@@ -872,17 +899,16 @@ app.controller('ExportController',
 		$scope.processingJpg = true;
 		var result = {};
 		makeJpg().then(function(res) {
-/
 			var output = document.createElement('div');
+			var zip = new JSZip();
+			var jpgZip = zip.folder('images');
 			for (num in result) {
-				var fileName = $scope.album.title + '_p' + (parseInt(num) + 1) + '.jpeg ';
-				var anc = document.createElement('a');
-				anc.setAttribute('href', result[num]);
-				anc.setAttribute('download', fileName);
-				anc.setAttribute('style', 'margin-left: 1em');
-				anc.innerHTML = 'Page' + (parseInt(num) + 1);
-				output.appendChild(anc);
+				var fileName = $scope.album.title + '_p' + (parseInt(num) + 1) + '.jpg ';
+				var b64content = result[num].replace('data:image/jpeg;base64,', '');
+				jpgZip.file(fileName, b64content, {base64: true});
 			}
+			var content = jpgZip.generate({type: 'blob'});
+			saveAs(content, "example.zip");
 			$scope.processingJpg = false;
 			$scope.showJpgLink = true;
 			document.getElementById('exportJpgAlbum').appendChild(output);
@@ -902,73 +928,16 @@ app.controller('ExportController',
 		}
 		
 		function drawPage(page, num) {
-			var deferred1 = $q.defer(),
-				promises1 = [];
+			var deferred = $q.defer();
 			var pageCanvas = document.createElement('canvas');
-			var ctx = pageCanvas.getContext('2d');
 			
-			pageCanvas.width = 800;
-			pageCanvas.height = pageCanvas.width * $scope.pheight/$scope.pwidth;
-			for (var i = 0; i < page.frames.length; i++) {
-				promises1.push(drawImage(page.frames[i]));
-			}
-			
-			$q.all(promises1).then(function(res) {
-// 				for ( j = 0; j < page.textBoxes.length; j++) {
-// 					drawText(page.textBoxes[j]);
-// 				}
-// 				addWatermark(pageCanvas);
+			ImgService.drawPage(page, pageCanvas, $scope).then(function() {
 				var image = pageCanvas.toDataURL('image/jpeg');
 				result[num] = image;
-				deferred1.resolve(null);
+				deferred.resolve();
 			});
-			
-			return deferred1.promise;
-			
-			function drawImage(frame) {
-				var deferred2 = $q.defer();
-				if (!!frame.image.src) {
-					var img = new Image();
-					
-					img.onload = function() {
-						var display = frame.display;
-						var top = frame.canvas.top * pageCanvas.height / 100,
-							left = frame.canvas.left * pageCanvas.width / 100,
-							width = frame.canvas.width * pageCanvas.width / 100,
-							height = frame.canvas.height * pageCanvas.height /100;
-						ctx.save();
-						var centerX = left + width / 2,
-							centerY = top + height / 2;
-						ctx.translate(centerX, centerY);
-						ctx.rotate(frame.angle * Math.PI / 180);
-						ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
-										-width/2, -height/2, width, height);
-						console.log(display, width, height);
-						ctx.restore();
-						deferred2.resolve(null);
-					};						
-					img.src = frame.image.src;
-				} else {
-					deferred2.resolve(null);
-				}
-				return deferred2.promise;
-			}
-			
-// 			function drawText(textBox) {
-// 				var box = textBox.box,
-// 					cheight = pageCanvas.height,
-// 					cwidth = pageCanvas.width;
-// 				
-// 				var top = box.top * cheight / 100,
-// 						left = box.left * cwidth / 100,
-// 						width = box.width * cwidth / 100,
-// 						height = box.height * cheight /100;
-// 				
-// 			}
-			
-			
+			return deferred.promise;
 		}
-		
 	};
 	
 	

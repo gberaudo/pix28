@@ -219,7 +219,7 @@ app.service('DBServices', ['$q',  function($q) {
 
 /*---------------------------------------------------------*/
 
-app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
+app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) {
 	function showThumbnail(obj, id) {
 		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
 			img = document.createElement('img'),
@@ -395,7 +395,51 @@ app.service('ImgService', ['gettextCatalog', function(gettextCatalog) {
 		drawAnchors(canvas);
 	};
 	
-	
+	this.drawPage = function(page, canvas, scope) {
+		var ctx = canvas.getContext('2d');
+		var deferred = $q.defer(),
+			promises = [];
+		canvas.width = 800;
+		canvas.height = canvas.width * scope.pheight/scope.pwidth;
+		for (var i = 0; i < page.frames.length; i++) {
+			promises.push(drawImage(page.frames[i]));
+		}
+		$q.all(promises).then(function() {
+			deferred.resolve(null);
+		});
+		
+		return deferred.promise;
+		
+		
+		function drawImage(frame) {
+			var deferred = $q.defer();
+			if (!!frame.image.src) {
+				var img = new Image();
+				
+				img.onload = function() {
+					var display = frame.display;
+					var top = frame.canvas.top * canvas.height / 100,
+						left = frame.canvas.left * canvas.width / 100,
+						width = frame.canvas.width * canvas.width / 100,
+						height = frame.canvas.height * canvas.height /100;
+					ctx.save();
+					var centerX = left + width / 2,
+						centerY = top + height / 2;
+					ctx.translate(centerX, centerY);
+					ctx.rotate(frame.angle * Math.PI / 180);
+					ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
+									-width/2, -height/2, width, height);
+					console.log(display, width, height);
+					ctx.restore();
+					deferred.resolve(null);
+				};
+				img.src = frame.image.src;
+			} else {
+				deferred.resolve(null);
+			}
+			return deferred.promise;
+		}
+	};
 }]);
 
 /*-----------------------------------------------------------*/

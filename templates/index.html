@@ -11,8 +11,8 @@ $def with (mode)
 		<script src = 'static/js/pdfkit.js'></script>
 		<script src = 'static/js/blob-stream.js'></script>
 		<script src = 'static/js/exif.js'></script>
+		<script src = 'static/js/FileSaver.min.js'></script>
 		<script src = 'static/js/jszip.min.js'></script>
-
 		<script src = 'static/js/siteController.js'></script>
 		<script src = 'static/js/albumController.js'></script>
 		<script src = 'static/js/pageController.js'></script>
@@ -765,7 +765,7 @@ $def with (mode)
 		
 		<!--_______________Preview_____________________________________-->
 		
-		<div tabindex = '0'
+		<div ng-controller = 'PreviewController'
 			ng-show = 'previewMode' id = 'previewPage'
 			style = 'width: {{previewWidth + "px"}}; 
 			height: {{previewHeight + "px"}};'>
@@ -796,7 +796,7 @@ $def with (mode)
 					ng-click = 'removePreview()'> </span>
 			<div id = 'exportJPEG' >
 				<span class = 'link'
-					ng-click = 'toJPEG()'> Export this page to JPEG</span>
+					ng-click = 'toJPEG(viewPageNum)'> Export this page to JPEG</span>
 				<a style = 'margin-left: 2em;' id = 'JpgLink'
 					download = '{{album.title + "_p" + viewPageNum + "_"
 					+ (viewPageNum + 1)}} + ".jpeg"'
