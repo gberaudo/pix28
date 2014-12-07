@@ -401,10 +401,14 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 			promises = [];
 		canvas.width = 800;
 		canvas.height = canvas.width * scope.pheight/scope.pwidth;
+		ctx.fillStyle = page.background || '#FFFFFF';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		for (var i = 0; i < page.frames.length; i++) {
 			promises.push(drawImage(page.frames[i]));
 		}
 		$q.all(promises).then(function() {
+			drawText(page);
+			drawWatermark();
 			deferred.resolve(null);
 		});
 		
@@ -439,6 +443,92 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 			}
 			return deferred.promise;
 		}
+	
+		function drawText(page) {
+			for (var i = 0; i < page.textBoxes.length; i++) {
+				var textBox = page.textBoxes[i];
+				if (!!textBox.text) {
+					var left = textBox.box.left * canvas.width / 100,
+						top = textBox.box.top * canvas.height / 100,
+						width = textBox.box.width * canvas.width / 100, 
+						height = textBox.box.height * canvas.height / 100;
+						
+					var fontSize = textBox.font.size * canvas.width / scope.pdfWidth,
+						color = textBox.font.color,
+						fontName = textBox.font.family,
+						lineHeight = 1.2 * fontSize;
+					ctx.save();
+					
+					var centerX = left + width / 2,
+						centerY = top + height / 2;
+					
+					ctx.translate(centerX, centerY);
+					ctx.rotate(textBox.angle * Math.PI / 180);
+					ctx.translate(-width/2, -height/2);
+// 					ctx.textBaseline = 'bottom';
+					ctx.font = fontSize + 'px ' + fontName;
+					ctx.fillStyle = color;
+					wrapText(ctx, textBox.text, 0, 1.2 * fontSize,
+								width, lineHeight, textBox.align);
+					ctx.restore();
+				}
+			}
+			
+			
+			
+			function wrapText(context, text, x, y, maxWidth, lineHeight) {
+				var words = text.split(' ');
+				var line = '';
+				
+				for(var n = 0; n < words.length; n++) {
+					var testLine = line + words[n] + ' ';
+					var metrics = context.measureText(testLine);
+					var testWidth = metrics.width;
+					if (testWidth > maxWidth && n > 0) {
+						var lineWidth = context.measureText(line).width;
+						fillTextAlign(line, x, y, textBox.align);
+						line = words[n] + ' ';
+						y += lineHeight;
+					}
+					else {
+						line = testLine;
+						lineWidth = context.measureText(line).width;
+					}
+				}
+				fillTextAlign(line, x, y, textBox.align);
+				
+				function fillTextAlign(line, x, y, align) {
+					var startX;
+					switch (align) {
+						case 'right':
+							startX = maxWidth - lineWidth;
+							break;
+						case 'left':
+							startX = x;
+							break;
+						case 'center':
+							startX = (maxWidth - lineWidth) / 2;
+							break;
+					}
+					context.fillText(line, startX, y);
+				}
+			}
+		}
+	
+		function drawWatermark() {
+			ctx.save();
+			ctx.globalAlpha=.20;
+			ctx.translate(50, 100);
+			ctx.rotate(-Math.PI / 6);
+			ctx.font = '40px Verdana';
+			ctx.fillStyle = '#FFFFFF';
+			ctx.fillText('AlbumIt', 30, 50);
+			ctx.fillStyle = '#000000';
+			ctx.fillText('AlbumIt', 33, 53);
+// 			ctx.fillStyle = 'darkred';
+// 			ctx.fillText('AlbumIt', 36, 56);
+			ctx.restore();
+		};
 	};
 }]);
 

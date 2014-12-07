@@ -122,7 +122,8 @@ app.controller('PageController',
 						weight: $scope.current.font.weight,
 						family: $scope.current.font.family,
 						size: $scope.current.font.size
-					}
+					},
+					align: 'left'
 				};
 				$scope.$apply(function() {
 					$scope.current.datumWithFocus = newTextBox;

@@ -488,6 +488,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 					div.style.color = textBox.font.color;
 					div.style.fontWeight = textBox.font.weight;
 					div.style.textAlign = textBox.align;
+					div.style.lineHeight = textBox.lineHeight || 1.2;
 					div.style.position = 'absolute';
 					div.style.transform = 'rotate(' + textBox.angle + 'deg)';
 					view.appendChild(div);
@@ -505,7 +506,6 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 	};
 
 	function handleKeyDown(event) {
-		console.log(event.keyCode);
 		switch (event.keyCode){
 			case 27: //ESC
 				$timeout(function() {
@@ -558,36 +558,36 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 			});
 		} else if (pageNum == content.length) {
 			var canvas = document.createElement('canvas');
-			ImgService.drawPage(content[length-1], canvas, $scope)
+			ImgService.drawPage(content[content.length-1], canvas, $scope)
 			.then(function() {
-// 				outputImage(image,pageNum);
+				var image = canvas.toDataURL('image/jpeg');
+				var blob = dataUrlToBlob(image);
+				outputImage(blob, pageNum);
 			});
 		} else {
 			var canvas1 = document.createElement('canvas'),
 				canvas2 = document.createElement('canvas');
 			
-			ImgService.drawPage(content[pageNum], canvas1, $scope)
+			ImgService.drawPage(content[pageNum-1], canvas1, $scope)
 			.then(function() {
-				var imgData1 = canvas1.toDataURL();
-				ImgService.drawPage(content[pageNum + 1], canvas2, $scope)
+				ImgService.drawPage(content[pageNum], canvas2, $scope)
 				.then(function() {
-					var imgData2 = canvas2.toDataURL();
 					var canvas = document.createElement('canvas'),
 						ctx = canvas.getContext('2d');
 					canvas.width = 2 * canvas1.width;
 					canvas.height = canvas1.height;
-					var img1 = new Image(),
-						img1 = new Image();
-					img1.onload = function() {
-						ctx.drawImage(img1, 0, 0);
-						img2.onload = function() {
-							ctx.drawImage(img2, canvas1.width, 0);
-							var image = canvas.toBlob();
-							ouputImage(image, pageNum);
-						}
-						img2.src = imgData2;
-					};
-					img1.src = imgData1;
+					ctx.drawImage(canvas1, 0, 0);
+					ctx.drawImage(canvas2, canvas1.width, 0);
+					ctx.save();
+					ctx.beginPath();
+					ctx.moveTo(canvas1.width, 0);
+					ctx.lineTo(canvas1.width, canvas1.height);
+					ctx.strokeStyle = '#CCC';
+					ctx.stroke(); 
+					ctx.restore();
+					var image = canvas.toDataURL('image/jpeg');
+					var blob = dataUrlToBlob(image);
+					outputImage(blob, pageNum);
 				});
 			});
 			
@@ -738,27 +738,27 @@ app.controller('ExportController',
 							if (!tb.text) { 
 								continue;
 							}
-// 							var color = Misc.RGBtoHex(tb.font.color);
-// 							console.log('color', color);
-// 							console.log(tb.font);
 							doc.save();
 							var centerX = (tb.box.left + tb.box.width / 2) * pdfWidth /100;
 							var centerY = (tb.box.top + tb.box.height / 2) * pdfHeight /100;
 							doc.rotate(tb.angle, {origin : [centerX, centerY]});
 							doc.fontSize(tb.font.size)
 								.font(fontsData[tb.font.family])
-								.fillColor(tb.font.color)
-								.text(tb.text, 
+								.fillColor(tb.font.color);
+							var  lineHeight = doc.currentLineHeight();
+							var coeff = tb.lineHeight || 1.2;
+							var lineGap = coeff * tb.font.size - lineHeight;
+							doc.text(tb.text, 
 										tb.box.left * pdfWidth/100, //to be calculated
-										tb.box.top * pdfHeight/100 + 2*pdfHeight/$scope.pheight, //to be calculated
+										tb.box.top * pdfHeight/100, //to be calculated
 									{
 										width: tb.box.width * pdfWidth/100,
 										align: tb.align,
-										margin: 0
-// 										lineGap: 1.5 * tb.font.size
+										margin: 0,
+										lineGap: lineGap
 									});
+							
 								doc.restore();
-// 							doc.rotate(-tb.angle, {origin : [centerX, centerY]});
 						}
 					}
 				}

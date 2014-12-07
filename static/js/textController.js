@@ -353,6 +353,7 @@ app.controller('TextController',
 			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.color = color;
 			textBox.font.color = color;
+			previewText.style.color = color;
 		}
 	};
 	
@@ -395,6 +396,7 @@ app.controller('TextController',
 			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.fontSize = (size/pageRatio) + 'px';
 			textBox.font.size = size;
+			previewText.style.fontSize = size + 'px';
 		}
 	};
 	
