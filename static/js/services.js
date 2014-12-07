@@ -479,25 +479,29 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 			function wrapText(context, text, x, y, maxWidth, lineHeight) {
 				var words = text.split(' ');
 				var line = '';
+				var lineWidth;
 				
 				for(var n = 0; n < words.length; n++) {
-					var testLine = line + words[n] + ' ';
+					var testLine = line + ' ' + words[n];
 					var metrics = context.measureText(testLine);
 					var testWidth = metrics.width;
+					
 					if (testWidth > maxWidth && n > 0) {
-						var lineWidth = context.measureText(line).width;
-						fillTextAlign(line, x, y, textBox.align);
-						line = words[n] + ' ';
+						lineWidth = context.measureText(line).width;
+						fillTextAlign(line, lineWidth, x, y, textBox.align);
+						line = words[n];
 						y += lineHeight;
 					}
 					else {
 						line = testLine;
-						lineWidth = context.measureText(line).width;
 					}
 				}
-				fillTextAlign(line, x, y, textBox.align);
+				lineWidth = context.measureText(line).width;
+				fillTextAlign(line, lineWidth, x, y, textBox.align);
+
+
 				
-				function fillTextAlign(line, x, y, align) {
+				function fillTextAlign(line, lineWidth, x, y, align) {
 					var startX;
 					switch (align) {
 						case 'right':
@@ -520,7 +524,7 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 			ctx.globalAlpha=.20;
 			ctx.translate(50, 100);
 			ctx.rotate(-Math.PI / 6);
-			ctx.font = '40px Verdana';
+			ctx.font = '40px Times';
 			ctx.fillStyle = '#FFFFFF';
 			ctx.fillText('AlbumIt', 30, 50);
 			ctx.fillStyle = '#000000';

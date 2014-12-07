@@ -554,7 +554,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 			.then(function() {
 				var image = canvas.toDataURL('image/jpeg');
 				var blob = dataUrlToBlob(image);
-				outputImage(blob, pageNum);
+				outputImage(blob, pageNum + 1);
 			});
 		} else if (pageNum == content.length) {
 			var canvas = document.createElement('canvas');
@@ -587,13 +587,13 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 					ctx.restore();
 					var image = canvas.toDataURL('image/jpeg');
 					var blob = dataUrlToBlob(image);
-					outputImage(blob, pageNum);
+					outputImage(blob, pageNum + '-' + (pageNum + 1));
 				});
 			});
 			
 		}
 		function outputImage(image, pageNum) {
-			saveAs(image, pageNum + '.jpg');
+			saveAs(image, $scope.album.title + '_p' + pageNum + '.jpg');
 		}
 	};
 }]);

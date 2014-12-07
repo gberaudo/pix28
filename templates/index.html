@@ -199,15 +199,15 @@ $def with (mode)
 								Generating pdf. Please be patient...
 							</p>
 							<div style = 'font-size: 90%' > 
-								<span translate>
+								<p translate>
 									...processing page {{processPage}}
-								</span>
-								<br/>
-								<span class = 'icon fa fa-spinner fa-spin'> </span>
+								</p>
+								<p class = 'icon fa fa-spinner fa-spin'
+									style = 'font-size: 2em' > </p>
 							</div>
 						</div>
 						<div ng-show = 'showLink'>
-							<p translate> Congratulation! </p>
+							<h4 translate> Congratulation! </h4>
 							<p translate>Your PDF album is ready.</p>
 							<span class = 'icon fa fa-download'> </span>
 							<a download = '{{album.title + ".pdf"}}' 
@@ -220,13 +220,8 @@ $def with (mode)
 						<p translate>
 							Generating Jpg. Please be patient...
 						</p>
-						<div style = 'font-size: 90%' > 
-							<!--<span translate>
-								...processing page {{processPage}}
-							</span>
-							<br/>-->
-							<span class = 'icon fa fa-spinner fa-spin'> </span>
-						</div>
+
+							<p class = 'icon fa fa-spinner fa-spin'> </p>
 					</div>
 					<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
 					</div>
@@ -800,11 +795,7 @@ $def with (mode)
 					ng-click = 'removePreview()'> </span>
 			<div id = 'exportJPEG' >
 				<span class = 'link'
-					ng-click = 'toJPEG(viewPageNum)'> Export this page to JPEG</span>
-				<a style = 'margin-left: 2em;' id = 'JpgLink'
-					download = '{{album.title + "_p" + viewPageNum + "_"
-					+ (viewPageNum + 1)}} + ".jpeg"'
-					ng-show = 'showJpgLink'> Save image </a>
+					ng-click = 'toJPEG(viewPageNum)' translate> Export this page to JPEG</span>
 			</div>
 		</div>		
 	</div>
