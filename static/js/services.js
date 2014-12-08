@@ -39,6 +39,12 @@ app.factory('FrameObject', function() {
 		'ArDaughter',
 		'Belligerent',
 		'Drawvetica',
+		'Ubuntu_B',
+		'Ubuntu_BI',
+		'Ubuntu_L',
+		'Ubuntu_LI',
+		'Ubuntu_R',
+		'Ubuntu_C',
 		'Komtxt',
 		'Komtxtb',
 		'Komtxtbi',
@@ -97,7 +103,7 @@ app.service('Init', function() {
 
 
 /*--------------------------------------------------------*/
-app.service('DBServices', ['$q',  function($q) {
+app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 	this.initAlbumDB = function(scope) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		openRq.onsuccess = function(event) {
@@ -165,6 +171,7 @@ app.service('DBServices', ['$q',  function($q) {
 	
 	this.updateAlbumDB = function(content, id, title, description, date) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
+		var deferred = $q.defer();
 		openRq.onsuccess = function(event) {
 			var db = openRq.result;
 			var trans = db.transaction(['Albums'], 'readwrite');
@@ -179,18 +186,28 @@ app.service('DBServices', ['$q',  function($q) {
 				
 				var updateRq = store.put(album);
 				updateRq.onsuccess = function(event){
+					var el = document.getElementById('updateMsg');
+					el.innerHTML = 'Album saved.';
+					$timeout(function() {
+						el.innerHTML = '';
+					},2000);
+					deferred.resolve();
 				};
 				updateRq.onerror = function(event){
+					deferred.reject();
 					console.log('update failed');
 				};
 			};
 			getRq.onerror = function(event) {
+				deferred.reject();
 				console.log('access failed');
 			};
 		};
 		openRq.onerror = function(event) {
+			deferred.reject();
 			console.log('error in open DB for update');
 		};
+		return deferred.promise;
 	};
 	
 	this.addAlbum = function() {
@@ -477,29 +494,33 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 			
 			
 			function wrapText(context, text, x, y, maxWidth, lineHeight) {
-				var words = text.split(' ');
-				var line = '';
-				var lineWidth;
-				
-				for(var n = 0; n < words.length; n++) {
-					var testLine = line + ' ' + words[n];
-					var metrics = context.measureText(testLine);
-					var testWidth = metrics.width;
+				var paragraphs = text.split('\n');
+				for (var j = 0; j< paragraphs.length; j++) {
+					var paragraph = paragraphs[j];
 					
-					if (testWidth > maxWidth && n > 0) {
-						lineWidth = context.measureText(line).width;
-						fillTextAlign(line, lineWidth, x, y, textBox.align);
-						line = words[n];
-						y += lineHeight;
+					var words = paragraph.split(' ');
+					var line = '';
+					var lineWidth;
+					
+					for(var n = 0; n < words.length; n++) {
+						var testLine = line + ' ' + words[n];
+						var metrics = context.measureText(testLine);
+						var testWidth = metrics.width;
+						
+						if (testWidth > maxWidth && n > 0) {
+							lineWidth = context.measureText(line).width;
+							fillTextAlign(line, lineWidth, x, y, textBox.align);
+							line = words[n];
+							y += lineHeight;
+						}
+						else {
+							line = testLine;
+						}
 					}
-					else {
-						line = testLine;
-					}
+					lineWidth = context.measureText(line).width;
+					fillTextAlign(line, lineWidth, x, y, textBox.align);
+					y += lineHeight;
 				}
-				lineWidth = context.measureText(line).width;
-				fillTextAlign(line, lineWidth, x, y, textBox.align);
-
-
 				
 				function fillTextAlign(line, lineWidth, x, y, align) {
 					var startX;

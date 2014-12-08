@@ -167,6 +167,10 @@ msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr ""
 
 #: templates/index.html
+msgid "Export this page to JPEG"
+msgstr ""
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
 msgstr ""
 
@@ -236,6 +240,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Rotate text box right"
+msgstr ""
+
+#: templates/index.html
+msgid "Save this album"
 msgstr ""
 
 #: templates/index.html

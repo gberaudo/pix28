@@ -42,7 +42,7 @@ app.controller('AlbumController',
 					$scope.album.title, $scope.album.description,
 					$scope.album.date
 				);
-				console.log('update Album');
+				
 			} else {
 				$interval.cancel(updateAlbum);
 			}
@@ -375,12 +375,44 @@ app.controller('AlbumController',
 		});
 	};
 	
+	$scope.saveAlbum = function() {
+		DBServices.updateAlbumDB(
+					$scope.album.content, $scope.current.albumId,
+					$scope.album.title, $scope.album.description,
+					$scope.album.date
+				)
+		.then(function() {}, 
+				function() {
+					var el = document.getElementById('updateMsg');
+					var msg = 'Failed to save this album. Please try again.'
+					el.innerHTML = msg;
+					$timeout(function() {
+						el.innerHTML = '';
+					}, 3000);
+				});
+	};
+	
 	$scope.toAlbumList = function() {
-		$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
-		$scope.currentAlbumSC.description = $scope.album.description;
-		$scope.$parent.inAlbum = false;
-		$scope.$parent.showHome = true;
-		$scope.$parent.showAlbums = true;
+		DBServices.updateAlbumDB(
+					$scope.album.content, $scope.current.albumId,
+					$scope.album.title, $scope.album.description,
+					$scope.album.date
+				)
+		.then(function() {
+			$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
+			$scope.currentAlbumSC.description = $scope.album.description;
+			$scope.$parent.inAlbum = false;
+			$scope.$parent.showHome = true;
+			$scope.$parent.showAlbums = true;
+			console.log('saved album');
+		}, function() {
+			var el = document.getElementById('updateMsg');
+			var msg = 'Failed to save this album. Please try again.'
+			el.innerHTML = msg;
+			$timeout(function() {
+				el.innerHTML = '';
+			},3000);
+		});
  	};
 
 
@@ -478,6 +510,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 				if (!!textBox.text) {
 					var innerHTML = textBox.text.replace(/\n\r?/g, '<br />');
 					div.innerHTML =  innerHTML || null;
+					div.style.whiteSpace = 'pre-wrap';
 					div.style.width = textBox.box.width * pwidth / 100 + 'px';
 					div.style.height = textBox.box.height * pheight / 100 + 'px';
 					div.style.top = (textBox.box.top * pheight / 100 + 2 * pheight/$scope.pheight) + 'px';

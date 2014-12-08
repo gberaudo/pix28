@@ -1,158 +1,208 @@
 .Calligraffiti {
 	font-family: Calligraffiti;
 }
-
-.UVNDoiMoi {
-	font-family: UVNDoiMoi;
-}
-.UVNKeChuyen3{
-	font-family: UVNKeChuyen3;
-}
-
-.UVNKyThuat{
-	font-family: UVNKyThuat;
-}
-
-.UVNTinTuc_R{
-	font-family: UVNTinTuc_R;
-}
-
-.ArDaughter {
-	font-family: ArDaughter;
-}
-
-.Belligerent {
-	font-family: Belligerent;
-}
-
-.Drawvetica {
-	font-family: Drawvetica;
-}
-
-
-.Komtxt {
-	font-family: Komtxt;
-}
-
-.Komtxtbi {
-	font-family: Komtxtbi;
-}
-
-.Komtxti {
-	font-family: Komtxti;
-}
-
-.Komtxtk {
-	font-family: Komtxtk;
-	src: url('../fonts/Komtxtk.ttf') format('truetype');
-}
-
-.Komtxtkb {
-	font-family: Komtxtkb;
-	src: url('../fonts/Komtxtkb.ttf') format('truetype');
-}
-
-.Floralia {
-	font-family: Floralia;
-}
-
-
-.SpecialElite {
-	font-family: SpecialElite;
-}
-
-.WCSoldOutB {
-	font-family: WCSoldOutB;
-}
-
-/*------------------------------------------------*/
-
 @font-face{
 	font-family: Calligraffiti;
 	src: url('../fonts/Calligraffiti.ttf') format('truetype');
 }
 
+.UVNDoiMoi {
+	font-family: UVNDoiMoi;
+}
 @font-face{
 	font-family: UVNDoiMoi;
 	src: url('../fonts/UVNDoiMoi.ttf') format('truetype');
 }
 
+.UVNKeChuyen3{
+	font-family: UVNKeChuyen3;
+}
 @font-face{
 	font-family: UVNKeChuyen3;
 	src: url('../fonts/UVNKeChuyen3.ttf') format('truetype');
 }
 
+.UVNKyThuat{
+	font-family: UVNKyThuat;
+}
 @font-face{
 	font-family: UVNKyThuat;
 	src: url('../fonts/UVNKyThuat.ttf') format('truetype');
 }
 
+.UVNTinTuc_R{
+	font-family: UVNTinTuc_R;
+}
 @font-face{
 	font-family: UVNTinTuc_R;
 	src: url('../fonts/UVNTinTuc_R.ttf') format('truetype');
 }
 
+.ArDaughter {
+	font-family: ArDaughter;
+}
 @font-face {
 	font-family: ArDaughter;
 	src: url('../fonts/ArDaughter.ttf') format('truetype');
 }
 
+.Belligerent {
+	font-family: Belligerent;
+}
 @font-face {
 	font-family: Belligerent;
 	src: url('../fonts/Belligerent.ttf') format('truetype');
 }
 
-
-
+.Drawvetica {
+	font-family: Drawvetica;
+}
 @font-face {
 	font-family: Drawvetica;
 	src: url('../fonts/Drawvetica.ttf') format('truetype');
 }
 
-
+.Ubuntu-B {
+	font-family: Ubuntu_B;
+}
 @font-face {
-	font-family: Komtxt;
-	src: url('../fonts/Komtxt.ttf') format('truetype');
+	font-family: Ubuntu_B;
+	src: url('../fonts/Ubuntu_B.ttf') format('truetype');
 }
 
+.Ubuntu-BI {
+	font-family: Ubuntu_BI;
+}
 @font-face {
-	font-family: Komtxtb;
-	src: url('../fonts/Komtxtb.ttf') format('truetype');
+	font-family: Ubuntu_BI;
+	src: url('../fonts/Ubuntu_BI.ttf') format('truetype');
 }
 
+.Ubuntu-C {
+	font-family: Ubuntu_C;
+}
 @font-face {
-	font-family: Komtxtbi;
-	src: url('../fonts/Komtxtbi.ttf') format('truetype');
+	font-family: Ubuntu_C;
+	src: url('../fonts/Ubuntu_C.ttf') format('truetype');
 }
 
+.Ubuntu-L {
+	font-family: Ubuntu_L;
+}
 @font-face {
-	font-family: Komtxti;
-	src: url('../fonts/Komtxti.ttf') format('truetype');
+	font-family: Ubuntu_L;
+	src: url('../fonts/Ubuntu_L.ttf') format('truetype');
 }
 
+.Ubuntu-LI {
+	font-family: Ubuntu_LI;
+}
 @font-face {
-	font-family: Komtxtk;
-	src: url('../fonts/Komtxtk.ttf') format('truetype');
+	font-family: Ubuntu_LI;
+	src: url('../fonts/Ubuntu_LI.ttf') format('truetype');
 }
 
+
+.UbuntuR {
+	font-family: Ubuntu_R;
+}
 @font-face {
-	font-family: Komtxtkb;
-	src: url('../fonts/Komtxtkb.ttf') format('truetype');
+	font-family: Ubuntu_R;
+	src: url('../fonts/Ubuntu_R.ttf') format('truetype');
 }
 
+.Floralia {
+	font-family: Floralia;
+}
 @font-face {
 	font-family: Floralia;
 	src: url('../fonts/Floralia.ttf') format('truetype');
 }
 
-
+.SpecialElite {
+	font-family: SpecialElite;
+}
 @font-face {
 	font-family: SpecialElite;
 	src: url('../fonts/SpecialElite.ttf') format('truetype');
 }
 
+
+.WCSoldOutB {
+	font-family: WCSoldOutB;
+}
 @font-face {
 	font-family: WCSoldOutB;
 	src: url('../fonts/WCSoldOutB.ttf') format('truetype');
 }
+/*------------------------------------------------*/
+
+
+
+
+
+
+
+
+/*---------------------To be removed --------------------*/
+
+
+.Komtxt {
+	font-family: Komtxt;
+}
+@font-face {
+	font-family: Komtxt;
+	src: url('../fonts/Komtxt.ttf') format('truetype');
+}
+
+.Komtxtb {
+	font-family: Komtxtb;
+}
+@font-face {
+	font-family: Komtxtb;
+	src: url('../fonts/Komtxtb.ttf') format('truetype');
+}
+
+.Komtxtbi {
+	font-family: Komtxtbi;
+}
+@font-face {
+	font-family: Komtxtbi;
+	src: url('../fonts/Komtxtbi.ttf') format('truetype');
+}
+
+
+.Komtxti {
+	font-family: Komtxti;
+}
+@font-face {
+	font-family: Komtxti;
+	src: url('../fonts/Komtxti.ttf') format('truetype');
+}
+
+.Komtxtk {
+	font-family: Komtxtk;
+}
+@font-face {
+	font-family: Komtxtk;
+	src: url('../fonts/Komtxtk.ttf') format('truetype');
+}
+
+
+.Komtxtkb {
+	font-family: Komtxtkb;
+	src: url('../fonts/Komtxtkb.ttf') format('truetype');
+}
+@font-face {
+	font-family: Komtxtkb;
+	src: url('../fonts/Komtxtkb.ttf') format('truetype');
+}
+
+
+
+
+
+/*-----------------------------------------*/
+
+
 

@@ -170,9 +170,12 @@ msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr "Xuất album này ra file pdf để lưu trên máy hoặc in. "
 
 #: templates/index.html
-#, fuzzy
+msgid "Export this page to JPEG"
+msgstr "Xuất album này ra ảnh JPEG"
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
-msgstr "Đang tạo file pdf. Xin vui lòng chờ..."
+msgstr "Đang tạo file JPEG. Xin vui lòng chờ..."
 
 #: templates/index.html
 msgid "Generating pdf. Please be patient..."
@@ -241,6 +244,10 @@ msgstr "Quay trái hộp văn b"
 #: templates/index.html
 msgid "Rotate text box right"
 msgstr "Quay phải hộp văn bản này"
+
+#: templates/index.html
+msgid "Save this album"
+msgstr "Lưu album này"
 
 #: templates/index.html
 msgid "Style image"

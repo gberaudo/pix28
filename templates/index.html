@@ -144,6 +144,11 @@ $def with (mode)
 						ng-click = 'toAlbumList()' translate>
 						Your albums
 					</li>
+					
+					<li class = 'link respond'
+						ng-click = 'saveAlbum()' translate>
+						Save this album
+					</li>
 
 					<li class = 'link respond' 
 						ng-click = 'delAlbumRq()' translate>
@@ -225,7 +230,7 @@ $def with (mode)
 					</div>
 					<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
 					</div>
-						<span class = 'clickable close fa fa-remove'
+						<span class = 'clickable close fa fa-remove respond'
 							ng-click = 'closeExportWindow()'></span>
 					</div>
 					
@@ -233,10 +238,18 @@ $def with (mode)
 					
 				
 				</div>
+				<div id = 'updateMsg'>
+				</div>
 			</div>
 			
 			<!--=============================End sideMenu =====================-->
 			
+			<div id = 'communication'>
+				
+				
+				<div id = 'errorMsg'>
+				</div>
+			</div>
 			<div id = 'abTitle'>
 				<div name = 'editTitle'
 						ng-show = 'hasTitle'
@@ -791,7 +804,7 @@ $def with (mode)
 					ng-show = 'viewPageNum != album.content.length'
 					ng-click = 'previewPage(viewPageNum + 2)'> </span>
 			
-			<span class = 'clickable close fa fa-remove'
+			<span class = 'clickable close fa fa-remove respond'
 					ng-click = 'removePreview()'> </span>
 			<div id = 'exportJPEG' >
 				<span class = 'link'

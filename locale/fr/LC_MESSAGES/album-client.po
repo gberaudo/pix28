@@ -176,9 +176,12 @@ msgstr ""
 "pour l'imprimer"
 
 #: templates/index.html
-#, fuzzy
+msgid "Export this page to JPEG"
+msgstr "Exporter l'album en JPEGs"
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
-msgstr "Génération du pdf. Soyez patients..."
+msgstr "Génération du JPEG. Soyez patients..."
 
 #: templates/index.html
 msgid "Generating pdf. Please be patient..."
@@ -250,6 +253,10 @@ msgstr "Pivoter cette boîte de texte vers la gauche"
 #: templates/index.html
 msgid "Rotate text box right"
 msgstr "Pivoter cette boîte de texte vers la droite"
+
+#: templates/index.html
+msgid "Save this album"
+msgstr "Sauver garder cet album"
 
 #: templates/index.html
 msgid "Style image"
