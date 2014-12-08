@@ -280,6 +280,7 @@ app.controller('TextBoxController',
 	function removeTextArea(el) {
 		var page = el.parentNode.parentNode.parentNode.id;
 		$scope.current[page].textBoxes.splice($scope.$index,1);
+		previewText.style.display = 'none';
 	};
 	
 // 	$scope.autoResize = function(event) {
@@ -423,6 +424,7 @@ app.controller('TextController',
 			scope = angular.element(el).scope(),
 			page = el.parentNode.parentNode.parentNode.id;
 		scope.current[page].textBoxes.splice(scope.$index,1);
+		previewText.style.display = 'none';
 	};
 	
 	$scope.mouseUp = function() {

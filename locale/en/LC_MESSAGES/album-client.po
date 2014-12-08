@@ -306,10 +306,6 @@ msgstr ""
 msgid "go to the previous page"
 msgstr ""
 
-#: static/js/imageLoaderController.js
-msgid "loading file..."
-msgstr ""
-
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr ""

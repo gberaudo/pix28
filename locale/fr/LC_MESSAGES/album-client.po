@@ -318,13 +318,12 @@ msgstr "aller à la page suivante"
 msgid "go to the previous page"
 msgstr "retourner à la page précédente"
 
-#: static/js/imageLoaderController.js
-msgid "loading file..."
-msgstr "chargement..."
-
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "loading file..."
+#~ msgstr "chargement..."
 
 #~ msgid "next"
 #~ msgstr "suivant"

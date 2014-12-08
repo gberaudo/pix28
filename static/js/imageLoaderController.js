@@ -6,18 +6,10 @@ app.controller('ImageLoaderController',
 	$scope.handleFileSelect = function(evt) {
 		var files = evt.target.files || evt.dataTransfer.files;
 		evt.preventDefault();
-
-		$timeout(function() {
-			$scope.loading = true;
-		});
-		
+		$scope.loadingImg = true;
 		function readFile(file) {
 			var deferred = $q.defer();
 			if (file.type.match(/image.*/)){
-				var msg = gettextCatalog.getString('loading file...');
-				$timeout(function() {
-					$scope.fileProcess = msg + file.name; 
-				});
 				var reader = new FileReader();
 				reader.onload = function(e) {
 					deferred.resolve(e.target.result);
@@ -154,10 +146,12 @@ app.controller('ImageLoaderController',
 		};
 		
 		function showThumbnail(result) {
-			ImgService.showThumbnail(result[0], result[1]);
+			ImgService.showThumbnail(result[0], result[1], true);
 			i++;
 			if (i < files.length) {
 				putNextFile();
+			} else {
+				$scope.loadingImg = false;
 			}
 		};
 	};

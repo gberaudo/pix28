@@ -13,10 +13,27 @@ app.controller('CanvasController',
 	initCanvas();
 	
 	setFocus();
+	function canvasFocus() {
+		$scope.$parent.activate();
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
+			activeCanvas.removeClass('cActive');
+		}
+		if (document.getElementsByClassName('tActive').length > 0) {
+			var activeText = angular.element(document.getElementsByClassName('tActive')[0]);
+			activeText.removeClass('tActive');
+		}
+		
+		angular.element(canvas).addClass('cActive');
+		$scope.current.onEditText = false;
+		$scope.current.onEditImage = true;
+		ImgService.drawAnchors(canvas);
+		document.addEventListener('mousedown', canvasBlurHandle, true);
+	};
 	
 	function setFocus() {
 		if ($scope.current.datumWithFocus === $scope.frame) {
-			canvas.focus();
+			canvasFocus();
 			ImgService.drawAnchors(canvas);
 			$scope.current.onEditImage = false;
 			$scope.current.onEditText = false;
@@ -419,15 +436,14 @@ app.controller('CanvasController',
 				ImgService.moveImage(canvas, $scope, 'down');
 				break;
 			case 46: //del
-				if (!evt.ctrlKey) {
+				if (!!$scope.frame.image.src) {
+					$scope.img = new Image();
+					$scope.frame.image = {};
+					ImgService.resetFrame(canvas);
+				} else {
 					ImgService.delCanvas(canvas, $scope);
 				}
 				break;
-		}
-		if (evt.ctrlKey && (evt.keyCode == 46)) {
-			$scope.img = new Image();
-			$scope.frame.image = {};
-			ImgService.resetFrame(canvas);
 		}
 	};
 
@@ -450,30 +466,13 @@ app.controller('CanvasController',
 			$scope.frame.image.ratio = parseFloat(data.getData('ratio'));
 		//then draw image
 			firstDrawImage();
-			evt.target.focus();
-			$scope.canvasFocus(evt);
+			canvasFocus();
 			$scope.$parent.activate();
 		}
 	};
 	
-	$scope.canvasFocus = function(event) {
-		$scope.$parent.activate();
-		if (document.getElementsByClassName('cActive').length > 0) {
-			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
-			activeCanvas.removeClass('cActive');
-		}
-		if (document.getElementsByClassName('tActive').length > 0) {
-			var activeText = angular.element(document.getElementsByClassName('tActive')[0]);
-			activeText.removeClass('tActive');
-		}
-		
-		angular.element(event.target).addClass('cActive');
-		$scope.current.onEditText = false;
-		if (!!$scope.img.src) {
-			$scope.current.onEditImage = true;
-		}
-		redrawImage();
-		document.addEventListener('mousedown', canvasBlurHandle, true);
+	$scope.canvasFocus = function() {
+		canvasFocus();
 	};
 	
 	function canvasBlurHandle(event) {
@@ -522,9 +521,13 @@ app.controller('ImageController',
 	$scope.removeImage = function() {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
-		scope.img = new Image();
-		scope.frame.image = {};
-		ImgService.resetFrame(canvas);
+		if (!!scope.frame.image.src) {
+			scope.img = new Image();
+			scope.frame.image = {};
+			ImgService.resetFrame(canvas);
+		} else {
+			ImgService.delCanvas(canvas, scope);
+		}
 	};
 	
 	$scope.go = function(para) {

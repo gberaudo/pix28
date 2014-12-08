@@ -5,7 +5,7 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: Việt Hằng Nguyễn <viethangybvn@gmail.com>\n"
 "Language-Team: Guillaume <guillaume.beraudo@gmail.com>\n"
-"Language: vn\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -309,13 +309,12 @@ msgstr "Đến trang sau"
 msgid "go to the previous page"
 msgstr "Đến trang trước"
 
-#: static/js/imageLoaderController.js
-msgid "loading file..."
-msgstr "đang tải file..."
-
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sẽ bị xóa hoàn toàn."
+
+#~ msgid "loading file..."
+#~ msgstr "đang tải file..."
 
 #~ msgid "next"
 #~ msgstr "sau"

@@ -40,7 +40,7 @@ $def with (mode)
 	<link rel="stylesheet" type="text/css" href="static/css/fontfaces.css"/>
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/> 
 	<link rel="icon" type="image/ico" href="static/icons/album.ico"/>
-	<link rel="stylesheet" type="text/css" href="static/css/elusive-webfont.css" />
+	<link rel="manifest" href="maps_app/manifest.json">
 	<title>Create your own story</title> 
 </head>
 
@@ -59,7 +59,7 @@ $def with (mode)
 					ng-click = 'changeLanguage("fr")'
 					src = 'static/icons/fr.png'/>
 				<img title = 'Tiếng Việt' class = 'clickable'
-					ng-click = 'changeLanguage("vn")'
+					ng-click = 'changeLanguage("vi")'
 					src = 'static/icons/vn.png'/>
 			</div>
 			<div id = 'siteMenu'>
@@ -397,8 +397,7 @@ $def with (mode)
 										ng-mousedown = 'mouseDown(\$event)' 
 										ng-mousemove = 'mouseMove(\$event)'
 										ng-keydown = 'keyDown(\$event)'
-										ng-click = 'canvasFocus(\$event)'
-										ng-focus = 'canvasFocus(\$event)'
+										ng-click = 'canvasFocus()'
 										ng-blur = 'canvasBlur(\$event)'/>
 						</div>
 						
@@ -722,9 +721,9 @@ $def with (mode)
 					<label for = 'files' class = 'medbtn'
 						id = 'loadPhotos'
 						title = '{{"Click to add photos from your computer"|translate}}'> 
-						<span translate> Add photos </span> 
-				
+						<span translate> Add photos </span>  <span ng-show = 'loadingImg' class = 'icon fa fa-spinner fa-spin'> </span>
 					</label>
+					
 					<input type = 'file' id = 'files' 
 						style = 'display: none'
 						onchange = 'angular.element(this).scope().handleFileSelect(event)'

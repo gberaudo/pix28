@@ -3,24 +3,25 @@ var app = angular.module('albumApp', ['gettext']);
 app.run(['$rootScope', 'gettextCatalog',
     function($rootScope, gettextCatalog) {
 
-	
+	$rootScope.userInfo = {};
+	var userInfo = $rootScope.userInfo;
 	
 	initUserDB();
 	
 	function initUserDB() {
-		var lang = window.navigator.userLanguage || window.navigator.language,
-			availLangs = ['en', 'vn', 'fr'],
+		userInfo.lang = window.navigator.userLanguage || window.navigator.language,
+			availLangs = ['en', 'vi', 'fr'],
 			langInList = false;
 	
 		for (i = 0; i < availLangs.length; i++) {
-			if (lang == availLangs[i]) {
+			if (userInfo.lang == availLangs[i]) {
 				langInList = true;
 				break;
 			}
 		}
 		
 		if (!langInList) {
-			lang = 'en';
+			userInfo.lang = 'en';
 		}
 		
 		var openRq = window.indexedDB.open('UserDB',1);
@@ -30,33 +31,33 @@ app.run(['$rootScope', 'gettextCatalog',
 				store = trans.objectStore('userInfo')
 				var getRq = store.get(1);
 			getRq.onsuccess = function(event) {
-				lang = this.result.lang;
-				gettextCatalog.setCurrentLanguage(lang);
-				gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
+				userInfo.lang = this.result.lang;
+				gettextCatalog.setCurrentLanguage(userInfo.lang);
+				gettextCatalog.loadRemote('static/build/locale/' + userInfo.lang + '/album.json');
 				$rootScope.loaded = true;
 			};
 			getRq.onerror = function() {
-				gettextCatalog.setCurrentLanguage(lang);
-				gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
+				gettextCatalog.setCurrentLanguage(userInfo.lang);
+				gettextCatalog.loadRemote('static/build/locale/' + userInfo.lang + '/album.json');
 				$rootScope.loaded = true;
 				
 			};
 		};
 		
 		openRq.onerror = function() {
-			gettextCatalog.setCurrentLanguage(lang);
-			gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
+			gettextCatalog.setCurrentLanguage(userInfo.lang);
+			gettextCatalog.loadRemote('static/build/locale/' + userInfo.lang + '/album.json');
 			$rootScope.loaded = true;
 		};
 
 		openRq.onupgradeneeded = function(event) {
 			console.log('created userDB');
-			gettextCatalog.setCurrentLanguage(lang);
-			gettextCatalog.loadRemote('static/build/locale/' + lang + '/album.json');
+			gettextCatalog.setCurrentLanguage(userInfo.lang);
+			gettextCatalog.loadRemote('static/build/locale/' + userInfo.lang + '/album.json');
 			$rootScope.loaded = true;
 			var userInfStore = event.currentTarget.result.createObjectStore(
 				'userInfo', {keyPath: 'id'});
-			var addInfo = userInfStore.add({id: 1, lang: lang});
+			var addInfo = userInfStore.add({id: 1, lang: userInfo.lang});
 		};
 	};
 	
@@ -71,11 +72,12 @@ app.run(['$rootScope', 'gettextCatalog',
 app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices', 
 					'$rootScope', '$element',
 	function($scope, gettextCatalog, DBServices, $rootScope, $element) {
-		
+	$scope.current = {};
 	$scope.showHome = true;
 	DBServices.initAlbumDB($scope);
 	
 	$scope.changeLanguage = function(lang) {
+		$rootScope.userInfo.lang = lang;
 		gettextCatalog.setCurrentLanguage(lang);
 		gettextCatalog.loadRemote('static/build/locale/'+lang+'/album.json');
 		updateUserDB(lang);
@@ -108,7 +110,7 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 		return false;
 	};
 	
-	$scope.current = {};
+
 	$scope.mouseUp = function(evt) {
 		$scope.current.mouseIsUp = true;
 		$scope.current.cursor = 'auto';

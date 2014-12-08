@@ -85,6 +85,14 @@
 	line-height: 1.2;
 }
 
+[name = 'textbox']::selection {
+	background-color: #AAA;
+	
+}
+
+[name = 'textbox']::-moz-selection {
+	background-color: #AAA;
+}
 .tbContainer {
 	position: absolute;
 	padding: 0px;
@@ -209,12 +217,11 @@
 	width: 25%;
 	height: 100%;
 	border-left: 1px solid black; 
-	overflow-y: auto;
-	overflow-x: hidden;
+	
 }
 
-#loadPhotos {
-	position: absolute;
+#loadPhotos { /*button*/
+	position: relative;
 	top: 0.5em; 
 	left: 0.5em;
 	font-weight: bold;
@@ -222,6 +229,14 @@
 	display: table-cell;
 	vertical-align: middle;
 	background-color: #07A;
+}
+
+#output {
+	position: absolute;
+	top: 10%;
+	height: 90%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #loadPhotos:hover{
@@ -382,10 +397,7 @@
 	left: 1%;
 }
 
-#output {
-	position: absolute;
-	top: 3em;
-}
+
 .link {
 	color: #68F;
 	cursor: pointer;

@@ -57,11 +57,13 @@ app.controller('AlbumController',
 		}
 		DBServices.addAlbum().then(function(id) {
 			var date = new Date();
+			var options = {year: 'numeric', month: 'short', day: 'numeric' };
 			$scope.current.albumId = id;
 			$scope.$parent.showHome = false;
  			$scope.album.title = '';
  			$scope.album.description = '';
-			$scope.album.date = date.toDateString();
+			$scope.album.date = date.toLocaleString($scope.userInfo.lang, options);
+			console.log($scope.userInfo.lang);
 			makeRandomAlbum(20);
 			$scope.$parent.inAlbum = true;
 			$scope.$parent.showAlbums = false;

@@ -237,7 +237,7 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 /*---------------------------------------------------------*/
 
 app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) {
-	function showThumbnail(obj, id) {
+	function showThumbnail(obj, id, goBottom) {
 		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
 			img = document.createElement('img'),
 			div = document.createElement('div'),
@@ -259,6 +259,9 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 		div.setAttribute('class', 'thumb');
 		div.appendChild(img);
 		output.appendChild(div);
+		if (goBottom) {
+			output.scrollTop = output.scrollHeight;
+		}
 	}
 	
 	this.showThumbnail = showThumbnail;
@@ -450,7 +453,6 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 					ctx.rotate(frame.angle * Math.PI / 180);
 					ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
 									-width/2, -height/2, width, height);
-					console.log(display, width, height);
 					ctx.restore();
 					deferred.resolve(null);
 				};
