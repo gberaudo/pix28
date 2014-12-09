@@ -21,7 +21,7 @@ app.controller('AlbumController',
 		$scope.show = {};
 
 		var albumEl = document.getElementById('album');
-		albumEl.style.height =  0.52*albumEl.offsetWidth + 'px';
+		albumEl.style.height =  0.55*albumEl.offsetWidth + 'px';
 		$scope.pheight = $scope.pwidth = Math.floor(0.3 * albumEl.offsetWidth);
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';

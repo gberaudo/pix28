@@ -220,8 +220,9 @@
 	display: block;
 }
 
+/*---------------------Layout control----------------------*/
 
-#selectLayout {
+#layoutCtrl {
 	position: absolute; 
 	width: 75%; 
 	height: 25%; 
@@ -229,6 +230,86 @@
 	top: 75%; 
  	border-top: 1px solid #AAA; 
 }
+
+.LMactive, .LSactive, .BMactive, li > .LSactive {
+	background-color: #FFFFFF !important;
+}
+
+.hMenu {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+#layoutMenu li {
+	font-weight: bold;
+	font-size: 80%; 
+	padding: 4px; 
+	display: block;
+	float: left;
+	background-color: #CCC;
+	text-align: center;
+	text-transform: uppercase;
+	width: 12em;
+}
+
+
+
+#layoutMenu .LMItem {
+	font-weight: bold;
+	font-size: 80%; 
+	padding: 4px; 
+	display: inline-block;
+	float: left;
+	background-color: #CCC;
+	text-align: center;
+	text-transform: uppercase;
+	width: 12em;
+}
+
+#layoutCtrl li:hover {
+	background-color: #FFFFFF;
+}
+
+#layoutCtrl li {
+	border: 1px solid #FFFFFF;
+	border-top-right-radius: 10px;
+}
+
+#layoutSets li, #backgroundMenu li {
+	padding: .1em .5em; 
+	display: block;
+	float: left;
+	background-color: #CCC;
+	text-align: center;
+	min-width: 4em;
+	font-size: 90%;
+}
+
+
+#showRoom {
+	
+}
+	
+#layouts, #background {
+	position: absolute;
+	top: 40%;
+	left: 1%;
+	height: 60%;
+	width: 97%;
+	overflow-x: auto;
+	overflow-y: visible;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+canvas.minframe, .showItem {
+	border: 1px solid #CCC;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+/*-------------------- Image loader----------------------------------*/
 
 #imageLoader {
 	position: absolute;
@@ -271,21 +352,12 @@
 	box-shadow: 2px 2px 2px #666; 
 }
 
-
+/*----------------------------------------------------------*/
 
 
 .pActive {
 	box-shadow: 0px 0px 2px 2px  #0489B1 !important;
 }
-/*
-.cActive {
-	box-shadow: 0px 0px 2px 2px #0489B1 !important;
-}*/
-
-/*.tActive {
-	box-shadow: 0px 0px 1px 1px #0489B1 !important;
-}*/
-
 
 
 [name = 'textbox'] {
@@ -405,17 +477,7 @@
 	font-size: 80%;
 }
 
-#layoutSets {
-	position: absolute;
-	top: 20%;
-	left: 1%;
-}
 
-#layouts {
-	position: absolute;
-	top: 45%;
-	left: 1%;
-}
 
 
 .link {
@@ -445,11 +507,7 @@ canvas.frame {
 	position: absolute;
 }
 
-canvas.minframe {
-	border: 1px solid #CCC;
-	display: inline-block;
-	margin-right: 10px;
-}
+
 
 .tinPage { 
 	width: 100%;
@@ -495,13 +553,6 @@ select {
 	font-size: 90%;
 }
 
-.layout {
-	width: 2.5em; 
-	margin-right: 0.5em;
-	background-color: #EEE;
-	display: inline-block;
-	text-align: center
-}
 
 
 img[name = 'edit'] {

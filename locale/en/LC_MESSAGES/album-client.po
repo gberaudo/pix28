@@ -14,10 +14,6 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: templates/index.html
-msgid "(photos/page)"
-msgstr ""
-
-#: templates/index.html
 msgid "...processing page {{processPage}}"
 msgstr ""
 
@@ -46,6 +42,10 @@ msgid "Align text right"
 msgstr ""
 
 #: templates/index.html
+msgid "All"
+msgstr ""
+
+#: templates/index.html
 msgid "Apply for all pages"
 msgstr ""
 
@@ -64,14 +64,6 @@ msgstr ""
 #: templates/index.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
-msgstr ""
-
-#: templates/index.html
-msgid "Choose page background color"
-msgstr ""
-
-#: templates/index.html
-msgid "Choose page layout"
 msgstr ""
 
 #: templates/index.html
@@ -171,6 +163,10 @@ msgid "Export this page to JPEG"
 msgstr ""
 
 #: templates/index.html
+msgid "Favorites"
+msgstr ""
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
 msgstr ""
 
@@ -211,7 +207,7 @@ msgid "PDF 72dpi (to use on computer)"
 msgstr ""
 
 #: templates/index.html
-msgid "Page background"
+msgid "Page layout"
 msgstr ""
 
 #: templates/index.html
@@ -276,6 +272,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Your albums"
+msgstr ""
+
+#: templates/index.html
+msgid "Your color"
 msgstr ""
 
 #: templates/index.html

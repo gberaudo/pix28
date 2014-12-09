@@ -14,10 +14,6 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: templates/index.html
-msgid "(photos/page)"
-msgstr "(photos/page)"
-
-#: templates/index.html
 msgid "...processing page {{processPage}}"
 msgstr "...traite page {{processPage}}"
 
@@ -46,6 +42,10 @@ msgid "Align text right"
 msgstr "Aligner le texte à droite"
 
 #: templates/index.html
+msgid "All"
+msgstr ""
+
+#: templates/index.html
 msgid "Apply for all pages"
 msgstr "Appliquer à toutes les pages"
 
@@ -67,14 +67,6 @@ msgid ""
 msgstr ""
 "Choissisez d'abord une page puis cliquez sur la mise en page pour charger la "
 "page choisie."
-
-#: templates/index.html
-msgid "Choose page background color"
-msgstr "Choisir la couleur de fond de la page"
-
-#: templates/index.html
-msgid "Choose page layout"
-msgstr "Choisir une mise en page"
 
 #: templates/index.html
 msgid "Choose text color"
@@ -180,6 +172,10 @@ msgid "Export this page to JPEG"
 msgstr "Exporter l'album en JPEGs"
 
 #: templates/index.html
+msgid "Favorites"
+msgstr ""
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
 msgstr "Génération du JPEG. Soyez patients..."
 
@@ -223,8 +219,9 @@ msgid "PDF 72dpi (to use on computer)"
 msgstr "PDF 72dpi (pour affichage à l'écran)"
 
 #: templates/index.html
-msgid "Page background"
-msgstr "Fond de la page"
+#, fuzzy
+msgid "Page layout"
+msgstr "Choisir une mise en page"
 
 #: templates/index.html
 msgid "Preview album"
@@ -291,6 +288,11 @@ msgid "Your albums"
 msgstr "Vos albums"
 
 #: templates/index.html
+#, fuzzy
+msgid "Your color"
+msgstr "Couleur du texte"
+
+#: templates/index.html
 msgid "Zoom image in. Hot key: +"
 msgstr "Zoomer image plus large. Raccourci : +"
 
@@ -321,6 +323,15 @@ msgstr "retourner à la page précédente"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "(photos/page)"
+#~ msgstr "(photos/page)"
+
+#~ msgid "Choose page background color"
+#~ msgstr "Choisir la couleur de fond de la page"
+
+#~ msgid "Page background"
+#~ msgstr "Fond de la page"
 
 #~ msgid "loading file..."
 #~ msgstr "chargement..."

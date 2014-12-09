@@ -17,7 +17,7 @@ app.controller('PageController',
 		var ancestorHasClass = Mics.ancestorHasClass;
 		var el = angular.element(event.target);
 		if (ancestorHasClass(el, 5, 'page') || 
-			ancestorHasClass(el, 5, 'layoutCtrl') ||
+			ancestorHasClass(el, 7, 'layoutCtrl') ||
 			ancestorHasClass(el, 5, 'controls')) {
 			return;
 		} else {

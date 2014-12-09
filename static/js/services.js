@@ -609,9 +609,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		
 		if (Misc.InList(box.offsetTop + box.offsetHeight, refs.vertical)) {
 			$scope.current.bot = box.offsetTop + box.offsetHeight;
-			$scope.$apply(function() {
-				$scope.current.showBotLine = true;
-			});
+			$scope.current.showBotLine = true;
 			$timeout(function() {
 				$scope.current.showBotLine = false;
 			}, 2000);

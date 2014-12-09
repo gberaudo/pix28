@@ -665,79 +665,97 @@ $def with (mode)
 				</div>
 			
 				<!--_______________select layout________________________-->
-				<div id = 'selectLayout'
-					class = 'layoutCtrl'
+				<div id = 'layoutCtrl' class = 'layoutCtrl'
 					ng-controller = 'LayoutController'>
-					<span 
+					<ul id = 'layoutMenu' class = 'hMenu'>
+						<li ng-click = 'layoutsClick(\$event)' 
+							class = 'LMItem clickable li' translate>
+							Page layout
+						</li>
+						<li ng-click = 'BGClick(\$event)'
+							class = 'LMItem clickable li'>
+							Page background 
+						</li>
+					</ul>
+					<div id = 'showRoom'>
+						<div ng-show = 'showLayoutSets' 
+							ng-init = 'showLayoutSets = true'>
+							<ul id = 'layoutSets' 
+								class = 'hMenu'>
+								<li ng-click = 'showAllLayouts(\$event)'
+									class = 'LSItem clickable li LIactive' translate> 
+									All
+								</li>
+								<li ng-repeat = 'choice in layoutList'
+									ng-click = 'showLayouts(\$event, choice)'
+									class = 'LSItem clickable li'>
+									{{choice}} 
+								</li>
+								<li ng-click = 'showFavorites(\$event)'
+									class = 'LSItem clickable li' translate> 
+									Favorites
+								</li>
+							</ul>
+							<div id = 'layouts' >
+								<canvas ng-repeat = 'layout in layouts'
+										title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
+										ng-controller = 'minLayoutController'
+										ng-click = 'loadPageLayout(layout)'
+										ng-mouseover = 'previewLayout(layout, \$event)'
+										ng-mouseleave = 'mouseLeave()'
+										class = 'clickable minframe '/> 
+							</div>
+						</div>
 						
-						style = 'font-weight: bold; font-size: 90%; margin-left: 1em' 
-						translate>
-						Choose page layout
-					</span>
-					<span 
-						style = 'font-size: 80%'
-						translate> (photos/page)</span> 
-					
-					<div id = 'layoutSets'
-						>
-						<span ng-repeat = 'choice in layoutList'
-							class = 'link layout respond ' 
-							ng-click = 'showLayouts(choice)'>
-							  {{choice}} 
-						</span>
-					</div>
-					
-	<!--Choose page background color============================-->
-	
-					<div id = 'pageBGcolor' class = 'BGcolorMenu'>
-						<span class = 'btn respond'
-							title = '{{"Choose page background color"|translate}}'
-							ng-click = 'showColors()'
-							ng-blur = 'cbBlur()'
-							translate>
-							Page background
-						</span>
-						<br/>
-						<div tabindex = '0'
-							id = 'BGcolorMenu'
-							ng-show = 'showColorMenu' 
-							ng-init = 'showColorMenu = false'>
-							<div class = 'colorTable link '
-								tabindex = 0 
-								ng-repeat = 'color in colors'
-								style = 'background-color:{{color}};'
-								ng-click = 'changeBGColor(color)'>
-							</div>
-							<div class = 'inline'
-								style = 'float: left; background-color: #FFFFFF
-									 height: 1.5em'>
-							<form class = 'inline ' ng-submit = 'getUserColor()'>
-									<input type = 'text'
-										style = 'width: 7em'
-										ng-model = 'userColor'
-										placeholder = '#FFFFFF'/>
-							</form>
-							</div>
+						<div ng-show = 'showBM'>
+							<ul id = 'backgroundMenu'
+								class = 'hMenu'>
+								<li class = 'BMItem clickable li BMactive'
+									ng-click = 'showColors(\$event)'>
+									Color
+								</li>
+								<li class = 'BMItem clickable li'
+									ng-click = 'showPatterns(\$event)'>
+									Pattern
+								</li>
+								<li class = 'BMItem clickable li'
+									ng-click = 'showFrames(\$event)'>
+									Frame
+								</li>
+							</ul>
 							<div class = 'link small respond '
-								style = 'text-align: center; line-height: 1.8em;
-									float: right'
-								ng-click = 'changeAlbumBGColor()' translate>
-								Apply for all pages
+									style = 'position: absolute; top: 20%; right: 5%;
+										z-index: 10'
+									ng-click = 'changeAlbumBGColor()'
+									ng-show = 'showColor'
+									translate>
+									Apply for all pages
 							</div>
-							
+							<div id = 'background' ng-init = 'showColor = true'>
+								<div ng-repeat = 'color in colors'
+									ng-show = 'showColor'
+									
+									class = 'showItem'
+									style = 'background-color: {{color}};
+										width: {{0.2 * pwidth + "px"}};
+										height: {{0.2 * pheight + "px"}}'
+										ng-click = 'changeBGColor(color)'>
+								</div>
+								<div class = 'showItem small' ng-show = 'showColor'>
+									<form ng-submit = 'getUserColor()'>
+										<label translate> Your color</label> <br/>
+										<input type = 'text' placeholder = '#FFFFFF' 
+											ng-model = 'userColor'
+											size = '7'/>
+										<input type = 'submit' value = 'OK'/>
+									</form>
+								</div>
+							</div>
 						</div>
 					</div>
-				<!--===============================================================-->
+	<!--Choose page background color============================-->
 	
-					<div id = 'layouts' >
-						<canvas ng-repeat = 'layout in layouts'
-							title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
-							ng-controller = 'minLayoutController'
-							ng-click = 'loadPageLayout(layout)'
-							ng-mouseover = 'previewLayout(layout, \$event)'
-							ng-mouseleave = 'mouseLeave()'
-							class = 'clickable minframe '/> 
-					</div>
+
 				</div>
 				<!--___________________end of select layour____________________-->
 		

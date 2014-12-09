@@ -14,10 +14,6 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: templates/index.html
-msgid "(photos/page)"
-msgstr "ảnh/trang"
-
-#: templates/index.html
 msgid "...processing page {{processPage}}"
 msgstr "...đang xử lí trang {{processPage}}"
 
@@ -46,6 +42,10 @@ msgid "Align text right"
 msgstr "Căn phải"
 
 #: templates/index.html
+msgid "All"
+msgstr ""
+
+#: templates/index.html
 msgid "Apply for all pages"
 msgstr "Áp dụng cho mọi trang"
 
@@ -65,14 +65,6 @@ msgstr "Không xóa được trang bìa."
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
 msgstr "Nháy chuột lên trang rồi nhắp chọn dàn trang."
-
-#: templates/index.html
-msgid "Choose page background color"
-msgstr "Chọn màu nền"
-
-#: templates/index.html
-msgid "Choose page layout"
-msgstr "Chọn dàn trang"
 
 #: templates/index.html
 msgid "Choose text color"
@@ -174,6 +166,10 @@ msgid "Export this page to JPEG"
 msgstr "Xuất album này ra ảnh JPEG"
 
 #: templates/index.html
+msgid "Favorites"
+msgstr ""
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
 msgstr "Đang tạo file JPEG. Xin vui lòng chờ..."
 
@@ -214,8 +210,9 @@ msgid "PDF 72dpi (to use on computer)"
 msgstr "PDF 72dpi (để xem trên máy tính)"
 
 #: templates/index.html
-msgid "Page background"
-msgstr "Đặt nền trang"
+#, fuzzy
+msgid "Page layout"
+msgstr "Chọn dàn trang"
 
 #: templates/index.html
 msgid "Preview album"
@@ -282,6 +279,11 @@ msgid "Your albums"
 msgstr "Album của bạn"
 
 #: templates/index.html
+#, fuzzy
+msgid "Your color"
+msgstr "Màu chữ"
+
+#: templates/index.html
 msgid "Zoom image in. Hot key: +"
 msgstr "Phóng to ảnh. Phím tắt  : +"
 
@@ -312,6 +314,15 @@ msgstr "Đến trang trước"
 #: templates/index.html
 msgid "will be removed definitely."
 msgstr "sẽ bị xóa hoàn toàn."
+
+#~ msgid "(photos/page)"
+#~ msgstr "ảnh/trang"
+
+#~ msgid "Choose page background color"
+#~ msgstr "Chọn màu nền"
+
+#~ msgid "Page background"
+#~ msgstr "Đặt nền trang"
 
 #~ msgid "loading file..."
 #~ msgstr "đang tải file..."

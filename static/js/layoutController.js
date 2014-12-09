@@ -5,26 +5,70 @@ app.controller('LayoutController',
     function($scope, FrameObject, Layouts, Colors, Misc) {
 	$scope.colors = Colors;
 	
-	$scope.showLayouts = function(type) {
+	function activate(event, className) {
+		var el = angular.element(event.target);
+		var parent = angular.element(event.target.parentNode);
+		if (!el.hasClass(className)) {
+			if (document.getElementsByClassName(className).length > 0) {
+				var active = angular.element(
+					document.getElementsByClassName(className)[0]);
+				active.removeClass(className);
+			}
+			if (parent.hasClass('li')) {
+				parent.addClass(className);
+			} else {
+				el.addClass(className);
+			}
+		}
+	}
+	
+	$scope.showLayouts = function(event, type) {
+		activate(event, 'LSactive');
 		$scope.layouts = Layouts[type];
 	};
 
-	
-	$scope.showColors = function() {
-		$scope.showColorMenu = true;
-		document.addEventListener('mousedown', BGMenuMouseDownHandle, true);
+	$scope.showAllLayouts = function(event) {
+		activate(event, 'LSactive');
+		$scope.layouts = [];
+		for (type in Layouts) {
+			$scope.layouts = $scope.layouts.concat(Layouts[type]);
+		}
 	};
 	
-	function BGMenuMouseDownHandle(event) {
-		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 4, 'BGcolorMenu')) {
-			return;
-		} else {
-			$scope.showColorMenu = false;
-			document.removeEventListener('mousedown', BGMenuMouseDownHandle, true);
-		}
+	$scope.showFavorites = function(event) {
+		activate(event, 'LSactive');
+		$scope.layouts = [];
+	};
+	
+	$scope.layoutsClick = function(event) {
+		activate(event, 'LMactive');
+		$scope.showLayoutSets = true;
+		$scope.showBM = false;
+	};
+	
+	$scope.BGClick = function(event) {
+		activate(event, 'LMactive');
+		$scope.showLayoutSets = false;
+		$scope.showBM = true;
 	}
+	
+	$scope.showColors = function(event) {
+		activate(event, 'BMactive');
+		$scope.showColor = true;
+		$scope.showFrame = $scope.showPattern = false;
+	};
+	
+	$scope.showPatterns = function(event) {
+		activate(event, 'BMactive');
+		$scope.showPattern = true;
+		$scope.showFrame = $scope.showColor = false;
+	};
 
+	$scope.showFrames = function(event) {
+		activate(event, 'BMactive');
+		$scope.showFrame = true;
+		$scope.showColor = $scope.showPattern = false;
+	};
 	
 	$scope.changeBGColor = function(color) {
 		if (document.getElementsByClassName('pActive').length > 0) {
@@ -71,7 +115,8 @@ app.controller('minLayoutController',
 		var ctx = canvas.getContext('2d');
 		canvas.width = scale * $scope.pwidth;
 		canvas.height = scale * $scope.pheight;
-		
+		ctx.fillStyle = '#FFFFFF';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		for (i = 0; i < $scope.layout.frames.length; i++) {
 			var rect = $scope.layout.frames[i];
 			ctx.beginPath();
