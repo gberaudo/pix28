@@ -164,7 +164,7 @@ app.controller('CanvasController',
 						
 						window.requestAnimationFrame(function() {
 							redimension(canvas, offsetCopy, anchorCopy, refs);
-							if ($scope.frame.angle == 0) {
+							if ($scope.frame.angle % 180 == 0) {
 								ImgService.showRefLines(canvas, refs, $scope);
 							}
 							if (!!$scope.img.src) {
@@ -248,7 +248,7 @@ app.controller('CanvasController',
 		function getCloseRef(pos, list) {
 			var close = false;
 			for (var i = 0; i < list.length; i++) {
-				if (list[i] - 1 <= pos && pos <= list[i] + 1) {
+				if (list[i] - 2 <= pos && pos <= list[i] + 2) {
 					close = true;
 					return list[i];
 					break;
@@ -258,7 +258,7 @@ app.controller('CanvasController',
 				return false;
 			}
 		}
-
+		var left, right, top, bot;
 		switch (anchor){
 			case 'center': 
 				if (offset.X < -cleft) {
@@ -273,10 +273,10 @@ app.controller('CanvasController',
 				if (offset.Y + ctop + cv.height > pheight) {
 					offset.Y = $scope.height - ctop - cv.height;
 				}
-				var left = getCloseRef(cleft + offset.X, refs.horizontal);
-				var top = getCloseRef(ctop + offset.Y, refs.vertical);
-				var right = getCloseRef(cleft + offset.X + cv.width, refs.horizontal);
-				var bot = getCloseRef(ctop + offset.Y + cv.height, refs.vertical);
+				left = getCloseRef(cleft + offset.X, refs.horizontal);
+				top = getCloseRef(ctop + offset.Y, refs.vertical);
+				right = getCloseRef(cleft + offset.X + cv.width, refs.horizontal);
+				bot = getCloseRef(ctop + offset.Y + cv.height, refs.vertical);
 				//stick border of canvas to a close border
 				
 				if (!!left) {
@@ -305,6 +305,10 @@ app.controller('CanvasController',
 				
 				if (off < -cleft) {
 					off = -cleft;
+				}
+				left = getCloseRef(cleft + off, refs.horizontal);
+				if (!!left) {
+					off = left - cleft;
 				}
 				sChange.X = off * display.sw / cv.width;
 				
@@ -341,6 +345,10 @@ app.controller('CanvasController',
 				if (off + cv.width + cleft > pwidth) {
 					off = pwidth - cv.width - cleft;
 				}
+				right = getCloseRef(cleft + off + cv.width, refs.horizontal);
+				if(!!right) {
+					off = right - cleft - cv.width;
+				}
 				
 				sChange.X = off * display.sw/cv.width;
 				
@@ -375,7 +383,10 @@ app.controller('CanvasController',
 				if (off < -ctop) {
 					off = -ctop;
 				}
-				
+				top = getCloseRef(ctop + off, refs.vertical);
+				if (!!top) {
+					off = top - ctop;
+				}
 				sChange.Y = off * display.sh / cv.height;
 				
 				if (sChange.Y < -display.sy) {
@@ -409,6 +420,10 @@ app.controller('CanvasController',
 				if (off + cv.height + ctop > pheight) {
 					off = pheight - cv.height - ctop;
 				}
+				bot = getCloseRef(ctop + off + cv.height, refs.vertical);
+				if (!!bot) {
+					off = bot - ctop - cv.height;
+				}
 				sChange.Y = off * display.sh / cv.height;
 				
 				if (display.sh + display.sy + sChange.Y > image.mHeight) {
@@ -435,23 +450,23 @@ app.controller('CanvasController',
 				break;
 
 			case 'TR':
-				redimension(cv, offset, 'T');
-				redimension(cv, offset, 'R');
+				redimension(cv, offset, 'T', refs);
+				redimension(cv, offset, 'R', refs);
 				break;
 			
 			case 'TL':
-				redimension(cv, offset, 'T');
-				redimension(cv, offset, 'L');
+				redimension(cv, offset, 'T', refs);
+				redimension(cv, offset, 'L', refs);
 				break;
 			
 			case 'BR':
-				redimension(cv, offset, 'B');
-				redimension(cv, offset, 'R');
+				redimension(cv, offset, 'B', refs);
+				redimension(cv, offset, 'R', refs);
 				break;
 
 			case 'BL':
-				redimension(cv, offset, 'B');
-				redimension(cv, offset, 'L');
+				redimension(cv, offset, 'B', refs);
+				redimension(cv, offset, 'L', refs);
 				break;
 		}
 	};
@@ -630,7 +645,7 @@ app.controller('ImageController',
 				canvas.style.top = (canvas.offsetTop + off) + 'px';
 				break;
 		}
-		if (scope.frame.angle == 0) {
+		if (scope.frame.angle % 180 == 0) {
 			var pageId = canvas.parentNode.parentNode.id;
 			var refs = ImgService.getRefLines(scope, pageId);
 			ImgService.showRefLines(canvas, refs, $scope);
