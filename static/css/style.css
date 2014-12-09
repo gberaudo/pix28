@@ -641,7 +641,7 @@ span[name = 'title'] {
 
 
 
-#leftPage, #rightPage,
+#leftPage, #rightPage, .cActive,
 .btn, .bigbtn, .medbtn:focus {
 	outline: 0;
 	overflow: hidden;
@@ -650,10 +650,9 @@ span[name = 'title'] {
 #leftPreview, #rightPreview {
 	overflow: hidden;
 }
-
-.cActive, .tActive{
-/* 	outline-color: yellow; */
+ .tActive{
 	outline: #0489B1 solid 2px;
+/* 	outline-style: inset; */
 }
 
 optgroup {

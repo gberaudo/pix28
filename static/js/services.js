@@ -236,8 +236,8 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 
 /*---------------------------------------------------------*/
 
-app.service('ImgService', ['gettextCatalog', '$q', 'Misc',
-				function(gettextCatalog, $q, Misc) {
+app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
+				function(gettextCatalog, $q, Misc, $timeout) {
 	function showThumbnail(obj, id, goBottom) {
 		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
 			img = document.createElement('img'),
@@ -559,7 +559,9 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc',
 		};
 	};
 	
-	this.getRefLines = function(scope, pageId) {
+	
+	
+	function getRefLines(scope, pageId) {
 		var boxes = document.getElementsByClassName(pageId + 'box');
 				
 		var refs = {
@@ -578,6 +580,8 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc',
 			}
 			
 		}
+		refs.horizontal.sort();
+		refs.vertical.sort();
 		return refs;
 		
 		function isActive(el) {
@@ -587,6 +591,52 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc',
 			} else {
 				return false;
 			}
+		}
+	}
+	
+	this.getRefLines = getRefLines;
+	
+	this.showRefLines = function(box, refs, $scope) {
+		if (Misc.InList(box.offsetTop, refs.vertical)) {
+			$scope.current.top = box.offsetTop;
+			$scope.current.showTopLine = true;
+			$timeout(function() {
+				$scope.current.showTopLine = false;
+			}, 1500);
+		} else {
+			$scope.current.showTopLine = false;
+		}
+		
+		if (Misc.InList(box.offsetTop + box.offsetHeight, refs.vertical)) {
+			$scope.current.bot = box.offsetTop + box.offsetHeight;
+			$scope.$apply(function() {
+				$scope.current.showBotLine = true;
+			});
+			$timeout(function() {
+				$scope.current.showBotLine = false;
+			}, 2000);
+		} else {
+			$scope.current.showBotLine = false;
+		}
+		
+		if (Misc.InList(box.offsetLeft, refs.horizontal)) {
+			$scope.current.left = box.offsetLeft;
+			$scope.current.showLeftLine = true;
+			$timeout(function() {
+				$scope.current.showLeftLine = false;
+			}, 1500);
+		} else {
+			$scope.current.showLeftLine = false;
+		}
+		
+		if (Misc.InList(box.offsetLeft + box.offsetWidth, refs.horizontal)) {
+			$scope.current.right = box.offsetLeft + box.offsetWidth;
+			$scope.current.showRightLine = true;
+			$timeout(function() {
+				$scope.current.showRightLine = false;
+			}, 1500);
+		} else {
+			$scope.current.showRightLine = false;
 		}
 	};
 	

@@ -9,7 +9,7 @@ app.controller('CanvasController',
 		pwidth = $scope.pwidth,
 		pheight = $scope.pheight,
 		drawImage = ImgService.drawImage;
-	
+	var pageId = canvas.parentNode.parentNode.id;
 	initCanvas();
 	
 	setFocus();
@@ -128,6 +128,7 @@ app.controller('CanvasController',
 		B: false,
 	};
 
+	var mousePosWatch = function() {};
 
 	$scope.mouseDown = function(evt) {
 		$scope.current.mouseIsUp = false;
@@ -135,6 +136,9 @@ app.controller('CanvasController',
 			X: evt.layerX,
 			Y: evt.layerY
 		};
+		var refs = ImgService.getRefLines($scope, pageId);
+		
+		
 		Misc.setCursor(mouseRtCanvas, $scope.canvasZone, $scope.current);
 		$scope.dragimage = true;
 		for (anchor in drag) {
@@ -145,6 +149,46 @@ app.controller('CanvasController',
 			} 
 			
 		}
+		
+		mousePosWatch = $scope.$watch('current.mousePos', function(newValue, oldValue) {
+			if (!$scope.current.mouseIsUp) {
+				var offset = {
+					X: newValue.X - oldValue.X,
+					Y: newValue.Y - oldValue.Y
+				};
+				
+				for (anchor in drag) {
+					if (drag[anchor]){
+						var offsetCopy = angular.copy(offset);
+						var anchorCopy = angular.copy(anchor);
+						
+						window.requestAnimationFrame(function() {
+							redimension(canvas, offsetCopy, anchorCopy, refs);
+							if ($scope.frame.angle == 0) {
+								ImgService.showRefLines(canvas, refs, $scope);
+							}
+							if (!!$scope.img.src) {
+								drawImage(canvas, $scope.img, display, 
+											$scope.frame.image.ratio, $scope.pageRatio );
+								ImgService.drawAnchors(canvas);
+							}
+							else {
+								ImgService.resetFrame(canvas);
+								ImgService.drawAnchors(canvas);
+							}
+							
+							Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
+							updateFrame();
+						});
+						break;
+					}
+				}
+				
+				if ($scope.dragimage) {
+						moveImageInCanvas(offset);
+				}
+			}
+		});
 	};
 	
 	$scope.mouseMove = function(evt) {
@@ -161,40 +205,12 @@ app.controller('CanvasController',
 				drag[anchor] = false;
 			}
 			$scope.dragimage = false;
+			mousePosWatch();
 		} 
 		
 	});
 
-	$scope.$watch('current.mousePos', function(newValue, oldValue, scope) {
-		var offset = {
-			X: newValue.X - oldValue.X,
-			Y: newValue.Y - oldValue.Y
-		};
 
-		for (anchor in drag) {
-			if (drag[anchor]){
- 				var offsetCopy = angular.copy(offset);
- 				var anchorCopy = angular.copy(anchor);
-				window.requestAnimationFrame(function() {
-					redimension(canvas, offsetCopy, anchorCopy);
-					if (!!$scope.img.src) {
-						drawImage(canvas, $scope.img, display, 
-									 $scope.frame.image.ratio, $scope.pageRatio );
-						ImgService.drawAnchors(canvas);
-					}
-					else {
-						ImgService.resetFrame(canvas);
-						ImgService.drawAnchors(canvas);
-					}
-					Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
-					updateFrame();
-				});
-			}
-		}
-		if ($scope.dragimage) {
-				moveImageInCanvas(offset);
-		}
-	});
 
 	function moveImageInCanvas(offset) {
 		var image = $scope.frame.image;
@@ -218,7 +234,7 @@ app.controller('CanvasController',
 		ImgService.drawAnchors(canvas);
 	}
 
-	function redimension(cv, offset, anchor){
+	function redimension(cv, offset, anchor, refs){
 		var sChange = {},
 			canvasProp = cv.height/cv.width,
 			ctop = parseFloat(cv.style.top),
@@ -228,6 +244,20 @@ app.controller('CanvasController',
 			image = $scope.frame.image,
 			off,
 			minSize = pwidth / 6;
+			
+		function getCloseRef(pos, list) {
+			var close = false;
+			for (var i = 0; i < list.length; i++) {
+				if (list[i] - 1 <= pos && pos <= list[i] + 1) {
+					close = true;
+					return list[i];
+					break;
+				}
+			}
+			if (!close) {
+				return false;
+			}
+		}
 
 		switch (anchor){
 			case 'center': 
@@ -243,8 +273,28 @@ app.controller('CanvasController',
 				if (offset.Y + ctop + cv.height > pheight) {
 					offset.Y = $scope.height - ctop - cv.height;
 				}
-				cv.style.left = (cleft + offset.X) + 'px';
-				cv.style.top = (ctop + offset.Y) + 'px';
+				var left = getCloseRef(cleft + offset.X, refs.horizontal);
+				var top = getCloseRef(ctop + offset.Y, refs.vertical);
+				var right = getCloseRef(cleft + offset.X + cv.width, refs.horizontal);
+				var bot = getCloseRef(ctop + offset.Y + cv.height, refs.vertical);
+				//stick border of canvas to a close border
+				
+				if (!!left) {
+					cv.style.left = left + 'px';
+				} else if (!!right) {
+					cv.style.left = (right - cv.width) + 'px';
+				}
+				else {
+					cv.style.left = (cleft + offset.X) + 'px';
+				}
+				
+				if (!!top) {
+					cv.style.top = top + 'px';
+				} else if (!!bot) {
+					cv.style.top = (bot - cv.height) + 'px'; 
+				}else {
+					cv.style.top = (ctop + offset.Y) + 'px';
+				}
 				break;
 				
 			case 'L':
@@ -541,7 +591,7 @@ app.controller('ImageController',
 			} else {
 				moveCanvas(canvas, scope, para);
 			}
-		}, 50);
+		}, 100);
 	};
 	
 	function moveCanvas(canvas, scope, para) {
@@ -583,33 +633,7 @@ app.controller('ImageController',
 		if (scope.frame.angle == 0) {
 			var pageId = canvas.parentNode.parentNode.id;
 			var refs = ImgService.getRefLines(scope, pageId);
-			if (Misc.InList(canvas.offsetTop, refs.vertical)) {
-				$scope.current.top = canvas.offsetTop;
-				$scope.current.showTopLine = true;
-			} else {
-				$scope.current.showTopLine = false;
-			}
-			
-			if (Misc.InList(canvas.offsetTop + canvas.offsetHeight, refs.vertical)) {
-				$scope.current.bot = canvas.offsetTop + canvas.offsetHeight;
-				$scope.current.showBotLine = true;
-			} else {
-				$scope.current.showBotLine = false;
-			}
-			
-			if (Misc.InList(canvas.offsetLeft, refs.horizontal)) {
-				$scope.current.left = canvas.offsetLeft;
-				$scope.current.showLeftLine = true;
-			} else {
-				$scope.current.showLeftLine = false;
-			}
-			
-			if (Misc.InList(canvas.offsetLeft + canvas.offsetWidth, refs.horizontal)) {
-				$scope.current.right = canvas.offsetLeft + canvas.offsetWidth;
-				$scope.current.showRightLine = true;
-			} else {
-				$scope.current.showRightLine = false;
-			}
+			ImgService.showRefLines(canvas, refs, $scope);
 		}
 	}
 	

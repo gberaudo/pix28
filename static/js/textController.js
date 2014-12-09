@@ -283,31 +283,6 @@ app.controller('TextBoxController',
 		previewText.style.display = 'none';
 	};
 	
-// 	$scope.autoResize = function(event) {
-// 		var pheight = $scope.pheight,
-// 			pwidth = $scope.pwidth,
-// 			box = $scope.textBox.box;
-// 		var marginX = Math.floor(pwidth / 50),
-// 			marginY = Math.floor(pheight / 50);
-// 		var el = event.target;
-// 		if (el.scrollHeight > pheight - 2 * marginY) {
-// 			el.style.height = (pheight - 2 * marginY) + 'px';
-// 			el.style.top = marginY + 'px';
-// 			box.height = el.offsetHeight * 100 / pheight;
-// 			box.top = marginY * 100 / pheight;
-// 			el.style.top = marginY + 'px';
-// 		} else if (el.scrollHeight + el.offsetTop > pheight - marginY) {
-// 			el.style.height = (pheight - 2 * marginY) + 'px';
-// 			el.style.top = marginY + "px";
-// 			box.top = 100 * marginY / pheight;
-// 			box.height = 100 * (pheight - 2 * marginY) / pheight;
-// 		} else {
-// 			el.style.height = (el.scrollHeight)  + "px";
-// 			box.height = 100 * el.offsetHeight/pheight;
-// 		}
-// 		
-// 	};
-	
 	$scope.dropInTA = function(event) {
 		event.preventDefault();
 		activateTA();
