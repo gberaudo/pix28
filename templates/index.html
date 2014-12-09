@@ -390,7 +390,7 @@ $def with (mode)
 							ng-controller='CanvasController'
 							ng-style='{cursor: current.cursor}'>
 							<canvas tabindex = '0' 
-										class = 'frame inPage'
+										class = 'frame inPage {{page + "box"}}'
 										title = '{{"Drag a corner or an edge to redimension the frame."| translate}}'
 										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
 										ondragover = 'angular.element(this).scope().allowDrop(event)'
@@ -402,8 +402,8 @@ $def with (mode)
 						</div>
 						
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
-								ng-controller = 'TextBoxController'>
-							<div class = 'tbContainer'>
+								ng-controller = 'TextBoxController'
+								 class = 'tbContainer {{page + "box"}}'>
 								<textarea name = 'textbox'
 										placeholder = '{{"Enter text here"| translate}}'
 										ng-style='{cursor: current.cursor}'
@@ -422,8 +422,38 @@ $def with (mode)
 									class = 'textHandle-br fa fa-arrows-h'></span>
 								<span ng-show = 'active' 
 									class = 'textHandle-tl fa fa-arrows'></span>
-							</div>
 						</div>
+						
+						<svg id = 'refTop' style = 'top: {{current.top + "px"}}'
+							ng-show = 'current.showTopLine'>
+							<line x1 = '0' y1 = '0' 
+								x2 = '{{pwidth}}' y2 = '0' 
+								class = 'refLine'>
+							</line>
+						</svg>
+						
+						<svg id = 'refBot' style = 'top: {{current.bot + "px"}}'
+							ng-show = 'current.showBotLine'>
+							<line x1 = '0' y1 = '0' 
+								x2 = '{{pwidth}}' y2 = '0' 
+								class = 'refLine'>
+							</line>
+						</svg>
+						
+						<svg id = 'refLeft' style = 'left: {{current.left + "px"}}'
+							ng-show = 'current.showLeftLine'>
+							<line x1 = '0' y1 = '0' 
+								x2 = '0' y2 = '{{pheight}}' 
+								class = 'refLine'>
+							</line>
+						</svg>
+						
+						<svg id = 'refRight' style = 'left: {{current.right + "px"}}'
+							ng-show = 'current.showRightLine'>
+							<line x1 = '0' y1 = '0' 
+								x2 = '0' y2 = '{{pheight}}' class = 'refLine'>
+							</line>
+						</svg>
 
 					</div>
 					

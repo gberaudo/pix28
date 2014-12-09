@@ -180,7 +180,7 @@ app.controller('ImageLoaderController',
 		bigImg.src = event.target.src;
 		var mouseX = event.pageX,
 			mouseY = event.pageY;
-		bigImg.style.bottom =  (document.body.offsetHeight - mouseY + 50) + 'px';
+		bigImg.style.bottom =  (document.body.offsetHeight - mouseY + 10) + 'px';
 		bigImg.style.left = (mouseX - 100) + 'px';
 		bigImg.style.display = 'block';
 	};

@@ -494,8 +494,8 @@ app.controller('CanvasController',
 }]);
 
 app.controller('ImageController',
-    ['$scope', 'ImgService', '$interval', '$timeout',
-    function($scope, ImgService, $interval, $timeout) {
+    ['$scope', 'ImgService', '$interval', '$timeout', 'Misc',
+    function($scope, ImgService, $interval, $timeout, Misc) {
 	$scope.zoomImage = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
@@ -545,7 +545,7 @@ app.controller('ImageController',
 	};
 	
 	function moveCanvas(canvas, scope, para) {
-		var off = 2;
+		var off = 1;
 		var pwidth = $scope.pwidth;
 		switch (para) {
 			case 'left':
@@ -579,6 +579,37 @@ app.controller('ImageController',
 				scope.frame.canvas.top +=  off * 100 / pwidth;
 				canvas.style.top = (canvas.offsetTop + off) + 'px';
 				break;
+		}
+		if (scope.frame.angle == 0) {
+			var pageId = canvas.parentNode.parentNode.id;
+			var refs = ImgService.getRefLines(scope, pageId);
+			if (Misc.InList(canvas.offsetTop, refs.vertical)) {
+				$scope.current.top = canvas.offsetTop;
+				$scope.current.showTopLine = true;
+			} else {
+				$scope.current.showTopLine = false;
+			}
+			
+			if (Misc.InList(canvas.offsetTop + canvas.offsetHeight, refs.vertical)) {
+				$scope.current.bot = canvas.offsetTop + canvas.offsetHeight;
+				$scope.current.showBotLine = true;
+			} else {
+				$scope.current.showBotLine = false;
+			}
+			
+			if (Misc.InList(canvas.offsetLeft, refs.horizontal)) {
+				$scope.current.left = canvas.offsetLeft;
+				$scope.current.showLeftLine = true;
+			} else {
+				$scope.current.showLeftLine = false;
+			}
+			
+			if (Misc.InList(canvas.offsetLeft + canvas.offsetWidth, refs.horizontal)) {
+				$scope.current.right = canvas.offsetLeft + canvas.offsetWidth;
+				$scope.current.showRightLine = true;
+			} else {
+				$scope.current.showRightLine = false;
+			}
 		}
 	}
 	

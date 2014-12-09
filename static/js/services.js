@@ -75,10 +75,10 @@ app.factory('FrameObject', function() {
 
 app.service('Init', function() {
 	this.initTextArea = function(div, textArea, textBox, $scope) {
-		div.style.height = textArea.style.height = (textBox.box.height * $scope.pheight/100) + "px";
-		div.style.width = textArea.style.width = (textBox.box.width * $scope.pwidth/100) + "px";
-		div.style.top = (textBox.box.top * $scope.pheight/100) + "px";
-		div.style.left = (textBox.box.left * $scope.pwidth/100) + "px";
+		div.style.height = textArea.style.height = Math.floor(textBox.box.height * $scope.pheight/100) + "px";
+		div.style.width = textArea.style.width = Math.floor(textBox.box.width * $scope.pwidth/100) + "px";
+		div.style.top = Math.floor(textBox.box.top * $scope.pheight/100) + "px";
+		div.style.left = Math.floor(textBox.box.left * $scope.pwidth/100) + "px";
 		textArea.style.color = textBox.font.color;
 		textArea.style.fontFamily = textBox.font.family;
 // 		textArea.style.fontWeight = textBox.font.weight;
@@ -236,7 +236,8 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 
 /*---------------------------------------------------------*/
 
-app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) {
+app.service('ImgService', ['gettextCatalog', '$q', 'Misc',
+				function(gettextCatalog, $q, Misc) {
 	function showThumbnail(obj, id, goBottom) {
 		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
 			img = document.createElement('img'),
@@ -557,6 +558,38 @@ app.service('ImgService', ['gettextCatalog', '$q', function(gettextCatalog, $q) 
 			ctx.restore();
 		};
 	};
+	
+	this.getRefLines = function(scope, pageId) {
+		var boxes = document.getElementsByClassName(pageId + 'box');
+				
+		var refs = {
+			horizontal: [], 
+			vertical: []
+		};
+		for (var i = 0; i < boxes.length; i++) {
+			var box = boxes[i];
+			if (!isActive(box)) {
+				var left = box.offsetLeft,
+					right = box.offsetLeft + box.offsetWidth,
+					top = box.offsetTop,
+					bot = box.offsetTop + box.offsetHeight;
+				refs.horizontal.push(left, right);
+				refs.vertical.push(top, bot);
+			}
+			
+		}
+		return refs;
+		
+		function isActive(el) {
+			if (angular.element(el.firstChild).hasClass('tActive')||
+				angular.element(el).hasClass('cActive')) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+	
 }]);
 
 /*-----------------------------------------------------------*/

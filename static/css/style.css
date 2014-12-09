@@ -113,6 +113,26 @@
 	color:  #0489B1;
 }
 
+#refTop, #refBot {
+	position: absolute;
+	z-index: 10;
+	height: 1px;
+	width: 100%;
+}
+
+#refLeft, #refRight {
+	position: absolute;
+	z-index: 10;
+	width: 2px;
+	height: 100%;
+}
+.refLine {
+	
+	stroke: red;
+	stroke-width: 2;
+	
+}
+
 #previewText {
 	z-index: 1;
 	position: absolute;
@@ -245,8 +265,8 @@
 
 .bigImg {
 	position: absolute;
-	max-height: 200px;
-	max-width: 200px;
+	max-height: 300px;
+	max-width: 300px;
 	display: none;
 	box-shadow: 2px 2px 2px #666; 
 }

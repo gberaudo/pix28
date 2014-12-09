@@ -1,8 +1,8 @@
 app.controller('TextBoxController',
     ['$scope', '$element', '$timeout', 'Init', 'Misc',
     function($scope, $element, $timeout,Init, Misc) {
- 	$scope.textArea = $element[0].children[0].children[0];; //the current textarea DOM element
-	var TAcontainer = $element[0].children[0];
+ 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
+	var TAcontainer = $element[0];
  	var previewText = document.getElementById('previewText');
 	
 	function activateTA() {
