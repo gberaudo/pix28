@@ -562,6 +562,17 @@ $def with (mode)
 								<span class = 'fa fa-rotate-left ctrlIcon'></span>
 <!-- 								<img src = 'static/icons/rotate-left.png'/> -->
 							</div>
+							<div ng-click = 'level("up")'
+								title = '{{"Level text up."|translate}}'
+								class = 'btn respond textCtrl'>
+								<span class = 'fa fa-level-up ctrlIcon'></span>
+							</div>
+							<div ng-click = 'level("down")'
+								title = '{{"Level text down."|translate}}'
+								class = 'btn respond textCtrl'>
+								<span class = 'fa fa-level-down ctrlIcon'></span>
+							</div>
+							
 							<div class = 'btn textCtrl respond '
 								title = '{{"Remove text box"|translate}}'
 								ng-click = 'removeTextArea()'>
@@ -648,14 +659,24 @@ $def with (mode)
 								title = '{{"Rotate image left"|translate}}'
 								class = 'btn respond imgCtrl'>
 								<span class = 'fa fa-rotate-left ctrlIcon'></span>
-<!-- 								<img src = 'static/icons/rotate-left.png'/> -->
+							</div>
+							
+							<div ng-click = 'level("up")'
+								title = '{{"Level image zone up."|translate}}'
+								class = 'btn respond imgCtrl'>
+								<span class = 'fa fa-level-up ctrlIcon'></span>
+							</div>
+							
+							<div ng-click = 'level("down")'
+								title = '{{"Level image zone."|translate}}'
+								class = 'btn respond imgCtrl'>
+								<span class = 'fa fa-level-down ctrlIcon'></span>
 							</div>
 								
 							<div ng-click = 'removeImage()'
 								title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
 								class = 'btn respond imgCtrl'> 
 								<span class = 'fa fa-trash ctrlIcon'></span>
-<!-- 								<img src = 'static/icons/trash.png'/> -->
 							</div>
 							
 						</div>

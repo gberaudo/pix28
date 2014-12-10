@@ -79,6 +79,8 @@ app.service('Init', function() {
 		div.style.width = textArea.style.width = Math.floor(textBox.box.width * $scope.pwidth/100) + "px";
 		div.style.top = Math.floor(textBox.box.top * $scope.pheight/100) + "px";
 		div.style.left = Math.floor(textBox.box.left * $scope.pwidth/100) + "px";
+		textBox.layer = textBox.layer || 15;
+		div.style.zIndex = textBox.layer;
 		textArea.style.color = textBox.font.color;
 		textArea.style.fontFamily = textBox.font.family;
 // 		textArea.style.fontWeight = textBox.font.weight;
@@ -311,7 +313,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
 							display.dx, display.dy, display.dw, display.dh);
 		canvas.style.border = 'none';
-		if (display.sw * imgRatio < 4.2 * pageRatio * display.dw) {
+		if (display.sw * imgRatio < 5 * pageRatio * display.dw) {
 			bad = document.createElement('img');
 			bad.onload = function() {
 				ctx.drawImage(bad, 10, 10);
@@ -424,17 +426,15 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		canvas.height = canvas.width * scope.pheight/scope.pwidth;
 		ctx.fillStyle = page.background || '#FFFFFF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		for (var i = 0; i < page.frames.length; i++) {
-			promises.push(drawImage(page.frames[i]));
-		}
-		$q.all(promises).then(function() {
-			drawText(page);
-			drawWatermark();
-			deferred.resolve(null);
-		});
+		
+		var objList = angular.copy(page.frames);
+		objList = objList.concat(angular.copy(page.textBoxes));
+		Misc.sortObjList(objList, 'layer');
+		
+		var n = 0;
+		drawNext();
 		
 		return deferred.promise;
-		
 		
 		function drawImage(frame) {
 			var deferred = $q.defer();
@@ -464,36 +464,32 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			return deferred.promise;
 		}
 	
-		function drawText(page) {
-			for (var i = 0; i < page.textBoxes.length; i++) {
-				var textBox = page.textBoxes[i];
-				if (!!textBox.text) {
-					var left = textBox.box.left * canvas.width / 100,
-						top = textBox.box.top * canvas.height / 100,
-						width = textBox.box.width * canvas.width / 100, 
-						height = textBox.box.height * canvas.height / 100;
-						
-					var fontSize = textBox.font.size * canvas.width / scope.pdfWidth,
-						color = textBox.font.color,
-						fontName = textBox.font.family,
-						lineHeight = 1.2 * fontSize;
-					ctx.save();
+		function drawText(textBox) {
+			if (!!textBox.text) {
+				var left = textBox.box.left * canvas.width / 100,
+					top = textBox.box.top * canvas.height / 100,
+					width = textBox.box.width * canvas.width / 100, 
+					height = textBox.box.height * canvas.height / 100;
 					
-					var centerX = left + width / 2,
-						centerY = top + height / 2;
-					
-					ctx.translate(centerX, centerY);
-					ctx.rotate(textBox.angle * Math.PI / 180);
-					ctx.translate(-width/2, -height/2);
+				var fontSize = textBox.font.size * canvas.width / scope.pdfWidth,
+					color = textBox.font.color,
+					fontName = textBox.font.family,
+					lineHeight = 1.2 * fontSize;
+				ctx.save();
+				
+				var centerX = left + width / 2,
+					centerY = top + height / 2;
+				
+				ctx.translate(centerX, centerY);
+				ctx.rotate(textBox.angle * Math.PI / 180);
+				ctx.translate(-width/2, -height/2);
 // 					ctx.textBaseline = 'bottom';
-					ctx.font = fontSize + 'px ' + fontName;
-					ctx.fillStyle = color;
-					wrapText(ctx, textBox.text, 0, 1.2 * fontSize,
-								width, lineHeight, textBox.align);
-					ctx.restore();
-				}
+				ctx.font = fontSize + 'px ' + fontName;
+				ctx.fillStyle = color;
+				wrapText(ctx, textBox.text, 0, 1.2 * fontSize,
+							width, lineHeight, textBox.align);
+				ctx.restore();
 			}
-			
 			
 			
 			function wrapText(context, text, x, y, maxWidth, lineHeight) {
@@ -542,7 +538,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 				}
 			}
 		}
-	
+		
 		function drawWatermark() {
 			ctx.save();
 			ctx.globalAlpha=.20;
@@ -557,6 +553,37 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 // 			ctx.fillText('AlbumIt', 36, 56);
 			ctx.restore();
 		};
+		
+		
+		
+		function drawNext() {
+			var obj = objList[n];
+			if ('text' in obj) {
+				drawText(obj);
+				n++;
+				if (n < objList.length) {
+					drawNext();
+				} else {
+					drawWatermark();
+					deferred.resolve(null);
+				}
+			} else {
+				drawImage(obj).then(function() {
+					n++;
+					if (n < objList.length) {
+						drawNext();
+					} else {
+						drawWatermark();
+						deferred.resolve(null);
+					}
+				});
+			}
+			
+		}
+		
+		
+		
+
 	};
 	
 	
@@ -797,5 +824,12 @@ app.service('Misc', function() {
 		}
 		return result;
 	};
+	
+	this.sortObjList = function(list, key) {
+		function compare(a, b) {
+			return a[key] -b[key];
+		}
+		list.sort(compare);
+	}
 });
 

@@ -182,6 +182,10 @@ msgid "JPEG images"
 msgstr "Ảnh JPEG"
 
 #: templates/index.html
+msgid "Level image zone up."
+msgstr ""
+
+#: templates/index.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."
 msgstr "Dịch  khung hình xuống dưới . Phím tắt : Ctrl + mũi tên xuống."
 

@@ -35,25 +35,7 @@ app.controller('CanvasController',
 		if ($scope.current.datumWithFocus === $scope.frame) {
 			canvasFocus();
 			ImgService.drawAnchors(canvas);
-			$scope.current.onEditImage = false;
-			$scope.current.onEditText = false;
 			$scope.current.datumWithFocus = undefined;
-			if (document.getElementsByClassName('tActive').length != 0) {
-				//deactivate the current active element
-				activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
-				activeTextArea.removeClass('tActive');
-			}
-			if (document.getElementsByClassName('cActive').length > 0) {
-				var activeCanvas = document.getElementsByClassName('cActive')[0];
-				var ngActiveCanvas = angular.element(activeCanvas);
-				ngActiveCanvas.removeClass('cActive');
-				var activeScope = ngActiveCanvas.scope();
-				//redraw this canvas to remove anchors
-				drawImage(activeCanvas, activeScope.img, 
-							 activeScope.frame.display,
-							activeScope.frame.image.ratio, $scope.pageRatio);
-			}
-			angular.element(canvas).addClass('cActive');
 		}
 	}
 	function initCanvas(){
@@ -61,6 +43,8 @@ app.controller('CanvasController',
 		canvas.height = Math.floor(frame.canvas.height * pheight / 100);
 		canvas.style.left = Math.floor(frame.canvas.left * pwidth / 100) + 'px';
 		canvas.style.top = Math.floor(frame.canvas.top * pheight / 100) + 'px';
+		frame.layer = frame.layer || 10;
+		canvas.style.zIndex = frame.layer;
 		if (!!frame.angle) {
 			canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
 		} else {
@@ -213,25 +197,27 @@ app.controller('CanvasController',
 
 
 	function moveImageInCanvas(offset) {
-		var image = $scope.frame.image;
-		var sChangeX = -offset.X * image.mWidth / canvas.width,
-			sChangeY = -offset.Y * image.mHeight / canvas.height;
-		if (sChangeX < -display.sx) {
-			display.sx = 0;
-		} else if (sChangeX + display.sx + display.sw > image.mWidth) {
-			display.sx = image.mWidth - display.sw;
-		} else {
-			display.sx += sChangeX;
+		if (!!$scope.frame.image.src) {
+			var image = $scope.frame.image;
+			var sChangeX = -offset.X * image.mWidth / canvas.width,
+				sChangeY = -offset.Y * image.mHeight / canvas.height;
+			if (sChangeX < -display.sx) {
+				display.sx = 0;
+			} else if (sChangeX + display.sx + display.sw > image.mWidth) {
+				display.sx = image.mWidth - display.sw;
+			} else {
+				display.sx += sChangeX;
+			}
+			if (sChangeY < -display.sy) {
+				display.sy = 0;
+			} else if (sChangeY + display.sy + display.sh > image.mHeight) {
+				display.sy = image.mHeight - display.sh;
+			} else {
+				display.sy += sChangeY;
+			}
+			drawImage(canvas, $scope.img, display, image.ratio, $scope.pageRatio);
+			ImgService.drawAnchors(canvas);
 		}
-		if (sChangeY < -display.sy) {
-			display.sy = 0;
-		} else if (sChangeY + display.sy + display.sh > image.mHeight) {
-			display.sy = image.mHeight - display.sh;
-		} else {
-			display.sy += sChangeY;
-		}
-		drawImage(canvas, $scope.img, display, image.ratio, $scope.pageRatio);
-		ImgService.drawAnchors(canvas);
 	}
 
 	function redimension(cv, offset, anchor, refs){
@@ -679,5 +665,23 @@ app.controller('ImageController',
 				break;
 		}
 	}
+	
+	$scope.level = function(para) {
+		var canvas = document.getElementsByClassName('cActive')[0];
+		var scope = angular.element(canvas).scope();
+		var index = parseInt(canvas.style.zIndex)
+		switch (para) {
+			case 'up':
+				canvas.style.zIndex = index + 1;
+				scope.frame.layer = index + 1;
+				break;
+			case 'down':
+				if (index > 0) {
+				canvas.style.zIndex = index - 1;
+				scope.frame.layer = index - 1;
+				}
+				break;
+		}
+	};
 	
 }]);

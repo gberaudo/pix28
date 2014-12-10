@@ -77,7 +77,6 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	z-index: 1;
 	background-color: transparent;
 	padding: 0px;
 	overflow: hidden;
@@ -115,14 +114,14 @@
 
 #refTop, #refBot {
 	position: absolute;
-	z-index: 10;
+	z-index: 100;
 	height: 1px;
 	width: 100%;
 }
 
 #refLeft, #refRight {
 	position: absolute;
-	z-index: 10;
+	z-index: 100;
 	width: 2px;
 	height: 100%;
 }
@@ -438,7 +437,7 @@ canvas.minframe, .showItem {
 }
 
 #exportWindow {
-	z-index: 20;
+	z-index: 1001;
 	width: 50%;
 	position: fixed;
 	top: 30%;
@@ -602,7 +601,7 @@ span[name = 'title'] {
 	margin-bottom: 0;
 	padding: 0px 8px;
 	font-size: 90%;
-	color: #333333;
+	color: #555;
 	text-align: center;
 	vertical-align: middle !important;
 	cursor: pointer;
@@ -650,7 +649,7 @@ span[name = 'title'] {
 }
 
 .pageDesactivate {
-	z-index: 19;
+	z-index: 1000;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -661,7 +660,7 @@ span[name = 'title'] {
 }
 .alert {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	z-index: 20;
+	z-index: 1001;
 	font-size: 90%;
 	text-align: center;
 	position: fixed;
@@ -674,14 +673,14 @@ span[name = 'title'] {
 
 .preview {
 	position: absolute;
-	z-index: 20;
+	z-index: 1001;
 	background-color: #FFFFFF;
 	box-shadow: 2px 2px 2px #666; 
 	display: none;
 }
 
 #previewPage {
-	z-index: 20;
+	z-index: 1001;
 	position: absolute;
 	box-shadow: 2px 2px 2px #fff; 
 	background-color: #000000;

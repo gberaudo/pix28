@@ -11,7 +11,6 @@ app.controller('TextBoxController',
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
 		if (document.getElementsByClassName('tActive').length != 0) {
-			//deactivate the current active element
 			 activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
 			activeTextArea.removeClass('tActive');
 		}
@@ -278,7 +277,7 @@ app.controller('TextBoxController',
 	};
 	
 	function removeTextArea(el) {
-		var page = el.parentNode.parentNode.parentNode.id;
+		var page = el.parentNode.parentNode.id;
 		$scope.current[page].textBoxes.splice($scope.$index,1);
 		previewText.style.display = 'none';
 	};
@@ -397,7 +396,7 @@ app.controller('TextController',
 	$scope.removeTextArea = function() {
 		var el = document.getElementsByClassName('tActive')[0],
 			scope = angular.element(el).scope(),
-			page = el.parentNode.parentNode.parentNode.id;
+			page = el.parentNode.parentNode.id;
 		scope.current[page].textBoxes.splice(scope.$index,1);
 		previewText.style.display = 'none';
 	};
@@ -436,4 +435,22 @@ app.controller('TextController',
 		}
 		textArea.parentNode.style.transform = 'rotate(' + scope.textBox.angle + 'deg)';
 	}
+	
+	$scope.level = function(para) {
+		var activeNode = document.getElementsByClassName('tActive')[0].parentNode;
+		var scope = angular.element(activeNode).scope();
+		var index = parseInt(activeNode.style.zIndex)
+		switch (para) {
+			case 'up':
+				activeNode.style.zIndex = index + 1;
+				scope.textBox.layer = index + 1;
+				break;
+			case 'down':
+				if (index > 0) {
+				activeNode.style.zIndex = index - 1;
+				scope.textBox.layer = index - 1;
+				}
+				break;
+		}
+	};
 }]);

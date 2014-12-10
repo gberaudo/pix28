@@ -179,6 +179,10 @@ msgid "JPEG images"
 msgstr ""
 
 #: templates/index.html
+msgid "Level image zone up."
+msgstr ""
+
+#: templates/index.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."
 msgstr ""
 

@@ -55,6 +55,8 @@ app.controller('PageController',
 						page.parentNode.offsetLeft - page.parentNode.parentNode.offsetLeft,
 			mouseY = ev.pageY - page.offsetTop - 
 						page.parentNode.offsetTop - page.parentNode.parentNode.offsetTop;
+		var maxLayer = getMaxLayer(page.id);
+		
 		switch (name) {
 			case 'frame':
 				var canvas = {};
@@ -85,6 +87,7 @@ app.controller('PageController',
 					left: 100*canvas.left/$scope.pwidth
 				};
 				var frame = new FrameObject(DBCanvas, {}, {});
+				frame.layer = maxLayer;
 				$scope.$apply(function() {
 					$scope.current.datumWithFocus = frame;
 					$scope.current[page.id].frames.push(frame);
@@ -125,6 +128,7 @@ app.controller('PageController',
 					},
 					align: 'left'
 				};
+				newTextBox.layer = Math.max(maxLayer, 15);
 				$scope.$apply(function() {
 					$scope.current.datumWithFocus = newTextBox;
 					$scope.current[page.id].textBoxes.push(newTextBox);
@@ -132,5 +136,24 @@ app.controller('PageController',
 				$scope.activate();
 				break;
 		}
+		function getMaxLayer(pageId) {
+			var max = 0;
+			var frames = $scope.current[pageId].frames;
+			var textBoxes = $scope.current[pageId].textBoxes;
+			for (var i = 0; i < frames.length; i++) {
+				var index = parseInt(frames[i].layer);
+				if (max < index) {
+					max = index;
+				}
+			}
+			for (var i = 0; i < textBoxes.length; i++) {
+				var index = parseInt(textBoxes[i].layer);
+				if (max < index) {
+					max = index;
+				}
+			}
+			return max;
+		}
+		
 	};
 }]);
