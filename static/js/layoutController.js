@@ -167,10 +167,23 @@ app.controller('minLayoutController',
 		var activePage = document.getElementsByClassName('pActive')[0];
 
 		if (!!activePage) {
+			var images = [];
+			var frames = $scope.current[activePage.id].frames;
+			for (var j = 0; j < frames.length; j++) {
+				if (!!frames[j].image) {
+					images.push(frames[j].image);
+				}
+			}
+			var rest = images.length;
+			var image;
 			$scope.current[activePage.id].frames = [];
 			$scope.current[activePage.id].textBoxes = [];//remove the current layout
 			for (var i in layout.frames) {
-				var image = {};
+				if (rest > 0) {
+					image = images.shift();
+				} else {
+					image = {};
+				}
 				canvas = angular.copy(layout.frames[i]);
 				frame = new FrameObject(canvas, image, {}); 
 				$scope.current[activePage.id].frames.push(frame);

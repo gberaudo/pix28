@@ -54,11 +54,19 @@ app.controller('CanvasController',
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 		if (!!$scope.frame.image.src) {
-			$scope.img.onload = function() {
-				drawImage(canvas, $scope.img, display,
-							 $scope.frame.image.ratio, $scope.pageRatio);
-			};
-			$scope.img.src = $scope.frame.image.src;
+			if (!!display.dw) { //verify if the image is already draw on this canvas before
+				$scope.img.onload = function() {
+					drawImage(canvas, $scope.img, display,
+								$scope.frame.image.ratio, $scope.pageRatio);
+				};
+				$scope.img.src = $scope.frame.image.src;
+			} else {
+				$scope.img.onload = function() {
+					firstDrawImage();
+				};
+				$scope.img.src = $scope.frame.image.src;
+			}
+			
 		} else {
 				ImgService.resetFrame(canvas);
 		}
@@ -91,7 +99,6 @@ app.controller('CanvasController',
 				display.dh = canvas.height;
 			}
 			drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
-			ImgService.drawAnchors(canvas);
 		}
 	};
 

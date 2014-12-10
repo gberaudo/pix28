@@ -230,7 +230,7 @@ $def with (mode)
 					</div>
 					<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
 					</div>
-						<span class = 'clickable close fa fa-remove respond'
+						<span class = 'clickable close fa fa-remove'
 							ng-click = 'closeExportWindow()'></span>
 					</div>
 					
@@ -755,14 +755,15 @@ $def with (mode)
 							<div id = 'background' ng-init = 'showColor = true'>
 								<div ng-repeat = 'color in colors'
 									ng-show = 'showColor'
-									
 									class = 'showItem'
 									style = 'background-color: {{color}};
 										width: {{0.2 * pwidth + "px"}};
 										height: {{0.2 * pheight + "px"}}'
 										ng-click = 'changeBGColor(color)'>
 								</div>
-								<div class = 'showItem small' ng-show = 'showColor'>
+								<div class = 'showItem small'
+									ng-show = 'showColor'
+									style = 'height: {{0.2 * pheight + "px"}}'>
 									<form ng-submit = 'getUserColor()'>
 										<label translate> Your color</label> <br/>
 										<input type = 'text' placeholder = '#FFFFFF' 
@@ -872,7 +873,7 @@ $def with (mode)
 					ng-show = 'viewPageNum != album.content.length'
 					ng-click = 'previewPage(viewPageNum + 2)'> </span>
 			
-			<span class = 'clickable close fa fa-remove respond'
+			<span class = 'clickable close fa fa-remove'
 					ng-click = 'removePreview()'> </span>
 			<div id = 'exportJPEG' >
 				<span class = 'link'

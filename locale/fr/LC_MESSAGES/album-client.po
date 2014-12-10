@@ -192,6 +192,20 @@ msgid "Level image zone up."
 msgstr ""
 
 #: templates/index.html
+msgid "Level image zone."
+msgstr ""
+
+#: templates/index.html
+#, fuzzy
+msgid "Level text down."
+msgstr "Supprimer cette boîte de texte"
+
+#: templates/index.html
+#, fuzzy
+msgid "Level text up."
+msgstr "Supprimer cette boîte de texte"
+
+#: templates/index.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."
 msgstr "Déplacer la zone d'image vers le bas. Raccourci : Ctrl + flèche bas"
 

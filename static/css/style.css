@@ -306,6 +306,7 @@ canvas.minframe, .showItem {
 	border: 1px solid #CCC;
 	display: inline-block;
 	margin-right: 10px;
+	vertical-align: top;
 }
 
 /*-------------------- Image loader----------------------------------*/
@@ -735,6 +736,10 @@ option {
 	top: -3%;
 	font-size: 2em !important;
 	color: black;
+}
+
+.close:hover {
+	color: #AAA;
 }
 
 #previewPage .next {

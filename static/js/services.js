@@ -546,9 +546,9 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			ctx.rotate(-Math.PI / 6);
 			ctx.font = '40px Times';
 			ctx.fillStyle = '#FFFFFF';
-			ctx.fillText('AlbumIt', 30, 50);
+			ctx.fillText('LibreAlbum', 30, 50);
 			ctx.fillStyle = '#000000';
-			ctx.fillText('AlbumIt', 33, 53);
+			ctx.fillText('LibreAlbum', 33, 53);
 // 			ctx.fillStyle = 'darkred';
 // 			ctx.fillText('AlbumIt', 36, 56);
 			ctx.restore();
