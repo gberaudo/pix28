@@ -686,25 +686,29 @@ $def with (mode)
 				</div>
 			
 				<!--_______________select layout________________________-->
-				<div id = 'layoutCtrl' class = 'layoutCtrl'
+				<div id = 'layoutCtrl' class = 'layoutCtrl controls'
 					ng-controller = 'LayoutController'>
 					<ul id = 'layoutMenu' class = 'hMenu'>
 						<li ng-click = 'layoutsClick(\$event)' 
-							class = 'LMItem clickable li' translate>
+							class = 'LMItem clickable li LMactive' translate>
 							Page layout
 						</li>
 						<li ng-click = 'BGClick(\$event)'
 							class = 'LMItem clickable li'>
 							Page background 
 						</li>
+						<li ng-click = 'ImgClick(\$event)'
+							class = 'LMItem clickable li'>
+							Image
+						</li>
 					</ul>
-					<div id = 'showRoom'>
+					<div>
 						<div ng-show = 'showLayoutSets' 
 							ng-init = 'showLayoutSets = true'>
-							<ul id = 'layoutSets' 
+							<ul id = 'layoutsMenu' 
 								class = 'hMenu'>
 								<li ng-click = 'showAllLayouts(\$event)'
-									class = 'LSItem clickable li LIactive' translate> 
+									class = 'LSItem clickable li LSactive' translate> 
 									All
 								</li>
 								<li ng-repeat = 'choice in layoutList'
@@ -717,7 +721,8 @@ $def with (mode)
 									Favorites
 								</li>
 							</ul>
-							<div id = 'layouts' >
+							<div id = 'layouts' 
+								class = 'showRoom'>
 								<canvas ng-repeat = 'layout in layouts'
 										title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
 										ng-controller = 'minLayoutController'
@@ -752,14 +757,16 @@ $def with (mode)
 									translate>
 									Apply for all pages
 							</div>
-							<div id = 'background' ng-init = 'showColor = true'>
+							<div id = 'background' 
+								class = 'showRoom'
+								ng-init = 'showColor = true'>
 								<div ng-repeat = 'color in colors'
 									ng-show = 'showColor'
 									class = 'showItem'
 									style = 'background-color: {{color}};
 										width: {{0.2 * pwidth + "px"}};
 										height: {{0.2 * pheight + "px"}}'
-										ng-click = 'changeBGColor(color)'>
+									ng-click = 'changeBGColor(color)'>
 								</div>
 								<div class = 'showItem small'
 									ng-show = 'showColor'
@@ -771,6 +778,39 @@ $def with (mode)
 											size = '7'/>
 										<input type = 'submit' value = 'OK'/>
 									</form>
+								</div>
+							</div>
+						</div>
+						<div ng-show = 'showImgOpt'> 
+							<ul id = 'imgOptMenu'
+								class = 'hMenu'>
+								<li ng-click = 'showBorders(\$event)'
+									class = 'IOItem clickable li IOactive' translate>
+									Border
+								</li>
+								<li ng-click = 'showFrames(\$event)'
+									class = 'IOItem clickable li' translate>
+									Frame
+								</li>
+								<li ng-click = 'showMasks(\$event)'
+									class = 'IOItem clickable li' translate>
+									Mask
+								</li>
+							</ul>
+							<div class = 'showRoom' id = 'imgOpt'
+								ng-init = 'showBorder = true'>
+								<div ng-repeat = 'color in colors'
+									ng-show = 'showBorder'
+									style = 'height: 1.5em; width: 3em; 
+										border: none;
+										margin-top: 10px;
+										margin-left: 10px;
+										border-top: 8px solid {{color}};
+										border-left: 8px solid {{color}};
+										background-color: #EEE'
+									ng-click = 'changeBorder(color)'
+									class = 'showItem'
+									>
 								</div>
 							</div>
 						</div>

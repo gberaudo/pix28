@@ -440,16 +440,28 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			var deferred = $q.defer();
 			if (!!frame.image.src) {
 				var img = new Image();
+				var display = frame.display;
+				var top = frame.canvas.top * canvas.height / 100,
+					left = frame.canvas.left * canvas.width / 100,
+					width = frame.canvas.width * canvas.width / 100,
+					height = frame.canvas.height * canvas.height /100;
+				var centerX = left + width / 2,
+						centerY = top + height / 2;
+				if (frame.border.thickness && frame.border.color) {
+					var thickness = frame.border.thickness * canvas.width / scope.pwidth;
+					ctx.save();
+					ctx.translate(centerX, centerY);
+					ctx.rotate(frame.angle * Math.PI / 180);
+					ctx.lineWidth = thickness;
+					ctx.strokeStyle = frame.border.color;
+					ctx.rect(-(width + thickness)/2, -(height + thickness) / 2,
+						width + thickness, height + thickness);
+					ctx.stroke();
+					ctx.restore();
+				}
 				
 				img.onload = function() {
-					var display = frame.display;
-					var top = frame.canvas.top * canvas.height / 100,
-						left = frame.canvas.left * canvas.width / 100,
-						width = frame.canvas.width * canvas.width / 100,
-						height = frame.canvas.height * canvas.height /100;
 					ctx.save();
-					var centerX = left + width / 2,
-						centerY = top + height / 2;
 					ctx.translate(centerX, centerY);
 					ctx.rotate(frame.angle * Math.PI / 180);
 					ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
@@ -458,6 +470,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 					deferred.resolve(null);
 				};
 				img.src = frame.image.src;
+				
 			} else {
 				deferred.resolve(null);
 			}

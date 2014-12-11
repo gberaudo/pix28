@@ -493,6 +493,11 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 					canvas.style.position = 'absolute';
 					canvas.style.zIndex = frame.layer;
 					canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
+					if (frame.border.thickness && frame.border.color) {
+						var thickness = frame.border.thickness * pwidth/ $scope.pwidth;
+						canvas.style.outline = thickness + 'px solid ' + frame.border.color;
+					}
+					
 					display.dw = canvas.width;
 					display.dh = canvas.height;
 					img.onload = function() {
@@ -880,17 +885,28 @@ app.controller('ExportController',
 												break;
 										}
 										var outputImg = canvas.toDataURL('image/jpeg', 1.0);
-									//	var outputImg = canvas.toDataURL('image/png');
-										var centerX = (frame.canvas.left + frame.canvas.width / 2) * pdfWidth /100;
-										var centerY = (frame.canvas.top + frame.canvas.height / 2) * pdfHeight /100;
+										var width = frame.canvas.width * pdfWidth / 100,
+											height = frame.canvas.height * pdfHeight / 100,
+											left = frame.canvas.left * pdfWidth /100,
+											top = frame.canvas.top * pdfHeight /100
+										var centerX = left + width / 2;
+										var centerY =  top + height / 2;
+										doc.save();
 										doc.rotate(frame.angle, {origin : [centerX, centerY]});
-										doc.image(outputImg, frame.canvas.left * pdfWidth / 100, 
-														frame.canvas.top * pdfHeight/100,
+										
+										if (frame.border.color && frame.border.thickness) {
+											var thickness = frame.border.thickness * pdfWidth / $scope.pwidth;
+											doc.rect( left - thickness/2, top - thickness/2,
+														width + thickness, height + thickness)
+												.lineWidth(thickness)
+												.stroke(frame.border.color);
+										}
+										doc.image(outputImg, left, top,
 														{
-															width: frame.canvas.width * pdfWidth / 100,
-															height: frame.canvas.height * pdfHeight / 100
+															width: width,
+															height: height
 														});
-										doc.rotate(-frame.angle, {origin : [centerX, centerY]});
+ 										doc.restore();
 										deferred1.resolve(null);
 									}
 									imgObj.src = img.src;

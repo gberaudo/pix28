@@ -230,8 +230,9 @@
  	border-top: 1px solid #AAA; 
 }
 
-.LMactive, .LSactive, .BMactive, li > .LSactive {
+.LMactive, .LSactive, .BMactive, .IOactive {
 	background-color: #FFFFFF !important;
+	font-weight: 900; 
 }
 
 .hMenu {
@@ -241,34 +242,24 @@
 	overflow: hidden;
 }
 
-#layoutMenu li {
-	font-weight: bold;
-	font-size: 80%; 
-	padding: 4px; 
+.hMenu li{
 	display: block;
 	float: left;
 	background-color: #CCC;
 	text-align: center;
-	text-transform: uppercase;
-	width: 12em;
+	min-width: 4em;
 }
 
-
-
-#layoutMenu .LMItem {
+#layoutMenu li {
 	font-weight: bold;
 	font-size: 80%; 
 	padding: 4px; 
-	display: inline-block;
-	float: left;
-	background-color: #CCC;
-	text-align: center;
 	text-transform: uppercase;
 	width: 12em;
 }
 
 #layoutCtrl li:hover {
-	background-color: #FFFFFF;
+	background-color: #EEEEEE;
 }
 
 #layoutCtrl li {
@@ -276,22 +267,14 @@
 	border-top-right-radius: 10px;
 }
 
-#layoutSets li, #backgroundMenu li {
+#layoutsMenu li, #backgroundMenu li, #imgOptMenu li{
 	padding: .1em .5em; 
-	display: block;
-	float: left;
-	background-color: #CCC;
-	text-align: center;
-	min-width: 4em;
 	font-size: 90%;
 }
 
 
-#showRoom {
-	
-}
-	
-#layouts, #background {
+
+.showRoom {
 	position: absolute;
 	top: 40%;
 	left: 1%;
@@ -302,11 +285,17 @@
 	white-space: nowrap;
 	vertical-align: middle;
 }
+
 canvas.minframe, .showItem {
 	border: 1px solid #CCC;
 	display: inline-block;
 	margin-right: 10px;
 	vertical-align: top;
+}
+
+canvas.minframe:hover, .showItem:hover {
+/* 	box-shadow: 1px 1px #666; */
+	outline: 1px solid #666;
 }
 
 /*-------------------- Image loader----------------------------------*/

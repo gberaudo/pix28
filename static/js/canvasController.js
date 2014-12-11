@@ -44,6 +44,14 @@ app.controller('CanvasController',
 		canvas.style.left = Math.floor(frame.canvas.left * pwidth / 100) + 'px';
 		canvas.style.top = Math.floor(frame.canvas.top * pheight / 100) + 'px';
 		frame.layer = frame.layer || 10;
+		if (!frame.border) {
+			frame.border = {};
+		} else {
+			if (frame.border.color && frame.border.thickness) {
+				console.log(frame.border);
+				canvas.style.outline = frame.border.thickness + 'px solid '+ frame.border.color;
+			}
+		}
 		canvas.style.zIndex = frame.layer;
 		if (!!frame.angle) {
 			canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
@@ -535,7 +543,9 @@ app.controller('CanvasController',
 	
 	function canvasBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 5, 'controls') || (el.scope() == $scope)) {
+		if (Misc.ancestorHasClass(el, 5, 'controls') ||
+			(el.scope() == $scope)
+			) {
 			return;
 		} else {
 			angular.element(canvas).removeClass('cActive');

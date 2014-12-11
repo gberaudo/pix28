@@ -4,7 +4,13 @@ app.controller('LayoutController',
     ['$scope', 'FrameObject', 'Layouts', 'Colors', 'Misc',
     function($scope, FrameObject, Layouts, Colors, Misc) {
 	$scope.colors = Colors;
-	
+	initAllLayout();
+	function initAllLayout() {
+		$scope.layouts = [];
+		for (type in Layouts) {
+			$scope.layouts = $scope.layouts.concat(Layouts[type]);
+		}
+	}
 	function activate(event, className) {
 		var el = angular.element(event.target);
 		var parent = angular.element(event.target.parentNode);
@@ -44,13 +50,24 @@ app.controller('LayoutController',
 		activate(event, 'LMactive');
 		$scope.showLayoutSets = true;
 		$scope.showBM = false;
+		$scope.showImgOpt = false;
 	};
 	
 	$scope.BGClick = function(event) {
 		activate(event, 'LMactive');
 		$scope.showLayoutSets = false;
+		$scope.showImgOpt = false;
 		$scope.showBM = true;
-	}
+	};
+	
+	
+	$scope.ImgClick = function(event) {
+		activate(event, 'LMactive');
+		$scope.showImgOpt = true;
+		$scope.showLayoutSets = false;
+		$scope.showBM = false;
+		
+	};
 	
 	$scope.showColors = function(event) {
 		activate(event, 'BMactive');
@@ -94,6 +111,39 @@ app.controller('LayoutController',
 	};
 	
 	
+	$scope.showBorders = function(event) {
+		activate(event, 'IOactive');
+		$scope.showBorder = true;
+		$scope.showFrame = false;
+		$scope.showMask = false;
+	};
+	
+	$scope.showFrames = function(event) {
+		activate(event, 'IOactive');
+		$scope.showBorder = false;
+		$scope.showFrame = true;
+		$scope.showMask = false;
+	};
+	
+	$scope.showMasks = function(event) {
+		activate(event, 'IOactive');
+		$scope.showBorder = false;
+		$scope.showFrame = false;
+		$scope.showMask = true;
+	};
+	
+	
+	$scope.changeBorder = function(color) {
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var canvas = document.getElementsByClassName('cActive')[0];
+			var frame = angular.element(canvas).scope().frame;
+			var thickness = frame.border.thickness || 3;
+			canvas.style.outline = thickness + 'px solid ' + color;
+			frame.border.color = color;
+			frame.border.thickness = thickness;
+			
+		}
+	};
 	$scope.getUserColor = function() {
 		if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i
 			.test($scope.userColor)){
