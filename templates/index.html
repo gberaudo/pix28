@@ -749,9 +749,7 @@ $def with (mode)
 									Frame
 								</li>
 							</ul>
-							<div class = 'link small respond '
-									style = 'position: absolute; top: 20%; right: 5%;
-										z-index: 10'
+							<div class = 'link respond apply'
 									ng-click = 'changeAlbumBGColor()'
 									ng-show = 'showColor'
 									translate>
@@ -771,7 +769,7 @@ $def with (mode)
 								<div class = 'showItem small'
 									ng-show = 'showColor'
 									style = 'height: {{0.2 * pheight + "px"}}'>
-									<form ng-submit = 'getUserColor()'>
+									<form ng-submit = 'getUserBGColor()'>
 										<label translate> Your color</label> <br/>
 										<input type = 'text' placeholder = '#FFFFFF' 
 											ng-model = 'userColor'
@@ -797,20 +795,45 @@ $def with (mode)
 									Mask
 								</li>
 							</ul>
+							<div class = 'apply' ng-show = 'showBorder'> 
+									<span class = 'link respond'
+										style = 'margin-right: 1em'
+										ng-click = 'imgBordertoPage()'>
+										Apply to current page </span>
+									<span class = 'link respond'
+										ng-click = 'imgBordertoAlbum()'>
+										Apply to all album </span>
+							</div>
 							<div class = 'showRoom' id = 'imgOpt'
 								ng-init = 'showBorder = true'>
 								<div ng-repeat = 'color in colors'
 									ng-show = 'showBorder'
 									style = 'height: 1.5em; width: 3em; 
 										border: none;
-										margin-top: 10px;
+										margin-top: 3px;
 										margin-left: 10px;
 										border-top: 8px solid {{color}};
 										border-left: 8px solid {{color}};
 										background-color: #EEE'
 									ng-click = 'changeBorder(color)'
-									class = 'showItem'
-									>
+									class = 'showItem'>
+								</div>
+								<div class = 'borderCtrl'>
+									<span> Border thickness </span>
+									<span class = 'btn respond icon fa fa-sort-up'
+										ng-click = 'increaseThickness()'></span>
+									<span class = 'btn respond icon fa fa-sort-down'
+										ng-click = 'decreaseThickness()'></span>
+									<span class = 'link respond'
+										ng-click = 'removeBorder()'>
+										Remove border</span>
+									<form ng-submit = 'getUserBorderColor()'>
+										<label translate> Your color</label>
+										<input type = 'text' placeholder = '#FFFFFF' 
+											ng-model = 'userColor'
+											size = '7'/>
+										<input type = 'submit' value = 'OK'/>
+									</form>
 								</div>
 							</div>
 						</div>

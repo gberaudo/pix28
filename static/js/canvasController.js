@@ -48,7 +48,6 @@ app.controller('CanvasController',
 			frame.border = {};
 		} else {
 			if (frame.border.color && frame.border.thickness) {
-				console.log(frame.border);
 				canvas.style.outline = frame.border.thickness + 'px solid '+ frame.border.color;
 			}
 		}
@@ -543,7 +542,7 @@ app.controller('CanvasController',
 	
 	function canvasBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 5, 'controls') ||
+		if (Misc.ancestorHasClass(el, 8, 'controls') ||
 			(el.scope() == $scope)
 			) {
 			return;

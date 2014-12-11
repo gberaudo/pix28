@@ -141,10 +141,96 @@ app.controller('LayoutController',
 			canvas.style.outline = thickness + 'px solid ' + color;
 			frame.border.color = color;
 			frame.border.thickness = thickness;
-			
+			$scope.current.borderColor = color;
+			$scope.current.borderThickness = thickness;
 		}
 	};
-	$scope.getUserColor = function() {
+	
+	$scope.imgBordertoPage = function() {
+		if (document.getElementsByClassName('pActive').length > 0) {
+			var pageId = document.getElementsByClassName('pActive')[0].id;
+			var goodCanvas = [];
+			var allCanvas = document.getElementsByClassName('frame');
+			for (var j = 0; j < allCanvas.length; j++) {
+				var canvas = allCanvas[j];
+				if (Misc.ancestorHasClass(angular.element(canvas), 3, pageId)) {
+					goodCanvas.push(canvas);
+				}
+			}
+			var frames = $scope.current[pageId].frames;
+			for (var i = 0; i < frames.length; i++) {
+				var frame = frames[i];
+				frame.border.color = $scope.current.borderColor;
+				frame.border.thickness = $scope.current.borderThickness;
+				goodCanvas[i].style.outline = $scope.current.borderThickness +
+					'px solid ' + $scope.current.borderColor;
+			}
+		}
+	};
+	
+	$scope.imgBordertoAlbum = function() {
+		for (var j = 0; j < $scope.album.content.length; j++) {
+			var page = $scope.album.content[j];
+			for (var i = 0; i < page.frames.length; i++) {
+				var frame = page.frames[i];
+				frame.border.color = $scope.current.borderColor;
+				frame.border.thickness = $scope.current.borderThickness;
+			}
+		}
+		var allCanvas = document.getElementsByClassName('frame');
+		for (var k = 0; k < allCanvas.length; k++) {
+			var canvas = allCanvas[k];
+			canvas.style.outline = $scope.current.borderThickness +
+					'px solid ' + $scope.current.borderColor;
+		}
+	};
+	
+	$scope.getUserBorderColor = function() {
+		$scope.changeBorder($scope.userColor);
+		$scope.current.borderColor = $scope.userColor;
+	};
+	
+	$scope.increaseThickness = function() {
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var canvas = document.getElementsByClassName('cActive')[0];
+			var frame = angular.element(canvas).scope().frame;
+			if (frame.border.color) {
+				var thickness = frame.border.thickness + 1;
+				var color = frame.border.color;
+				canvas.style.outline = thickness + 'px solid ' + color;
+				frame.border.thickness = thickness;
+				$scope.current.borderColor = color;
+				$scope.current.borderThickness = thickness;
+			}
+		}
+	};
+	
+	$scope.removeBorder = function() {
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var canvas = document.getElementsByClassName('cActive')[0];
+			var frame = angular.element(canvas).scope().frame;
+			frame.border = {};
+			$scope.current.borderThickness = 0;
+			canvas.style.outline = 'none';
+		}
+	};
+	
+	$scope.decreaseThickness = function() {
+		if (document.getElementsByClassName('cActive').length > 0) {
+			var canvas = document.getElementsByClassName('cActive')[0];
+			var frame = angular.element(canvas).scope().frame;
+			if (frame.border.thickness && frame.border.color
+				&& frame.border.thickness > 0) {
+				var thickness = frame.border.thickness - 1;
+				var color = frame.border.color;
+				canvas.style.outline = thickness + 'px solid ' + color;
+				frame.border.thickness = thickness;
+				$scope.current.borderColor = color;
+				$scope.current.borderThickness = thickness;
+			}
+		}
+	};
+	$scope.getUserBGColor = function() {
 		if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i
 			.test($scope.userColor)){
 			$scope.changeBGColor($scope.userColor);
