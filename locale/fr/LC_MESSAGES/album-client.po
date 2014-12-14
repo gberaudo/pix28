@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Albumit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Việt Hằng Nguyễn <viethangybvn@gmail.com>\n"
+"Last-Translator: Guillaume Beraudo <guillaume.beraudo@gmail.com>\n"
 "Language-Team: Guillaume <guillaume.beraudo@gmail.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "Aligner le texte à droite"
 
 #: templates/index.html
 msgid "All"
-msgstr ""
+msgstr "Toutes"
 
 #: templates/index.html
 msgid "Apply for all pages"
@@ -56,6 +56,10 @@ msgstr "Vous êtes sure de vouloir le supprimer?"
 #: templates/index.html
 msgid "Back to home page"
 msgstr "Retourner à la page d'accueil"
+
+#: templates/index.html
+msgid "Border"
+msgstr "Bordure"
 
 #: static/js/albumController.js
 msgid "Cannot remove cover page!"
@@ -155,7 +159,7 @@ msgstr "Entrer un titre"
 
 #: templates/index.html
 msgid "Enter text here"
-msgstr "Entrer texte ici"
+msgstr "Entrer un texte ici"
 
 #: templates/index.html
 msgid "Export this album"
@@ -171,9 +175,14 @@ msgstr ""
 msgid "Export this page to JPEG"
 msgstr "Exporter l'album en JPEGs"
 
+#. layouts
 #: templates/index.html
 msgid "Favorites"
-msgstr ""
+msgstr "Préférées"
+
+#: templates/index.html
+msgid "Frame"
+msgstr "Cadre"
 
 #: templates/index.html
 msgid "Generating Jpg. Please be patient..."
@@ -189,21 +198,23 @@ msgstr "Images JPEG"
 
 #: templates/index.html
 msgid "Level image zone up."
-msgstr ""
+msgstr "Élever la zone d'image."
 
 #: templates/index.html
 msgid "Level image zone."
-msgstr ""
+msgstr "Abaisser la zone d'image."
 
 #: templates/index.html
-#, fuzzy
 msgid "Level text down."
-msgstr "Supprimer cette boîte de texte"
+msgstr "Abaisser le texte"
 
 #: templates/index.html
-#, fuzzy
 msgid "Level text up."
-msgstr "Supprimer cette boîte de texte"
+msgstr "Élever le texte"
+
+#: templates/index.html
+msgid "Mask"
+msgstr "Masque"
 
 #: templates/index.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."
@@ -237,9 +248,8 @@ msgid "PDF 72dpi (to use on computer)"
 msgstr "PDF 72dpi (pour affichage à l'écran)"
 
 #: templates/index.html
-#, fuzzy
 msgid "Page layout"
-msgstr "Choisir une mise en page"
+msgstr "Mise en page"
 
 #: templates/index.html
 msgid "Preview album"
@@ -271,7 +281,7 @@ msgstr "Pivoter cette boîte de texte vers la droite"
 
 #: templates/index.html
 msgid "Save this album"
-msgstr "Sauver garder cet album"
+msgstr "Sauvegarder cet album"
 
 #: templates/index.html
 msgid "Style image"
@@ -306,9 +316,8 @@ msgid "Your albums"
 msgstr "Vos albums"
 
 #: templates/index.html
-#, fuzzy
 msgid "Your color"
-msgstr "Couleur du texte"
+msgstr "Votre couleur"
 
 #: templates/index.html
 msgid "Zoom image in. Hot key: +"

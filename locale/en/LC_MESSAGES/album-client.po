@@ -57,6 +57,10 @@ msgstr ""
 msgid "Back to home page"
 msgstr ""
 
+#: templates/index.html
+msgid "Border"
+msgstr ""
+
 #: static/js/albumController.js
 msgid "Cannot remove cover page!"
 msgstr ""
@@ -162,8 +166,13 @@ msgstr ""
 msgid "Export this page to JPEG"
 msgstr ""
 
+#. layouts
 #: templates/index.html
 msgid "Favorites"
+msgstr ""
+
+#: templates/index.html
+msgid "Frame"
 msgstr ""
 
 #: templates/index.html
@@ -192,6 +201,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Level text up."
+msgstr ""
+
+#: templates/index.html
+msgid "Mask"
 msgstr ""
 
 #: templates/index.html
