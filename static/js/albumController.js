@@ -803,6 +803,7 @@ app.controller('ExportController',
 										tb.box.top * pdfHeight/100, 
 									{
 										width: tb.box.width * pdfWidth/100,
+										height: tb.box.height * pdfHeight/100,
 										align: tb.align,
 										margin: 0,
 										lineGap: lineGap
