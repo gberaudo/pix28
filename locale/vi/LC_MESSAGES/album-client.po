@@ -46,7 +46,13 @@ msgid "All"
 msgstr ""
 
 #: templates/index.html
-msgid "Apply for all pages"
+#, fuzzy
+msgid "Apply to album"
+msgstr "Áp dụng cho mọi trang"
+
+#: templates/index.html
+#, fuzzy
+msgid "Apply to all pages"
 msgstr "Áp dụng cho mọi trang"
 
 #: templates/index.html
@@ -89,6 +95,10 @@ msgstr "Nhắp chuột để tạo album mới"
 #: templates/index.html
 msgid "Click to go to album"
 msgstr "Nhắp chuột để đến album này"
+
+#: templates/index.html
+msgid "Color"
+msgstr ""
 
 #: templates/index.html
 msgid "Congratulation!"
@@ -169,6 +179,7 @@ msgstr "Xuất album này ra file pdf để lưu trên máy hoặc in. "
 msgid "Export this page to JPEG"
 msgstr "Xuất album này ra ảnh JPEG"
 
+#. layouts
 #: templates/index.html
 msgid "Favorites"
 msgstr ""
@@ -245,8 +256,22 @@ msgid "Page layout"
 msgstr "Chọn dàn trang"
 
 #: templates/index.html
+msgid "Pattern"
+msgstr ""
+
+#: templates/index.html
 msgid "Preview album"
 msgstr "Xem thử "
+
+#: templates/index.html
+#, fuzzy
+msgid "Remove color"
+msgstr "Màu chữ"
+
+#: templates/index.html
+#, fuzzy
+msgid "Remove pattern"
+msgstr "Xóa hộp văn bản này"
 
 #: templates/index.html
 msgid "Remove text box"
@@ -271,6 +296,10 @@ msgstr "Quay trái hộp văn b"
 #: templates/index.html
 msgid "Rotate text box right"
 msgstr "Quay phải hộp văn bản này"
+
+#: templates/index.html
+msgid "Save as favourite"
+msgstr ""
 
 #: templates/index.html
 msgid "Save this album"

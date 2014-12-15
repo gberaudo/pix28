@@ -311,9 +311,9 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	function drawImage(canvas, img, display, imgRatio, pageRatio) {
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
-							display.dx, display.dy, display.dw, display.dh);
+							0, 0, canvas.width, canvas.height);
 		canvas.style.border = 'none';
-		if (display.sw * imgRatio < 5 * pageRatio * display.dw) {
+		if (display.sw * imgRatio < 5 * pageRatio * canvas.width) {
 			bad = document.createElement('img');
 			bad.onload = function() {
 				ctx.drawImage(bad, 10, 10);

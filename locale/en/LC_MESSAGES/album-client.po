@@ -46,7 +46,11 @@ msgid "All"
 msgstr ""
 
 #: templates/index.html
-msgid "Apply for all pages"
+msgid "Apply to album"
+msgstr ""
+
+#: templates/index.html
+msgid "Apply to all pages"
 msgstr ""
 
 #: templates/index.html
@@ -55,6 +59,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Back to home page"
+msgstr ""
+
+#: templates/index.html
+msgid "Border"
 msgstr ""
 
 #: static/js/albumController.js
@@ -84,6 +92,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Click to go to album"
+msgstr ""
+
+#: templates/index.html
+msgid "Color"
 msgstr ""
 
 #: templates/index.html
@@ -162,8 +174,13 @@ msgstr ""
 msgid "Export this page to JPEG"
 msgstr ""
 
+#. layouts
 #: templates/index.html
 msgid "Favorites"
+msgstr ""
+
+#: templates/index.html
+msgid "Frame"
 msgstr ""
 
 #: templates/index.html
@@ -192,6 +209,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Level text up."
+msgstr ""
+
+#: templates/index.html
+msgid "Mask"
 msgstr ""
 
 #: templates/index.html
@@ -227,7 +248,19 @@ msgid "Page layout"
 msgstr ""
 
 #: templates/index.html
+msgid "Pattern"
+msgstr ""
+
+#: templates/index.html
 msgid "Preview album"
+msgstr ""
+
+#: templates/index.html
+msgid "Remove color"
+msgstr ""
+
+#: templates/index.html
+msgid "Remove pattern"
 msgstr ""
 
 #: templates/index.html
@@ -252,6 +285,10 @@ msgstr ""
 
 #: templates/index.html
 msgid "Rotate text box right"
+msgstr ""
+
+#: templates/index.html
+msgid "Save as favourite"
 msgstr ""
 
 #: templates/index.html

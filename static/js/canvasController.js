@@ -61,7 +61,7 @@ app.controller('CanvasController',
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 		if (!!$scope.frame.image.src) {
-			if (!!display.dw) { //verify if the image is already draw on this canvas before
+			if (!!display.sw) { //verify if the image is already draw on this canvas before
 				$scope.img.onload = function() {
 					drawImage(canvas, $scope.img, display,
 								$scope.frame.image.ratio, $scope.pageRatio);
@@ -90,20 +90,12 @@ app.controller('CanvasController',
 				display.sh = canvas.height * image.scaleRatio;
 				display.sx = 0;
 				display.sy = Math.max((image.mHeight - display.sh) / 2, 0);
-				display.dx = 0;
-				display.dy = 0;
-				display.dw = canvas.width;
-				display.dh = canvas.height;
 			} else if (image.mHeight / canvas.height <= image.mWidth / canvas.width) {
 				image.scaleRatio =image.mHeight / canvas.height;
 				display.sh = image.mHeight;
 				display.sw = canvas.width * image.scaleRatio;
 				display.sx = Math.max((image.mWidth - display.sw) / 2, 0);
 				display.sy = 0;
-				display.dx = 0;
-				display.dy = 0;
-				display.dw = canvas.width;
-				display.dh = canvas.height;
 			}
 			drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
 		}
@@ -332,7 +324,6 @@ app.controller('CanvasController',
 				}
 				cv.style.left = (cleft + off) +'px';
 				cv.width -= off;
-				display.dw = cv.width;
 				break;
 				
 			case 'R':
@@ -372,7 +363,6 @@ app.controller('CanvasController',
 					display.sw = Math.min(display.sw + sChange.X, image.mWidth - display.sx);
 				}
 				cv.width += off;
-				display.dw = cv.width;
 				break;
 			
 			case 'T':
@@ -409,7 +399,6 @@ app.controller('CanvasController',
 				}
 				cv.style.top = (ctop + off) +'px';
 				cv.height -= off;
-				display.dh = cv.height;
 				break;
 			
 			case 'B':
@@ -446,7 +435,6 @@ app.controller('CanvasController',
 					display.sh = Math.min(display.sh + sChange.Y, image.mHeight - display.sy);
 				}
 				cv.height += off;
-				display.dh = cv.height;
 				break;
 
 			case 'TR':
