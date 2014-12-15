@@ -1,7 +1,17 @@
 app.controller('PageController',
     ['$scope', '$timeout', '$element', 'FrameObject', 'Misc',
     function($scope, $timeout, $element, FrameObject, Mics) {
-
+	
+	function initPage() {
+		var page = $element[0];
+		var color = $scope.current[$scope.page].background;
+		page.style.width = $scope.pageWidth;
+		page.style.height = $scope.pageHeight;
+		page.style.backgroundColor = color;
+	};
+	
+	initPage();
+	
 	$scope.activate = function() {
 		//deactivate the current active page
 		var active = angular.element(document.getElementsByClassName('pActive')[0]);
@@ -9,22 +19,22 @@ app.controller('PageController',
 		//activate this page
 		var page = angular.element($element[0]);
 		page.addClass('pActive');
-		document.addEventListener('mousedown', handleMouseDown, true);
+// 		document.addEventListener('mousedown', handleMouseDown, true);
 	};
 	
 	
-	function handleMouseDown(event) {
-		var ancestorHasClass = Mics.ancestorHasClass;
-		var el = angular.element(event.target);
-		if (ancestorHasClass(el, 5, 'page') || 
-			ancestorHasClass(el, 7, 'layoutCtrl') ||
-			ancestorHasClass(el, 5, 'controls')) {
-			return;
-		} else {
-			$scope.deactivate();
-			document.removeEventListener('mousedown', handleMouseDown, true);
-		}
-	}
+// 	function handleMouseDown(event) {
+// 		var ancestorHasClass = Mics.ancestorHasClass;
+// 		var el = angular.element(event.target);
+// 		if (ancestorHasClass(el, 5, 'page') || 
+// 			ancestorHasClass(el, 7, 'layoutCtrl') ||
+// 			ancestorHasClass(el, 5, 'controls')) {
+// 			return;
+// 		} else {
+// 			$scope.deactivate();
+// 			document.removeEventListener('mousedown', handleMouseDown, true);
+// 		}
+// 	}
 	
 	$scope.deactivate = function() {
 		angular.element($element[0]).removeClass('pActive');

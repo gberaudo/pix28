@@ -1,9 +1,69 @@
 
 
 app.controller('LayoutController', 
-    ['$scope', 'FrameObject', 'Layouts', 'Colors', 'Misc',
-    function($scope, FrameObject, Layouts, Colors, Misc) {
+    ['$scope', 'FrameObject', 'Layouts', 'Colors', 'Misc', '$q', '$http',
+    function($scope, FrameObject, Layouts, Colors, Misc, $q, $http) {
 	$scope.colors = Colors;
+	
+	
+	initPatterns();
+	
+	function initPatterns() {
+		var userPatterns = getUserPatterns();
+		function getUserPatterns() {
+			//open DB
+		}
+		
+		var patternNames = ['polka', 'night-sky', 'buggi-hearts', 
+			'carreau-blue', 'carreau-red'];
+		var patterns = [];
+		var promises = [];
+		for (i = 0; i < patternNames.length; i++) {
+			function addPattern(i) {
+				var deferred = $q.defer();
+				var patternURL72 = 'static/patterns/' + patternNames[i] + '_72.png';
+				var patternURL300 = 'static/patterns/' + patternNames[i] + '_300.png';
+				var pattern = {};
+				
+				//convert pattern png file to dataURL
+				$http.get(patternURL300, {responseType: "blob"})
+				.success(function(blob) {
+					var reader = new FileReader();
+					reader.onload = function(evt) {
+						pattern.URL300 = evt.target.result;
+						$http.get(patternURL72, {responseType: "blob"})
+						.success(function(blob) {
+							var reader = new FileReader();
+							reader.onload = function(evt) {
+								pattern.URL72 = evt.target.result;
+								var img = new Image();
+								img.onload = function() {
+									var width = img.naturalWidth;
+									var height = img.naturalHeight;
+									pattern.name = patternNames[i];
+									pattern.width = width;
+									pattern.height = height;
+									patterns.push(pattern);
+									deferred.resolve(null);
+								};
+								img.src = patternURL72;
+							};
+							reader.readAsDataURL(blob);
+						});
+					};
+					reader.readAsDataURL(blob);
+				});
+				return deferred.promise;
+			}
+			promises.push(addPattern(i));
+		}
+		
+		$q.all(promises).then(function() {
+			$scope.patterns = patterns;
+		});
+	};
+	
+	
 	initAllLayout();
 	function initAllLayout() {
 		$scope.layouts = [];
@@ -72,19 +132,28 @@ app.controller('LayoutController',
 	$scope.showColors = function(event) {
 		activate(event, 'BMactive');
 		$scope.showColor = true;
-		$scope.showFrame = $scope.showPattern = false;
+		$scope.showFrame = false;
+		$scope.showPattern = false;
 	};
 	
+	/*---------------------Patterns --------------------------------*/
 	$scope.showPatterns = function(event) {
 		activate(event, 'BMactive');
 		$scope.showPattern = true;
-		$scope.showFrame = $scope.showColor = false;
+		$scope.showFrame = false;
+		$scope.showColor = false;
 	};
+	
+	
+	
+	
+	/*-------------------------------------------------------------*/
 
 	$scope.showFrames = function(event) {
 		activate(event, 'BMactive');
 		$scope.showFrame = true;
-		$scope.showColor = $scope.showPattern = false;
+		$scope.showColor = false;
+		$scope.showPattern = false;
 	};
 	
 	$scope.changeBGColor = function(color) {
@@ -97,18 +166,20 @@ app.controller('LayoutController',
 		}
 	};
 	
-	$scope.changeAlbumBGColor = function() {
-		for (i = 0; i < $scope.album.content.length; i++) {
-			$scope.album.content[i].background = $scope.current.BGcolor;
-			if (!!$scope.current.leftPage) {
-				$scope.current.leftPage.background = $scope.current.BGcolor;
-			}
-			if (!!$scope.current.rightPage) {
-				$scope.current.rightPage.background = $scope.current.BGcolor;
-				
-			}
+	$scope.removeBGColor = function() {
+		if (document.getElementsByClassName('pActive').length > 0) {
+			var activePage = document.getElementsByClassName('pActive')[0];
+			$scope.current[activePage.id].background = '';
+			$scope.current.BGcolor = '';
 		}
 	};
+	
+	$scope.changeAlbumBGColor = function() {
+		for (var i = 0; i < $scope.album.content.length; i++) {
+			$scope.album.content[i].background = $scope.current.BGcolor;
+		}
+	};
+	
 	
 	
 	$scope.showBorders = function(event) {
@@ -236,6 +307,35 @@ app.controller('LayoutController',
 			$scope.changeBGColor($scope.userColor);
 		}
 	};
+	$scope.patterntoAlbum = function() {
+		var pattern = $scope.current.pattern;
+		for (var i = 0; i < $scope.album.content.length; i++) {
+			var page = $scope.album.content[i];
+			page.patternURL = pattern.URL72;
+			page.patternURL300 = pattern.URL300;
+			page.patternWidth = pattern.width;
+			page.patternHeight = pattern.height;
+			page.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%';
+		}
+	};
+	
+	$scope.removePattern = function() {
+		if (document.getElementsByClassName('pActive').length > 0) {
+			var activePage = document.getElementsByClassName('pActive')[0];
+		}
+		var page = $scope.current[activePage.id];
+		page.patternURL = '';
+		page.patternURL300 = '';
+		page.patternWidth = '';
+		page.patternHeight = '';
+		page.patternSize = '';
+		$scope.current.pattern = {};
+	};
+	
+	var previewPattern = document.createElement('div');
+	previewPattern.id = 'previewPattern';
+	angular.element(previewPattern).addClass('preview');
+	document.body.appendChild(previewPattern);
 }]);
 
 app.controller('minLayoutController',
@@ -284,6 +384,7 @@ app.controller('minLayoutController',
 	var previewLayout = document.createElement('canvas');
 	angular.element(previewLayout).addClass('preview');
 	document.body.appendChild(previewLayout);
+	
  	$scope.previewLayout = function(layout, event) {
 		drawLayout(previewLayout, .6);
 		var mouseX = event.pageX,
@@ -291,7 +392,6 @@ app.controller('minLayoutController',
 		previewLayout.style.bottom = (document.body.offsetHeight - mouseY + 50) + 'px';
 		previewLayout.style.left = (mouseX - 100) + 'px';
 		previewLayout.style.display = 'block';
-		previewLayout.style.border = '1px solid #CCC';
 	};
 	
 	$scope.mouseLeave = function() {
@@ -329,5 +429,40 @@ app.controller('minLayoutController',
 				$scope.current[activePage.id].textBoxes.push(textbox);
 			}
 		}
+	};
+}]);
+
+
+app.controller('PatternController', ['$scope', 
+					function($scope) {
+	$scope.changePattern = function(pattern) {
+		if (document.getElementsByClassName('pActive').length > 0) {
+			var activePage = document.getElementsByClassName('pActive')[0];
+		}
+		var page = $scope.current[activePage.id];
+		page.patternURL = $scope.pattern.URL72;
+		page.patternURL300 = $scope.pattern.URL300;
+		page.patternWidth = $scope.pattern.width;
+		page.patternHeight = $scope.pattern.height;
+		page.patternSize = Math.floor($scope.pattern.width / $scope.pdfWidth * 100) + '%';
+		$scope.current.pattern = $scope.pattern;
+	};
+	
+	var previewPattern = document.getElementById('previewPattern');
+	
+ 	$scope.previewPattern = function(pattern, event) {
+		var mouseX = event.pageX,
+			mouseY = event.pageY;
+		previewPattern.style.bottom = (document.body.offsetHeight - mouseY + 50) + 'px';
+		previewPattern.style.left = (mouseX - 100) + 'px';
+		previewPattern.style.display = 'block';
+		previewPattern.style.width = 0.6 * $scope.pwidth + 'px';
+		previewPattern.style.height = 0.6 * $scope.pheight + 'px';
+		previewPattern.style.background = 'url("' + pattern.URL72 + '")';
+		previewPattern.style.backgroundSize =  pattern.width / 4 + "px";
+	};
+	
+	$scope.mouseLeave = function() {
+		previewPattern.style.display = 'none';
 	};
 }]);

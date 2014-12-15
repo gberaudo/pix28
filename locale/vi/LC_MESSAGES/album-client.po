@@ -57,6 +57,10 @@ msgstr "Bạn có chắc chắn muốn xóa album này?"
 msgid "Back to home page"
 msgstr "Về trang chủ"
 
+#: templates/index.html
+msgid "Border"
+msgstr ""
+
 #: static/js/albumController.js
 msgid "Cannot remove cover page!"
 msgstr "Không xóa được trang bìa."
@@ -170,6 +174,10 @@ msgid "Favorites"
 msgstr ""
 
 #: templates/index.html
+msgid "Frame"
+msgstr ""
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
 msgstr "Đang tạo file JPEG. Xin vui lòng chờ..."
 
@@ -198,6 +206,10 @@ msgstr "Xóa hộp văn bản này"
 #, fuzzy
 msgid "Level text up."
 msgstr "Xóa hộp văn bản này"
+
+#: templates/index.html
+msgid "Mask"
+msgstr ""
 
 #: templates/index.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."

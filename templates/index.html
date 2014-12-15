@@ -188,7 +188,7 @@ $def with (mode)
 									</span>
 								</li>
 								<li> 
-									<span class = 'icon el-icon-network'> </span>
+									<span class = 'icon fa fa-comment-o'> </span>
 									<span class = 'link'
 										ng-click = 'generateJpg()'
 										translate>
@@ -384,7 +384,10 @@ $def with (mode)
 							ng-click = 'pageFocus(\$event)'
 							ng-focus = 'pageFocus(\$event)'
 							style = 'width: {{pageWidth}}; height: {{pageHeight}}; 
-								background-color: {{current[page].background}}'>
+								background-color: {{current[page].background}};
+								background-image: url({{current[page].patternURL}});
+								background-size: {{current[page].patternSize}}'
+								>
 						
 						<div ng-repeat= 'frame in current[page].frames' 
 							ng-controller='CanvasController'
@@ -731,29 +734,48 @@ $def with (mode)
 										ng-mouseleave = 'mouseLeave()'
 										class = 'clickable minframe '/> 
 							</div>
+							<div class = 'apply'>
+								<span class = 'link respond' 
+									ng-click = 'saveAsFavourite()' translate>
+									Save as favourite </span>
+								<span class = 'link fa fa-question-circle'></span>
+							</div>
 						</div>
 						
 						<div ng-show = 'showBM'>
 							<ul id = 'backgroundMenu'
 								class = 'hMenu'>
 								<li class = 'BMItem clickable li BMactive'
-									ng-click = 'showColors(\$event)'>
+									ng-click = 'showColors(\$event)' translate>
 									Color
 								</li>
 								<li class = 'BMItem clickable li'
-									ng-click = 'showPatterns(\$event)'>
+									ng-click = 'showPatterns(\$event)' translate>
 									Pattern
 								</li>
-								<li class = 'BMItem clickable li'
+								<!--<li class = 'BMItem clickable li'
 									ng-click = 'showFrames(\$event)'>
 									Frame
-								</li>
+								</li>-->
 							</ul>
-							<div class = 'link respond apply'
+							<div  class = 'apply' ng-show = 'showColor'>
+								<span class = 'link respond'
+									ng-click = 'removeBGColor()'
+									style = 'margin-right: 1em' translate>
+									Remove color </span>
+								<span class = 'link respond'
 									ng-click = 'changeAlbumBGColor()'
-									ng-show = 'showColor'
 									translate>
-									Apply for all pages
+									Apply to all pages </span>
+							</div>
+							<div class = 'apply' ng-show = 'showPattern'> 
+								<span class = 'link respond'
+									ng-click = 'removePattern()'
+									style = 'margin-right: 1em' translate>
+									Remove pattern </span>
+								<span class = 'link respond'
+									ng-click = 'patterntoAlbum()' translate>
+									Apply to all pages </span>
 							</div>
 							<div id = 'background' 
 								class = 'showRoom'
@@ -766,6 +788,7 @@ $def with (mode)
 										height: {{0.2 * pheight + "px"}}'
 									ng-click = 'changeBGColor(color)'>
 								</div>
+								
 								<div class = 'showItem small'
 									ng-show = 'showColor'
 									style = 'height: {{0.2 * pheight + "px"}}'>
@@ -777,6 +800,21 @@ $def with (mode)
 										<input type = 'submit' value = 'OK'/>
 									</form>
 								</div>
+								
+								<div ng-repeat = 'pattern in patterns'
+									class = 'showItem'
+									ng-show = 'showPattern'
+									ng-controller = 'PatternController'
+									style = 'width: {{0.2 * pwidth + "px"}};
+										height: {{0.2 * pheight + "px"}};
+										background: url({{pattern.URL72}});
+										background-size: {{pattern.width / 7 + "px"}};
+										border: 1px solid #CCC'
+									ng-click = 'changePattern(pattern)'
+									ng-mouseover = 'previewPattern(pattern, \$event)'
+									ng-mouseleave = 'mouseLeave()'>
+								</div>
+
 							</div>
 						</div>
 						<div ng-show = 'showImgOpt'> 
@@ -801,8 +839,8 @@ $def with (mode)
 										ng-click = 'imgBordertoPage()'>
 										Apply to current page </span>
 									<span class = 'link respond'
-										ng-click = 'imgBordertoAlbum()'>
-										Apply to all album </span>
+										ng-click = 'imgBordertoAlbum()' translate>
+										Apply to album </span>
 							</div>
 							<div class = 'showRoom' id = 'imgOpt'
 								ng-init = 'showBorder = true'>
@@ -818,7 +856,7 @@ $def with (mode)
 									ng-click = 'changeBorder(color)'
 									class = 'showItem'>
 								</div>
-								<div class = 'borderCtrl'>
+								<div class = 'borderCtrl' ng-show = 'showBorder'>
 									<span> Border thickness </span>
 									<span class = 'btn respond icon fa fa-sort-up'
 										ng-click = 'increaseThickness()'></span>

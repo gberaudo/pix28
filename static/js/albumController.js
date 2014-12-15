@@ -478,6 +478,8 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 		
 		function showPage(page, view) {
 			view.style.backgroundColor = page.background || '#FFFFFF';
+			view.style.backgroundImage = 'url("' + page.patternURL + '")';
+			view.style.backgroundSize = page.patternSize;
 			var pwidth = $scope.previewWidth/2,
 				pheight = $scope.previewHeight;
 			//draw images
@@ -767,16 +769,20 @@ app.controller('ExportController',
 				margin: 0
 			});
 			makeContent();
-			
 
 			function makeContent() {
 				var i = 0; //page index
 				putNextPage();
-				
+
 				function putNextPage() {
 					$scope.processPage = i+1;
 					var page = json[i];
 					setBGColor(page);
+					if (!!page.patternURL) {
+						drawPattern(page);
+					}
+					putObjects();
+				
 					
 					function setBGColor(page) {
 						if (!!page.background) {
@@ -784,7 +790,20 @@ app.controller('ExportController',
 							doc.fill(page.background);
 						}
 					}
-					
+
+					function drawPattern(page) {
+						var width = page.patternWidth;
+						var height = page.patternHeight;
+						var repeatX = Math.ceil(pdfWidth / width);
+						var repeatY = Math.ceil(pdfHeight / height);
+						for (var i = 0; i < repeatX; i++) {
+							for (var j = 0; j < repeatY; j++) {
+								doc.image(page.patternURL300, i * width, j * height,
+											{width: width, height: height});
+							}
+						}
+					}
+
 					function putText(tb) {
 						if (!!tb.text) { 
 						
@@ -811,7 +830,7 @@ app.controller('ExportController',
 							doc.restore();
 						}
 					}
-					
+
 					function putImage(frame) {
 						var  deferred1 = $q.defer();
 						if (!!frame.image.DbId) {
@@ -924,34 +943,18 @@ app.controller('ExportController',
 						}
 						return deferred1.promise;
 					}
-					var objList = angular.copy(page.frames);
-					objList = objList.concat(angular.copy(page.textBoxes));
-					console.log(objList.length);
-					if (objList.length > 0) {
-						Misc.sortObjList(objList, 'layer');
-						var n = 0;
-						
-						
-						function putNextObject() {
-							var obj = objList[n];
-							if ('text' in obj) {
-								putText(obj);
-								n++;
-								if (n < objList.length) {
-									putNextObject();
-								} else {
-									i++;
-									if (i < json.length) {
-										doc.addPage();
-										putNextPage();
-									} else {
-										doc.end();
-										$scope.process = 'finished';
-										outputPdf(doc);
-									}
-								}
-							} else {
-								putImage(obj).then(function() {
+					
+
+					function  putObjects() {
+						var objList = angular.copy(page.frames);
+						objList = objList.concat(angular.copy(page.textBoxes));
+						if (objList.length > 0) {
+							Misc.sortObjList(objList, 'layer');
+							var n = 0;
+							function putNextObject() {
+								var obj = objList[n];
+								if ('box' in obj) {
+									putText(obj);
 									n++;
 									if (n < objList.length) {
 										putNextObject();
@@ -966,27 +969,44 @@ app.controller('ExportController',
 											outputPdf(doc);
 										}
 									}
-								});
-							}
-						};
-					
-						putNextObject();
-					}
-				
-					else {
-						i++;
-						if (i < json.length) {
-								doc.addPage();
-								putNextPage();
+								} 
+								if ('image' in obj) {
+									putImage(obj).then(function() {
+										n++;
+										if (n < objList.length) {
+											putNextObject();
+										} else {
+											i++;
+											if (i < json.length) {
+												doc.addPage();
+												putNextPage();
+											} else {
+												doc.end();
+												$scope.process = 'finished';
+												outputPdf(doc);
+											}
+										}
+									});
+								}
+							
+							};
+							putNextObject();
+						}
+						else {
+							i++;
+							if (i < json.length) {
+									doc.addPage();
+									putNextPage();
 							} else {
 								doc.end();
 								$scope.process = 'finished';
 								outputPdf(doc);
 							}
 						}
+					}
 				}
-			};
-		};
+			}
+		}
 	};
 
 	$scope.generateJpg = function() {

@@ -231,7 +231,7 @@
 }
 
 .LMactive, .LSactive, .BMactive, .IOactive {
-	background-color: #FFFFFF !important;
+	background-color: #EFEFEF !important;
 	font-weight: 900; 
 }
 
@@ -287,10 +287,10 @@
 }
 
 .apply {
-position: absolute; 
-top: 20%; 
-right: 3%;
-font-size: 90%;
+	position: absolute; 
+	top: 20%; 
+	right: 3%;
+	font-size: 90%;
 }
 
 canvas.minframe, .showItem {
@@ -681,10 +681,10 @@ span[name = 'title'] {
 
 .preview {
 	position: absolute;
-	z-index: 1001;
 	background-color: #FFFFFF;
 	box-shadow: 2px 2px 2px #666; 
 	display: none;
+	border: 1px solid #CCC;
 }
 
 #previewPage {

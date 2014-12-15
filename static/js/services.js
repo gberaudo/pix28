@@ -420,24 +420,86 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	
 	this.drawPage = function(page, canvas, scope) {
 		var ctx = canvas.getContext('2d');
-		var deferred = $q.defer(),
-			promises = [];
+		var deferred = $q.defer();
 		canvas.width = 800;
 		canvas.height = canvas.width * scope.pheight/scope.pwidth;
 		ctx.fillStyle = page.background || '#FFFFFF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		
-		var objList = angular.copy(page.frames);
-		objList = objList.concat(angular.copy(page.textBoxes));
-		Misc.sortObjList(objList, 'layer');
+		function drawPattern() {
+			var deferred1 = $q.defer();
+			if (!!page.patternURL) {
+				var tempCanvas = document.createElement('canvas');
+				tempCtx = tempCanvas.getContext('2d');
+				var img = new Image();
+				var patternSize = parseFloat(page.patternSize) * canvas.width /100; 
+				img.src = page.patternURL;
+				img.onload = function() {
+					tempCanvas.width = patternSize;
+					tempCanvas.height = img.naturalHeight/img.naturalWidth * patternSize;
+					tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+					var patImg = new Image();
+					patImg.src = tempCanvas.toDataURL();
+					patImg.onload = function() {
+						var pat = ctx.createPattern(patImg,"repeat");
+						ctx.rect(0,0,canvas.width, canvas.height);
+						ctx.fillStyle = pat;
+						ctx.fill();
+						deferred1.resolve(null);
+					};
+				};
+			} else {
+				deferred1.resolve(null);
+			}
+			return deferred1.promise;
+		}
 		
-		var n = 0;
-		drawNext();
+		drawPattern().then(function() {
+			drawObjects() ;
+		});
+		
+		function drawObjects() {
+			var objList = angular.copy(page.frames);
+			objList = objList.concat(angular.copy(page.textBoxes));
+			Misc.sortObjList(objList, 'layer');	
+			if (objList.length > 0) {
+				var n = 0;
+				
+				function drawNext() {
+					var obj = objList[n];
+					
+					function checkEnd(m) {
+						if (m < objList.length) {
+							drawNext();
+						} else {
+							drawWatermark();
+							deferred.resolve(null);
+						}
+					}
+					n++;
+					if ('text' in obj) {
+						drawText(obj);
+						checkEnd(n);
+					} else if ('image' in obj) {
+						drawImage(obj).then(function() {
+							checkEnd(n);
+						});
+					} else {
+						checkEnd(n);
+					}
+				}
+				drawNext();
+			} else {
+				drawWatermark();
+				deferred.resolve(null);
+			}
+			
+		}
 		
 		return deferred.promise;
 		
 		function drawImage(frame) {
-			var deferred = $q.defer();
+			var deferred2 = $q.defer();
 			if (!!frame.image.src) {
 				var img = new Image();
 				var display = frame.display;
@@ -447,34 +509,31 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 					height = frame.canvas.height * canvas.height /100;
 				var centerX = left + width / 2,
 						centerY = top + height / 2;
-				if (frame.border.thickness && frame.border.color) {
-					var thickness = frame.border.thickness * canvas.width / scope.pwidth;
-					ctx.save();
-					ctx.translate(centerX, centerY);
-					ctx.rotate(frame.angle * Math.PI / 180);
-					ctx.lineWidth = thickness;
-					ctx.strokeStyle = frame.border.color;
-					ctx.rect(-(width + thickness)/2, -(height + thickness) / 2,
-						width + thickness, height + thickness);
-					ctx.stroke();
-					ctx.restore();
-				}
+				
 				
 				img.onload = function() {
 					ctx.save();
 					ctx.translate(centerX, centerY);
 					ctx.rotate(frame.angle * Math.PI / 180);
+					if (frame.border.thickness && frame.border.color) {
+						var thickness = frame.border.thickness * canvas.width / scope.pwidth;
+						ctx.lineWidth = thickness;
+						ctx.strokeStyle = frame.border.color;
+						ctx.strokeRect(-(width + thickness)/2, -(height + thickness) / 2,
+							width + thickness, height + thickness);
+					}
 					ctx.drawImage(img, display.sx, display.sy, display.sw, display.sh,
 									-width/2, -height/2, width, height);
 					ctx.restore();
-					deferred.resolve(null);
+					deferred2.resolve(null);
 				};
 				img.src = frame.image.src;
 				
-			} else {
+			} 
+			else {
 				deferred.resolve(null);
 			}
-			return deferred.promise;
+			return deferred2.promise;
 		}
 	
 		function drawText(textBox) {
@@ -562,42 +621,12 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			ctx.fillText('LibreAlbum', 30, 50);
 			ctx.fillStyle = '#000000';
 			ctx.fillText('LibreAlbum', 33, 53);
-// 			ctx.fillStyle = 'darkred';
-// 			ctx.fillText('AlbumIt', 36, 56);
 			ctx.restore();
 		};
 		
-		
-		
-		function drawNext() {
-			var obj = objList[n];
-			if ('text' in obj) {
-				drawText(obj);
-				n++;
-				if (n < objList.length) {
-					drawNext();
-				} else {
-					drawWatermark();
-					deferred.resolve(null);
-				}
-			} else {
-				drawImage(obj).then(function() {
-					n++;
-					if (n < objList.length) {
-						drawNext();
-					} else {
-						drawWatermark();
-						deferred.resolve(null);
-					}
-				});
-			}
-			
-		}
-		
-		
-		
-
 	};
+		
+		
 	
 	
 	

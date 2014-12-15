@@ -57,6 +57,10 @@ msgstr "Vous êtes sure de vouloir le supprimer?"
 msgid "Back to home page"
 msgstr "Retourner à la page d'accueil"
 
+#: templates/index.html
+msgid "Border"
+msgstr ""
+
 #: static/js/albumController.js
 msgid "Cannot remove cover page!"
 msgstr "Ne peut pas supprimer la page de couverture !"
@@ -176,6 +180,10 @@ msgid "Favorites"
 msgstr ""
 
 #: templates/index.html
+msgid "Frame"
+msgstr ""
+
+#: templates/index.html
 msgid "Generating Jpg. Please be patient..."
 msgstr "Génération du JPEG. Soyez patients..."
 
@@ -204,6 +212,10 @@ msgstr "Supprimer cette boîte de texte"
 #, fuzzy
 msgid "Level text up."
 msgstr "Supprimer cette boîte de texte"
+
+#: templates/index.html
+msgid "Mask"
+msgstr ""
 
 #: templates/index.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."
