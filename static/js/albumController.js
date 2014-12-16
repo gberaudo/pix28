@@ -857,7 +857,7 @@ app.controller('ExportController',
 									//crop image on phantom canvas
 									var canvas = document.createElement('canvas'),
 										ctx = canvas.getContext('2d'),
-										realWidth = pageRatio * display.dw;
+										realWidth = pdfWidth * frame.canvas.width / 100;
 									if (sw < coeff * realWidth) {
 										scale = 1;
 									} else {
@@ -933,10 +933,12 @@ app.controller('ExportController',
 								};
 								getRq.onerror = function() {
 										console.log('get image error', id);
+										deferred1.resolve(null);
 								};
 							};
 							rq.onerror = function() {
 								console.log('cannot open DB');
+								deferred1.resolve(null);
 							};
 						}
 						else {
@@ -954,6 +956,27 @@ app.controller('ExportController',
 							var n = 0;
 							function putNextObject() {
 								var obj = objList[n];
+ 
+								if ('image' in obj) {
+									console.log('put image');
+									putImage(obj).then(function() {
+										console.log('finish putting image');
+										n++;
+										if (n < objList.length) {
+											putNextObject();
+										} else {
+											i++;
+											if (i < json.length) {
+												doc.addPage();
+												putNextPage();
+											} else {
+												doc.end();
+												$scope.process = 'finished';
+												outputPdf(doc);
+											}
+										}
+									});
+								}
 								if ('box' in obj) {
 									putText(obj);
 									n++;
@@ -970,24 +993,6 @@ app.controller('ExportController',
 											outputPdf(doc);
 										}
 									}
-								} 
-								if ('image' in obj) {
-									putImage(obj).then(function() {
-										n++;
-										if (n < objList.length) {
-											putNextObject();
-										} else {
-											i++;
-											if (i < json.length) {
-												doc.addPage();
-												putNextPage();
-											} else {
-												doc.end();
-												$scope.process = 'finished';
-												outputPdf(doc);
-											}
-										}
-									});
 								}
 							
 							};

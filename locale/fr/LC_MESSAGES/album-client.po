@@ -46,7 +46,13 @@ msgid "All"
 msgstr "Toutes"
 
 #: templates/index.html
-msgid "Apply for all pages"
+#, fuzzy
+msgid "Apply to album"
+msgstr "Appliquer à toutes les pages"
+
+#: templates/index.html
+#, fuzzy
+msgid "Apply to all pages"
 msgstr "Appliquer à toutes les pages"
 
 #: templates/index.html
@@ -91,6 +97,10 @@ msgstr "Cliquer pour créer un nouvel album"
 #: templates/index.html
 msgid "Click to go to album"
 msgstr "Cliquer pour aller à l'album"
+
+#: templates/index.html
+msgid "Color"
+msgstr ""
 
 #: templates/index.html
 msgid "Congratulation!"
@@ -252,8 +262,22 @@ msgid "Page layout"
 msgstr "Mise en page"
 
 #: templates/index.html
+msgid "Pattern"
+msgstr ""
+
+#: templates/index.html
 msgid "Preview album"
 msgstr "Aperçu de l' album"
+
+#: templates/index.html
+#, fuzzy
+msgid "Remove color"
+msgstr "Couleur du texte"
+
+#: templates/index.html
+#, fuzzy
+msgid "Remove pattern"
+msgstr "Supprimer cette boîte de texte"
 
 #: templates/index.html
 msgid "Remove text box"
@@ -278,6 +302,10 @@ msgstr "Pivoter cette boîte de texte vers la gauche"
 #: templates/index.html
 msgid "Rotate text box right"
 msgstr "Pivoter cette boîte de texte vers la droite"
+
+#: templates/index.html
+msgid "Save as favourite"
+msgstr ""
 
 #: templates/index.html
 msgid "Save this album"
