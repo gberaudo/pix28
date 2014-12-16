@@ -324,11 +324,11 @@ app.controller('LayoutController',
 			var activePage = document.getElementsByClassName('pActive')[0];
 		}
 		var page = $scope.current[activePage.id];
-		page.patternURL = '';
-		page.patternURL300 = '';
-		page.patternWidth = '';
-		page.patternHeight = '';
-		page.patternSize = '';
+		page.patternURL = undefined;
+		page.patternURL300 = undefined;
+		page.patternWidth = undefined;
+		page.patternHeight = undefined;
+		page.patternSize = undefined;
 		$scope.current.pattern = {};
 	};
 	

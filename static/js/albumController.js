@@ -63,7 +63,6 @@ app.controller('AlbumController',
  			$scope.album.title = '';
  			$scope.album.description = '';
 			$scope.album.date = date.toLocaleString($scope.userInfo.lang, options);
-			console.log($scope.userInfo.lang);
 			makeRandomAlbum(20);
 			$scope.$parent.inAlbum = true;
 			$scope.$parent.showAlbums = false;
@@ -89,37 +88,35 @@ app.controller('AlbumController',
 		});
 	};
 	
-	function makeRandomAlbum(num) {
-		function makeRandomPage(layoutList) {
-			var lset = Misc.randomFromList(layoutList);
-			var layouts = Layouts[lset],
-				layout = Misc.randomFromList(layouts),
-				page = new PageObject();
-			for (var k in layout.frames) {
-				var image = {},
-					canvas = angular.copy(layout.frames[k]),
-					frame = new FrameObject(canvas, image, {}); 
-				page.frames.push(frame);
-			}
-			for (var j in layout.boxes) {
-				var textbox = new TextBoxObject(layout.boxes[j].box,layout.boxes[j].font );
-				page.textBoxes.push(textbox);
-			}
-			return page;
+	function makeRandomPage(layoutList) {
+		var lset = Misc.randomFromList(layoutList);
+		var layouts = Layouts[lset],
+			layout = Misc.randomFromList(layouts),
+			page = new PageObject();
+		for (var k in layout.frames) {
+			var image = {},
+				canvas = angular.copy(layout.frames[k]),
+				frame = new FrameObject(canvas, image, {}); 
+			page.frames.push(frame);
 		}
-			
+		for (var j in layout.boxes) {
+			var textbox = new TextBoxObject(layout.boxes[j].box,layout.boxes[j].font );
+			page.textBoxes.push(textbox);
+		}
+		return page;
+	}
+		
+	function makeRandomAlbum(num) {
 		var frontPage = makeRandomPage(
 								[$scope.layoutList[0], $scope.layoutList[1]]),
 			backPage = makeRandomPage(
 								[$scope.layoutList[0], $scope.layoutList[1]]);
-		
 		$scope.album.content = [frontPage];
 		for (var i = 1; i < num-1; i++) {
 			var page = makeRandomPage($scope.layoutList);
 			$scope.album.content.push(page);
 		}
 		$scope.album.content.push(backPage);
-		
 		$scope.current.rightPage = $scope.album.content[0];
 		$scope.current.pageNum = 0;
 		updateView('prev');
@@ -259,8 +256,44 @@ app.controller('AlbumController',
 
 
 	$scope.addNewPage = function (){
-		$scope.current.leftPage = new PageObject();
-		$scope.current.rightPage = new PageObject();
+		
+		var pattern, color;
+		if ($scope.current.BGcolor) {
+			color = $scope.current.BGcolor;
+		} else {
+			color = $scope.current.leftPage.background 
+				|| $scope.current.rightPage.background || undefined;
+		}
+			
+		if ($scope.current.pattern) {
+			pattern = $scope.current.pattern;
+		} else {
+			pattern.URL72 = $scope.current.rightPage.patternURL
+								|| $scope.current.leftPage.patternURL || undefined;
+			pattern.URL300 =  $scope.current.rightPage.patternURL300
+								|| $scope.current.leftPage.patternURL300 || undefined;
+			pattern.width = $scope.current.rightPage.patternWidth
+								|| $scope.current.leftPage.patternWidth || undefined;
+			pattern.width = $scope.current.rightPage.patternHeight
+								|| $scope.current.leftPage.patternHeight || undefined;
+		}
+		
+		var page1 = makeRandomPage($scope.layoutList);
+		page1.background = color
+		page1.patternURL = pattern.URL72;
+		page1.patternURL300 = pattern.URL300;
+		page1.patternWidth = pattern.width;
+		page1.patternHeight = pattern.height;
+		page1.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%' || undefined;
+		$scope.current.leftPage = page1;
+		var page2 = makeRandomPage($scope.layoutList);
+		page2.background = color;
+		page2.patternURL = pattern.URL72;
+		page2.patternURL300 = pattern.URL300;
+		page2.patternWidth = pattern.width;
+		page2.patternHeight = pattern.height;
+		page2.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%' || undefined;
+		$scope.current.rightPage = page2;
 		$scope.current.pageNum += 2;
 		 //insert a new page to the album
 		$scope.album.content.splice(
@@ -958,9 +991,7 @@ app.controller('ExportController',
 								var obj = objList[n];
  
 								if ('image' in obj) {
-									console.log('put image');
 									putImage(obj).then(function() {
-										console.log('finish putting image');
 										n++;
 										if (n < objList.length) {
 											putNextObject();
@@ -971,7 +1002,6 @@ app.controller('ExportController',
 												putNextPage();
 											} else {
 												doc.end();
-												$scope.process = 'finished';
 												outputPdf(doc);
 											}
 										}
@@ -989,7 +1019,6 @@ app.controller('ExportController',
 											putNextPage();
 										} else {
 											doc.end();
-											$scope.process = 'finished';
 											outputPdf(doc);
 										}
 									}
