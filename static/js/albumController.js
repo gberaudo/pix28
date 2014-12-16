@@ -256,27 +256,19 @@ app.controller('AlbumController',
 
 
 	$scope.addNewPage = function (){
-		
-		var pattern, color;
-		if ($scope.current.BGcolor) {
-			color = $scope.current.BGcolor;
+		var pattern = {};
+		var color, modelPage;
+		if (!!$scope.current.rightPage) {
+			modelPage = $scope.current.rightPage;
 		} else {
-			color = $scope.current.leftPage.background 
-				|| $scope.current.rightPage.background || undefined;
+			modelPage = $scope.current.leftPage;
 		}
-			
-		if ($scope.current.pattern) {
-			pattern = $scope.current.pattern;
-		} else {
-			pattern.URL72 = $scope.current.rightPage.patternURL
-								|| $scope.current.leftPage.patternURL || undefined;
-			pattern.URL300 =  $scope.current.rightPage.patternURL300
-								|| $scope.current.leftPage.patternURL300 || undefined;
-			pattern.width = $scope.current.rightPage.patternWidth
-								|| $scope.current.leftPage.patternWidth || undefined;
-			pattern.width = $scope.current.rightPage.patternHeight
-								|| $scope.current.leftPage.patternHeight || undefined;
-		}
+
+		color = modelPage.background || undefined;
+		pattern.URL72 = modelPage.patternURL || undefined;
+		pattern.URL300 = modelPage.patternURL300 || undefined;
+		pattern.width = modelPage.patternWidth || undefined;
+		pattern.width = modelPage.patternHeight || undefined;
 		
 		var page1 = makeRandomPage($scope.layoutList);
 		page1.background = color

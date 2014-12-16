@@ -768,5 +768,14 @@ option {
 	bottom: 100%;
 	left: 40%;
 }
+
+input::selection {
+	background-color: #AAA;
+	
+}
+
+input::-moz-selection {
+	background-color: #AAA;
+}
 /*-------------------------------fonts -------------------*/
 
