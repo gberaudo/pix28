@@ -249,12 +249,12 @@ app.controller('TextBoxController',
 		
 		switch (para) {
 			case 'horizontal':
-				if (offset < -box.left + marginX) {
-					offset = -box.left + marginX;
-				}
-				if (offset + box.left + box.width > pwidth - marginX) {
-					offset = pwidth - box.left - box.width - marginX;
-				}
+// 				if (offset < -box.left + marginX) {
+// 					offset = -box.left + marginX;
+// 				}
+// 				if (offset + box.left + box.width > pwidth - marginX) {
+// 					offset = pwidth - box.left - box.width - marginX;
+// 				}
 				box.left += offset;
 				TAcontainer.style.left = box.left + "px";
 				break;

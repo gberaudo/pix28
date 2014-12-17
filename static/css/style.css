@@ -56,7 +56,7 @@
 
 #leftPage {
 	position: absolute;
-	left: 10%; 
+	right: 50%; 
 	top: 11%;
  	overflow: hidden; 
 	box-shadow: 2px 3px 5px 6px #ccc;
@@ -75,6 +75,7 @@
 
 [name = 'textbox'] {
 	position: absolute;
+	z-index: 15;
 	top: 0px;
 	left: 0px;
 	background-color: transparent;
@@ -99,17 +100,19 @@
 
 .textHandle-tl {
 	position: absolute; 
-	top: -0.5em; 
-	left: -0.5em;
+	top: 0; 
+	left: 0;
 	color:  #0489B1;
 }
 
 .textHandle-br {
 	position: absolute; 
-	right: -0.5em;
-	bottom: -0.5em;
+	z-index: 14;
+	right: -0.1em;
+	bottom: -0.1em;
 	transform: rotate(45deg);
 	color:  #0489B1;
+	font-size: 0.8em;
 }
 
 #refTop, #refBot {
@@ -681,6 +684,7 @@ span[name = 'title'] {
 
 .preview {
 	position: absolute;
+	z-index: 100;
 	background-color: #FFFFFF;
 	box-shadow: 2px 2px 2px #666; 
 	display: none;

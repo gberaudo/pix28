@@ -120,7 +120,9 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 						id: cursor.value.id, 
 						description: cursor.value.description,
 						title: cursor.value.title,
-						date: cursor.value.date
+						date: cursor.value.date,
+						width: cursor.value.width || undefined,
+						height: cursor.value.height || undefined
 					};
 					scope.albumSCs.push(albumSC);
 					cursor.continue();
@@ -171,7 +173,7 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 	};
 	
 	
-	this.updateAlbumDB = function(content, id, title, description, date) {
+	this.updateAlbumDB = function(content, id, title, description, date, width, height) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		var deferred = $q.defer();
 		openRq.onsuccess = function(event) {
@@ -185,6 +187,8 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 				album.title = title;
 				album.description = description;
 				album.date = date;
+				album.width = width;
+				album.height = height;
 				
 				var updateRq = store.put(album);
 				updateRq.onsuccess = function(event){
@@ -421,8 +425,13 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	this.drawPage = function(page, canvas, scope) {
 		var ctx = canvas.getContext('2d');
 		var deferred = $q.defer();
-		canvas.width = 800;
-		canvas.height = canvas.width * scope.pheight/scope.pwidth;
+		if (scope.pwidth > scope.pheight) {
+			canvas.width = 800;
+			canvas.height = canvas.width * scope.pheight/scope.pwidth;
+		} else {
+			canvas.height = 800;
+			canvas.width = canvas.height * scope.pwidth/scope.pheight;
+		}
 		ctx.fillStyle = page.background || '#FFFFFF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		
