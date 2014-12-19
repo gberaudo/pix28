@@ -63,10 +63,10 @@ app.run(['$rootScope', 'gettextCatalog',
 	
  
 	gettextCatalog.debug = true; 
-	
-	var defaultFontSize = Math.floor(0.012*screen.width);
+	$rootScope.screenWidth = window.innerWidth;
+	var defaultFontSize = Math.floor(0.012*$rootScope.screenWidth);
 	document.body.style.fontSize = defaultFontSize + 'px';
-	$rootScope.screenWidth = screen.width;
+	
 }]);
 
 app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices', 

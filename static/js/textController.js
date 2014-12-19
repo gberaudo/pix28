@@ -77,7 +77,9 @@ app.controller('TextBoxController',
 
 	function textboxBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 6, 'controls')||(el.scope() == $scope)) {
+		if (Misc.ancestorHasClass(el, 6, 'controls')
+			|| Misc.ancestorHasClass(el, 6, 'previewText')
+			||(el.scope() == $scope)) {
 			return;
 		} else {
 			angular.element($scope.textArea).removeClass('tActive');

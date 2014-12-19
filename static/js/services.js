@@ -338,7 +338,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#666';
 		ctx.fillText(msg, 5, 20);
-		canvas.style.border = '1px solid #CCC';
+// 		canvas.style.outline = '1px solid #CCC inset';
 	};
 	
 	this.delCanvas = function(el, $scope) {

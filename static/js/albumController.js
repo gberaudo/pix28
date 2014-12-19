@@ -21,7 +21,8 @@ app.controller('AlbumController',
 		$scope.show = {};
 
 		var albumEl = document.getElementById('album');
-		albumEl.style.height =  0.55*albumEl.offsetWidth + 'px';
+		$scope.albumElHeight = 0.53*albumEl.offsetWidth
+		albumEl.style.height =  $scope.albumElHeight + 'px';
 		
 		//set default page size (for compatibility with previous version)
 		$scope.pheight = $scope.pwidth 
@@ -35,8 +36,12 @@ app.controller('AlbumController',
 			'x1', 'x2', 'x3', 'x4', 'x5'
 		];
 	};
+	$scope.cancelUpdater = undefined;
 	
 	function setUpdateAlbum() {
+		if ($scope.cancelUpdater) {
+			$scope.cancelUpdater();
+		}
 		var updateAlbum = $interval(function() {
 			if ($scope.$parent.inAlbum) {
 				DBServices.updateAlbumDB(
@@ -47,16 +52,17 @@ app.controller('AlbumController',
 				
 			} else {
 				$interval.cancel(updateAlbum);
+				$scope.cancelUpdater = undefined;
 			}
 		}, 10000);
+
+		$scope.cancelUpdater = function() {
+			$interval.cancel(updateAlbum);
+		};
 	}
 	/*------------Album control----------------------------*/
 	$scope.createAlbum = function(width, height) {
-		if (!!$scope.current.albumId) {
-				$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
-				$scope.currentAlbumSC.description = $scope.album.description;
-				$scope.currentAlbumSC.date = $scope.album.date;
-		}
+	
 		DBServices.addAlbum().then(function(id) {
 			$scope.$parent.inAlbum = true;
 			var date = new Date();
@@ -80,6 +86,8 @@ app.controller('AlbumController',
 			$scope.pdfWidth = width;
 			$scope.pdfHeight = height;
 			$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
+			$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72) / 10
+				+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72) / 10 + 'cm';
 			
 			makeRandomAlbum(20);
 			
@@ -100,6 +108,8 @@ app.controller('AlbumController',
 			};
 			$scope.albumSCs.push($scope.currentAlbumSC);
 			$timeout(function() {
+				var doublePage = document.getElementById('doublepage');
+				$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
 				document.getElementById('titleInput').focus();
 			}, 200);
 			setUpdateAlbum();
@@ -140,6 +150,11 @@ app.controller('AlbumController',
 		updateView('prev');
 	}
 
+	$scope.createCustomAlbum = function(customWidth, customHeight) {
+		var width = Math.round(customWidth * 72 / 2.54);
+		var height = Math.round(customHeight * 72 / 2.54);
+		$scope.createAlbum(width, height);
+	};
 	$scope.delAlbumRq = function() {
 		$scope.delAlbum = true;
 		$scope.hideAlbum = true;
@@ -222,7 +237,7 @@ app.controller('AlbumController',
 					$scope.album.content = angular.copy(getRq.result.content);
 					$scope.album.description = getRq.result.description;
 					$scope.album.title = getRq.result.title || getRq.result.date;
-					if (!!albumSC.width) {
+					if (!!getRq.result.width) {
 						var width = getRq.result.width;
 						var height = getRq.result.height;
 						if (width > height) {
@@ -242,11 +257,12 @@ app.controller('AlbumController',
 						$scope.pheight = $scope.pwidth =  $scope.maxSize;
 						$scope.pageHeight = $scope.pheight + 'px';
 						$scope.pageWidth = $scope.pwidth + 'px';
-						$scope.pdfWidth = 595;
-						$scope.pdfHeight = 595;
+						$scope.album.width = $scope.pdfWidth = 595;
+						$scope.album.height = $scope.pdfHeight = 595;
 					}
-
-					
+					$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
+					$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72)/10
+						+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72)/10 + 'cm';
 					$scope.current.rightPage = $scope.album.content[0];
 					$scope.$apply(function() {
 						makeTitle();
@@ -257,6 +273,8 @@ app.controller('AlbumController',
 						$scope.current.albumId = id;
 						$scope.imgLoad = false;
 						$timeout(function() {
+							var doublePage = document.getElementById('doublepage');
+							$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
 							$scope.imgLoad = true;
 						}, 20);
 						updateView('prev');
@@ -380,9 +398,9 @@ app.controller('AlbumController',
 			var div = document.createElement('div');
 			div.setAttribute('class', 'alert');
 			div.innerHTML = msg;
-			div.style.width = screen.width/4 + 'px';
-			div.style.top = screen.width/12 + 'px';
-			div.style.left = screen.width/4 + 'px';
+// 			div.style.width = screen.width/4 + 'px';
+// 			div.style.top = screen.width/12 + 'px';
+// 			div.style.left = screen.width/4 + 'px';
 			document.body.appendChild(div);
 			$timeout(function() {
 				document.body.removeChild(div);
@@ -527,8 +545,17 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 					function($scope, $q, $timeout, ImgService) {
 	
 	$scope.previewPage = function(num) {
-		$scope.previewHeight = Math.floor(0.4 * $scope.screenWidth);
-		var previewWidth = 2 * $scope.previewHeight * $scope.pwidth / $scope.pheight + 1;
+		var maxHeight = Math.floor(0.9 * window.innerHeight);
+		var maxWidth = Math.floor(0.9 * window.innerWidth);
+		var prop = 0.5 * $scope.pheight / $scope.pwidth;
+		if (prop < maxHeight / maxWidth) {
+			previewWidth = maxWidth;
+			previewHeight = Math.round(prop * previewWidth);
+		} else {
+			previewHeight = maxHeight;
+			previewWidth = Math.round(previewHeight / prop);
+		}
+		$scope.previewHeight = previewHeight;
 		$scope.previewWidth = previewWidth;
 		document.addEventListener('keydown', handleKeyDown, true);
 		$scope.viewPageNum = num;

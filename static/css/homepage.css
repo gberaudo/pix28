@@ -2,7 +2,7 @@ body {
 	font-family: Arial, Helvetica, sans-serif; 
 	width: 100%;
 	position: relative;
-	min-height: 800px;
+	min-height: 500px;
 	color: #333;
 }
 
@@ -58,7 +58,9 @@ body {
 	height: 1.5em;
 	margin-left: .5em;
 }
-
+#languages img:hover {
+	box-shadow: 0px 0px 1px 1px #ccc;
+}
 #slogan {
 	position: absolute;
 	font-size: 180%;
@@ -114,11 +116,15 @@ body {
 	border-radius: 4px;
 }
 
+.format:hover {
+	box-shadow: 0 0 2px 2px #ccc;
+}
+
 
 .format:before {
 	content: "";
 	display: block;
-	padding-top: 25%; /* initial ratio of 1:1*/
+	padding-top: 30%; 
 }
 
 span.header {

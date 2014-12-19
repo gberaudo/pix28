@@ -131,7 +131,7 @@ $def with (mode)
 			
 			<div class = 'format container'> 
 				<div class = 'content'>
-					<span class = 'header'> 18cm x 21cm </span> 
+					<span class = 'header'> 21cm x 18cm </span> 
 					<div class = 'model'>
 						<img src = '' alt =''>
 					</div> 
@@ -141,6 +141,37 @@ $def with (mode)
 						Create album</span>
 				</div>
 			</div>
+			
+			<br/> <br/>
+			<div class = 'bigbtn respond' 
+				ng-click = 'showCustomAlbum = !showCustomAlbum'
+				ng-init = 'showCustomAlbum = false'
+				style = 'width: 16em'>
+				Custom format
+			</div>
+				<div>
+					<form ng-submit = 'createCustomAlbum(customWidth, customHeight)'
+						ng-show = 'showCustomAlbum'
+						style = 'font-size: 90%; display: table'>
+					<div style = 'display: table-row'>
+					<label style = 'display: table-cell'> Height (cm) </label>
+					<input type = 'number' step = '0.1' required
+						ng-model = 'customHeight' maxlength = '5' min = '5' max = '50'
+						style= 'width: 3em;display: table-cell'/> <br/>
+					</div>
+					<div style = 'display: table-row'>
+					<label style = 'display: table-cell' > Width (cm)</label>
+					<input type = 'number' step = '0.1' required 
+						ng-model = 'customWidth' 
+						maxlength = '5' min = '5' max = '50'
+						style = 'width: 3em; display: table-cell'/>  
+					<input type = 'submit' value = 'Create' 
+					style = 'float: right'>
+					</div>
+					
+					</form>
+				</div>
+			
 		</div>
 		<!--_____________begin album__________________-->
 		<div ng-show = '\$parent.inAlbum'> 
@@ -290,9 +321,12 @@ $def with (mode)
 						value = 'album.title'/>
 				</form>
 				
-
+				<div class = 'inline' 
+					style = 'margin-left: 3em; font-size: 90%'> 
+					<span ng-bind = 'albumFormat'></span>
+				</div> 
 					
-			<div class = 'right inline clickable'
+				<div class = 'right inline clickable'
 					ng-show = 'hasDescription'
 					ng-click = 'editDescription()'>
 					<span ng-bind = 'album.description'
@@ -397,6 +431,7 @@ $def with (mode)
 							ng-click = 'pageFocus(\$event)'
 							ng-focus = 'pageFocus(\$event)'
 							style = 'width: {{pageWidth}}; height: {{pageHeight}}; 
+								top: {{pageTop}};
 								background-color: {{current[page].background}};
 								background-image: url({{current[page].patternURL}});
 								background-size: {{current[page].patternSize}}'
@@ -697,12 +732,13 @@ $def with (mode)
 							
 						</div>
 					</div>
-					<div id = 'previewText'>
+					<div id = 'previewText' class = 'previewText'>
 					</div>
 				</div>
 			
 				<!--_______________select layout________________________-->
 				<div id = 'layoutCtrl' class = 'layoutCtrl controls'
+					ng-if = 'inAlbum'
 					ng-controller = 'LayoutController'>
 					<ul id = 'layoutMenu' class = 'hMenu'>
 						<li ng-click = 'layoutsClick(\$event)' 
@@ -962,7 +998,7 @@ $def with (mode)
 		
 		<div ng-controller = 'PreviewController'
 			ng-show = 'previewMode' id = 'previewPage'
-			style = 'width: {{previewWidth + "px"}}; 
+			style = 'width: {{(previewWidth + 1) + "px"}}; 
 			height: {{previewHeight + "px"}};'>
 			<span ng-show = 'viewPageNum != 0'
 					class = 'link prev fa fa-chevron-left'
@@ -979,7 +1015,7 @@ $def with (mode)
 					ng-show = 'viewPageNum != album.content.length'
 					style = 'position: absolute; top: 0px;
 						left: {{(previewWidth/2+1)  + "px"}};
-						width: {{(previewWidth/2 - 1) + "px"}}; 
+						width: {{(previewWidth/2) + "px"}}; 
 						height: {{previewHeight + "px"}};'>
 				</div>
 			</div>

@@ -406,11 +406,12 @@ app.controller('minLayoutController',
 			var images = [];
 			var frames = $scope.current[activePage.id].frames;
 			for (var j = 0; j < frames.length; j++) {
-				if (!!frames[j].image) {
+				if (!!frames[j].image.src) {
 					images.push(frames[j].image);
 				}
 			}
 			var rest = images.length;
+			console.log(rest);
 			var image;
 			$scope.current[activePage.id].frames = [];
 			$scope.current[activePage.id].textBoxes = [];//remove the current layout
