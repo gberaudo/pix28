@@ -128,7 +128,7 @@ app.controller('AlbumController',
 			page.frames.push(frame);
 		}
 		for (var j in layout.boxes) {
-			var textbox = new TextBoxObject(layout.boxes[j].box,layout.boxes[j].font );
+			var textbox = new TextBoxObject(layout.boxes[j]);
 			page.textBoxes.push(textbox);
 		}
 		return page;

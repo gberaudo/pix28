@@ -1,8 +1,10 @@
 app.factory('FrameObject', function() {
-	return function(canvas, image, display) {
-		this.canvas = canvas || {};
-		this.image = image || {};
-		this.display = display || {};
+	return function(data) {
+		this.canvas = data.canvas;
+		this.image = data.image || {};
+		this.display = data.display || {};
+		this.angle = data.angle || 0;
+		this.border = data.border || {};
 	};
 })
 
@@ -15,17 +17,18 @@ app.factory('FrameObject', function() {
 })
 	
 	.factory('TextBoxObject', function() {
-		return function(box, font) {
-			this.box = box;
+		return function(data) {
+			this.box = data.box;
 			this.text = '';
-			this.font = {
+			this.font = data.font/* {
 // 				style: 'normal',
 				family: 'UVNTinTuc_R',
 // 				weight: font.weight ||'normal',
 				color: '#000000',
 				size: font.size || 20
-			};
-			this.align = 'left';
+			};*/
+			this.align = data.align || 'left';
+			this.angle = data.angle || 0;
 		};
 })
 
@@ -244,9 +247,10 @@ app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
 
 app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 				function(gettextCatalog, $q, Misc, $timeout) {
-	function showThumbnail(obj, id, goBottom) {
+	function showThumbnail(obj, id, goBottom, usedMap) {
 		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
 			img = document.createElement('img'),
+			usedCheck = document.createElement('div'),
 			div = document.createElement('div'),
 			output = document.getElementById('output');
 		img.src = obj.minSrc;
@@ -265,7 +269,21 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		img.setAttribute('title', title); 
 		div.setAttribute('class', 'thumb');
 		div.appendChild(img);
+		usedCheck.id = 'check' + id;
+		if (!!usedMap) {
+			obj.used = usedMap[id];
+		}
+		usedCheck.innerHTML = obj.used || '';
+		if (!!obj.used){
+			usedCheck.style.display = 'block';
+		}
+// 		usedCheck.setAttribute('used', obj.used || 0);
+		
+		angular.element(usedCheck).addClass('usedCheck');
+		angular.element(usedCheck).addClass('circledNumber');
+		div.appendChild(usedCheck);
 		output.appendChild(div);
+		usedCheck.style.left = (img.offsetLeft - 5) + 'px';
 		if (goBottom) {
 			output.scrollTop = output.scrollHeight;
 		}
@@ -273,7 +291,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	
 	this.showThumbnail = showThumbnail;
 	
-	this.loadImages = function(id) {
+	this.loadImages = function(id, usedMap) {
 		var openRq = window.indexedDB.open('ImagesDB', 1);
 		openRq.onsuccess = function() {
 			var db = openRq.result,
@@ -285,7 +303,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			openCursor.onsuccess = function(event) {
 				var cursor = event.target.result;
 				if (cursor) {
-					showThumbnail(cursor.value, cursor.value.id);
+					showThumbnail(cursor.value, cursor.value.id, false, usedMap);
 					cursor.continue();
 				}
 			};
@@ -713,6 +731,14 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			}, 1500);
 		} else {
 			$scope.current.showRightLine = false;
+		}
+	};
+	this.updateOldThumb= function(DbId) {
+		var usedCheck = document.getElementById('check' + DbId);
+		var used = parseInt(usedCheck.innerHTML) - 1;
+		usedCheck.innerHTML = used || ''; 
+		if (!used) {
+			usedCheck.style.display = 'none';
 		}
 	};
 	

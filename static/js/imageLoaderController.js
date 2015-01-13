@@ -1,7 +1,28 @@
 app.controller('ImageLoaderController', 
     ['$scope', '$timeout', 'ImgService', '$q', '$element', 'gettextCatalog',
 					function($scope, $timeout, ImgService, $q, $element, gettextCatalog) {
-	ImgService.loadImages($scope.current.albumId);
+	var usedMap = getUsedMap();
+	function getUsedMap() {
+		var result = {};
+		var content = $scope.album.content;
+		for (var j = 0; j < content.length; j++) {
+			var page = content[j];
+			for (var i = 0; i < page.frames.length; i++) {
+				var frame = page.frames[i];
+				if (!!frame.image.DbId) {
+					var DbId = frame.image.DbId;
+					if (DbId in result) {
+						result[DbId]++;
+					} else {
+						result[DbId] = 1;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	ImgService.loadImages($scope.current.albumId, usedMap);
 	
 	$scope.handleFileSelect = function(evt) {
 		var files = evt.target.files || evt.dataTransfer.files;
@@ -111,7 +132,8 @@ app.controller('ImageLoaderController',
 					rWidth: rWidth,
 					rHeight: rHeight,
 					orientation: orientation,
-					ratio: rWidth/canvas.width
+					ratio: rWidth/canvas.width,
+					used: 0
 				};
 				deferred.resolve(result);
 			};

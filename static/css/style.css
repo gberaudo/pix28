@@ -130,10 +130,8 @@
 	height: 100%;
 }
 .refLine {
-	
 	stroke: red;
 	stroke-width: 2;
-	
 }
 
 #previewText {
@@ -142,13 +140,13 @@
 	top: 100%;
 	width: 40%;
 	left: 30%;
-	min-height: 20%;
+	height: 20%;
 	background-color: #CCC;
 	border: 3px groove #666;
 	box-shadow: 2px 2px 2px #666;
 	overflow-x: hidden;
 	display: none;
-	padding: 1em 1em;
+	padding: 0.5em 0.5em;
 }
 #controls {
 	position: absolute;
@@ -297,11 +295,31 @@
 	font-size: 90%;
 }
 
-canvas.minframe, .showItem {
+.showItem {
 	border: 1px solid #CCC;
+	display: inline-block;
+	margin-right: 1em;
+	vertical-align: top;
+}
+
+
+#layouts .canvas {
 	display: inline-block;
 	margin-right: 10px;
 	vertical-align: top;
+	border: none !important;
+}
+
+.minframe {
+	border: 1px solid #CCC;
+}
+
+.deleteFavorite {
+	color: #AAA;
+}
+
+.deleteFavorite:hover {
+	color: #555;
 }
 
 canvas.minframe:hover, .showItem:hover {
@@ -311,7 +329,7 @@ canvas.minframe:hover, .showItem:hover {
 
 .borderCtrl {
 	position: absolute;
-	bottom: 5%;
+	bottom: 15%;
 	font-size: 90%;
 }
 
@@ -507,11 +525,30 @@ img.thumb {
 	cursor: move;
 }
 div.thumb {
+	position: relative;
 	height: 3em;
 	width: 4em;
 	margin-left: 0.5em;
 	display: inline-block;
 	text-align: center;
+}
+
+.usedCheck {
+	position: absolute;
+	top: 0%;
+}
+
+.circledNumber {
+	border-radius: 50%;
+	width: 1.5em;
+	height: 1.5em;
+	line-height: 1.5em;
+	font-size: 60%;
+	background-color: green;
+	color: white;
+	text-align: center;
+	display: none;
+	
 }
 
 canvas.frame {
@@ -773,14 +810,16 @@ option {
 #previewPage .next {
 	position: absolute;
 	left: 101%; 
-	top: 49%; 
+	top: 50%; 
+	transform: translateY(-50%);
 	font-size: 2em;
 }
 
 #previewPage .prev {
 	position: absolute;
-	left:-3%; 
-	top: 49%; 
+	left:-3%;
+	top: 50%; 
+	transform: translateY(-50%);
 	font-size: 2em;
 }
 

@@ -201,12 +201,14 @@ msgid "JPEG images"
 msgstr "Ảnh JPEG"
 
 #: templates/index.html
+#, fuzzy
 msgid "Level image zone up."
-msgstr ""
+msgstr "Xóa hộp văn bản này"
 
 #: templates/index.html
+#, fuzzy
 msgid "Level image zone."
-msgstr ""
+msgstr "Xóa hộp văn bản này"
 
 #: templates/index.html
 #, fuzzy

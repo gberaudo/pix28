@@ -44,9 +44,7 @@ app.controller('CanvasController',
 		canvas.style.left = Math.floor(frame.canvas.left * pwidth / 100) + 'px';
 		canvas.style.top = Math.floor(frame.canvas.top * pheight / 100) + 'px';
 		frame.layer = frame.layer || 10;
-		if (!frame.border) {
-			frame.border = {};
-		} else {
+		if (!!frame.border) {
 			if (frame.border.color && frame.border.thickness) {
 				canvas.style.outline = frame.border.thickness + 'px solid '+ frame.border.color;
 			}
@@ -82,7 +80,6 @@ app.controller('CanvasController',
 	function firstDrawImage() {
 		if (!!$scope.img.src) {
 			var image = $scope.frame.image;
-			//Negative case to be checked
 			/* When an image is dragged into the canvas, fill canvas with image*/
 			if (image.mHeight / canvas.height > image.mWidth / canvas.width) {
 				image.scaleRatio = image.mWidth / canvas.width;
@@ -175,7 +172,7 @@ app.controller('CanvasController',
 				}
 				
 				if ($scope.dragimage) {
-						moveImageInCanvas(offset);
+ 						moveImageInCanvas(offset);
 				}
 			}
 		});
@@ -236,6 +233,7 @@ app.controller('CanvasController',
 			image = $scope.frame.image,
 			off,
 			minSize = pwidth / 6;
+		var angle = $scope.frame.angle || 0;
 			
 		function getCloseRef(pos, list) {
 			var close = false;
@@ -290,7 +288,9 @@ app.controller('CanvasController',
 				break;
 				
 			case 'L':
-				off = offset.X; 
+				
+				off = Math.floor(Math.cos(Math.PI * angle / 180) * offset.X
+						+ Math.sin(Math.PI * angle / 180) * offset.Y); 
 				if (off > cv.width - minSize) {
 					off = cv.width - minSize;
 				}
@@ -327,7 +327,10 @@ app.controller('CanvasController',
 				break;
 				
 			case 'R':
-				off = offset.X;
+				
+				off = Math.floor(Math.cos(Math.PI * angle / 180) * offset.X
+						+ Math.sin(Math.PI * angle / 180) * offset.Y); 
+// 				off = offset.X;
 				
 				//enlarge image when limit attained
 				if (off < -cv.width + minSize) {
@@ -366,7 +369,9 @@ app.controller('CanvasController',
 				break;
 			
 			case 'T':
-				off = offset.Y;
+				off = Math.floor(-Math.sin(Math.PI * angle / 180) * offset.X
+						+ Math.cos(Math.PI * angle / 180) * offset.Y); 
+// 				off = offset.Y;
 				if (off > cv.height - minSize) {
 					off = cv.height - minSize;
 				}
@@ -402,7 +407,9 @@ app.controller('CanvasController',
 				break;
 			
 			case 'B':
-				off = offset.Y;
+				off = Math.floor(-Math.sin(Math.PI * angle / 180) * offset.X
+						+ Math.cos(Math.PI * angle / 180) * offset.Y); 
+// 				off = offset.Y;
 				if (off < -cv.height + minSize) {
 					off = -cv.height + minSize;
 				}
@@ -490,6 +497,7 @@ app.controller('CanvasController',
 				break;
 			case 46: //del
 				if (!!$scope.frame.image.src) {
+					ImgService.updateOldThumb($scope.frame.image.DbId);
 					$scope.img = new Image();
 					$scope.frame.image = {};
 					ImgService.resetFrame(canvas);
@@ -510,19 +518,38 @@ app.controller('CanvasController',
 		var data = evt.dataTransfer;
 		var name = data.getData('name');
 		if (name == 'image') {
+			if (!!$scope.frame.image.DbId) {
+				var oldDbId = $scope.frame.image.DbId;
+				ImgService.updateOldThumb(oldDbId);
+			}
 			$scope.img.src = data.getData('URL');
 		//update information for image in storage
 			$scope.frame.image.src = data.getData('URL');
 			$scope.frame.image.mHeight = parseInt(data.getData('mHeight'));
 			$scope.frame.image.mWidth = parseInt(data.getData('mWidth'));
-			$scope.frame.image.DbId = parseInt(data.getData('DbId'));
+			var DbId = parseInt(data.getData('DbId'));
+			$scope.frame.image.DbId = DbId;
 			$scope.frame.image.ratio = parseFloat(data.getData('ratio'));
 		//then draw image
 			firstDrawImage();
 			canvasFocus();
 			$scope.$parent.activate();
+			updateNewThumb(DbId);
+			
+// 			updateImgDB(DbId);
+		}
+		if (name == 'exchange') {
+			console.log('exchanged');
 		}
 	};
+	
+	function updateNewThumb(DbId) {
+		var usedCheck = document.getElementById('check' + DbId);
+		usedCheck.innerHTML = parseInt(usedCheck.innerHTML||0) + 1; 
+		usedCheck.style.display = 'block';
+	}
+	
+	
 	
 	$scope.canvasFocus = function() {
 		canvasFocus();
@@ -545,6 +572,15 @@ app.controller('CanvasController',
 			document.removeEventListener('mousedown', canvasBlurHandle, true);
 		}
 	}
+	
+// 	$scope.dragCanvas = function(event) {
+// 		event.dataTransfer.setData('name', 'exchange');
+// 		var img = document.createElement('img');
+// 		img.src = $scope.img.src;
+// 		img.style.width = '100px';
+// 		img.style.height = '100px';
+// 		event.dataTransfer.setDragImage(img, 50, 50);
+// 	};
 	
 }]);
 
@@ -577,6 +613,7 @@ app.controller('ImageController',
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
 		if (!!scope.frame.image.src) {
+			ImgService.updateOldThumb(scope.frame.image.DbId);
 			scope.img = new Image();
 			scope.frame.image = {};
 			ImgService.resetFrame(canvas);
@@ -687,5 +724,7 @@ app.controller('ImageController',
 				break;
 		}
 	};
+	
+
 	
 }]);

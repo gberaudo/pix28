@@ -131,12 +131,12 @@ $def with (mode)
 			
 			<div class = 'format container'> 
 				<div class = 'content'>
-					<span class = 'header'> 21cm x 18cm </span> 
+					<span class = 'header'> 17.6cm x 25cm </span> 
 					<div class = 'model'>
 						<img src = '' alt =''>
 					</div> 
 					<span class = 'newAlbum clickable' 
-						ng-click = 'createAlbum(510, 595)'
+						ng-click = 'createAlbum(708, 499)'
 						translate> 
 						Create album</span>
 				</div>
@@ -146,7 +146,7 @@ $def with (mode)
 			<div class = 'bigbtn respond' 
 				ng-click = 'showCustomAlbum = !showCustomAlbum'
 				ng-init = 'showCustomAlbum = false'
-				style = 'width: 16em'>
+				style = 'width: 15em; font-size: 100%'>
 				Custom format
 			</div>
 				<div>
@@ -446,10 +446,12 @@ $def with (mode)
 										ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
 										ondragover = 'angular.element(this).scope().allowDrop(event)'
 										ng-mousedown = 'mouseDown(\$event)' 
+										draggable = 'true'
+										ondragstart = 'angular.element(this).scope().dragCanvas(event)'
 										ng-mousemove = 'mouseMove(\$event)'
 										ng-keydown = 'keyDown(\$event)'
 										ng-click = 'canvasFocus()'
-										ng-blur = 'canvasBlur(\$event)'/>
+										ng-blur = 'canvasBlur(\$event)'> </canvas>
 						</div>
 						
 						<div ng-repeat = 'textBox in current[page].textBoxes' 
@@ -584,12 +586,6 @@ $def with (mode)
 								<span class = 'fa fa-align-left ctrlIcon'></span>
 <!-- 								<img src = 'static/icons/left.svg'/> -->
 							</div>
-							<div	class = 'btn textCtrl respond '
-								title = '{{"Align text right"|translate}}'
-								ng-click = 'align("right")'>
-								<span class = 'fa fa-align-right ctrlIcon'></span>
-<!-- 								<img src = 'static/icons/right.svg'/> -->
-							</div>
 							<div 
 								class = 'btn textCtrl respond '
 								title = '{{"Align text center"|translate}}'
@@ -597,6 +593,13 @@ $def with (mode)
 								<span class = 'fa fa-align-center ctrlIcon'></span>
 <!-- 								<img src = 'static/icons/center.svg'/> -->
 							</div>
+							<div	class = 'btn textCtrl respond '
+								title = '{{"Align text right"|translate}}'
+								ng-click = 'align("right")'>
+								<span class = 'fa fa-align-right ctrlIcon'></span>
+<!-- 								<img src = 'static/icons/right.svg'/> -->
+							</div>
+							
 							<div class = 'btn textCtrl respond '
 								title = '{{"Rotate text box right"|translate}}'
 								ng-mousedown = 'rotate("right")'
@@ -775,13 +778,21 @@ $def with (mode)
 							</ul>
 							<div id = 'layouts' 
 								class = 'showRoom'>
-								<canvas ng-repeat = 'layout in layouts'
-										title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
-										ng-controller = 'minLayoutController'
-										ng-click = 'loadPageLayout(layout)'
-										ng-mouseover = 'previewLayout(layout, \$event)'
-										ng-mouseleave = 'mouseLeave()'
-										class = 'clickable minframe '/> 
+								<div ng-controller = 'minLayoutController' 
+									class = 'clickable canvas'
+									 ng-repeat = 'layout in layouts'>
+									<span class = 'deleteFavorite fa fa-remove'
+										ng-mouseover = 'onDelete()'
+										ng-mouseleave = 'leaveDelete()'
+										ng-click = 'removeFavorite(\$index)'
+										ng-show = 'showDelete'></span> 
+									<canvas title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
+											ng-click = 'loadPageLayout(layout)'
+											ng-mouseover = 'previewLayout(layout, \$event)'
+											ng-mouseleave = 'mouseLeave()'
+											class = 'minframe'> </canvas> 
+									
+								</div>
 							</div>
 							<div class = 'apply'>
 								<span class = 'link respond' 
@@ -905,7 +916,9 @@ $def with (mode)
 									ng-click = 'changeBorder(color)'
 									class = 'showItem'>
 								</div>
-								<div class = 'borderCtrl' ng-show = 'showBorder'>
+								
+							</div>
+							<div class = 'borderCtrl' ng-show = 'showBorder'>
 									<span> Border thickness </span>
 									<span class = 'btn respond icon fa fa-sort-up'
 										ng-click = 'increaseThickness()'></span>
@@ -922,7 +935,6 @@ $def with (mode)
 										<input type = 'submit' value = 'OK'/>
 									</form>
 								</div>
-							</div>
 						</div>
 					</div>
 	<!--Choose page background color============================-->

@@ -5,7 +5,6 @@ app.controller('LayoutController',
     function($scope, FrameObject, Layouts, Colors, Misc, $q, $http) {
 	$scope.colors = Colors;
 	
-	
 	initPatterns();
 	
 	function initPatterns() {
@@ -67,6 +66,7 @@ app.controller('LayoutController',
 	initAllLayout();
 	function initAllLayout() {
 		$scope.layouts = [];
+		$scope.favorites = [];
 		for (type in Layouts) {
 			$scope.layouts = $scope.layouts.concat(Layouts[type]);
 		}
@@ -91,6 +91,7 @@ app.controller('LayoutController',
 	$scope.showLayouts = function(event, type) {
 		activate(event, 'LSactive');
 		$scope.layouts = Layouts[type];
+		$scope.showDelete = false;
 	};
 
 	$scope.showAllLayouts = function(event) {
@@ -99,11 +100,26 @@ app.controller('LayoutController',
 		for (type in Layouts) {
 			$scope.layouts = $scope.layouts.concat(Layouts[type]);
 		}
+		$scope.showDelete = false;
 	};
 	
 	$scope.showFavorites = function(event) {
 		activate(event, 'LSactive');
-		$scope.layouts = [];
+		$scope.layouts = $scope.favorites;
+		$scope.showDelete = true;
+	};
+	
+	$scope.saveAsFavourite = function() {
+		var pageId = document.getElementsByClassName('pActive')[0].id;
+		var frames = $scope.current[pageId].frames;
+		var textBoxes = $scope.current[pageId].textBoxes;
+		var layout = {frames: frames, boxes: textBoxes};
+		$scope.favorites.unshift(layout);
+	};
+	
+	
+	$scope.removeFavorite = function(index) {
+		$scope.layouts.splice(index, 1);
 	};
 	
 	$scope.layoutsClick = function(event) {
@@ -112,6 +128,8 @@ app.controller('LayoutController',
 		$scope.showBM = false;
 		$scope.showImgOpt = false;
 	};
+	
+	
 	
 	$scope.BGClick = function(event) {
 		activate(event, 'LMactive');
@@ -342,7 +360,7 @@ app.controller('minLayoutController',
     ['$scope', '$element', 'FrameObject', 'TextBoxObject',
 					function($scope, $element, FrameObject, TextBoxObject) {
 	
-	var canvas = $element[0],
+	var canvas = $element[0].children[1],
 		scale = 0.2;
 		
 	drawLayout(canvas, scale);
@@ -354,30 +372,57 @@ app.controller('minLayoutController',
 		ctx.fillStyle = '#FFFFFF';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		for (i = 0; i < $scope.layout.frames.length; i++) {
-			var rect = $scope.layout.frames[i];
+			var frame = $scope.layout.frames[i];
+			var rect = frame.canvas;
 			ctx.beginPath();
 			ctx.lineWidth = '.2';
 			var left = scale * rect.left* $scope.pwidth / 100,
 				top = scale * rect.top * $scope.pheight / 100,
 				width = scale * rect.width * $scope.pwidth / 100,
 				height = scale * rect.height * $scope.pheight / 100;
-			ctx.rect(left, top, width, height);
-			ctx.stroke();
-			ctx.fillStyle = '#EEEEEE';
-			ctx.fillRect(left, top, width, height);
+			if (!!frame.angle) {
+				ctx.save();
+				var centerX = left + width / 2,
+					centerY = top + height / 2;
+				ctx.translate(centerX, centerY);
+				ctx.rotate(Math.PI * frame.angle / 180);
+				ctx.rect(-width / 2, -height / 2, width, height);
+				ctx.stroke();
+				ctx.fillStyle = '#EEEEEE';
+				ctx.fillRect(-width/2, -height/2, width, height);
+				ctx.restore();
+			} else {
+				ctx.rect(left, top, width, height);
+				ctx.stroke();
+				ctx.fillStyle = '#EEEEEE';
+				ctx.fillRect(left, top, width, height);
+			}
 		}
 		
 		for (i = 0; i < $scope.layout.boxes.length; i++) {
-			var rect = $scope.layout.boxes[i].box;
+			var textBox = $scope.layout.boxes[i];
+			var rect = textBox.box;
+			var left = scale * rect.left*$scope.pwidth/100, 
+				top = scale * rect.top * $scope.pheight/100,
+				width = scale * rect.width * $scope.pwidth/100,
+				height = scale * rect.height * $scope.pheight/100;
 			ctx.beginPath();
 			ctx.lineWidth = '.2';
-			ctx.rect(scale * rect.left*$scope.pwidth/100, 
-						scale * rect.top * $scope.pheight/100,
-						scale * rect.width * $scope.pwidth/100,
-						scale * rect.height * $scope.pheight/100
-					);
-			ctx.strokeStyle = 'blue';
-			ctx.stroke();
+			if (!!textBox.angle) {
+				ctx.save();
+				var centerX = left + width / 2,
+					centerY = top + height / 2;
+				ctx.translate(centerX, centerY);
+				ctx.rotate(Math.PI * textBox.angle / 180);
+				ctx.rect(-width / 2, -height / 2, width, height);
+				ctx.strokeStyle = 'blue';
+				ctx.stroke();
+				ctx.restore();
+			} else {
+				ctx.rect(left, top, width, height);
+				ctx.strokeStyle = 'blue';
+				ctx.stroke();
+			}
 		}
 	}
 	
@@ -411,7 +456,6 @@ app.controller('minLayoutController',
 				}
 			}
 			var rest = images.length;
-			console.log(rest);
 			var image;
 			$scope.current[activePage.id].frames = [];
 			$scope.current[activePage.id].textBoxes = [];//remove the current layout
@@ -421,15 +465,31 @@ app.controller('minLayoutController',
 				} else {
 					image = {};
 				}
-				canvas = angular.copy(layout.frames[i]);
-				frame = new FrameObject(canvas, image, {}); 
+ 				frame = new FrameObject(
+					{
+						canvas: angular.copy(layout.frames[i].canvas),
+						angle: layout.frames[i].angle,
+						image: image
+					}
+				);
 				$scope.current[activePage.id].frames.push(frame);
 			}
 			for (var j in layout.boxes) {
-				var textbox = new TextBoxObject(layout.boxes[j].box, layout.boxes[j].font);
+				var textbox = new TextBoxObject(angular.copy(layout.boxes[j]));
 				$scope.current[activePage.id].textBoxes.push(textbox);
 			}
 		}
+	};
+
+	
+	$scope.onDelete = function() {
+		var div = $element[0];
+		div.style.outline = '1px solid #CCC';
+	};
+	
+	$scope.leaveDelete = function() {
+		var div = $element[0];
+		div.style.outline = 'none';
 	};
 }]);
 

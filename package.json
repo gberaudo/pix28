@@ -11,21 +11,22 @@
   "devDependencies": {
     "angular-gettext": "~1.1.3",
     "angular-gettext-tools": "~1.0.4",
-    "exif-js": "git://github.com/jseidelin/exif-js#fdf760cf40ae24749a8b7f8ab6550bd98fd70539",
-    "graceful-fs": "3.0.2",
+    "angular-mocks": "~1.3.4",
+    "async": "^0.9.0",
     "closure-util": "1.1.0",
+    "exif-js": "git://github.com/jseidelin/exif-js#fdf760cf40ae24749a8b7f8ab6550bd98fd70539",
     "fs-extra": "~0.8.1",
-    "jshint": "~2.5.1",
-    "nomnom": "~1.6.2",
-    "temp": "~0.7.0",
-    "walk": "~2.3.3",
-    "karma": "~0.12.28",
+    "graceful-fs": "3.0.2",
     "jasmine-core": "~2.1.2",
+    "jshint": "~2.5.1",
+    "karma": "~0.12.28",
+    "karma-firefox-launcher": "~0.1.3",
     "karma-jasmine": "~0.3.2",
     "karma-phantomjs-launcher": "~0.1.4",
+    "nomnom": "~1.6.2",
     "phantomjs": "~1.9.12",
-    "angular-mocks": "~1.3.4",
-    "karma-firefox-launcher": "~0.1.3",
-    "protractor": "~1.4.0"
+    "protractor": "~1.4.0",
+    "temp": "~0.7.0",
+    "walk": "~2.3.3"
   }
 }

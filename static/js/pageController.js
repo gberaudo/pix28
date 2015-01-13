@@ -65,10 +65,11 @@ app.controller('PageController',
 						page.parentNode.offsetLeft - page.parentNode.parentNode.offsetLeft,
 			mouseY = ev.pageY - page.offsetTop - 
 						page.parentNode.offsetTop - page.parentNode.parentNode.offsetTop;
-		var maxLayer = getMaxLayer(page.id);
+		
 		
 		switch (name) {
 			case 'frame':
+				var maxFrameLayer = getMaxFrameLayer(page.id);
 				var canvas = {};
 				canvas.width = $scope.pwidth / 3;
 				canvas.height = $scope.pwidth / 3;
@@ -96,8 +97,8 @@ app.controller('PageController',
 					top: 100*canvas.top/$scope.pheight,
 					left: 100*canvas.left/$scope.pwidth
 				};
-				var frame = new FrameObject(DBCanvas, {}, {});
-				frame.layer = maxLayer;
+				var frame = new FrameObject({canvas: DBCanvas});
+				frame.layer = maxFrameLayer;
 				$scope.$apply(function() {
 					$scope.current.datumWithFocus = frame;
 					$scope.current[page.id].frames.push(frame);
@@ -105,6 +106,7 @@ app.controller('PageController',
 				$scope.activate();
 				break;
 			case 'text':
+				var maxTextLayer = getMaxTextLayer(page.id);
 				var box = {};
 				box.width =  $scope.pwidth / 2;
 				box.height = $scope.pheight / 12;
@@ -138,7 +140,7 @@ app.controller('PageController',
 					},
 					align: 'left'
 				};
-				newTextBox.layer = Math.max(maxLayer, 15);
+				newTextBox.layer = Math.max(maxTextLayer, 15);
 				$scope.$apply(function() {
 					$scope.current.datumWithFocus = newTextBox;
 					$scope.current[page.id].textBoxes.push(newTextBox);
@@ -146,23 +148,29 @@ app.controller('PageController',
 				$scope.activate();
 				break;
 		}
-		function getMaxLayer(pageId) {
-			var max = 0;
+		function getMaxFrameLayer(pageId) {
+			var max = 10;
 			var frames = $scope.current[pageId].frames;
-			var textBoxes = $scope.current[pageId].textBoxes;
+			
 			for (var i = 0; i < frames.length; i++) {
 				var index = parseInt(frames[i].layer);
 				if (max < index) {
 					max = index;
 				}
 			}
+			
+			return max;
+		}
+		
+		function getMaxTextLayer(pageId) {
+			var max = 0;
+			var textBoxes = $scope.current[pageId].textBoxes;
 			for (var i = 0; i < textBoxes.length; i++) {
 				var index = parseInt(textBoxes[i].layer);
 				if (max < index) {
 					max = index;
 				}
 			}
-			return max;
 		}
 		
 	};

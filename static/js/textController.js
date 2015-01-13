@@ -141,9 +141,14 @@ app.controller('TextBoxController',
 				moveText('vertical', offsetY);
 				resetZone();
 			} else if (!!drag.BR & !$scope.current.mouseIsUp) {
+				var angle = $scope.textBox.angle || 0;
+				var offX = Math.cos(Math.PI * angle / 180) * offsetX
+						+ Math.sin(Math.PI * angle / 180) * offsetY; 
+				var offY = -Math.sin(Math.PI * angle / 180) * offsetX
+						+ Math.cos(Math.PI * angle / 180) * offsetY; 
 				window.requestAnimationFrame(function() {
-					resizeText('horizontal', offsetX);
-					resizeText('vertical', offsetY);
+					resizeText('horizontal', offX);
+					resizeText('vertical', offY);
 					resetZone();
 				});
 			}
