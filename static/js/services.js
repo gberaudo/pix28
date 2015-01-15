@@ -20,7 +20,11 @@ app.factory('FrameObject', function() {
 		return function(data) {
 			this.box = data.box;
 			this.text = '';
-			this.font = data.font/* {
+			this.font = {
+				family: data.font.family || 'UVNTinTuc_R',
+				size: data.font.size || 24,
+				color: data.font.color || '#000000'
+			};/* {
 // 				style: 'normal',
 				family: 'UVNTinTuc_R',
 // 				weight: font.weight ||'normal',
@@ -89,6 +93,8 @@ app.service('Init', function() {
 // 		textArea.style.fontWeight = textBox.font.weight;
 // 		textArea.style.fontStyle = textBox.font.style;
 		var size = textBox.font.size || 24;
+		console.log('size', size);
+		console.log('layer', textBox.layer);
 		textArea.style.fontSize = (size * $scope.pwidth/$scope.pdfWidth) + 'px';
 		textArea.style.textAlign = textBox.align;
 		if (!!textBox.angle) {
@@ -558,7 +564,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 				
 			} 
 			else {
-				deferred.resolve(null);
+				deferred2.resolve(null);
 			}
 			return deferred2.promise;
 		}
@@ -908,5 +914,17 @@ app.service('Misc', function() {
 		}
 		list.sort(compare);
 	}
+	
+	this.dataUrlToArrayBuffer = function(dataurl) {
+		var matched = dataurl.match(new RegExp('data:(.*);base64,(.*)'));
+		var binary = atob(matched[2]);
+		var len = binary.length;
+		var buffer = new ArrayBuffer(len);
+		var view = new Uint8Array(buffer);
+		for (var i = 0; i < len; i++) {
+			view[i] = binary.charCodeAt(i);
+		}
+		return buffer;
+	};
 });
 

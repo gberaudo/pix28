@@ -525,29 +525,41 @@ $def with (mode)
 									Text 
 							</span>
 							<div class = 'textSelect'>
-							<select style = 'height: 2em'
-								title = '{{"Choose text font"|translate}}'
-								ng-model = 'current.font.family' 
-								ng-change = 'changeFont(current.font.family)'>
-								<optgroup ng-repeat = 'font in fonts' class = '{{font}}'>
-								<option value = '{{font}}'>
-									{{font}}
-								</option> 
-								</optgroup>
-							</select> 
+								<select style = 'height: 2em'
+									title = '{{"Choose text font"|translate}}'
+									ng-model = 'current.font.family' 
+									ng-change = 'changeFont(current.font.family)'>
+									<optgroup ng-repeat = 'font in userFonts' class = '{{font}}'>
+										<option value = '{{font}}'>
+											{{font}}
+										</option> 
+									</optgroup>
+									<option disabled>──────────</option>
+									<optgroup ng-repeat = 'font in fonts' class = '{{font}}'>
+										<option value = '{{font}}'>
+											{{font}}
+										</option> 
+									</optgroup>
+									
+								</select> 
 							</div>
 							<div  class = 'textSelect'>
-							<select 
-								style = 'height: 2em'
-								title = '{{"change font size"|translate}}'
-								ng-model = 'current.font.size'
-								ng-change = 'changeFontSize(current.font.size)'
-								ng-options = 'i for i in [10, 11, 12, 13, 
-								14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 54, 60]'
-								ng-value = 'i'> {{i}}
-							</select>
+								<select 
+									style = 'height: 2em'
+									title = '{{"change font size"|translate}}'
+									ng-model = 'current.font.size'
+									ng-change = 'changeFontSize(current.font.size)'
+									ng-options = 'i for i in [10, 11, 12, 13, 
+									14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 54, 60]'
+									ng-value = 'i'> {{i}}
+								</select>
 							</div>
-							
+							<div class = 'textCtrl'
+								ng-click = 'addFonts()'>
+								<span class = 'link'>
+									more fonts
+								</span>
+							</div>
 							<!--<div class = 'btn textCtrl respond' 
 							ng-click = 'italicClick()'>
 								<span  class = 'fa fa-italic ctrlIcon'></span>
@@ -565,18 +577,18 @@ $def with (mode)
 									style = 'color: {{current.font.color}}'>
 								<span translate>Text color</span>
 							</div>
-								<div tabindex = 0 
-									class = 'textColorMenu'
-									id = 'colorMenu'
-									ng-if = 'showColorMenu' 
-									ng-init = 'showColorMenu = false'>
-									<div class = 'colorTable '
-										tabindex = 0 
-										ng-repeat = 'color in colors'
-										style = 'background-color:{{color}};'
-										ng-focus = 'changeColor(color)'>
-									</div>
+							<div tabindex = 0 
+								class = 'textColorMenu'
+								id = 'colorMenu'
+								ng-if = 'showColorMenu' 
+								ng-init = 'showColorMenu = false'>
+								<div class = 'colorTable '
+									tabindex = 0 
+									ng-repeat = 'color in colors'
+									style = 'background-color:{{color}};'
+									ng-focus = 'changeColor(color)'>
 								</div>
+							</div>
 							<!-- end of color menu-->
 							
 							<div 
@@ -1041,7 +1053,35 @@ $def with (mode)
 				<span class = 'link'
 					ng-click = 'toJPEG(viewPageNum)' translate> Export this page to JPEG</span>
 			</div>
-		</div>		
+		</div>	
+		
+		<div ng-controller = 'UserFontController'
+			id = 'addFont'
+			ng-if = 'current.addingFonts'>
+			<p> You can upload a true type font from your computer to use in your albums.
+				These fonts will appear in the font list with prefix Custom.
+			</p>
+			<p>Many free true type fonts can be found at 
+				<a href = 'http://www.fontsquirrel.com'>
+				http://www.fontsquirrel.com</a>, for example.
+			</p>
+			
+			<div style = 'margin-left: 2em'>
+				<label for = 'uploadFonts' class = 'bigbtn'>
+					<span>Browse fonts</span>
+				</label>
+				<input type = 'file' id = 'uploadFonts'
+					style = 'display: none'
+					onchange = 'angular.element(this).scope().handleFontSelect(event)'
+					multiple/>
+			</div>
+			
+			<p class = 'link'
+				style = 'float: right'
+				ng-click = 'current.addingFonts = false'>
+				Close
+			</p>
+		</div>
 	</div>
 	</div>
 </body>

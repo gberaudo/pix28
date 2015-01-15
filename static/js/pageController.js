@@ -132,9 +132,9 @@ app.controller('PageController',
 						top: 100*box.top/$scope.pheight
 					},
 					font: {
-						color: $scope.current.font.color,
-						style: $scope.current.font.style,
-						weight: $scope.current.font.weight,
+						color: $scope.current.font.color || '#000000',
+						style: $scope.current.font.style || 'normal',
+// 						weight: $scope.current.font.weight,
 						family: $scope.current.font.family,
 						size: $scope.current.font.size
 					},

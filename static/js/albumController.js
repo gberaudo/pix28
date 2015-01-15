@@ -1,10 +1,10 @@
 app.controller('AlbumController',
     ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 
 	 'DBServices', 'Misc', 'gettextCatalog', 'Layouts', 'FrameObject', 
-	 'ImgService', 'TextBoxObject', '$interval',
+	 'ImgService', 'TextBoxObject', '$interval', 'Fonts',
     function($scope, $timeout, $http, $element, $q, PageObject, 
 		DBServices, Misc, gettextCatalog, Layouts, FrameObject, 
-		ImgService, TextBoxObject, $interval
+		ImgService, TextBoxObject, $interval, Fonts
 	) {
 	
 	init();
@@ -16,7 +16,7 @@ app.controller('AlbumController',
 		$scope.album = {};
 		$scope.current.mousePos = {};
 		$scope.current.pageNum = -1;
-		$scope.current.font = {size: '12px', family: 'UVNTinTuc_R'};
+		$scope.current.font = {size: 24, family: 'UVNTinTuc_R'};
 		$scope.current.imgLoad = false;
 		$scope.show = {};
 
@@ -35,6 +35,47 @@ app.controller('AlbumController',
 		$scope.layoutList = [
 			'x1', 'x2', 'x3', 'x4', 'x5'
 		];
+		$scope.fonts = Fonts;
+		getUserFonts();
+		console.log($scope.userFonts);
+		
+		function getUserFonts() {
+			var openRq = window.indexedDB.open('UserDB');
+			var newStyle = document.createElement('style');
+			var userFonts = [];
+			openRq.onsuccess = function(event) {
+				var db = openRq.result,
+					trans = db.transaction(['userData']),
+					store = trans.objectStore('userData');
+				var getRq = store.get(1);
+				getRq.onsuccess = function(event) {
+					var userData = this.result.userFonts;
+					
+					for (var i = 0; i < userData.length; i++) {
+						var fontName = Object.keys(userData[i])[0];
+						console.log('font', fontName);
+						var fontURL = userData[i][fontName];
+						newStyle.appendChild(document.createTextNode("\
+							@font-face {\
+								font-family: '" + fontName + "';\
+								src: url('" + fontURL + "') format('truetype');\
+							}\
+						"));
+						newStyle.appendChild(document.createTextNode("\
+							." + fontName + "{\
+								font-family: '" + fontName + "';\
+							}\
+						"));
+						userFonts.push(fontName);
+						console.log('font pushed');
+					}
+					document.head.appendChild(newStyle);
+					$scope.userFonts = userFonts;
+				};
+			};
+			
+		}
+		
 	};
 	$scope.cancelUpdater = undefined;
 	
@@ -591,28 +632,30 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 			//draw images
 			for (var i = 0; i < page.frames.length; i++) {
 				function draw(frame) {
-					var canvas = document.createElement('canvas'),
-						display = angular.copy(frame.display),
-						img = new Image();
-					canvas.width = frame.canvas.width * pwidth / 100;
-					canvas.height = frame.canvas.height * pheight / 100;
-					canvas.style.top = Math.ceil(frame.canvas.top * pheight / 100) + 'px';
-					canvas.style.left = Math.ceil(frame.canvas.left * pwidth / 100) + 'px';
-					canvas.style.position = 'absolute';
-					canvas.style.zIndex = frame.layer;
-					canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
-					if (frame.border.thickness && frame.border.color) {
-						var thickness = frame.border.thickness * pwidth/ $scope.pwidth;
-						canvas.style.outline = thickness + 'px solid ' + frame.border.color;
+					if (!!frame.image.src) {
+						var canvas = document.createElement('canvas'),
+							display = angular.copy(frame.display),
+							img = new Image();
+						canvas.width = frame.canvas.width * pwidth / 100;
+						canvas.height = frame.canvas.height * pheight / 100;
+						canvas.style.top = Math.ceil(frame.canvas.top * pheight / 100) + 'px';
+						canvas.style.left = Math.ceil(frame.canvas.left * pwidth / 100) + 'px';
+						canvas.style.position = 'absolute';
+						canvas.style.zIndex = frame.layer;
+						canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
+						if (frame.border.thickness && frame.border.color) {
+							var thickness = frame.border.thickness * pwidth/ $scope.pwidth;
+							canvas.style.outline = thickness + 'px solid ' + frame.border.color;
+						}
+						
+						display.dw = canvas.width;
+						display.dh = canvas.height;
+						img.onload = function() {
+							ImgService.drawImage(canvas, img, display); 
+						};
+						img.src = frame.image.src;
+						view.appendChild(canvas);
 					}
-					
-					display.dw = canvas.width;
-					display.dh = canvas.height;
-					img.onload = function() {
-						ImgService.drawImage(canvas, img, display); 
-					};
-					img.src = frame.image.src;
-					view.appendChild(canvas);
 				}
 				draw(page.frames[i]);
 			}
@@ -828,18 +871,45 @@ app.controller('ExportController',
 			return fonts;
 		}
 		
-		function getFont(font) {
+		function getFont(fontName) {
 			var deferred = $q.defer();
-			var fontSrc = 'static/fonts/' + font + '.ttf';
-			$http.get(fontSrc, {responseType: "arraybuffer"})
-				.success(function(data) {
-					deferred.resolve(data);
-				})
-				.error(function(data, status) {
-					deferred.resolve(null);
-					console.log('Failed to retrieve font', status, fontSrc);
-				});
+			if (isCustom(fontName)) {
+				var fontURL;
+				var openRq = window.indexedDB.open('UserDB');
+				openRq.onsuccess = function(event) {
+					var db = openRq.result,
+						trans = db.transaction(['userData']),
+						store = trans.objectStore('userData');
+					var getRq = store.get(1);
+					getRq.onsuccess = function(event) {
+						var userData = this.result.userFonts;
+						for (var i = 0; i < userData.length; i++) {
+							if (Object.keys(userData[i])[0] == fontName) {
+								fontURL = userData[i][fontName];
+								deferred.resolve(Misc.dataUrlToArrayBuffer(fontURL));
+							}
+						}
+					};
+				};
+			} 
+			else {
+				var fontSrc = 'static/fonts/' + fontName + '.ttf';
+				$http.get(fontSrc, {responseType: "arraybuffer"})
+					.success(function(data) {
+						console.log(data);
+						deferred.resolve(data);
+					})
+					.error(function(data, status) {
+						deferred.resolve(null);
+						console.log('Failed to retrieve font', status, fontSrc);
+					});
+			
+			}
 			return deferred.promise;
+			
+			function isCustom(fontName) {
+				return fontName.match(/Custom/);
+			}
 		}
 		
 		function getFonts() {

@@ -62,7 +62,7 @@
 	src: url('../fonts/Drawvetica.ttf') format('truetype');
 }
 
-.Ubuntu-B {
+.Ubuntu_B {
 	font-family: Ubuntu_B;
 }
 @font-face {
@@ -70,7 +70,7 @@
 	src: url('../fonts/Ubuntu_B.ttf') format('truetype');
 }
 
-.Ubuntu-BI {
+.Ubuntu_BI {
 	font-family: Ubuntu_BI;
 }
 @font-face {
@@ -78,7 +78,7 @@
 	src: url('../fonts/Ubuntu_BI.ttf') format('truetype');
 }
 
-.Ubuntu-C {
+.Ubuntu_C {
 	font-family: Ubuntu_C;
 }
 @font-face {
@@ -86,7 +86,7 @@
 	src: url('../fonts/Ubuntu_C.ttf') format('truetype');
 }
 
-.Ubuntu-L {
+.Ubuntu_L {
 	font-family: Ubuntu_L;
 }
 @font-face {
@@ -94,7 +94,7 @@
 	src: url('../fonts/Ubuntu_L.ttf') format('truetype');
 }
 
-.Ubuntu-LI {
+.Ubuntu_LI {
 	font-family: Ubuntu_LI;
 }
 @font-face {
@@ -103,7 +103,7 @@
 }
 
 
-.UbuntuR {
+.Ubuntu_R {
 	font-family: Ubuntu_R;
 }
 @font-face {

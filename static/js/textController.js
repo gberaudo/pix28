@@ -19,7 +19,7 @@ app.controller('TextBoxController',
 			activeCanvas.removeClass('cActive');
 		}
 		angular.element($scope.textArea).addClass('tActive');
-		$scope.current.font.color = style.color;
+		$scope.current.font.color = $scope.textArea.style.color;
 // 		$scope.current.font.weight = style.fontWeight;
 // 		$scope.current.font.style = style.fontStyle;
 		$scope.current.font.size = $scope.textBox.font.size;
@@ -31,7 +31,9 @@ app.controller('TextBoxController',
 		$scope.$watch('textArea.value', function(newValue, oldValue) {
 				var innerHTML = $scope.textArea.value.replace(/\n\r?/g, '<br />');
 				previewText.innerHTML = innerHTML;
-				previewText.style.fontFamily = $scope.textArea.style.fontFamily;
+				previewText.style.fontFamily = $scope.current.font.family;
+				previewText.style.fontSize = $scope.current.font.size + 'px';
+				previewText.style.color = $scope.current.font.color;
 		});
 		document.addEventListener('mousedown', textboxBlurHandle, true);
 	}
@@ -39,7 +41,7 @@ app.controller('TextBoxController',
 	
 	Init.initTextArea(TAcontainer, $scope.textArea, $scope.textBox, $scope);
 	if ($scope.current.datumWithFocus === $scope.textBox) {
-		$scope.textBox.font.size = 24;
+		$scope.textBox.font.size = $scope.current.font.size ||24;
 		$scope.textArea.style.fontSize = $scope.textBox.font.size * $scope.pwidth / $scope.pdfWidth + 'px';
  		$scope.current.datumWithFocus = undefined;
 		activateTA();
@@ -304,7 +306,6 @@ app.controller('TextController',
 	$scope.current.font.color = 'black';
 	$scope.current.font.style = 'normal';
 	$scope.current.font.weight = 'normal';
-	$scope.fonts = Fonts;
 	$scope.colors = Colors;
 	var pageRatio = $scope.pdfWidth / $scope.pwidth;
 // 	$scope.ctrlHeight = document.getElementById('controls').offsetHeight;
@@ -335,7 +336,7 @@ app.controller('TextController',
 			var textBox = angular.element(activeTextArea).scope().textBox;
 			activeTextArea.style.color = color;
 			textBox.font.color = color;
-			previewText.style.color = color;
+// 			previewText.style.color = color;
 		}
 	};
 	
@@ -375,10 +376,10 @@ app.controller('TextController',
 	$scope.changeFontSize = function(size) {
 		if (document.getElementsByClassName('tActive').length > 0) {
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
-			var textBox = angular.element(activeTextArea).scope().textBox;
+			angular.element(activeTextArea).scope().textBox.font.size = size;
 			activeTextArea.style.fontSize = (size/pageRatio) + 'px';
-			textBox.font.size = size;
-			previewText.style.fontSize = size + 'px';
+// 			textBox.font.size = size;
+// 			previewText.style.fontSize = size + 'px';
 		}
 	};
 	
@@ -387,7 +388,7 @@ app.controller('TextController',
 			var activeTextArea = document.getElementsByClassName('tActive')[0];
 			activeTextArea.style.fontFamily = fontName;
 			angular.element(activeTextArea).scope().textBox.font.family = fontName;
-			previewText.style.fontFamily = fontName;
+// 			previewText.style.fontFamily = fontName;
 		}
 	};
 	
@@ -459,5 +460,71 @@ app.controller('TextController',
 				}
 				break;
 		}
+	};
+	
+	$scope.addFonts = function() {
+		$scope.current.addingFonts = true;
+	};
+}]);
+
+app.controller('UserFontController',
+	['$scope', '$q', function($scope, $q) {
+	$scope.handleFontSelect = function(event) {
+		var files = event.target.files;
+		event.preventDefault();
+		var newStyle = document.createElement('style');
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.type.match(/x-font-ttf/)) { 
+				handleFont(file);
+			}
+		}
+		function saveUserFonts(fontURL, name) {
+			var deferred = $q.defer();
+			var openRq = window.indexedDB.open('UserDB');
+			openRq.onsuccess = function(event) {
+				var db = openRq.result,
+					trans = db.transaction(['userData'], 'readwrite'),
+					store = trans.objectStore('userData');
+				var getRq = store.get(1);
+				getRq.onsuccess = function(event) {
+					var userFonts = this.result.userFonts;
+					var item = {};
+					var num = userFonts.length + 1;
+					var customName = 'Custom' + num + '_' + name; 
+					item[customName] = fontURL;
+					userFonts.push(item);
+					store.put(this.result);
+					deferred.resolve(num);
+				};
+			}
+			return deferred.promise;
+		}
+		function handleFont(file) {
+			var reader = new FileReader();
+			reader.onload = function(ev) {
+				var fontURL = ev.target.result;
+				var name = file.name.replace('.ttf', '');
+				saveUserFonts(fontURL, name)
+				.then(function(num) {
+					var customName = 'Custom' + num + '_' + name;
+					newStyle.appendChild(document.createTextNode("\
+						@font-face {\
+							font-family: '" + customName + "';\
+							src: url('" + fontURL + "') format('truetype');\
+						}\
+					"));
+					newStyle.appendChild(document.createTextNode("\
+						." + customName + "{\
+							font-family: '" + customName + "';\
+						}\
+					"));
+					$scope.userFonts.push(customName);
+				});
+			};
+			reader.readAsDataURL(file);
+		}
+		
+		document.head.appendChild(newStyle);
 	};
 }]);

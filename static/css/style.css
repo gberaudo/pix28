@@ -544,7 +544,7 @@ div.thumb {
 	height: 1.5em;
 	line-height: 1.5em;
 	font-size: 60%;
-	background-color: green;
+	background-color: #EA0;
 	color: white;
 	text-align: center;
 	display: none;
@@ -751,6 +751,19 @@ span[name = 'title'] {
 	outline: 0;
 }
 
+#addFont {
+	width: 30em;
+	height: 15em;
+	z-index: 1001;
+	position: absolute;
+	box-shadow: 2px 2px 2px 2px #444; 
+	background-color: #FFFFFF;
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%);
+	outline: 1;
+	padding: 1em;
+}
 
 
 #leftPage, #rightPage, .cActive,
@@ -800,11 +813,11 @@ option {
 	left: 101%; 
 	top: -3%;
 	font-size: 2em !important;
-	color: black;
+	color: #68F;
 }
 
 .close:hover {
-	color: #AAA;
+	color: #99F;
 }
 
 #previewPage .next {
