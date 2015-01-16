@@ -339,7 +339,10 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		if (display.sw * imgRatio < 5 * pageRatio * canvas.width) {
 			bad = document.createElement('img');
 			bad.onload = function() {
-				ctx.drawImage(bad, 10, 10);
+				ctx.drawImage(bad, 1, 1);
+				ctx.fillStyle = 'red';
+				var notification = gettextCatalog.getString('Low resolution!');
+				ctx.fillText(notification, 1, 25);
 			}
 			bad.src = 'static/icons/face-sad.png';
 		}
