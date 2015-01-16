@@ -159,17 +159,15 @@ app.controller('AlbumController',
 	
 	function makeRandomPage(layoutList) {
 		var lset = Misc.randomFromList(layoutList);
-		var layouts = Layouts[lset],
-			layout = Misc.randomFromList(layouts),
-			page = new PageObject();
+		var layouts = Layouts[lset];
+		var layout = Misc.randomFromList(layouts);
+		var page = new PageObject({});
 		for (var k in layout.frames) {
-			var image = {},
-				canvas = angular.copy(layout.frames[k]),
-				frame = new FrameObject(canvas, image, {}); 
+			var frame = new FrameObject(angular.copy(layout.frames[k])); 
 			page.frames.push(frame);
 		}
 		for (var j in layout.boxes) {
-			var textbox = new TextBoxObject(layout.boxes[j]);
+			var textbox = new TextBoxObject(layout.textBoxes[j]);
 			page.textBoxes.push(textbox);
 		}
 		return page;
@@ -181,6 +179,7 @@ app.controller('AlbumController',
 			backPage = makeRandomPage(
 								[$scope.layoutList[0], $scope.layoutList[1]]);
 		$scope.album.content = [frontPage];
+		console.log(frontPage);
 		for (var i = 1; i < num-1; i++) {
 			var page = makeRandomPage($scope.layoutList);
 			$scope.album.content.push(page);

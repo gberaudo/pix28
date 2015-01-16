@@ -111,9 +111,15 @@ app.controller('LayoutController',
 	
 	$scope.saveAsFavourite = function() {
 		var pageId = document.getElementsByClassName('pActive')[0].id;
-		var frames = $scope.current[pageId].frames;
-		var textBoxes = $scope.current[pageId].textBoxes;
-		var layout = {frames: frames, boxes: textBoxes};
+		var currentPage = $scope.current[pageId];
+		var layout = angular.copy(currentPage);
+		layout.frames.forEach(function(frame) {
+			frame.image = {};
+		});
+		layout.textBoxes.forEach(function(textBox) {
+			textBox.text = '';
+		});
+		
 		$scope.favorites.unshift(layout);
 	};
 	
@@ -193,9 +199,9 @@ app.controller('LayoutController',
 	};
 	
 	$scope.changeAlbumBGColor = function() {
-		for (var i = 0; i < $scope.album.content.length; i++) {
-			$scope.album.content[i].background = $scope.current.BGcolor;
-		}
+		$scope.album.content.forEach(function(page) {
+			page.background = $scope.current.BGcolor;
+		});
 	};
 	
 	
@@ -357,8 +363,8 @@ app.controller('LayoutController',
 }]);
 
 app.controller('minLayoutController',
-    ['$scope', '$element', 'FrameObject', 'TextBoxObject',
-					function($scope, $element, FrameObject, TextBoxObject) {
+    ['$scope', '$element', 'FrameObject', 'TextBoxObject', '$q',
+					function($scope, $element, FrameObject, TextBoxObject, $q) {
 	
 	var canvas = $element[0].children[1],
 		scale = 0.2;
@@ -369,60 +375,101 @@ app.controller('minLayoutController',
 		var ctx = canvas.getContext('2d');
 		canvas.width = scale * $scope.pwidth;
 		canvas.height = scale * $scope.pheight;
-		ctx.fillStyle = '#FFFFFF';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		for (i = 0; i < $scope.layout.frames.length; i++) {
-			var frame = $scope.layout.frames[i];
-			var rect = frame.canvas;
-			ctx.beginPath();
-			ctx.lineWidth = '.2';
-			var left = scale * rect.left* $scope.pwidth / 100,
-				top = scale * rect.top * $scope.pheight / 100,
-				width = scale * rect.width * $scope.pwidth / 100,
-				height = scale * rect.height * $scope.pheight / 100;
-			if (!!frame.angle) {
-				ctx.save();
-				var centerX = left + width / 2,
-					centerY = top + height / 2;
-				ctx.translate(centerX, centerY);
-				ctx.rotate(Math.PI * frame.angle / 180);
-				ctx.rect(-width / 2, -height / 2, width, height);
-				ctx.stroke();
-				ctx.fillStyle = '#EEEEEE';
-				ctx.fillRect(-width/2, -height/2, width, height);
-				ctx.restore();
+		
+		function drawPattern() {
+			var deferred1 = $q.defer();
+			if (!!$scope.layout.patternURL) {
+				var tempCanvas = document.createElement('canvas');
+				tempCtx = tempCanvas.getContext('2d');
+				var img = new Image();
+				var patternSize = parseFloat($scope.layout.patternSize) * canvas.width /100; 
+				img.src = $scope.layout.patternURL;
+				img.onload = function() {
+					tempCanvas.width = patternSize;
+					tempCanvas.height = img.naturalHeight/img.naturalWidth * patternSize;
+					tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+					var patImg = new Image();
+					patImg.src = tempCanvas.toDataURL();
+					patImg.onload = function() {
+						var pat = ctx.createPattern(patImg,"repeat");
+						ctx.rect(0,0,canvas.width, canvas.height);
+						ctx.fillStyle = pat;
+						ctx.fill();
+						deferred1.resolve(null);
+					};
+				};
 			} else {
-				ctx.rect(left, top, width, height);
-				ctx.stroke();
-				ctx.fillStyle = '#EEEEEE';
-				ctx.fillRect(left, top, width, height);
+				deferred1.resolve(null);
 			}
+			return deferred1.promise;
 		}
 		
-		for (i = 0; i < $scope.layout.boxes.length; i++) {
-			var textBox = $scope.layout.boxes[i];
-			var rect = textBox.box;
-			var left = scale * rect.left*$scope.pwidth/100, 
-				top = scale * rect.top * $scope.pheight/100,
-				width = scale * rect.width * $scope.pwidth/100,
-				height = scale * rect.height * $scope.pheight/100;
-			ctx.beginPath();
-			ctx.lineWidth = '.2';
-			if (!!textBox.angle) {
-				ctx.save();
-				var centerX = left + width / 2,
-					centerY = top + height / 2;
-				ctx.translate(centerX, centerY);
-				ctx.rotate(Math.PI * textBox.angle / 180);
-				ctx.rect(-width / 2, -height / 2, width, height);
-				ctx.strokeStyle = 'blue';
-				ctx.stroke();
-				ctx.restore();
-			} else {
-				ctx.rect(left, top, width, height);
-				ctx.strokeStyle = 'blue';
-				ctx.stroke();
+		function drawFrames() {
+			
+			for (i = 0; i < $scope.layout.frames.length; i++) {
+				var frame = $scope.layout.frames[i];
+				var rect = frame.canvas;
+				ctx.beginPath();
+				ctx.lineWidth = '.2';
+				var left = scale * rect.left* $scope.pwidth / 100,
+					top = scale * rect.top * $scope.pheight / 100,
+					width = scale * rect.width * $scope.pwidth / 100,
+					height = scale * rect.height * $scope.pheight / 100;
+				if (!!frame.angle) {
+					ctx.save();
+					var centerX = left + width / 2,
+						centerY = top + height / 2;
+					ctx.translate(centerX, centerY);
+					ctx.rotate(Math.PI * frame.angle / 180);
+					ctx.rect(-width / 2, -height / 2, width, height);
+					ctx.stroke();
+					ctx.fillStyle = '#EEEEEE';
+					ctx.fillRect(-width/2, -height/2, width, height);
+					ctx.restore();
+				} else {
+					ctx.rect(left, top, width, height);
+					ctx.stroke();
+					ctx.fillStyle = '#EEEEEE';
+					ctx.fillRect(left, top, width, height);
+				}
 			}
+			
+			for (i = 0; i < $scope.layout.textBoxes.length; i++) {
+				var textBox = $scope.layout.textBoxes[i];
+				var rect = textBox.box;
+				var left = scale * rect.left*$scope.pwidth/100, 
+					top = scale * rect.top * $scope.pheight/100,
+					width = scale * rect.width * $scope.pwidth/100,
+					height = scale * rect.height * $scope.pheight/100;
+				ctx.beginPath();
+				ctx.lineWidth = '.2';
+				if (!!textBox.angle) {
+					ctx.save();
+					var centerX = left + width / 2,
+						centerY = top + height / 2;
+					ctx.translate(centerX, centerY);
+					ctx.rotate(Math.PI * textBox.angle / 180);
+					ctx.rect(-width / 2, -height / 2, width, height);
+					ctx.strokeStyle = 'blue';
+					ctx.stroke();
+					ctx.restore();
+				} else {
+					ctx.rect(left, top, width, height);
+					ctx.strokeStyle = 'blue';
+					ctx.stroke();
+				}
+			}
+		}
+		var BGcolor =  $scope.layout.background || '#FFFFFF';
+		ctx.fillStyle = BGcolor;
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		if (!!$scope.layout.patternURL) {
+			drawPattern()
+			.then(function() {
+				drawFrames();
+			});
+		} else {
+			drawFrames();
 		}
 	}
 	
@@ -444,40 +491,48 @@ app.controller('minLayoutController',
 	};
 	
 	$scope.loadPageLayout = function(layout) {
-		var canvas, frame, box;
 		var activePage = document.getElementsByClassName('pActive')[0];
 
 		if (!!activePage) {
-			var images = [];
-			var frames = $scope.current[activePage.id].frames;
-			for (var j = 0; j < frames.length; j++) {
-				if (!!frames[j].image.src) {
-					images.push(frames[j].image);
-				}
-			}
-			var rest = images.length;
-			var image;
-			$scope.current[activePage.id].frames = [];
-			$scope.current[activePage.id].textBoxes = [];//remove the current layout
-			for (var i in layout.frames) {
-				if (rest > 0) {
-					image = images.shift();
-				} else {
-					image = {};
-				}
- 				frame = new FrameObject(
-					{
-						canvas: angular.copy(layout.frames[i].canvas),
-						angle: layout.frames[i].angle,
-						image: image
+			var oldPageCopy = angular.copy($scope.current[activePage.id]);
+			var currentPage = $scope.current[activePage.id];
+
+			function saveImages() {
+				var images = [];
+				var frames = currentPage.frames;
+				for (var j = 0; j < frames.length; j++) {
+					if (!!frames[j].image.src) {
+						images.push(frames[j].image);
 					}
-				);
-				$scope.current[activePage.id].frames.push(frame);
+				}
+				return images;
 			}
-			for (var j in layout.boxes) {
-				var textbox = new TextBoxObject(angular.copy(layout.boxes[j]));
-				$scope.current[activePage.id].textBoxes.push(textbox);
+			
+			var images = saveImages();
+			currentPage.frames = [];
+			currentPage.textBoxes = [];
+			
+			for (var i = 0; i < layout.frames.length; i++) {
+				currentPage.frames[i] = new FrameObject(angular.copy(layout.frames[i]));
 			}
+			
+			for (var j = 0; j< layout.textBoxes.length; j++) {
+				currentPage.textBoxes[j] = new TextBoxObject(angular.copy(layout.textBoxes[j]));
+			}
+			
+			currentPage.background = layout.background || oldPageCopy.background || '';
+			currentPage.patternURL = layout.patternURL || oldPageCopy.patternURL || '';
+			currentPage.patternWidth = layout.patternWidth || oldPageCopy.patternWidth || '';
+			currentPage.patternHeight = layout.patternHeight || oldPageCopy.patternHeight ||'';
+			currentPage.patternSize = layout.patternSize || oldPageCopy.patternSize || '';
+			
+			currentPage.frames.forEach(function(frame) {
+				if (images.length > 0) {
+					frame.image = images.shift();
+				} else {
+					frame.image = {};
+				}
+			});
 		}
 	};
 

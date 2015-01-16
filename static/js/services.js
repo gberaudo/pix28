@@ -5,14 +5,15 @@ app.factory('FrameObject', function() {
 		this.display = data.display || {};
 		this.angle = data.angle || 0;
 		this.border = data.border || {};
+		this.layer = data.layer || 10;
 	};
 })
 
 	.factory('PageObject', function() {
-	return function(frames, textBoxes,background) { 
-		this.frames = frames || []; //list of FrameObject
-		this.textBoxes = textBoxes || []; //list of textBoxOject
-		this.background = background || undefined;
+	return function(data) { 
+		this.frames = data.frames || []; //list of FrameObject
+		this.textBoxes = data.textBoxes || []; //list of textBoxOject
+		this.background = data.background || '';
 	};
 })
 	
@@ -24,15 +25,10 @@ app.factory('FrameObject', function() {
 				family: data.font.family || 'UVNTinTuc_R',
 				size: data.font.size || 24,
 				color: data.font.color || '#000000'
-			};/* {
-// 				style: 'normal',
-				family: 'UVNTinTuc_R',
-// 				weight: font.weight ||'normal',
-				color: '#000000',
-				size: font.size || 20
-			};*/
+			};
 			this.align = data.align || 'left';
 			this.angle = data.angle || 0;
+			this.layer = data.layer || 15;
 		};
 })
 

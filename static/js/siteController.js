@@ -90,7 +90,7 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 	};
 	
 	function updateUserDB(lang) {
-		var openRq = window.indexedDB.open('UserDB',1);
+		var openRq = window.indexedDB.open('UserDB',2);
 		openRq.onsuccess = function(event) {
 			var db = openRq.result,
 				trans = db.transaction(['userInfo'], 'readwrite'),
