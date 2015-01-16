@@ -37,7 +37,6 @@ app.controller('AlbumController',
 		];
 		$scope.fonts = Fonts;
 		getUserFonts();
-		console.log($scope.userFonts);
 		
 		function getUserFonts() {
 			var openRq = window.indexedDB.open('UserDB');
@@ -50,10 +49,8 @@ app.controller('AlbumController',
 				var getRq = store.get(1);
 				getRq.onsuccess = function(event) {
 					var userData = this.result.userFonts;
-					
 					for (var i = 0; i < userData.length; i++) {
 						var fontName = Object.keys(userData[i])[0];
-						console.log('font', fontName);
 						var fontURL = userData[i][fontName];
 						newStyle.appendChild(document.createTextNode("\
 							@font-face {\
@@ -67,15 +64,12 @@ app.controller('AlbumController',
 							}\
 						"));
 						userFonts.push(fontName);
-						console.log('font pushed');
 					}
 					document.head.appendChild(newStyle);
 					$scope.userFonts = userFonts;
 				};
 			};
-			
 		}
-		
 	};
 	$scope.cancelUpdater = undefined;
 	
@@ -523,6 +517,7 @@ app.controller('AlbumController',
 			}
 		}
 	};
+	
 	$scope.moveDoublePageForward = function() {
 		var pageId = document.getElementsByClassName('pActive')[0].id;
 		var movedPage = $scope.current[pageId];

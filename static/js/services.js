@@ -270,22 +270,21 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
 		img.setAttribute('title', title); 
 		div.setAttribute('class', 'thumb');
-		div.appendChild(img);
+		
 		usedCheck.id = 'check' + id;
 		if (!!usedMap) {
 			obj.used = usedMap[id];
 		}
 		usedCheck.innerHTML = obj.used || '';
 		if (!!obj.used){
-			usedCheck.style.display = 'block';
+			usedCheck.style.display = 'inline-block';
 		}
-// 		usedCheck.setAttribute('used', obj.used || 0);
 		
 		angular.element(usedCheck).addClass('usedCheck');
 		angular.element(usedCheck).addClass('circledNumber');
 		div.appendChild(usedCheck);
+		div.appendChild(img);
 		output.appendChild(div);
-		usedCheck.style.left = (img.offsetLeft - 5) + 'px';
 		if (goBottom) {
 			output.scrollTop = output.scrollHeight;
 		}

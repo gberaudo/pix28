@@ -546,7 +546,7 @@ app.controller('CanvasController',
 	function updateNewThumb(DbId) {
 		var usedCheck = document.getElementById('check' + DbId);
 		usedCheck.innerHTML = parseInt(usedCheck.innerHTML||0) + 1; 
-		usedCheck.style.display = 'block';
+		usedCheck.style.display = 'inline-block';
 	}
 	
 	
