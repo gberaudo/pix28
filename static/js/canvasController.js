@@ -535,8 +535,6 @@ app.controller('CanvasController',
 			canvasFocus();
 			$scope.$parent.activate();
 			updateNewThumb(DbId);
-			
-// 			updateImgDB(DbId);
 		}
 		if (name == 'exchange') {
 			console.log('exchanged');

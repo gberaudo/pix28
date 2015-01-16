@@ -360,7 +360,6 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#666';
 		ctx.fillText(msg, 5, 20);
-// 		canvas.style.outline = '1px solid #CCC inset';
 	};
 	
 	this.delCanvas = function(el, $scope) {
@@ -586,7 +585,6 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 				ctx.translate(centerX, centerY);
 				ctx.rotate(textBox.angle * Math.PI / 180);
 				ctx.translate(-width/2, -height/2);
-// 					ctx.textBaseline = 'bottom';
 				ctx.font = fontSize + 'px ' + fontName;
 				ctx.fillStyle = color;
 				wrapText(ctx, textBox.text, 0, 1.2 * fontSize,
