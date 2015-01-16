@@ -354,8 +354,6 @@ app.controller('AlbumController',
 		}
 	}
 	
-
-
 	$scope.addNewPage = function (){
 		var pattern = {};
 		var color, modelPage;
@@ -428,9 +426,6 @@ app.controller('AlbumController',
 		updateView('next');
 	};
 	
-	
-	
-	
 	$scope.removePage = function() {
 		if ($scope.current.pageNum == 0 || 
 			$scope.current.pageNum == $scope.album.content.length) {
@@ -482,7 +477,53 @@ app.controller('AlbumController',
 		$scope.current.onEditText = false;
 		$scope.current.onEditImage = false;
 	};
- /*------------------title, description control-------------------*/
+ 
+	$scope.movePageForward = function() {
+		var pageId = document.getElementsByClassName('pActive')[0].id;
+		var movedPage = $scope.current[pageId];
+		var content = $scope.album.content;
+		var index = content.indexOf(movedPage);
+		if (index < content.length - 1) {
+			content.splice(index, 1);
+			content.splice(index + 1, 0, movedPage);
+			if (pageId == 'leftPage') {
+				$scope.current.leftPage = $scope.current.rightPage;
+				$scope.current.rightPage = movedPage;
+			}
+			if (pageId == 'rightPage') {
+				$scope.current.pageNum += 2;
+				$scope.current.leftPage = movedPage;
+				if (index < content.length - 2) {
+					$scope.current.rightPage = content[index + 2];
+				}
+				updateView('next');
+			}
+		}
+	};
+	
+	$scope.movePageBackward = function() {
+		var pageId = document.getElementsByClassName('pActive')[0].id;
+		var movedPage = $scope.current[pageId];
+		var content = $scope.album.content;
+		var index = content.indexOf(movedPage);
+		if (index > 0) {
+			content.splice(index, 1);
+			content.splice(index - 1, 0, movedPage);
+			if (pageId == 'rightPage') {
+				$scope.current.rightPage = $scope.current.leftPage;
+				$scope.current.leftPage = movedPage;
+			}
+			if (pageId == 'leftPage') {
+				$scope.current.pageNum -= 2;
+				$scope.current.rightPage = movedPage;
+				if (index > 1) {
+					$scope.current.leftPage = content[index - 2]
+				}
+				updateView('prev');
+			}
+		}
+	};
+	/*------------------title, description control-------------------*/
  
 	$scope.showTitle = function() {
 		$scope.hasTitle = true;

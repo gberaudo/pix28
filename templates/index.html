@@ -397,7 +397,11 @@ $def with (mode)
 								class = 'respond clickable'
 								ng-click = 'previewPage(current.pageNum)'
 								title = '{{"Preview album"|translate}}'/>
-					
+						
+						<span class = 'link'
+							ng-click = 'movePageBackward()'> Move backward</span>
+						<span class = 'link'
+							ng-click = 'movePageForward()'> Move forward</span>
 						<img src = 'static/icons/delpage.svg'
 								title = '{{"Delete this double page"|translate}}'
 								ng-click = 'removePage()'
