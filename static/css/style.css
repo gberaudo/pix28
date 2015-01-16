@@ -427,7 +427,24 @@ canvas.minframe:hover, .showItem:hover {
 	display: block;
 }
 
+#movePageBackward {
+	position: absolute;
+	top: 25%;
+	left: 5px;
+	width: 8%;
+	font-size: 80%;
+	display: block;
+}
 
+
+#movePageForward {
+	position: absolute;
+	top: 25%;
+	right: 5px;
+	width: 8%;
+	font-size: 80%;
+	display: block;
+}
 
 #colorMenu {
 	z-index: 2;
@@ -535,7 +552,7 @@ div.thumb {
 
 .usedCheck {
 	position: absolute;
-	top: 0%;
+	top: 0;
 }
 
 .circledNumber {

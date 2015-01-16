@@ -374,7 +374,14 @@ $def with (mode)
 						<!--<img src = 'static/icons/next.png'/>
 						<span translate>next</span>-->
 					</div>
-					
+					<span class = 'link'
+						ng-show = 'show.leftPage'
+						id = 'movePageBackward'
+							ng-click = 'movePageBackward()'> Move page backward</span>
+					<span class = 'link'
+						id = 'movePageForward'
+						ng-show = 'show.rightPage'
+							ng-click = 'movePageForward()'> Move page forward</span>
 					<div id = 'topMenu'>
 						<img title = '{{"Add a new double page"|translate}}'
 							ng-click = 'addNewPage()'
@@ -397,11 +404,11 @@ $def with (mode)
 								class = 'respond clickable'
 								ng-click = 'previewPage(current.pageNum)'
 								title = '{{"Preview album"|translate}}'/>
+						<span class = 'link'
+							ng-click = 'moveDoublePageBackward()'> DPbackward</span>
+						<span  class = 'link'
+							ng-click = 'moveDoublePageForward()'> DPforward</span>
 						
-						<span class = 'link'
-							ng-click = 'movePageBackward()'> Move backward</span>
-						<span class = 'link'
-							ng-click = 'movePageForward()'> Move forward</span>
 						<img src = 'static/icons/delpage.svg'
 								title = '{{"Delete this double page"|translate}}'
 								ng-click = 'removePage()'

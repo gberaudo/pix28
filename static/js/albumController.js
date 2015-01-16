@@ -523,6 +523,33 @@ app.controller('AlbumController',
 			}
 		}
 	};
+	$scope.moveDoublePageForward = function() {
+		var pageId = document.getElementsByClassName('pActive')[0].id;
+		var movedPage = $scope.current[pageId];
+		var content = $scope.album.content;
+		var index = content.indexOf(movedPage);
+		if (index < content.length - 3 && index > 0) {
+			var spliceIndex = (pageId == 'leftPage')? index : (index -1);  
+			var movedDoublePage = content.splice(spliceIndex, 2);
+			content.splice(spliceIndex + 2, 0, movedDoublePage[0], movedDoublePage[1]);
+			$scope.current.pageNum += 2;
+			updateView('next');
+		}
+	};
+	
+	$scope.moveDoublePageBackward = function() {
+		var pageId = document.getElementsByClassName('pActive')[0].id;
+		var movedPage = $scope.current[pageId];
+		var content = $scope.album.content;
+		var index = content.indexOf(movedPage);
+		if (index < content.length - 1 && index > 2) {
+			var spliceIndex = (pageId == 'leftPage')? index : (index -1);  
+			var movedDoublePage = content.splice(spliceIndex, 2);
+			content.splice(spliceIndex - 2, 0, movedDoublePage[0], movedDoublePage[1]);
+			$scope.current.pageNum -= 2;
+			updateView('prev');
+		}
+	};
 	/*------------------title, description control-------------------*/
  
 	$scope.showTitle = function() {
