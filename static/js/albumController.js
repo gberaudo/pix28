@@ -32,6 +32,7 @@ app.controller('AlbumController',
 		$scope.pdfWidth = 595;
 		$scope.pdfHeight = 595;
 		
+		$scope.current.borderThickness = 0;
 		$scope.layoutList = [
 			'x1', 'x2', 'x3', 'x4', 'x5'
 		];

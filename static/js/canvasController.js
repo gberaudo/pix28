@@ -29,6 +29,7 @@ app.controller('CanvasController',
 		$scope.current.onEditImage = true;
 		ImgService.drawAnchors(canvas);
 		document.addEventListener('mousedown', canvasBlurHandle, true);
+		$scope.current.borderThickness = $scope.frame.border.thickness || 0;
 	};
 	
 	function setFocus() {
