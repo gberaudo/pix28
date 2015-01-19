@@ -20,6 +20,26 @@ app.controller('PageController',
 		var page = angular.element($element[0]);
 		page.addClass('pActive');
 // 		document.addEventListener('mousedown', handleMouseDown, true);
+		markSelectedBGColor();
+		markSelectedPattern();
+		function markSelectedBGColor() {
+			if (document.getElementsByClassName('BGColor selected').length > 0) {
+				angular.element(document.getElementsByClassName('BGColor selected')[0])
+				.removeClass('selected');
+			}
+			angular.element(document.getElementsByClassName(
+				'BGColor ' + 'BG_' + $scope.current[$scope.page].background)).addClass('selected');
+		}
+		
+		function markSelectedPattern() {
+			if (document.getElementsByClassName('pattern selected').length > 0) {
+				angular.element(document.getElementsByClassName('pattern selected')[0])
+				.removeClass('selected');
+			}
+			angular.element(document.getElementsByClassName(
+				'pattern ' + 'Pattern_' + $scope.current[$scope.page].patternName)).addClass('selected');
+		}
+				// 					document.addEventListener('mousedown', handleMouseDown, true);
 	};
 	
 	

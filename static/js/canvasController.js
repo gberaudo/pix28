@@ -29,7 +29,17 @@ app.controller('CanvasController',
 		$scope.current.onEditImage = true;
 		ImgService.drawAnchors(canvas);
 		document.addEventListener('mousedown', canvasBlurHandle, true);
+		$scope.current.borderColor = $scope.frame.border.color || '';
 		$scope.current.borderThickness = $scope.frame.border.thickness || 0;
+		markSelectedBorder();
+		function markSelectedBorder() {
+			if (document.getElementsByClassName('border selected').length > 0) {
+				angular.element(document.getElementsByClassName('border selected')[0])
+				.removeClass('selected');
+			}
+			angular.element(document.getElementsByClassName(
+				'border ' + 'BD_' + $scope.frame.border.color)).addClass('selected');
+		}
 	};
 	
 	function setFocus() {
