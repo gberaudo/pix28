@@ -883,7 +883,7 @@ $def with (mode)
 								</div>
 								
 								<div ng-repeat = 'pattern in patterns'
-									class = 'showItem'
+									class = 'showItem pattern {{"Pattern_" + pattern.name}}'
 									ng-show = 'showPattern'
 									ng-controller = 'PatternController'
 									style = 'width: {{0.2 * pwidth + "px"}};
