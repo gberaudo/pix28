@@ -581,16 +581,18 @@ app.controller('CanvasController',
 			document.removeEventListener('mousedown', canvasBlurHandle, true);
 		}
 	}
-	
-// 	$scope.dragCanvas = function(event) {
-// 		event.dataTransfer.setData('name', 'exchange');
+/*	
+	$scope.dragCanvas = function(event) {
+		
+		event.dataTransfer.effectAllowed = "copy";
+		event.dataTransfer.setData('name', 'exchange');
 // 		var img = document.createElement('img');
 // 		img.src = $scope.img.src;
 // 		img.style.width = '100px';
 // 		img.style.height = '100px';
-// 		event.dataTransfer.setDragImage(img, 50, 50);
-// 	};
-	
+		event.preventDefault();
+	};
+	*/
 }]);
 
 app.controller('ImageController',

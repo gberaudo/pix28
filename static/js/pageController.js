@@ -13,13 +13,11 @@ app.controller('PageController',
 	initPage();
 	
 	$scope.activate = function() {
-		//deactivate the current active page
 		var active = angular.element(document.getElementsByClassName('pActive')[0]);
 		active.removeClass('pActive');
-		//activate this page
 		var page = angular.element($element[0]);
 		page.addClass('pActive');
-// 		document.addEventListener('mousedown', handleMouseDown, true);
+		
 		markSelectedBGColor();
 		markSelectedPattern();
 		function markSelectedBGColor() {

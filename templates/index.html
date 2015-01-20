@@ -374,19 +374,8 @@ $def with (mode)
 						<!--<img src = 'static/icons/next.png'/>
 						<span translate>next</span>-->
 					</div>
-					<span class = 'link'
-						ng-show = 'show.leftPage'
-						id = 'movePageBackward'
-							ng-click = 'movePageBackward()'> Move page backward</span>
-					<span class = 'link'
-						id = 'movePageForward'
-						ng-show = 'show.rightPage'
-							ng-click = 'movePageForward()'> Move page forward</span>
+					
 					<div id = 'topMenu'>
-						<img title = '{{"Add a new double page"|translate}}'
-							ng-click = 'addNewPage()'
-							src = 'static/icons/addpage.svg'
-							class = 'respond clickable'/> 
 						
 						<img  src = 'static/icons/text2.svg'
 								title = '{{"Drag and drop into page to add a text field"|translate}}'
@@ -404,14 +393,9 @@ $def with (mode)
 								class = 'respond clickable'
 								ng-click = 'previewPage(current.pageNum)'
 								title = '{{"Preview album"|translate}}'/>
-						<span class = 'link'
-							ng-click = 'moveDoublePageBackward()'> DPbackward</span>
-						<span  class = 'link'
-							ng-click = 'moveDoublePageForward()'> DPforward</span>
 						
 						<img src = 'static/icons/delpage.svg'
 								title = '{{"Delete this double page"|translate}}'
-								ng-click = 'removePage()'
 								class = 'respond clickable'
 								style = 'float: right'/>
 					</div>
@@ -941,7 +925,6 @@ $def with (mode)
 							</div>
 							<div class = 'borderCtrl' ng-show = 'showBorder'>
 									<span> Border thickness {{current.borderThickness}}</span>
-									<span> Border thickness </span>
 									<span class = 'btn respond icon fa fa-sort-up'
 										ng-click = 'increaseThickness()'></span>
 									<span class = 'btn respond icon fa fa-sort-down'
@@ -998,34 +981,34 @@ $def with (mode)
 		<!--_____________________alert delAlbum_____________________-->
 		
 		<div  class = 'alert'
-						style = 'width: {{screenWidth/4 + "px"}}; 
-										left: {{screenWidth/4 + "px"}}; 
-										top: {{screenWidth/12 +"px"}}'
-						ng-show = 'delAlbum'
-						ng-keydown = 'alertKeydown(\$event)'>
-						<span style = 'color: red' translate>
-							The album 
-						</span>
-						<span style = 'font-weight: bold'> {{album.title}} </span> 
-						<span  style = 'color: red' translate>will be removed definitely.</span>
-						<br/>
-						<span style = 'color: red' translate>
-							Are you sure to delete this album?
-						</span>
-						<br/> <br/>
-						<button type = 'button' class = 'respond'
-							id = 'delAlbum'
-							ng-click = 'removeAlbum(current.albumId)'
-							style = 'float: left' translate>
-							Yes, delete it.
-						</button>
-						<button type = 'button' class = 'respond' 
-							id = 'notDelAlbum'
-							ng-click = 'delAlbum = false; hideAlbum = false' 
-							style = 'float: right' translate>
-							No, do not delete.
-						</button>
-				</div>
+			style = 'width: {{screenWidth/4 + "px"}}; 
+							left: {{screenWidth/4 + "px"}}; 
+							top: {{screenWidth/12 +"px"}}'
+			ng-show = 'delAlbum'
+			ng-keydown = 'alertKeydown(\$event)'>
+			<span style = 'color: red' translate>
+				The album 
+			</span>
+			<span style = 'font-weight: bold'> {{album.title}} </span> 
+			<span  style = 'color: red' translate>will be removed definitely.</span>
+			<br/>
+			<span style = 'color: red' translate>
+				Are you sure to delete this album?
+			</span>
+			<br/> <br/>
+			<button type = 'button' class = 'respond'
+				id = 'delAlbum'
+				ng-click = 'removeAlbum(current.albumId)'
+				style = 'float: left' translate>
+				Yes, delete it.
+			</button>
+			<button type = 'button' class = 'respond' 
+				id = 'notDelAlbum'
+				ng-click = 'delAlbum = false; hideAlbum = false' 
+				style = 'float: right' translate>
+				No, do not delete.
+			</button>
+		</div>
 		
 		<div class = 'alert'
 			style = 'width: {{screenWidth/4 + "px"}}; 

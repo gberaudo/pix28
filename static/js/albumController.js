@@ -174,7 +174,6 @@ app.controller('AlbumController',
 			backPage = makeRandomPage(
 								[$scope.layoutList[0], $scope.layoutList[1]]);
 		$scope.album.content = [frontPage];
-		console.log(frontPage);
 		for (var i = 1; i < num-1; i++) {
 			var page = makeRandomPage($scope.layoutList);
 			$scope.album.content.push(page);
@@ -190,24 +189,16 @@ app.controller('AlbumController',
 		var height = Math.round(customHeight * 72 / 2.54);
 		$scope.createAlbum(width, height);
 	};
+	
+	
+	
 	$scope.delAlbumRq = function() {
 		$scope.delAlbum = true;
 		$scope.hideAlbum = true;
 		$timeout(function() {
 			document.getElementById('notDelAlbum').focus();
 		}, 50);
-		document.addEventListener('keydown', delAlbumKeyDownHandle, true);
 	};
-	
-	function delAlbumKeyDownHandle(event) {
-		if (event.keyCode == 27) {
-			$timeout(function() {
-				$scope.delAlbum = false;
-				$scope.hideAlbum = false;
-			});
-			document.removeEventListener('keydown', delAlbumKeyDownHandle, true);
-		}
-	}
 	
 	$scope.removeAlbum = function(id) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
@@ -253,6 +244,9 @@ app.controller('AlbumController',
 		}
 		if  (event.keyCode == 39) {
 			document.getElementById('notDelAlbum').focus();
+		}
+		if (event.keyCode == 27) {
+			$scope.delAlbum = false;
 		}
 	};
 		
@@ -425,16 +419,12 @@ app.controller('AlbumController',
 	};
 	
 	$scope.removePageRq = function() {
-	$scope.removePage = function() {
 		if ($scope.current.pageNum == 0 || 
 			$scope.current.pageNum == $scope.album.content.length) {
 			var msg = gettextCatalog.getString('Cannot remove cover page!');
 			var div = document.createElement('div');
 			div.setAttribute('class', 'alert');
 			div.innerHTML = msg;
-// 			div.style.width = screen.width/4 + 'px';
-// 			div.style.top = screen.width/12 + 'px';
-// 			div.style.left = screen.width/4 + 'px';
 			document.body.appendChild(div);
 			$timeout(function() {
 				document.body.removeChild(div);
@@ -456,6 +446,8 @@ app.controller('AlbumController',
 			}
 			$scope.delPage = false;
 			updateView('next');
+	};
+	
 	$scope.delPageKeydown = function(event) {
 		event.preventDefault();
 		console.log(event.keyCode);
@@ -469,6 +461,7 @@ app.controller('AlbumController',
 			$scope.delPage = false;
 		}
 	};
+	
 	
 	function updateView(dir) {
 		if ($scope.current.pageNum == 0) {
@@ -983,7 +976,6 @@ app.controller('ExportController',
 				var fontSrc = 'static/fonts/' + fontName + '.ttf';
 				$http.get(fontSrc, {responseType: "arraybuffer"})
 					.success(function(data) {
-						console.log(data);
 						deferred.resolve(data);
 					})
 					.error(function(data, status) {

@@ -232,7 +232,8 @@ app.controller('LayoutController',
 		if (document.getElementsByClassName('cActive').length > 0) {
 			var canvas = document.getElementsByClassName('cActive')[0];
 			var frame = angular.element(canvas).scope().frame;
-			var thickness = frame.border.thickness || 3;
+			var thickness = frame.border.thickness || 
+				$scope.current.borderThickness || 3;
 			canvas.style.outline = thickness + 'px solid ' + color;
 			frame.border.color = color;
 			frame.border.thickness = thickness;
@@ -348,11 +349,12 @@ app.controller('LayoutController',
 			var activePage = document.getElementsByClassName('pActive')[0];
 		}
 		var page = $scope.current[activePage.id];
-		page.patternURL = undefined;
-		page.patternURL300 = undefined;
-		page.patternWidth = undefined;
-		page.patternHeight = undefined;
-		page.patternSize = undefined;
+		page.patternName = '';
+		page.patternURL = '';
+		page.patternURL300 = '';
+		page.patternWidth = '';
+		page.patternHeight = '';
+		page.patternSize = '';
 		$scope.current.pattern = {};
 	};
 	
@@ -520,11 +522,6 @@ app.controller('minLayoutController',
 				currentPage.textBoxes[j] = new TextBoxObject(angular.copy(layout.textBoxes[j]));
 			}
 			
-			currentPage.background = layout.background || oldPageCopy.background || '';
-			currentPage.patternURL = layout.patternURL || oldPageCopy.patternURL || '';
-			currentPage.patternWidth = layout.patternWidth || oldPageCopy.patternWidth || '';
-			currentPage.patternHeight = layout.patternHeight || oldPageCopy.patternHeight ||'';
-			currentPage.patternSize = layout.patternSize || oldPageCopy.patternSize || '';
 			
 			currentPage.frames.forEach(function(frame) {
 				if (images.length > 0) {

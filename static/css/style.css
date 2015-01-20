@@ -338,7 +338,6 @@ canvas.minframe:hover, .showItem:hover {
 	margin-left: 5px;
 }
 
-/*-------------------- Image loader----------------------------------*/
 
 #imageLoader {
 	position: absolute;
@@ -641,9 +640,6 @@ div[name = 'editTitle'] {
 
 #topMenu img {
 	display: inline-block;
-	height: 2em;
-	margin-left: 1em;
-	margin-right: 1em;
 }
 
 
