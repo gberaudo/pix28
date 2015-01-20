@@ -119,8 +119,9 @@ app.controller('LayoutController',
 		layout.textBoxes.forEach(function(textBox) {
 			textBox.text = '';
 		});
-		
+		layout.isCustom = true;
 		$scope.favorites.unshift(layout);
+		
 	};
 	
 	
@@ -522,7 +523,23 @@ app.controller('minLayoutController',
 				currentPage.textBoxes[j] = new TextBoxObject(angular.copy(layout.textBoxes[j]));
 			}
 			
-			
+			if (!!layout.isCustom) {
+				currentPage.background = layout.background || '';
+				currentPage.patternName = layout.patternName || '';
+				currentPage.patternURL = layout.patternURL || '';
+				currentPage.patternURL300 = layout.patternURL300 || '';
+				currentPage.patternWidth = layout.patternWidth || '';
+				currentPage.patternHeight = layout.patternHeight || '';
+				currentPage.patternSize = layout.patternSize || '';
+			} else {
+				currentPage.background = oldPageCopy.background || '';
+				currentPage.patternName = oldPageCopy.patternName || '';
+				currentPage.patternURL = oldPageCopy.patternURL || '';
+				currentPage.patternURL300 = oldPageCopy.patternURL300 || '';
+				currentPage.patternWidth = oldPageCopy.patternWidth || '';
+				currentPage.patternHeight = oldPageCopy.patternHeight || '';
+				currentPage.patternSize = oldPageCopy.patternSize || '';
+			}
 			currentPage.frames.forEach(function(frame) {
 				if (images.length > 0) {
 					frame.image = images.shift();
