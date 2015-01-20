@@ -570,6 +570,7 @@ app.controller('PatternController', ['$scope',
 			var activePage = document.getElementsByClassName('pActive')[0];
 		}
 		var page = $scope.current[activePage.id];
+		page.patternName = $scope.pattern.name;
 		page.patternURL = $scope.pattern.URL72;
 		page.patternURL300 = $scope.pattern.URL300;
 		page.patternWidth = $scope.pattern.width;

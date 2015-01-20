@@ -338,6 +338,12 @@ canvas.minframe:hover, .showItem:hover {
 	margin-left: 5px;
 }
 
+.border.selected, .BGColor.selected, .pattern.selected {
+/* 	box-shadow: 0 2px 4px #000; */
+	outline-style: outset;
+}
+
+ /*-------------------- Image loader----------------------------------*/
 
 #imageLoader {
 	position: absolute;
@@ -640,6 +646,9 @@ div[name = 'editTitle'] {
 
 #topMenu img {
 	display: inline-block;
+	height: 1.8em;
+	margin-left: .7em;
+	margin-right: .7em;
 }
 
 

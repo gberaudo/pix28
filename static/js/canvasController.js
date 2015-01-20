@@ -31,6 +31,7 @@ app.controller('CanvasController',
 		document.addEventListener('mousedown', canvasBlurHandle, true);
 		$scope.current.borderColor = $scope.frame.border.color || '';
 		$scope.current.borderThickness = $scope.frame.border.thickness || 0;
+		
 		markSelectedBorder();
 		function markSelectedBorder() {
 			if (document.getElementsByClassName('border selected').length > 0) {
