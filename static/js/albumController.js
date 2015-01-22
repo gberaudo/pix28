@@ -196,7 +196,7 @@ app.controller('AlbumController',
 	
 	$scope.delAlbumRq = function() {
 		$scope.delAlbum = true;
-		$scope.hideAlbum = true;
+		$scope.current.hideAlbum = true;
 		$timeout(function() {
 			document.getElementById('notDelAlbum').focus();
 		}, 50);
@@ -224,13 +224,13 @@ app.controller('AlbumController',
 					}
 					$scope.$parent.showHome = true;
 					$scope.delAlbum = false;
-					$scope.hideAlbum = false;
+					$scope.current.hideAlbum = false;
 				});
 			};
 			removeRq.onerror = function() {
 				console.log('failed to remove album', id);
 				$scope.delAlbum = false;
-				$scope.hideAlbum = false;
+				$scope.current.hideAlbum = false;
 			};
 				
 		};
@@ -700,7 +700,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 		document.addEventListener('keydown', handleKeyDown, true);
 		$scope.viewPageNum = num;
 		drawPage(num);
- 		$scope.$parent.hideAlbum = true;
+ 		$scope.current.hideAlbum = true;
 		$scope.$parent.previewMode = true;
 	};
 	
@@ -790,7 +790,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 	
 	$scope.removePreview = function() {
 		document.removeEventListener('keydown', handleKeyDown, true);
-		$scope.$parent.hideAlbum = false;
+		$scope.current.hideAlbum = false;
 		$scope.$parent.previewMode = false;
 	};
 
@@ -798,7 +798,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 		switch (event.keyCode){
 			case 27: //ESC
 				$timeout(function() {
-					$scope.$parent.hideAlbum = false;
+					$scope.current.hideAlbum = false;
 					$scope.$parent.previewMode = false;
 				});
 				document.removeEventListener('keydown', handleKeyDown, true);
@@ -893,35 +893,34 @@ app.controller('ExportController',
 					['$scope', '$timeout', 'Misc', '$q', '$http', 'ImgService',
 					function($scope, $timeout, Misc, $q, $http, ImgService) {
 
+	init();
+	
+	function init() {
+		$scope.current.hideAlbum = true;
+		$scope.showLink = false;
+		$scope.processingPdf = false;
+		$scope.processingJpg = false;
+		$scope.showExportMenu = true;
+		document.addEventListener('keydown', exportKeyDownHandle, true);
+	}
 	var max = Math.max,
 		min = Math.min;
 	
 	function exportKeyDownHandle(event) {
 		if (event.keyCode == 27) {
 			$timeout(function() {
-				$scope.$parent.hideAlbum = false;
-				$scope.showExportWindow = false;
+				$scope.current.hideAlbum = false;
+				$scope.current.showExportWindow = false;
 				$scope.showExportMenu = false;
 			});
 			document.removeEventListener('keydown', exportKeyDownHandle, true);
 		} 
 	};
 	
-	$scope.exportAlbum = function() {
-		$scope.$parent.hideAlbum = true;
-		$scope.showLink = false;
-		$scope.processingPdf = false;
-		$scope.processingJpg = false;
-		$scope.showExportWindow = true;
-		$scope.showExportMenu = true;
-		document.addEventListener('keydown', exportKeyDownHandle, true);
-	};
-	
-		
 		
 	$scope.closeExportWindow = function() {
-		$scope.$parent.hideAlbum = false;
-		$scope.showExportWindow = false;
+		$scope.current.hideAlbum = false;
+		$scope.current.showExportWindow = false;
 		$scope.showExportMenu = false;
 		$scope.processingPdf = false;
 		$scope.showJpgLink = false;

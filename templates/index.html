@@ -200,88 +200,19 @@ $def with (mode)
 					</li>
 				</ul>
 				
-				<div id = 'export' ng-controller = 'ExportController'>
+				<div id = 'exportBtn'>
 					<span class = 'bigbtn respond' 
-						ng-click = 'exportAlbum()' 
+						ng-click = 'current.showExportWindow = true' 
 						title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
 						translate>
 						Export this album
 					</span>
+				</div>
 
-					<div id = 'exportWindow'
-						ng-show = 'showExportWindow'>
-						
-						<div id = 'exportMenu'
-							ng-show = 'showExportMenu'>
-							<p translate>To which format would you like to export your album?</p>
-							<ul> 
-								<li >
-									<span class = 'icon fa fa-laptop'></span> 
-									<span class = 'link'
-										ng-click = 'generatePdf(150)'
-										translate>
-										PDF 72dpi (to use on computer)
-									</span>
-								</li>
-								<li>
-									<span class = 'icon fa fa-print'> </span>
-									<span class = link
-										ng-click = 'generatePdf(300)'
-										translate>
-										PDF 300dpi (for printing) 
-									</span>
-								</li>
-								<li> 
-									<span class = 'icon fa fa-comment-o'> </span>
-									<span class = 'link'
-										ng-click = 'generateJpg()'
-										translate>
-										JPEG images
-									</span>
-								</li>
-							</ul>
-						</div>
-						
-						<!--=========================================-->
-						<div ng-show = 'processingPdf' >
-							<p translate>
-								Generating pdf. Please be patient...
-							</p>
-							<div style = 'font-size: 90%' > 
-								<p translate>
-									...processing page {{processPage}}
-								</p>
-								<p class = 'icon fa fa-spinner fa-spin'
-									style = 'font-size: 2em' > </p>
-							</div>
-						</div>
-						<div ng-show = 'showLink'>
-							<h4 translate> Congratulation! </h4>
-							<p translate>Your PDF album is ready.</p>
-							<span class = 'icon fa fa-download'> </span>
-							<a download = '{{album.title + ".pdf"}}' 
-								id = 'pdfoutput' translate>
-								Download file
-							</a>
-						</div>
-						
-					<div ng-show = 'processingJpg' >
-						<p translate>
-							Generating Jpg. Please be patient...
-						</p>
-
-							<p class = 'icon fa fa-spinner fa-spin'> </p>
-					</div>
-					<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
-					</div>
-						<span class = 'clickable close fa fa-remove'
-							ng-click = 'closeExportWindow()'></span>
-					</div>
 					
 					<!--==================================-->
 					
 				
-				</div>
 				<div id = 'updateMsg'>
 				</div>
 			</div>
@@ -1001,7 +932,7 @@ $def with (mode)
 	
 	<!-- ____________________________ notifications_________________________-->
 	
-			<div ng-show = 'hideAlbum' class = 'pageDesactivate'
+			<div ng-show = 'current.hideAlbum' class = 'pageDesactivate'
 					tabindex = '0'>
 			</div>
 		
@@ -1031,7 +962,7 @@ $def with (mode)
 			</button>
 			<button type = 'button' class = 'respond' 
 				id = 'notDelAlbum'
-				ng-click = 'delAlbum = false; hideAlbum = false' 
+				ng-click = 'delAlbum = false; current.hideAlbum = false' 
 				style = 'float: right' translate>
 				No, do not delete.
 			</button>
@@ -1125,6 +1056,77 @@ $def with (mode)
 				Close
 			</p>
 		</div>
+			<div id = 'exportWindow'
+				 ng-if = 'current.showExportWindow'
+				ng-controller = 'ExportController' >
+						
+				<div id = 'exportMenu'
+					ng-show = 'showExportMenu'>
+					<p translate>To which format would you like to export your album?</p>
+					<ul> 
+						<li >
+							<span class = 'icon fa fa-laptop'></span> 
+							<span class = 'link'
+								ng-click = 'generatePdf(150)'
+								translate>
+								Normal PDF (to use on computer)
+							</span>
+						</li>
+						<li>
+							<span class = 'icon fa fa-print'> </span>
+							<span class = link
+								ng-click = 'generatePdf(300)'
+								translate>
+								Hight resolution PDF (for printing) 
+							</span>
+						</li>
+						<li> 
+							<span class = 'icon fa fa-comment-o'> </span>
+							<span class = 'link'
+								ng-click = 'generateJpg()'
+								translate>
+								JPEG images
+							</span>
+						</li>
+					</ul>
+				</div>
+				
+				<!--=========================================-->
+				<div ng-show = 'processingPdf' >
+					<p translate>
+						Generating pdf. Please be patient...
+					</p>
+					<div style = 'font-size: 90%' > 
+						<p translate>
+							...processing page {{processPage}}
+						</p>
+						<p class = 'icon fa fa-spinner fa-spin'
+							style = 'font-size: 2em' > </p>
+					</div>
+				</div>
+				<div ng-show = 'showLink'>
+					<h4 translate> Congratulation! </h4>
+					<p translate>Your PDF album is ready.</p>
+					<span class = 'icon fa fa-download'> </span>
+					<a download = '{{album.title + ".pdf"}}' 
+						id = 'pdfoutput' translate>
+						Download file
+					</a>
+				</div>
+				
+				<div ng-show = 'processingJpg' >
+					<p translate>
+						Generating Jpg. Please be patient...
+					</p>
+
+						<p class = 'icon fa fa-spinner fa-spin'> </p>
+				</div>
+				<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
+				</div>
+				<span class = 'clickable close fa fa-remove'
+						ng-click = 'closeExportWindow()'></span>
+			</div>
+			
 	</div>
 	</div>
 </body>
