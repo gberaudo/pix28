@@ -580,6 +580,19 @@ div.thumb {
 	
 }
 
+.delImage {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 1em;
+	height: 1em;
+	line-height: 1em;
+	text-align: center;
+	display: none;
+	border-radius: 50%;
+	color: darkred !important;
+	background-color: #ddd;
+}
 canvas.frame {
 	position: absolute;
 }

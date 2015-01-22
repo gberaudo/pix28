@@ -210,6 +210,63 @@ app.controller('ImageLoaderController',
 	$scope.mouseLeave = function(event) {
 		$scope.bigImg.style.display = 'none';
 	};
+	
+	$scope.thumbOnFocus = function(event) {
+		var id = event.target.getAttribute('DbId');
+		var usedCheck = document.getElementById('check' + id);
+		if (!usedCheck.innerHTML) {
+			var delImage = document.getElementById('image_' + id);
+			delImage.style.display = 'inline-block';
+			angular.element(delImage).addClass('respond link');
+			document.addEventListener('mousedown', handleThumbMouseDown, true);
+		}
+		$scope.imageId = id;
+	};
+	
+// 	$scope.thumbOnBlur = function(event) {
+// 		$timeout(function() {
+// 			var id = event.target.getAttribute('DbId');
+// 			var delImage = document.getElementById('image_' + id);
+// 			delImage.style.display = 'none';
+// 		},50);
+// // 		angular.element(delImage).removeClass('respond link');
+// 	};
+	
+	function handleThumbMouseDown(event) {
+		var delImage = event.target.parentNode;
+		if (angular.element(delImage).hasClass('delImage')) {
+			var DbId = parseInt(event.target.getAttribute('DbId'));
+			function removeDBImage(DbId) {
+				console.log('removing');
+				var openRq = window.indexedDB.open('ImagesDB');
+				openRq.onsuccess = function(event) {
+					var db = event.target.result;
+					var store = db.transaction(['Images'], 'readwrite')
+										.objectStore('Images');
+										
+					var rq = store.delete(DbId);
+					rq.onsuccess = function() {
+						console.log('remove');
+						delImage.parentNode.style.display = 'none';
+					};
+				};
+			}
+			removeDBImage(DbId);
+			document.removeEventListener('mousedown',  handleThumbMouseDown, true);
+		} else {
+			var delImage = document.getElementById('image_' + $scope.imageId);
+			delImage.style.display = 'none';
+			document.removeEventListener('mousedown',  handleThumbMouseDown, true);
+		}
+	}
+	
+/*	
+	$scope.removeImage = function(event) {
+		var DbId = parseInt(event.target.getAttribute('DbId'));
+		removeDBImage(DbId);
+		
+		
+	};*/
 }]);
 
 

@@ -253,6 +253,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		var title = gettextCatalog.getString('Drag and drop on a frame in album'),
 			img = document.createElement('img'),
 			usedCheck = document.createElement('div'),
+			delImage = document.createElement('div'),
 			div = document.createElement('div'),
 			output = document.getElementById('output');
 		img.src = obj.minSrc;
@@ -269,6 +270,9 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		img.setAttribute('onmouseover', 'angular.element(this).scope().mouseOver(event)');
 		img.setAttribute('onmouseleave', 'angular.element(this).scope().mouseLeave(event)');
 		img.setAttribute('title', title); 
+		img.setAttribute('onfocus', 'angular.element(this).scope().thumbOnFocus(event)');
+// 		img.setAttribute('onblur', 'angular.element(this).scope().thumbOnBlur(event)');
+		img.setAttribute('tabIndex', 0);
 		div.setAttribute('class', 'thumb');
 		
 		usedCheck.id = 'check' + id;
@@ -280,10 +284,17 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			usedCheck.style.display = 'inline-block';
 		}
 		
+		angular.element(delImage).addClass('delImage');
+		delImage.id = 'image_' + id;
+		var removeTitle = gettextCatalog.getString('Delete this image');
+		delImage.setAttribute('title', removeTitle);
+		delImage.innerHTML = '<span class = "fa fa-remove"\
+			DbId = "' + id + '"></span>';
 		angular.element(usedCheck).addClass('usedCheck');
 		angular.element(usedCheck).addClass('circledNumber');
 		div.appendChild(usedCheck);
 		div.appendChild(img);
+		div.appendChild(delImage);
 		output.appendChild(div);
 		if (goBottom) {
 			output.scrollTop = output.scrollHeight;
