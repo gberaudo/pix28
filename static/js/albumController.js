@@ -161,7 +161,7 @@ app.controller('AlbumController',
 			var frame = new FrameObject(angular.copy(layout.frames[k])); 
 			page.frames.push(frame);
 		}
-		for (var j in layout.boxes) {
+		for (var j in layout.textBoxes) {
 			var textbox = new TextBoxObject(layout.textBoxes[j]);
 			page.textBoxes.push(textbox);
 		}
@@ -169,15 +169,17 @@ app.controller('AlbumController',
 	}
 		
 	function makeRandomAlbum(num) {
-		var frontPage = makeRandomPage(
-								[$scope.layoutList[0], $scope.layoutList[1]]),
+		var frontPage = makeRandomPage([$scope.layoutList[0]]),
+			innerFrontPage = new PageObject({}),
+			innerBackPage = new PageObject({}),
 			backPage = makeRandomPage(
-								[$scope.layoutList[0], $scope.layoutList[1]]);
-		$scope.album.content = [frontPage];
+								[$scope.layoutList[0]]);
+		$scope.album.content = [frontPage, innerFrontPage];
 		for (var i = 1; i < num-1; i++) {
 			var page = makeRandomPage($scope.layoutList);
 			$scope.album.content.push(page);
 		}
+		$scope.album.content.push(innerFrontPage);
 		$scope.album.content.push(backPage);
 		$scope.current.rightPage = $scope.album.content[0];
 		$scope.current.pageNum = 0;
@@ -464,6 +466,11 @@ app.controller('AlbumController',
 	
 	
 	function updateView(dir) {
+		$scope.pageMessage =  {
+			leftPage: '',
+			rightPage: ''
+		};
+		var message = gettextCatalog.getString('This page should be left blank');
 		if ($scope.current.pageNum == 0) {
 			$scope.show.leftPage = false;
 			$scope.show.rightPage = true;
@@ -478,13 +485,25 @@ app.controller('AlbumController',
 			}, 50);
 		} else {
 			$scope.show.leftPage = $scope.show.rightPage = true;
-			$timeout(function() {
-				if (dir == 'next') {
-					activate('leftPage');
-				} else {
-					activate('rightPage');
-				}
-			}, 50);
+			if ($scope.current.pageNum == 2 && 
+				$scope.current.leftPage.frames.length == 0 &&
+				$scope.current.leftPage.textBoxes.length == 0) {
+				$scope.pageMessage.leftPage = message;
+				activate('rightPage');
+			} else if ($scope.current.pageNum == $scope.album.content.length - 2 && 
+				$scope.current.rightPage.frames.length == 0 &&
+				$scope.current.rightPage.textBoxes.length == 0) {
+				$scope.pageMessage.rightPage = message;
+				activate('leftPage');
+			} else {
+				$timeout(function() {
+					if (dir == 'next') {
+						activate('leftPage');
+					} else {
+						activate('rightPage');
+					}
+				}, 50);
+			}
 		}
 		$scope.current.onEditText = false;
 		$scope.current.onEditImage = false;
