@@ -1,0 +1,58 @@
+<div id = 'abTitle'>
+	<div name = 'editTitle'
+			ng-show = 'hasTitle'
+			ng-click = 'editTitle()'>
+		<span ng-bind = 'album.title' 
+			name = 'title'
+			ng-show = 'hasTitle'> 
+		</span>
+		<img src = 'static/icons/edit.png'
+			title = '{{"edit title"|translate}}'
+			name = 'edit'
+			class = 'clickable'/>
+	</div>
+	
+	<form ng-submit = 'showTitle()'
+			class = 'inline left'
+			ng-show = 'enterTitle'>
+		<input type = 'text' 
+			id = 'titleInput'
+			ng-model = 'album.title'
+			ng-blur = 'titleBlur()'
+			maxlength = '20'
+			placeholder = '{{"Enter a title"| translate}}'
+			required
+			value = 'album.title'/>
+	</form>
+	
+	<div class = 'inline' 
+		style = 'margin-left: 3em; font-size: 90%'> 
+		<span ng-bind = 'albumFormat'></span>
+	</div> 
+		
+	<div class = 'right inline clickable'
+		ng-show = 'hasDescription'
+		ng-click = 'editDescription()'>
+		<span ng-bind = 'album.description'
+			class = 'description'>
+		</span>
+		<img src = 'static/icons/edit.png'
+			title = '{{"edit description"|translate}}'
+			name = 'edit'
+			class = 'clickable'/>
+	</div>
+	
+	<form ng-submit = 'showDescription()'
+		ng-if = 'enterDescription'
+		class = 'inline right'
+		ng-click = 'editDescription()'>
+		<input type = 'text' 
+			id = 'inputDescription'
+			ng-model = 'album.description'
+			ng-blur = 'descriptionBlur()'
+			maxlength = '40'
+			placeholder = '{{"Enter a description"|translate}}'
+			value = 'album.title'/>
+	</form>
+	
+</div>

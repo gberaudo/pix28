@@ -1,0 +1,28 @@
+	<div id = 'banner'> 
+		<div class = 'content'>
+			<span id = 'slogan' translate>Create your own story</span> 
+			<div id = 'languages'>
+				<img title = 'English' class = 'clickable'
+					ng-click = 'changeLanguage("en")'
+					src = 'static/icons/en.png'/>
+				<img title = 'Français' class = 'clickable'
+					ng-click = 'changeLanguage("fr")'
+					src = 'static/icons/fr.png'/>
+				<img title = 'Tiếng Việt' class = 'clickable'
+					ng-click = 'changeLanguage("vi")'
+					src = 'static/icons/vn.png'/>
+			</div>
+			<div id = 'siteMenu'>
+				<span class = 'siteMenuItem'>
+					<img src = 'static/icons/go-home.png'
+						class = 'clickable'
+						title = '{{"Back to home page"|translate}}'
+						ng-show = '!greeting' ng-click = 'goHome()'/>
+				</span>
+<!--
+				<span class = 'siteMenuItem clickable'>Guide</span>
+				<span class = 'siteMenuItem clickable'>FAQ</span>
+-->
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,110 @@
+<div id = 'exportWindow'
+		ng-if = 'current.showExportWindow'
+	ng-controller = 'ExportController' >
+			
+	<div id = 'exportMenu'
+		ng-show = 'showExportMenu'>
+		<p translate>To which format would you like to export your album?</p>
+		<ul> 
+			<li >
+				<span class = 'icon fa fa-laptop'></span> 
+				<span class = 'link'
+					ng-click = 'generatePdf(150)'
+					translate>
+					Normal PDF (to use on computer)
+				</span>
+			</li>
+			<li>
+				<span class = 'icon fa fa-print'> </span>
+				<span class = link
+					ng-click = 'showPdfOption = true'
+					translate>
+					Hight resolution PDF (for printing) 
+				</span>
+				<br/>
+				<div ng-show = 'showPdfOption'>
+					<span class = 'link'
+						ng-click = 'blurbHandle()' translate>Print with Blurb</span> 
+<!-- 								<span class= 'link fa fa-question-circle'></span> -->
+					<span class = 'link' style = 'float: right'
+						ng-click = 'generatePdf(300)' translate>Other</span>
+				</div>
+				<div ng-if = 'choosingCover'>
+					<div style = 'display: inline-block'>
+						<label> Cover type</label> <br/>
+						<select ng-model = 'coverType'
+							form = 'blurbForm'>
+							<option value = 'soft'>Softcover</option>
+							<option value = 'hardDJ'>Hardcover, Dust Jacket</option>
+							<option value = 'hardIW'>Hardcover, Image Wrap</option>
+						</select>
+					</div>
+					<div style = 'display: inline-block'>
+						<label> Paper Type</label> <br/>
+						<select ng-model = 'paperType'
+							form = 'blurbForm'>
+							<option value = 'standard'>Standard</option>
+							<option value = 'premium'>Premium (lustre or matte finish)</option>
+							<option value = 'prolineUncoated'> Proline (uncoated)</option>
+							<option value = 'prolinePearl'>Proline(Pearl)</option>
+						</select>
+					</div>
+					<form id = 'blurbForm' style = 'display:inline-block'
+						ng-submit = 'editCover()'>
+						<input type = 'submit' value = 'OK'/>
+					</form>
+				</div>
+				
+				<div ng-if = 'editingCover'>
+					
+				</div>
+	
+				
+			</li>
+			<li> 
+				<span class = 'icon fa fa-comment-o'> </span>
+				<span class = 'link'
+					ng-click = 'generateJpg()'
+					translate>
+					JPEG images
+				</span>
+			</li>
+		</ul>
+	</div>
+	
+
+	<!--=========================================-->
+	<div ng-show = 'processingPdf' >
+		<p translate>
+			Generating pdf. Please be patient...
+		</p>
+		<div style = 'font-size: 90%' > 
+			<p translate>
+				...processing page {{processPage}}
+			</p>
+			<p class = 'icon fa fa-spinner fa-spin'
+				style = 'font-size: 2em' > </p>
+		</div>
+	</div>
+	<div ng-show = 'showLink'>
+		<h4 translate> Congratulation! </h4>
+		<p translate>Your PDF album is ready.</p>
+		<span class = 'icon fa fa-download'> </span>
+		<a download = '{{album.title + ".pdf"}}' 
+			id = 'pdfoutput' translate>
+			Download file
+		</a>
+	</div>
+	
+	<div ng-show = 'processingJpg' >
+		<p translate>
+			Generating Jpg. Please be patient...
+		</p>
+
+			<p class = 'icon fa fa-spinner fa-spin'> </p>
+	</div>
+	<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
+	</div>
+	<span class = 'clickable close fa fa-remove'
+			ng-click = 'closeExportWindow()'></span>
+</div>

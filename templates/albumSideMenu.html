@@ -1,0 +1,29 @@
+<div id = 'sideMenu'>
+	<ul>
+		<li class = 'link respond' id = 'allAlbums' 
+			ng-click = 'toAlbumList()' translate>
+			Your albums
+		</li>
+
+		<li class = 'link respond'
+			ng-click = 'saveAlbum()' translate>
+			Save this album
+		</li>
+
+		<li class = 'link respond' 
+			ng-click = 'delAlbumRq()' translate>
+			Remove this album
+		</li>
+	</ul>
+
+	<div id = 'exportBtn'>
+		<span class = 'bigbtn respond' 
+			ng-click = 'current.showExportWindow = true' 
+			title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
+			translate>
+			Export this album
+		</span>
+	</div>
+	<div id = 'updateMsg'>
+	</div>
+</div>

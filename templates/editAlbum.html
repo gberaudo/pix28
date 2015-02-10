@@ -1,0 +1,43 @@
+<div id = 'album' style = 'height: {{::albumElHeight+"px"}}'>
+	<div id = 'doublepage'>
+		<div ng-include = '"templates/albumTopMenu.html"'></div>
+		
+		<div id = 'prev' class = 'link'
+			ng-show = 'show.leftPage' 
+			ng-click = 'prevPage()'
+			title = '{{"go to the previous page"|translate}}'>
+			<span class = 'fa fa-chevron-left'> <span>
+		</div>
+		<div id = 'next' class = 'link'
+			ng-show = 'show.rightPage' 
+			ng-click = 'nextPage()'
+			title = '{{"go to the next page"|translate}}'>
+			<span class = 'fa fa-chevron-right'> <span>
+		</div>
+		
+		<span ng-show = 'show.leftPage'
+			id = 'leftPageNum'>
+			{{current.pageNum}}/{{album.content.length}}
+		</span>
+		<span ng-show = 'show.rightPage'
+			id = 'rightPageNum'>
+			{{current.pageNum + 1}}/{{album.content.length}}
+		</span>
+
+		<div ng-include = '"templates/albumPage.html"'></div>
+		
+		<div id = 'controls'
+			ng-mousedown = 'controlsMouseDown()'
+			ng-mouseleave = 'controlsMouseLeave()'
+			class = 'controls'>
+			<div ng-include = '"templates/textCtrl.html"'></div>
+			<div ng-include = '"templates/imageCtrl.html"'></div>
+			
+		</div>
+		<div id = 'previewText' class = 'previewText'>
+		</div>
+	</div>
+
+	<div ng-include = '"templates/layoutCtrl.html"'></div>
+	<div ng-include = '"templates/imageLoader.html"'></div>
+</div>

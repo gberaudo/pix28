@@ -1,0 +1,17 @@
+<div class = 'userZone'>
+	<div ng-if = 'showAlbums'
+		id = 'albumList'>
+		<span style = 'font-weight: bold' translate> Your albums </span>
+		<ul> 
+			<li ng-repeat = 'albumSC in albumSCs' style = 'margin-bottom: 1em'>
+				<span class = 'link respond'
+					ng-click = 'openAlbum(albumSC)'
+					ng-bind = 'albumSC.title||albumSC.date||"Album"'
+					title = '{{"Click to go to album" | translate}}'></span> 
+				<br/>
+				<span ng-bind = 'albumSC.description'
+					class = 'description'></span>
+			</li>
+		</ul>
+	</div>
+</div>

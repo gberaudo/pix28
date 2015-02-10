@@ -1,0 +1,198 @@
+<div id = 'layoutCtrl' class = 'layoutCtrl controls'
+	ng-if = 'inAlbum'
+	ng-controller = 'LayoutController'>
+	<ul id = 'layoutMenu' class = 'hMenu'>
+		<li ng-click = 'layoutsClick(\$event)' 
+			class = 'LMItem clickable li LMactive' translate>
+			Page layout
+		</li>
+		<li ng-click = 'BGClick(\$event)'
+			class = 'LMItem clickable li'>
+			Page background 
+		</li>
+		<li ng-click = 'ImgClick(\$event)'
+			class = 'LMItem clickable li'>
+			Image
+		</li>
+	</ul>
+	<div>
+		<div ng-show = 'showLayoutSets' 
+			ng-init = 'showLayoutSets = true'>
+			<ul id = 'layoutsMenu' 
+				class = 'hMenu'>
+				<li ng-click = 'showAllLayouts(\$event)'
+					class = 'LSItem clickable li LSactive' translate> 
+					All
+				</li>
+				<li ng-repeat = 'choice in layoutList'
+					ng-click = 'showLayouts(\$event, choice)'
+					class = 'LSItem clickable li'>
+					{{choice}} 
+				</li>
+				<li ng-click = 'showFavorites(\$event)'
+					class = 'LSItem clickable li' translate translate-comment="layouts"> 
+					Favorites
+				</li>
+			</ul>
+			<div id = 'layouts' 
+				class = 'showRoom'>
+				<div ng-controller = 'minLayoutController' 
+					class = 'clickable canvas'
+						ng-repeat = 'layout in layouts'>
+					<span class = 'deleteFavorite fa fa-remove'
+						ng-mouseover = 'onDelete()'
+						ng-mouseleave = 'leaveDelete()'
+						ng-click = 'removeFavorite(\$index)'
+						ng-show = 'showDelete'></span> 
+					<canvas title = '{{"Choose a page first then click on the layout to load to the chosen page."|translate}}'
+							ng-click = 'loadPageLayout(layout)'
+							ng-mouseover = 'previewLayout(layout, \$event)'
+							ng-mouseleave = 'mouseLeave()'
+							class = 'minframe'> </canvas> 
+					
+				</div>
+			</div>
+			<div class = 'apply'>
+				<span class = 'link respond' 
+					ng-click = 'saveAsFavourite()' translate>
+					Save as favourite </span>
+				<span class = 'link fa fa-question-circle'></span>
+			</div>
+		</div>
+		
+		<div ng-show = 'showBM'>
+			<ul id = 'backgroundMenu'
+				class = 'hMenu'>
+				<li class = 'BMItem clickable li BMactive'
+					ng-click = 'showColors(\$event)' translate>
+					Color
+				</li>
+				<li class = 'BMItem clickable li'
+					ng-click = 'showPatterns(\$event)' translate>
+					Pattern
+				</li>
+				<!--<li class = 'BMItem clickable li'
+					ng-click = 'showFrames(\$event)'>
+					Frame
+				</li>-->
+			</ul>
+			<div  class = 'apply' ng-show = 'showColor'>
+				<span class = 'link respond'
+					ng-click = 'removeBGColor()'
+					style = 'margin-right: 1em' translate>
+					Remove color </span>
+				<span class = 'link respond'
+					ng-click = 'changeAlbumBGColor()'
+					translate>
+					Apply to all pages </span>
+			</div>
+			<div class = 'apply' ng-show = 'showPattern'> 
+				<span class = 'link respond'
+					ng-click = 'removePattern()'
+					style = 'margin-right: 1em' translate>
+					Remove pattern </span>
+				<span class = 'link respond'
+					ng-click = 'patterntoAlbum()' translate>
+					Apply to all pages </span>
+			</div>
+			<div id = 'background' 
+				class = 'showRoom'
+				ng-init = 'showColor = true'>
+				<div ng-repeat = 'color in colors'
+					ng-show = 'showColor'
+					class = 'showItem BGColor {{"BG_" +color}}'
+					style = 'background-color: {{color}};
+						width: {{0.2 * pwidth + "px"}};
+						height: {{0.2 * pheight + "px"}}'
+					ng-click = 'changeBGColor(color)'>
+				</div>
+				
+				<div class = 'showItem small'
+					ng-show = 'showColor'
+					style = 'height: {{0.2 * pheight + "px"}}'>
+					<form ng-submit = 'getUserBGColor()'>
+						<label translate> Your color</label> <br/>
+						<input type = 'text' placeholder = '#FFFFFF' 
+							ng-model = 'userColor'
+							size = '7'/>
+						<input type = 'submit' value = 'OK'/>
+					</form>
+				</div>
+				
+				<div ng-repeat = 'pattern in patterns'
+					class = 'showItem pattern {{"Pattern_" + pattern.name}}'
+					ng-show = 'showPattern'
+					ng-controller = 'PatternController'
+					style = 'width: {{0.2 * pwidth + "px"}};
+						height: {{0.2 * pheight + "px"}};
+						background: url({{pattern.URL72}});
+						background-size: {{pattern.width / 7 + "px"}};
+						border: 1px solid #CCC'
+					ng-click = 'changePattern(pattern)'
+					ng-mouseover = 'previewPattern(pattern, \$event)'
+					ng-mouseleave = 'mouseLeave()'>
+				</div>
+
+			</div>
+		</div>
+		<div ng-show = 'showImgOpt'> 
+			<ul id = 'imgOptMenu'
+				class = 'hMenu'>
+				<li ng-click = 'showBorders(\$event)'
+					class = 'IOItem clickable li IOactive' translate>
+					Border
+				</li>
+				<li ng-click = 'showFrames(\$event)'
+					class = 'IOItem clickable li' translate>
+					Frame
+				</li>
+				<li ng-click = 'showMasks(\$event)'
+					class = 'IOItem clickable li' translate>
+					Mask
+				</li>
+			</ul>
+			<div class = 'apply' ng-show = 'showBorder'> 
+					<span class = 'link respond'
+						style = 'margin-right: 1em'
+						ng-click = 'imgBordertoPage()'>
+						Apply to current page </span>
+					<span class = 'link respond'
+						ng-click = 'imgBordertoAlbum()' translate>
+						Apply to album </span>
+			</div>
+			<div class = 'showRoom' id = 'imgOpt'
+				ng-init = 'showBorder = true'>
+				<div ng-repeat = 'color in colors'
+					ng-show = 'showBorder'
+					style = 'height: 1.5em; width: 3em; 
+						border: none;
+						margin-top: 3px;
+						margin-left: 10px;
+						border-top: 8px solid {{color}};
+						border-left: 8px solid {{color}};
+						background-color: #EEE'
+					ng-click = 'changeBorder(color)'
+					class = 'showItem border {{"BD_" + color}}'>
+				</div>
+				
+			</div>
+			<div class = 'borderCtrl' ng-show = 'showBorder'>
+					<span> Border thickness {{current.borderThickness}}</span>
+					<span class = 'btn respond icon fa fa-sort-up'
+						ng-click = 'increaseThickness()'></span>
+					<span class = 'btn respond icon fa fa-sort-down'
+						ng-click = 'decreaseThickness()'></span>
+					<span class = 'link respond'
+						ng-click = 'removeBorder()'>
+						Remove border</span>
+					<form ng-submit = 'getUserBorderColor()'>
+						<label translate> Your color</label>
+						<input type = 'text' placeholder = '#FFFFFF' 
+							ng-model = 'userColor'
+							size = '7'/>
+						<input type = 'submit' value = 'OK'/>
+					</form>
+				</div>
+		</div>
+	</div>
+</div>

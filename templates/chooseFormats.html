@@ -1,0 +1,60 @@
+<div id = 'formats' ng-if = 'showHome'>		
+	<h4 translate> Album formats </h4> 
+
+	<div class = 'format container'> 
+		<div class = 'content'>
+			<span class = 'header'> 21cm x 21cm </span> 
+			<div class = 'model'>
+				<img src = '' alt =''>
+			</div> 
+			<span class = 'newAlbum clickable' 
+				ng-click = 'createAlbum(595, 595)'
+				translate> 
+				Create album</span>
+		</div>
+	</div>
+	
+	<div class = 'format container'> 
+		<div class = 'content'>
+			<span class = 'header'> 17.6cm x 25cm </span> 
+			<div class = 'model'>
+				<img src = '' alt =''>
+			</div> 
+			<span class = 'newAlbum clickable' 
+				ng-click = 'createAlbum(708, 499)'
+				translate> 
+				Create album</span>
+		</div>
+	</div>
+	
+	<br/> <br/>
+	<div class = 'bigbtn respond' 
+		ng-click = 'showCustomAlbum = !showCustomAlbum'
+		ng-init = 'showCustomAlbum = false'
+		style = 'width: 15em; font-size: 100%'>
+		Custom format
+	</div>
+		<div>
+			<form ng-submit = 'createCustomAlbum(customWidth, customHeight)'
+				ng-show = 'showCustomAlbum'
+				style = 'font-size: 90%; display: table'>
+			<div style = 'display: table-row'>
+			<label style = 'display: table-cell'> Height (cm) </label>
+			<input type = 'number' step = '0.1' required
+				ng-model = 'customHeight' maxlength = '5' min = '5' max = '50'
+				style= 'width: 3em;display: table-cell'/> <br/>
+			</div>
+			<div style = 'display: table-row'>
+			<label style = 'display: table-cell' > Width (cm)</label>
+			<input type = 'number' step = '0.1' required 
+				ng-model = 'customWidth' 
+				maxlength = '5' min = '5' max = '50'
+				style = 'width: 3em; display: table-cell'/>  
+			<input type = 'submit' value = 'Create' 
+			style = 'float: right'>
+			</div>
+			
+			</form>
+		</div>
+	
+</div>

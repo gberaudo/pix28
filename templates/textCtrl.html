@@ -1,0 +1,125 @@
+<div id = 'textControl'
+	ng-controller = 'TextController'
+	ng-show = 'current.onEditText'>
+	<span class = 'textCtrl'
+		style = 'font-weight: bold; 
+			font-size: 90%; 
+			margin-right: 0.5em; margin-left: 1em;' translate>
+			Text 
+	</span>
+	<div class = 'textSelect'>
+		<select style = 'height: 2em'
+			title = '{{"Choose text font"|translate}}'
+			ng-model = 'current.font.family' 
+			ng-change = 'changeFont(current.font.family)'>
+			<optgroup ng-repeat = 'font in userFonts' class = '{{font}}'>
+				<option value = '{{font}}'>
+					{{font}}
+				</option> 
+			</optgroup>
+			<option disabled>──────────</option>
+			<optgroup ng-repeat = 'font in fonts' class = '{{font}}'>
+				<option value = '{{font}}'>
+					{{font}}
+				</option> 
+			</optgroup>
+			
+		</select> 
+	</div>
+	<div  class = 'textSelect'>
+		<select 
+			style = 'height: 2em'
+			title = '{{"change font size"|translate}}'
+			ng-model = 'current.font.size'
+			ng-change = 'changeFontSize(current.font.size)'
+			ng-options = 'i for i in [10, 11, 12, 13, 
+			14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 54, 60]'
+			>
+		</select>
+	</div>
+	<div class = 'textCtrl'
+		ng-click = 'addFonts()'>
+		<span class = 'link'>
+			more fonts
+		</span>
+	</div>
+	<!--<div class = 'btn textCtrl respond' 
+	ng-click = 'italicClick()'>
+		<span  class = 'fa fa-italic ctrlIcon'></span>
+	</div>
+	<div class = 'btn textCtrl respond' 
+		ng-click = 'boldClick()'>
+		<span class = 'fa fa-bold ctrlIcon'></span>
+	</div>-->
+	
+	<!--Color falldown menu -->
+	<div id = 'textColor'
+			class = 'btn textCtrl respond '
+			ng-click = 'showColors()'
+			title = '{{"Choose text color"|translate}}'
+			style = 'color: {{current.font.color}}'>
+		<span translate>Text color</span>
+	</div>
+	<div tabindex = 0 
+		class = 'textColorMenu'
+		id = 'colorMenu'
+		ng-if = 'showColorMenu' 
+		ng-init = 'showColorMenu = false'>
+		<div class = 'colorTable '
+			tabindex = 0 
+			ng-repeat = 'color in colors'
+			style = 'background-color:{{color}};'
+			ng-focus = 'changeColor(color)'>
+		</div>
+	</div>
+	<!-- end of color menu-->
+	
+	<div 
+		class = 'btn textCtrl respond '
+		title = '{{"Align text left"|translate}}'
+		ng-click = 'align("left")'>
+		<span class = 'fa fa-align-left ctrlIcon'></span>
+	</div>
+	<div 
+		class = 'btn textCtrl respond '
+		title = '{{"Align text center"|translate}}'
+		ng-click = 'align("center")'>
+		<span class = 'fa fa-align-center ctrlIcon'></span>
+	</div>
+	<div	class = 'btn textCtrl respond '
+		title = '{{"Align text right"|translate}}'
+		ng-click = 'align("right")'>
+		<span class = 'fa fa-align-right ctrlIcon'></span>
+	</div>
+	
+	<div class = 'btn textCtrl respond '
+		title = '{{"Rotate text box right"|translate}}'
+		ng-mousedown = 'rotate("right")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'>
+		<span class = 'fa fa-rotate-right ctrlIcon'></span>
+	</div>
+	<div class = 'btn textCtrl respond '
+		title = '{{"Rotate text box left"|translate}}'
+		ng-mousedown = 'rotate("left")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'>
+		<span class = 'fa fa-rotate-left ctrlIcon'></span>
+	</div>
+	<div ng-click = 'level("up")'
+		title = '{{"Level text up."|translate}}'
+		class = 'btn respond textCtrl'>
+		<span class = 'fa fa-level-up ctrlIcon'></span>
+	</div>
+	<div ng-click = 'level("down")'
+		title = '{{"Level text down."|translate}}'
+		class = 'btn respond textCtrl'>
+		<span class = 'fa fa-level-down ctrlIcon'></span>
+	</div>
+	
+	<div class = 'btn textCtrl respond '
+		title = '{{"Remove text box"|translate}}'
+		ng-click = 'removeTextArea()'>
+		<span class = 'fa fa-trash ctrlIcon'></span>
+	</div>
+</div>

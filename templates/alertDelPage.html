@@ -1,0 +1,21 @@
+<div class = 'alert'
+	style = 'width: {{screenWidth/4 + "px"}}; 
+		left: {{screenWidth/4 + "px"}}; 
+		top: {{screenWidth/12 +"px"}}'
+	ng-show = 'delPage'
+	ng-keyDown = 'delPageKeydown(\$event)'>
+	<span>Do you really want to remove this double page?</span>
+	<br/><br/>
+	<button type = 'button' class = 'respond'
+		id = 'delPage'
+		ng-click = 'delCurrentPage()'
+		style = 'float: left' translate>
+		Delete
+	</button>
+	<button type = 'button' class = 'respond' 
+		id = 'notDelPage'
+		ng-click = 'delPage = false' 
+		style = 'float: right' translate>
+		Cancel
+	</button>
+</div>

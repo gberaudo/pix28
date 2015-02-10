@@ -1,0 +1,93 @@
+<div id = 'imageControl' 
+	ng-controller = 'ImageController'
+	ng-show = 'current.onEditImage'>
+	<span class = 'imgCtrl'
+		style = 'font-size: 90%; font-weight: bold;
+		margin-left: 1em; margin-right: 0.5em'
+		translate>
+		Style image
+	</span>
+	<div 
+		ng-mousedown = 'zoomImage("in")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Zoom image in. Hot key: +"|translate}}'
+		class = 'btn respond imgCtrl'>
+			<span class = 'fa fa-search-plus ctrlIcon'></span>
+	</div>
+	<div 
+		ng-mousedown = 'zoomImage("out")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()' 
+		title = '{{"Zoom image out. Hot key: -"|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-search-minus ctrlIcon'></span>
+	</div>
+			
+	<div ng-mousedown = 'go("left")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Move image zone left. Hot key: Ctrl + arrow left."|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-arrow-left ctrlIcon'></span>
+	</div>
+	
+	<div ng-mousedown = 'go("right")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Move image zone right. Hot key: Ctrl + arrow right."|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-arrow-right ctrlIcon'></span>
+	</div>
+	
+	<div ng-mousedown = 'go("up")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Move image zone up. Hot key: Ctrl + arrow up."|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-arrow-up ctrlIcon'></span>
+	</div>
+	
+	<div ng-mousedown = 'go("down")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Move image zone down. Hot key: Ctrl + arrow down."|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-arrow-down ctrlIcon'></span>
+	</div>
+	
+	<div ng-mousedown = 'rotate("right")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Rotate image right"|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-rotate-right ctrlIcon'></span>
+	</div>
+	
+	<div ng-mousedown = 'rotate("left")'
+		ng-mouseup = 'mouseUp()'
+		ng-mouseleave = 'mouseLeave()'
+		title = '{{"Rotate image left"|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-rotate-left ctrlIcon'></span>
+	</div>
+	
+	<div ng-click = 'level("up")'
+		title = '{{"Level image zone up."|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-level-up ctrlIcon'></span>
+	</div>
+	
+	<div ng-click = 'level("down")'
+		title = '{{"Level image zone."|translate}}'
+		class = 'btn respond imgCtrl'>
+		<span class = 'fa fa-level-down ctrlIcon'></span>
+	</div>
+		
+	<div ng-click = 'removeImage()'
+		title = '{{"Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its content."|translate}}'
+		class = 'btn respond imgCtrl'> 
+		<span class = 'fa fa-trash ctrlIcon'></span>
+	</div>
+	
+</div>
