@@ -935,3 +935,38 @@ app.service('Misc', function() {
 	};
 });
 
+app.factory('getUserFonts', function() {
+	return function() {
+		var openRq = window.indexedDB.open('UserDB', 2);
+		var newStyle = document.createElement('style');
+		var userFonts = [];
+		openRq.onsuccess = function(event) {
+			var db = openRq.result;
+			var trans = db.transaction(['userData']);
+			var store = trans.objectStore('userData');
+			var getRq = store.get(1);
+			getRq.onsuccess = function(event) {
+				var userData = this.result.userFonts;
+				for (var i = 0; i < userData.length; i++) {
+					var fontName = Object.keys(userData[i])[0];
+					var fontURL = userData[i][fontName];
+					newStyle.appendChild(document.createTextNode("\
+						@font-face {\
+							font-family: '" + fontName + "';\
+							src: url('" + fontURL + "') format('truetype');\
+						}\
+					"));
+					newStyle.appendChild(document.createTextNode("\
+						." + fontName + "{\
+							font-family: '" + fontName + "';\
+						}\
+					"));
+					userFonts.push(fontName);
+				}
+				document.head.appendChild(newStyle);
+			};
+		};
+		return userFonts;
+	}
+});
+

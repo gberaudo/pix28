@@ -20,13 +20,11 @@ app.controller('AlbumController',
 		$scope.current.imgLoad = false;
 		$scope.show = {};
 
-		var albumEl = document.getElementById('album');
-		$scope.albumElHeight = 0.53*albumEl.offsetWidth
-		albumEl.style.height =  $scope.albumElHeight + 'px';
+		$scope.albumElHeight = 0.4*$scope.screenWidth;
 		
 		//set default page size (for compatibility with previous version)
 		$scope.pheight = $scope.pwidth 
-			=  $scope.maxSize = Math.floor(0.3 * albumEl.offsetWidth);
+			=  $scope.maxSize = Math.floor(0.225*$scope.screenWidth);
 		$scope.pageHeight = $scope.pheight + 'px';
 		$scope.pageWidth = $scope.pwidth + 'px';
 		$scope.pdfWidth = 595;
@@ -37,40 +35,8 @@ app.controller('AlbumController',
 			'x1', 'x2', 'x3', 'x4', 'x5'
 		];
 		$scope.fonts = Fonts;
-		getUserFonts();
-		
-		function getUserFonts() {
-			var openRq = window.indexedDB.open('UserDB');
-			var newStyle = document.createElement('style');
-			var userFonts = [];
-			openRq.onsuccess = function(event) {
-				var db = openRq.result,
-					trans = db.transaction(['userData']),
-					store = trans.objectStore('userData');
-				var getRq = store.get(1);
-				getRq.onsuccess = function(event) {
-					var userData = this.result.userFonts;
-					for (var i = 0; i < userData.length; i++) {
-						var fontName = Object.keys(userData[i])[0];
-						var fontURL = userData[i][fontName];
-						newStyle.appendChild(document.createTextNode("\
-							@font-face {\
-								font-family: '" + fontName + "';\
-								src: url('" + fontURL + "') format('truetype');\
-							}\
-						"));
-						newStyle.appendChild(document.createTextNode("\
-							." + fontName + "{\
-								font-family: '" + fontName + "';\
-							}\
-						"));
-						userFonts.push(fontName);
-					}
-					document.head.appendChild(newStyle);
-					$scope.userFonts = userFonts;
-				};
-			};
-		}
+		$scope.userFonts = getUserFonts();
+		console.log($scope.userFonts);
 	};
 	$scope.cancelUpdater = undefined;
 	
