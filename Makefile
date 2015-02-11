@@ -2,7 +2,7 @@ CLOSURE_UTIL_PATH := closure-util
 CLOSURE_LIBRARY_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getLibraryPath())' 2> /dev/null)
 CLOSURE_COMPILER_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getCompilerPath())' 2> /dev/null)
 #APP_JS_FILES = $(shell find static/js -type f -name '*.js')
-APP_JS_FILES := static/js/siteController.js static/js/albumController.js static/js/imageLoaderController.js static/js/pageController.js static/js/canvasController.js static/js/layoutController.js static/js/services.js static/js/textController.js static/js/layoutFac.js
+APP_JS_FILES := static/js/siteController.js static/js/albumController.js static/js/imageLoaderController.js static/js/pageController.js static/js/canvasController.js static/js/layoutController.js static/js/services.js static/js/textController.js static/js/layoutFac.js static/js/albumFormatChoice.js static/js/initUserDBService.js static/js/albumLanguage.js static/js/albumDelPage.js static/js/albumMovePage.js
 APP_HTML_FILES := $(shell find templates -type f -name '*.html')
 
 export closure_library_path = $(CLOSURE_LIBRARY_PATH)
