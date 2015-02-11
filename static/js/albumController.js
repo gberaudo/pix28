@@ -386,35 +386,6 @@ app.controller('AlbumController',
 		updateView('next');
 	};
 	
-	$scope.removePageRq = function() {
-		if ($scope.current.pageNum == 0 || 
-			$scope.current.pageNum == $scope.album.content.length) {
-			var msg = gettextCatalog.getString('Cannot remove cover page!');
-			var div = document.createElement('div');
-			div.setAttribute('class', 'alert');
-			div.innerHTML = msg;
-			document.body.appendChild(div);
-			$timeout(function() {
-				document.body.removeChild(div);
-			}, 2000);
-		} else {
-			$scope.delPage = true;
-			$timeout(function() {
-				document.getElementById('notDelPage').focus();
-			}, 50);
-		}
-	};
-			
-	$scope.delCurrentPage = function() {
-			$scope.album.content.splice($scope.current.pageNum -1, 2);
-			$scope.current.pageNum -= 2;
-			$scope.current.rightPage = $scope.album.content[$scope.current.pageNum];
-			if ($scope.current.pageNum > 0) {
-				$scope.current.leftPage = $scope.album.content[$scope.current.pageNum - 1];
-			}
-			$scope.delPage = false;
-			updateView('next');
-	};
 	
 	$scope.delPageKeydown = function(event) {
 		event.preventDefault();
