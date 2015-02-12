@@ -1,5 +1,5 @@
 <div class = 'userZone'>
-	<div ng-if = 'current.showAlbums || current.showHome'
+	<div ng-if = '(current.showAlbums || current.showHome)&&(albumSCs.length >0)'
 		id = 'albumList'>
 		<span style = 'font-weight: bold' translate> Your albums </span>
 		<ul> 
