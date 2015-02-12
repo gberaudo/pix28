@@ -36,7 +36,6 @@ app.controller('AlbumController',
 		];
 		$scope.fonts = Fonts;
 		$scope.userFonts = getUserFonts();
-		console.log($scope.userFonts);
 	};
 	$scope.cancelUpdater = undefined;
 	
@@ -45,7 +44,7 @@ app.controller('AlbumController',
 			$scope.cancelUpdater();
 		}
 		var updateAlbum = $interval(function() {
-			if ($scope.$parent.inAlbum) {
+			if ($scope.current.inAlbum) {
 				DBServices.updateAlbumDB(
 					$scope.album.content, $scope.current.albumId,
 					$scope.album.title, $scope.album.description,
@@ -66,11 +65,11 @@ app.controller('AlbumController',
 	$scope.createAlbum = function(width, height) {
 	
 		DBServices.addAlbum().then(function(id) {
-			$scope.$parent.inAlbum = true;
+			$scope.current.inAlbum = true;
 			var date = new Date();
 			var options = {year: 'numeric', month: 'short', day: 'numeric' };
 			$scope.current.albumId = id;
-			$scope.$parent.showHome = false;
+			$scope.current.showHome = false;
  			$scope.album.title = '';
  			$scope.album.description = '';
 			$scope.album.date = date.toLocaleString($scope.userInfo.lang, options);
@@ -93,7 +92,7 @@ app.controller('AlbumController',
 			
 			makeRandomAlbum(20);
 			
-			$scope.$parent.showAlbums = false;
+			$scope.current.showAlbums = false;
 			$scope.imgLoad = false;
 			$timeout(function() {
 				$scope.imgLoad = true;
@@ -152,7 +151,7 @@ app.controller('AlbumController',
 		updateView('prev');
 	}
 
-	$scope.createCustomAlbum = function(customWidth, customHeight) {
+	this.createCustomAlbum = function(customWidth, customHeight) {
 		var width = Math.round(customWidth * 72 / 2.54);
 		var height = Math.round(customHeight * 72 / 2.54);
 		$scope.createAlbum(width, height);
@@ -160,63 +159,9 @@ app.controller('AlbumController',
 	
 	
 	
-	$scope.delAlbumRq = function() {
-		$scope.delAlbum = true;
-		$scope.current.hideAlbum = true;
-		$timeout(function() {
-			document.getElementById('notDelAlbum').focus();
-		}, 50);
-	};
-	
-	$scope.removeAlbum = function(id) {
-		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
-		openRq.onsuccess = function(event) {
-			var db = openRq.result;
-			var removeRq = db.transaction(['Albums'], 'readwrite')
-									.objectStore('Albums')
-									.delete(id);
-			removeRq.onsuccess = function() {
-				for (i = 0; i < $scope.albumSCs.length; i++) {
-					if ($scope.albumSCs[i].id == $scope.current.albumId) {
-						$scope.albumSCs.splice(i,1);
-						break;
-					}
-				}
-				$scope.$apply(function() {
-					$scope.current.albumId = null;
-					$scope.$parent.inAlbum = false;
-					if ($scope.albumSCs.length > 0) {
-						$scope.$parent.showAlbums = true;
-					}
-					$scope.$parent.showHome = true;
-					$scope.delAlbum = false;
-					$scope.current.hideAlbum = false;
-				});
-			};
-			removeRq.onerror = function() {
-				console.log('failed to remove album', id);
-				$scope.delAlbum = false;
-				$scope.current.hideAlbum = false;
-			};
-				
-		};
-		openRq.onerror = function() {
-			console.log('failed to open DB to removing album');
-			$scope.delAlbum = false;
-		};
-	};
 
-	$scope.alertKeydown = function(event) {
-		if (event.keyCode == 37) {
-			document.getElementById('delAlbum').focus();
-		}
-		if  (event.keyCode == 39) {
-			document.getElementById('notDelAlbum').focus();
-		}
-		if (event.keyCode == 27) {
-			$scope.delAlbum = false;
-		}
-	};
+
+
 		
 	$scope.openAlbum = function(albumSC) {
 		getAlbum(albumSC.id);
@@ -263,9 +208,9 @@ app.controller('AlbumController',
 					$scope.current.rightPage = $scope.album.content[0];
 					$scope.$apply(function() {
 						makeTitle();
-						$scope.$parent.inAlbum = true;
-						$scope.$parent.showHome = false;
-						$scope.$parent.showAlbums = false;
+						$scope.current.inAlbum = true;
+						$scope.current.showHome = false;
+						$scope.current.showAlbums = false;
 						$scope.current.pageNum = 0;
 						$scope.current.albumId = id;
 						$scope.imgLoad = false;
@@ -387,21 +332,6 @@ app.controller('AlbumController',
 	};
 	
 	
-	$scope.delPageKeydown = function(event) {
-		event.preventDefault();
-		console.log(event.keyCode);
-		if (event.keyCode == 37) {
-			document.getElementById('delPage').focus();
-		}
-		if  (event.keyCode == 39) {
-			document.getElementById('notDelPage').focus();
-		}
-		if (event.keyCode == 27) {
-			$scope.delPage = false;
-		}
-	};
-	
-	
 	function updateView(dir) {
 		$scope.pageMessage =  {
 			leftPage: '',
@@ -446,79 +376,9 @@ app.controller('AlbumController',
 		$scope.current.onEditImage = false;
 	};
  
-	$scope.movePageForward = function() {
-		var pageId = document.getElementsByClassName('pActive')[0].id;
-		var movedPage = $scope.current[pageId];
-		var content = $scope.album.content;
-		var index = content.indexOf(movedPage);
-		if (index < content.length - 1) {
-			content.splice(index, 1);
-			content.splice(index + 1, 0, movedPage);
-			if (pageId == 'leftPage') {
-				$scope.current.leftPage = $scope.current.rightPage;
-				$scope.current.rightPage = movedPage;
-			}
-			if (pageId == 'rightPage') {
-				$scope.current.pageNum += 2;
-				$scope.current.leftPage = movedPage;
-				if (index < content.length - 2) {
-					$scope.current.rightPage = content[index + 2];
-				}
-				updateView('next');
-			}
-		}
-	};
+	$scope.updateView = updateView;
 	
-	$scope.movePageBackward = function() {
-		var pageId = document.getElementsByClassName('pActive')[0].id;
-		var movedPage = $scope.current[pageId];
-		var content = $scope.album.content;
-		var index = content.indexOf(movedPage);
-		if (index > 0) {
-			content.splice(index, 1);
-			content.splice(index - 1, 0, movedPage);
-			if (pageId == 'rightPage') {
-				$scope.current.rightPage = $scope.current.leftPage;
-				$scope.current.leftPage = movedPage;
-			}
-			if (pageId == 'leftPage') {
-				$scope.current.pageNum -= 2;
-				$scope.current.rightPage = movedPage;
-				if (index > 1) {
-					$scope.current.leftPage = content[index - 2]
-				}
-				updateView('prev');
-			}
-		}
-	};
-	
-	$scope.moveDoublePageForward = function() {
-		var pageId = document.getElementsByClassName('pActive')[0].id;
-		var movedPage = $scope.current[pageId];
-		var content = $scope.album.content;
-		var index = content.indexOf(movedPage);
-		if (index < content.length - 3 && index > 0) {
-			var spliceIndex = (pageId == 'leftPage')? index : (index -1);  
-			var movedDoublePage = content.splice(spliceIndex, 2);
-			content.splice(spliceIndex + 2, 0, movedDoublePage[0], movedDoublePage[1]);
-			$scope.current.pageNum += 2;
-			updateView('next');
-		}
-	};
-	
-	$scope.moveDoublePageBackward = function() {
-		var pageId = document.getElementsByClassName('pActive')[0].id;
-		var movedPage = $scope.current[pageId];
-		var content = $scope.album.content;
-		var index = content.indexOf(movedPage);
-		if (index < content.length - 1 && index > 2) {
-			var spliceIndex = (pageId == 'leftPage')? index : (index -1);  
-			var movedDoublePage = content.splice(spliceIndex, 2);
-			content.splice(spliceIndex - 2, 0, movedDoublePage[0], movedDoublePage[1]);
-			$scope.current.pageNum -= 2;
-			updateView('prev');
-		}
-	};
+
 	/*------------------title, description control-------------------*/
  
 	$scope.showTitle = function() {
@@ -575,9 +435,9 @@ app.controller('AlbumController',
 			$scope.currentAlbumSC.description = $scope.album.description;
 			$scope.currentAlbumSC.width = $scope.album.width;
 			$scope.currentAlbumSC.height = $scope.album.height;
-			$scope.$parent.inAlbum = false;
-			$scope.$parent.showHome = true;
-			$scope.$parent.showAlbums = true;
+			$scope.current.inAlbum = false;
+			$scope.current.showHome = true;
+			$scope.current.showAlbums = true;
 		}, function() {
 			var el = document.getElementById('updateMsg');
 			var msg = 'Failed to save this album. Please try again.'
@@ -642,29 +502,37 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 	};
 	
 	function drawPage(num) {
+		var pwidth = $scope.previewWidth/2,
+			pheight = $scope.previewHeight;
+
 		document.getElementById('rightPreview').innerHTML = '';
 		document.getElementById('leftPreview').innerHTML = '';
 		var content = $scope.album.content;
 		if (num != 0) {
 			var leftPage = angular.copy(content[num - 1]),
 				leftView = document.getElementById('leftPreview');
-			showPage(leftPage, leftView);
+			showPage(leftPage, leftView, pwidth, pheight);
 		}	
 		if (num != content.length) {
 			var rightPage = angular.copy(content[num]),
 				rightView = document.getElementById('rightPreview');
-			showPage(rightPage, rightView);
+			showPage(rightPage, rightView, pwidth, pheight);
 		}
 		
-		function showPage(page, view) {
+		function showPage(page, view, pwidth, pheight) {
+// 			var pwidth = parseInt(view.style.width);
+// 			var pheight = parseInt(view.style.height);
+			
 			$timeout(function() {
+				view.style.width = pwidth + 'px';
+				view.style.height = pheight + 'px';
 				view.style.backgroundColor = page.background || '#FFFFFF';
 				view.style.backgroundImage = 'url("' + page.patternURL + '")';
 				view.style.backgroundSize = page.patternSize;
-			})
-			
-			var pwidth = $scope.previewWidth/2,
-				pheight = $scope.previewHeight;
+			});
+			console.log('preview', pwidth, pheight);
+// 			var pwidth = $scope.previewWidth/2,
+// 				pheight = $scope.previewHeight;
 			//draw images
 			for (var i = 0; i < page.frames.length; i++) {
 				function draw(frame) {

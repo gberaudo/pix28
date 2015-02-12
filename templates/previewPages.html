@@ -1,4 +1,4 @@
-<div ng-controller = 'PreviewController'
+<div ng-controller = 'PreviewController as previewCtrl'
 	ng-show = 'previewMode' id = 'previewPage'
 	style = 'width: {{(previewWidth + 1) + "px"}}; 
 	height: {{previewHeight + "px"}};'>
@@ -17,7 +17,7 @@
 				left: {{(previewWidth/2+1)  + "px"}};'>
 		</div>
 	</div>
-	<span	class = 'link next fa fa-chevron-right' 
+	<span class = 'link next fa fa-chevron-right' 
 			ng-show = 'viewPageNum != album.content.length'
 			ng-click = 'previewPage(viewPageNum + 2)'> </span>
 	
@@ -27,4 +27,4 @@
 		<span class = 'link'
 			ng-click = 'toJPEG(viewPageNum)' translate> Export this page to JPEG</span>
 	</div>
-</div>	
+</div>

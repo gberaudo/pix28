@@ -126,7 +126,7 @@
 #refLeft, #refRight {
 	position: absolute;
 	z-index: 100;
-	width: 2px;
+	width: 1px;
 	height: 100%;
 }
 .refLine {
@@ -506,12 +506,21 @@ canvas.minframe:hover, .showItem:hover {
 
 #exportMenu ul {
 	line-height: 2em;
-	
+	list-style: none;
+	padding: 1em;
+}
+
+#exportMenu li {
+	margin-bottom: 1.5em;
 }
 
 #exportMenu .icon {
 	font-size: 1.5em;
 	margin-right: 0.5em;
+}
+
+#exportMenu select {
+	width: 10em;
 }
 
 #rightPageNum {

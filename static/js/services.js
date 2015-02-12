@@ -1,3 +1,4 @@
+
 app.factory('FrameObject', function() {
 	return function(data) {
 		this.canvas = data.canvas;
@@ -76,7 +77,7 @@ app.factory('FrameObject', function() {
 	
 /*------------------------------------------------------*/
 
-app.service('Init', function() {
+app.service('Init', ['gettextCatalog', function(gettextCatalog) {
 	this.initTextArea = function(div, textArea, textBox, $scope) {
 		div.style.height = textArea.style.height = Math.floor(textBox.box.height * $scope.pheight/100) + "px";
 		div.style.width = textArea.style.width = Math.floor(textBox.box.width * $scope.pwidth/100) + "px";
@@ -106,11 +107,12 @@ app.service('Init', function() {
 		}
 		textArea.style.resize = 'none';
 	};
-});
+}]);
 
 
 /*--------------------------------------------------------*/
 app.service('DBServices', ['$q','$timeout',  function($q, $timeout) {
+	
 	this.initAlbumDB = function(scope) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		openRq.onsuccess = function(event) {

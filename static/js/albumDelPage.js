@@ -3,6 +3,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 	return {
 		restrict: 'EA',
 		replace: true,
+		scope: true,
 		template: '<img src = "static/icons/delpage.svg" title="msg"/>'
 		.replace("msg", "{{'Delete this double page'|translate}}"),
 		link: function(scope, elem, attrs) {
@@ -11,7 +12,24 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 				var abContent = scope.album.content;
 				var length = abContent.length;
 				var anchor = angular.element(document.body);
-				var popup = angular.element('<div></div>');
+				var popup = angular.element('<div ng-keydown = "delPageKeydown($event)"></div>');
+				
+				anchor.append(popup);
+				popup.addClass('alert');
+				scope.removePopup = function() {
+					popup.remove();
+				};
+				scope.delPageKeydown = function(event) {
+					if (event.keyCode == 37) {
+						document.getElementById('delPage').focus();
+					}
+					if  (event.keyCode == 39) {
+						document.getElementById('notDelPage').focus();
+					}
+					if (event.keyCode == 27) {
+						popup.remove();
+					}
+				};
 				
 				scope.delCurrentPage = function() {
 					abContent.splice(num - 1, 2);
@@ -23,11 +41,8 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 					popup.remove();
 					scope.updateView('next');
 				};
-				anchor.append(popup);
-				popup.addClass('alert');
-				scope.removePopup = function() {
-					popup.remove();
-				};
+				
+				
 				
 				if (num == 0 || num == length) {
 					var msg = gettextCatalog.getString('Cannot remove cover page!');
@@ -36,6 +51,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 						popup.remove();
 					}, 2000);
 				} else {
+
 					var innerHTML = '<span translate>Do you really want to remove this double page?</span>\
 						<br/><br/>\
 						<button type = "button" class = "respond"\

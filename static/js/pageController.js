@@ -37,22 +37,7 @@ app.controller('PageController',
 			angular.element(document.getElementsByClassName(
 				'pattern ' + 'Pattern_' + $scope.current[$scope.page].patternName)).addClass('selected');
 		}
-				// 					document.addEventListener('mousedown', handleMouseDown, true);
 	};
-	
-	
-// 	function handleMouseDown(event) {
-// 		var ancestorHasClass = Mics.ancestorHasClass;
-// 		var el = angular.element(event.target);
-// 		if (ancestorHasClass(el, 5, 'page') || 
-// 			ancestorHasClass(el, 7, 'layoutCtrl') ||
-// 			ancestorHasClass(el, 5, 'controls')) {
-// 			return;
-// 		} else {
-// 			$scope.deactivate();
-// 			document.removeEventListener('mousedown', handleMouseDown, true);
-// 		}
-// 	}
 	
 	$scope.deactivate = function() {
 		angular.element($element[0]).removeClass('pActive');

@@ -1,0 +1,25 @@
+<div ng-if = 'choosingCover'>
+	<div style = 'display: inline-block'>
+		<label> Cover type</label> <br/>
+		<select ng-model = 'coverType'
+			form = 'blurbForm'>
+			<option value = 'soft'>Softcover</option>
+			<option value = 'hardDJ'>Hardcover, Dust Jacket</option>
+			<option value = 'hardIW'>Hardcover, Image Wrap</option>
+		</select>
+	</div>
+	<div style = 'display: inline-block'>
+		<label> Paper Type</label> <br/>
+		<select ng-model = 'paperType'
+			form = 'blurbForm'>
+			<option value = 'standard'>Standard</option>
+			<option value = 'premium'>Premium (lustre or matte finish)</option>
+			<option value = 'prolineUncoated'> Proline (uncoated)</option>
+			<option value = 'prolinePearl'>Proline(Pearl)</option>
+		</select>
+	</div>
+	<form id = 'blurbForm' style = 'display:inline-block'
+		ng-submit = 'editCover()'>
+		<input type = 'submit' value = 'OK'/>
+	</form>
+</div>

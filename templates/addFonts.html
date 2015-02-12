@@ -1,6 +1,4 @@
-<div ng-controller = 'UserFontController'
-	id = 'addFont'
-	ng-if = 'current.addingFonts'>
+<div id = 'addFont'>
 	<p> You can upload a true type font from your computer to use in your albums.
 		These fonts will appear in the font list with prefix Custom.
 	</p>
@@ -21,7 +19,7 @@
 	
 	<p class = 'link'
 		style = 'float: right'
-		ng-click = 'current.addingFonts = false'>
+		ng-click = 'close()'>
 		Close
 	</p>
 </div>

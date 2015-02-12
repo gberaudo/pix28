@@ -17,6 +17,8 @@ $def with (mode)
 		
 		<script src = 'static/js/siteController.js'></script>
 		<script src = 'static/js/albumController.js'></script>
+		
+		
 		<script src = 'static/js/pageController.js'></script>
 		<script src = 'static/js/canvasController.js'></script>
 		<script src = 'static/js/imageLoaderController.js'></script>
@@ -24,6 +26,19 @@ $def with (mode)
 		<script src = 'static/js/textController.js'></script>
 		<script src = 'static/js/services.js'></script>
 		<script src = 'static/js/layoutFac.js'></script>
+		
+		<script src = 'static/js/albumFormatChoice.js'></script>
+		<script src = 'static/js/initUserDBService.js'></script>
+		<script src = 'static/js/albumLanguage.js'></script>
+		<script src = 'static/js/albumDelPage.js'></script>
+		<script src = 'static/js/albumMovePage.js'></script>
+		<script src = 'static/js/albumDelAlbum.js'></script>
+		<script src = 'static/js/albumAddFonts.js'></script>
+		<script src = 'static/js/albumShowExportChoices.js'></script>
+		<script src = 'static/js/exportController.js'></script>
+		<script src = 'static/js/exportService.js'></script>
+		<script src = 'static/js/fontService.js'></script>
+		
 	$else:
 		<script src = 'static/js/angular.min.js'></script>
 		<script src = 'static/js/angular-gettext.min.js'></script>
@@ -32,8 +47,9 @@ $def with (mode)
 		<script src = 'static/js/exif.js'></script>
 		<script src = 'static/js/FileSaver.min.js'></script>
 		<script src = 'static/js/jszip.min.js'></script>
-
+		
 		<script src = 'static/build/album.js'></script>
+		
 
 	<link rel="stylesheet" type="text/css" href="static/css/style.css"/>
 	<link rel = "stylesheet" type = "text/css" href = "static/css/homepage.css"/>
@@ -47,19 +63,18 @@ $def with (mode)
 <body ng-controller = 'SiteController' 
 	ng-show = 'loaded'
 	ng-mouseup = 'mouseUp(\$event)'>
-	<div ng-controller = 'AlbumController'>
-		<div ng-include = '"templates/banner.html"'></div>
-		<div ng-include = '"templates/userZone.html"'></div>
+	<div ng-include = '"templates/banner.html"'></div>
+	
+	<div ng-controller = 'AlbumController as albumCtrl'>
 		<div ng-include = '"templates/chooseFormats.html"'></div>
-		<div ng-show = '\$parent.inAlbum'> 
+		<div ng-include = '"templates/userZone.html"'></div>
+		
+		<div ng-show = 'current.inAlbum'> 
 			<div ng-include = '"templates/albumHeader.html"'></div>
 			<div ng-include = '"templates/albumSideMenu.html"'></div>
 			<div ng-include = '"templates/editAlbum.html"'></div>
-			<div ng-include = '"templates/alertDelAlbum.html"'></div>
-			<div ng-include = '"templates/alertDelPage.html"'></div>
 			<div ng-include = '"templates/previewPages.html"'></div>
-			<div ng-include = '"templates/exportWindow.html"'></div>
-			<div ng-include = '"templates/addFonts.html"'></div>
+<!-- 			<div ng-include = '"templates/exportWindow.html"'></div> -->
 			<div ng-show = 'current.hideAlbum' class = 'pageDesactivate'
 					tabindex = '0'>
 			</div>

@@ -1,5 +1,7 @@
 var app = angular.module('albumApp', ['gettext']);                                                                                                                                                                                    
-  
+ app.config(['$compileProvider', function($compileProvider) {
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
+}]); 
 app.run(['$rootScope', 'gettextCatalog', 'InitUserDB',
     function($rootScope, gettextCatalog, InitUserDB) {
 
@@ -20,7 +22,7 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 					'$rootScope', '$element',
 	function($scope, gettextCatalog, DBServices, $rootScope, $element) {
 	$scope.current = {};
-	$scope.showHome = true;
+	$scope.current.showHome = true;
 	DBServices.initAlbumDB($scope);
 	
 	$scope.changeLanguage = function(lang) {
@@ -46,10 +48,10 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 	};
 
 	$scope.goHome = function() {
-		$scope.showHome = true;
-		$scope.inAlbum = false;
+		$scope.current.showHome = true;
+		$scope.current.inAlbum = false;
 		if ($scope.albumSCs.length > 0) {
-			$scope.showAlbums = true;
+			$scope.current.showAlbums = true;
 		}
 	};
 	
