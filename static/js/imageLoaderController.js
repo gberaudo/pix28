@@ -223,15 +223,7 @@ app.controller('ImageLoaderController',
 		$scope.imageId = id;
 	};
 	
-// 	$scope.thumbOnBlur = function(event) {
-// 		$timeout(function() {
-// 			var id = event.target.getAttribute('DbId');
-// 			var delImage = document.getElementById('image_' + id);
-// 			delImage.style.display = 'none';
-// 		},50);
-// // 		angular.element(delImage).removeClass('respond link');
-// 	};
-	
+
 	function handleThumbMouseDown(event) {
 		var delImage = event.target.parentNode;
 		if (angular.element(delImage).hasClass('delImage')) {
@@ -259,14 +251,6 @@ app.controller('ImageLoaderController',
 			document.removeEventListener('mousedown',  handleThumbMouseDown, true);
 		}
 	}
-	
-/*	
-	$scope.removeImage = function(event) {
-		var DbId = parseInt(event.target.getAttribute('DbId'));
-		removeDBImage(DbId);
-		
-		
-	};*/
 }]);
 
 

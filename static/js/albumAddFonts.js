@@ -10,7 +10,7 @@ app.directive('albumAddFonts', ['$http', '$templateCache', '$compile', '$q',
 			
 			elem.bind('click', showPopup);
 			function showPopup() {
-				$http.get('templates/addFonts.html', {cache: $templateCache})
+				$http.get('static/partials/addFonts.html', {cache: $templateCache})
 				.success(function(tpl){
 					popup = angular.element(tpl);
 					$compile(popup)(scope);

@@ -8,7 +8,7 @@ app.directive('albumShowExportChoices',
 			var popup;
 			var anchor = angular.element(document.body);
 			scope.showExportMenu = function() {
-				$http.get('templates/exportWindow.html', {cache: $templateCache})
+				$http.get('static/partials/exportWindow.html', {cache: $templateCache})
 				.success(function(tpl){
 					popup = angular.element(tpl);
 					$compile(popup)(scope);

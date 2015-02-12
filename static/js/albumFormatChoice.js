@@ -8,6 +8,6 @@ app.directive('albumFormatChoice', function() {
 			createAlbum: '&'
 		},
 		replace: true,
-		templateUrl: 'templates/albumFormatChoice.html',
+		templateUrl: 'static/partials/albumFormatChoice.html',
 	}
 });

@@ -7,7 +7,7 @@ app.directive('albumDelAlbum', ['$http', '$templateCache', '$compile', '$timeout
 			var popup;
 			var anchor = angular.element(document.body);
 			
-			$http.get('templates/alertDelAlbum.html', {cache: $templateCache})
+			$http.get('static/partials/alertDelAlbum.html', {cache: $templateCache})
 			.success(function(tpl){
 				popup = angular.element(tpl);
 				$compile(popup)(scope);

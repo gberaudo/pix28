@@ -157,12 +157,6 @@ app.controller('AlbumController',
 		$scope.createAlbum(width, height);
 	};
 	
-	
-	
-
-
-
-		
 	$scope.openAlbum = function(albumSC) {
 		getAlbum(albumSC.id);
 		$scope.currentAlbumSC = albumSC;
