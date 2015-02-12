@@ -13,109 +13,110 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: templates/index.html
-msgid "...processing page {{processPage}}"
+#: templates/exportWindow.html
+#, fuzzy
+msgid "...processing page {{communication.page}}"
 msgstr "...traite page {{processPage}}"
 
-#: templates/index.html
+#: templates/albumTopMenu.html
 msgid "Add a new double page"
 msgstr "Ajouter une nouvelle page double"
 
-#: templates/index.html
+#: templates/imageLoader.html
 msgid "Add photos"
 msgstr "Ajouter des photos"
 
-#: templates/index.html
+#: templates/chooseFormats.html
 msgid "Album formats"
 msgstr "Formats d'album"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Align text center"
 msgstr "Centrer le texte"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Align text left"
 msgstr "Aligner le texte à gauche"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Align text right"
 msgstr "Aligner le texte à droite"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "All"
 msgstr "Toutes"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 #, fuzzy
 msgid "Apply to album"
 msgstr "Appliquer à toutes les pages"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 #, fuzzy
 msgid "Apply to all pages"
 msgstr "Appliquer à toutes les pages"
 
-#: templates/index.html
+#: templates/alertDelAlbum.html
 msgid "Are you sure to delete this album?"
 msgstr "Vous êtes sure de vouloir le supprimer?"
 
-#: templates/index.html
+#: templates/banner.html
 msgid "Back to home page"
 msgstr "Retourner à la page d'accueil"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Border"
 msgstr "Bordure"
 
-#: static/js/albumController.js
+#: templates/alertDelPage.html
+msgid "Cancel"
+msgstr ""
+
+#: static/js/albumDelPage.js
 msgid "Cannot remove cover page!"
 msgstr "Ne peut pas supprimer la page de couverture !"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid ""
 "Choose a page first then click on the layout to load to the chosen page."
 msgstr ""
 "Choissisez d'abord une page puis cliquez sur la mise en page pour charger la "
 "page choisie."
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Choose text color"
 msgstr "Choisir la couleur du texte"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Choose text font"
 msgstr "Choisir une police"
 
-#: templates/index.html
+#: templates/imageLoader.html
 msgid "Click to add photos from your computer"
 msgstr "Cliquer pour ajouter des photos à partir de votre ordinateur"
 
-#: templates/index.html
-msgid "Click to create a new album"
-msgstr "Cliquer pour créer un nouvel album"
-
-#: templates/index.html
+#: templates/userZone.html
 msgid "Click to go to album"
 msgstr "Cliquer pour aller à l'album"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Color"
 msgstr ""
 
-#: templates/index.html
+#: templates/exportWindow.html
 msgid "Congratulation!"
 msgstr "Félicitations!"
 
-#: templates/index.html
+#: templates/albumFormatChoice.html
 msgid "Create album"
 msgstr "Nouvel  album"
 
 # Faut-il tutoyer ou vouvoyer?
-#: templates/index.html
+#: templates/banner.html
 msgid "Create your own story"
 msgstr "Crée ta propre histoire"
 
-#: templates/index.html
+#: templates/albumPage.html
 msgid ""
 "Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right "
 "corner to redimension."
@@ -123,7 +124,11 @@ msgstr ""
 "Ctrl+Del pour supprimer. Ctrl +  flèches pour bouger le texte. Tirer le coin "
 "en bas à droite pour redimensioner."
 
-#: templates/index.html
+#: templates/alertDelPage.html
+msgid "Delete"
+msgstr ""
+
+#: templates/imageCtrl.html
 msgid ""
 "Delete image. Hot key: Ctrl + Del. Use Del to remove the frame and its "
 "content."
@@ -131,253 +136,293 @@ msgstr ""
 "Supprimer l'image. Raccourci : Ctrl+Supp. Utiliser Supp. pour supprimer le "
 "cadre et son contenu."
 
-#: templates/index.html
-msgid "Delete this double page"
+#: static/js/imgService.js
+#, fuzzy
+msgid "Delete this image"
 msgstr "Supprimer cette page double."
 
-#: templates/index.html
+#: templates/exportWindow.html
 msgid "Download file"
 msgstr "Télécharger"
 
-#: templates/index.html
+#: templates/albumPage.html
 msgid "Drag a corner or an edge to redimension the frame."
 msgstr "Tirer un coin ou un côté pour redimensioner le cadre."
 
-#: templates/index.html
+#: templates/albumTopMenu.html
 msgid "Drag and drop into page to add a new frame"
 msgstr "Glisser et déposer sur une page pour ajouter un nouveau cadre"
 
-#: templates/index.html
+#: templates/albumTopMenu.html
 msgid "Drag and drop into page to add a text field"
 msgstr "Glisser et déposer sur une page pour ajouter une boîte de texte."
 
-#: static/js/services.js
+#: static/js/imgService.js
 msgid "Drag and drop on a frame in album"
 msgstr "Glisser et déposer sur un cadre dans l'album."
 
-#: static/js/services.js
+#: static/js/imgService.js
 msgid "Drop an image here"
 msgstr "Glisser une image ici"
 
-#: templates/index.html
+#: templates/albumHeader.html
 msgid "Enter a description"
 msgstr "Entrer une description"
 
-#: templates/index.html
+#: templates/albumHeader.html
 msgid "Enter a title"
 msgstr "Entrer un titre"
 
-#: templates/index.html
+#: templates/albumPage.html
 msgid "Enter text here"
 msgstr "Entrer un texte ici"
 
-#: templates/index.html
+#: templates/albumSideMenu.html
 msgid "Export this album"
 msgstr "Exporter l'album"
 
-#: templates/index.html
+#: templates/albumSideMenu.html
 msgid "Export this album to pdf file to use on your computer or for printing"
 msgstr ""
 "Exporter cet album en fichier pdf pour l'utiliser sur votre ordinateur ou "
 "pour l'imprimer"
 
-#: templates/index.html
+#: templates/previewPages.html
 msgid "Export this page to JPEG"
 msgstr "Exporter l'album en JPEGs"
 
 #. layouts
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Favorites"
 msgstr "Préférées"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Frame"
 msgstr "Cadre"
 
-#: templates/index.html
+#: templates/exportWindow.html
 msgid "Generating Jpg. Please be patient..."
 msgstr "Génération du JPEG. Soyez patients..."
 
-#: templates/index.html
+#: templates/exportWindow.html
 msgid "Generating pdf. Please be patient..."
 msgstr "Génération du pdf. Soyez patients..."
 
-#: templates/index.html
+#: templates/exportWindow.html
+#, fuzzy
+msgid "Hight resolution PDF (for printing)"
+msgstr "PDF 300dpi (pour impression)"
+
+#: templates/exportWindow.html
 msgid "JPEG images"
 msgstr "Images JPEG"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Level image zone up."
 msgstr "Élever la zone d'image."
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Level image zone."
 msgstr "Abaisser la zone d'image."
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Level text down."
 msgstr "Abaisser le texte"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Level text up."
 msgstr "Élever le texte"
 
-#: templates/index.html
+#: static/js/imgService.js
+msgid "Low resolution!"
+msgstr ""
+
+#: templates/layoutCtrl.html
 msgid "Mask"
 msgstr "Masque"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Move image zone down. Hot key: Ctrl + arrow down."
 msgstr "Déplacer la zone d'image vers le bas. Raccourci : Ctrl + flèche bas"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Move image zone left. Hot key: Ctrl + arrow left."
 msgstr ""
 "Déplacer la zone d'image vers la gauche. Raccourci : Ctrl + flèche gauche."
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Move image zone right. Hot key: Ctrl + arrow right."
 msgstr ""
 "Déplacer la zone d'image vers la droite. Raccourci : Cthl + flèche droite."
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Move image zone up. Hot key: Ctrl + arrow up."
 msgstr ""
 "Déplacer la zone d'image vers le haut. Raccourci : Ctrl + flèche haute."
 
-#: templates/index.html
+#: templates/albumTopMenu.html
+#, fuzzy
+msgid "Move this double page backward"
+msgstr "Supprimer cette page double."
+
+#: templates/albumTopMenu.html
+#, fuzzy
+msgid "Move this double page forward"
+msgstr "Supprimer cette page double."
+
+#: templates/albumTopMenu.html
+msgid "Move this single page backward"
+msgstr ""
+
+#: templates/albumTopMenu.html
+msgid "Move this single page forward"
+msgstr ""
+
+#: templates/alertDelAlbum.html
 msgid "No, do not delete."
 msgstr "Non, ne supprime pas."
 
-#: templates/index.html
-msgid "PDF 300dpi (for printing)"
-msgstr "PDF 300dpi (pour impression)"
-
-#: templates/index.html
-msgid "PDF 72dpi (to use on computer)"
+#: templates/exportWindow.html
+#, fuzzy
+msgid "Normal PDF (to use on computer)"
 msgstr "PDF 72dpi (pour affichage à l'écran)"
 
-#: templates/index.html
+#: templates/exportWindow.html
+msgid "Other"
+msgstr ""
+
+#: templates/layoutCtrl.html
 msgid "Page layout"
 msgstr "Mise en page"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Pattern"
 msgstr ""
 
-#: templates/index.html
+#: templates/albumTopMenu.html
 msgid "Preview album"
 msgstr "Aperçu de l' album"
 
-#: templates/index.html
+#: templates/exportWindow.html
+msgid "Print with Blurb"
+msgstr ""
+
+#: templates/layoutCtrl.html
 #, fuzzy
 msgid "Remove color"
 msgstr "Couleur du texte"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 #, fuzzy
 msgid "Remove pattern"
 msgstr "Supprimer cette boîte de texte"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Remove text box"
 msgstr "Supprimer cette boîte de texte"
 
-#: templates/index.html
+#: templates/albumSideMenu.html
 msgid "Remove this album"
 msgstr "Supprimer cet album"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Rotate image left"
 msgstr "Pivoter l'image vers la gauche"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Rotate image right"
 msgstr "Pivoter l'image vers la droite"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Rotate text box left"
 msgstr "Pivoter cette boîte de texte vers la gauche"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Rotate text box right"
 msgstr "Pivoter cette boîte de texte vers la droite"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Save as favourite"
 msgstr ""
 
-#: templates/index.html
+#: templates/albumSideMenu.html
 msgid "Save this album"
 msgstr "Sauvegarder cet album"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Style image"
 msgstr "Style de l'image"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Text"
 msgstr "Texte"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "Text color"
 msgstr "Couleur du texte"
 
-#: templates/index.html
+#: templates/alertDelAlbum.html
 msgid "The album"
 msgstr "L'album"
 
-#: templates/index.html
+#: static/js/albumController.js
+msgid "This page should be left blank"
+msgstr ""
+
+#: templates/exportWindow.html
 msgid "To which format would you like to export your album?"
 msgstr "Vers quels formats voulez-vous exporter votre album?"
 
-#: templates/index.html
+#: templates/alertDelAlbum.html
 msgid "Yes, delete it."
 msgstr "Oui, supprime le."
 
-#: templates/index.html
+#: templates/exportWindow.html
 msgid "Your PDF album is ready."
 msgstr "Votre album PDF est prêt."
 
-#: templates/index.html
+#: templates/userZone.html templates/albumSideMenu.html
 msgid "Your albums"
 msgstr "Vos albums"
 
-#: templates/index.html
+#: templates/layoutCtrl.html
 msgid "Your color"
 msgstr "Votre couleur"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Zoom image in. Hot key: +"
 msgstr "Zoomer image plus large. Raccourci : +"
 
-#: templates/index.html
+#: templates/imageCtrl.html
 msgid "Zoom image out. Hot key: -"
 msgstr "Zoomer image plus petite. Raccourci : -"
 
-#: templates/index.html
+#: templates/textCtrl.html
 msgid "change font size"
 msgstr "Changer la taille de police"
 
-#: templates/index.html
+#: templates/albumHeader.html
 msgid "edit description"
 msgstr "Éditer la description"
 
-#: templates/index.html
+#: templates/albumHeader.html
 msgid "edit title"
 msgstr "Éditer le titre"
 
-#: templates/index.html
+#: templates/editAlbum.html
 msgid "go to the next page"
 msgstr "aller à la page suivante"
 
-#: templates/index.html
+#: templates/editAlbum.html
 msgid "go to the previous page"
 msgstr "retourner à la page précédente"
 
-#: templates/index.html
+#: templates/alertDelAlbum.html
 msgid "will be removed definitely."
 msgstr "sera supprimé définitivement."
+
+#~ msgid "Click to create a new album"
+#~ msgstr "Cliquer pour créer un nouvel album"
 
 #~ msgid "(photos/page)"
 #~ msgstr "(photos/page)"

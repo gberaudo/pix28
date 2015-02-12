@@ -1,7 +1,9 @@
-var app = angular.module('albumApp', ['gettext']);                                                                                                                                                                                    
- app.config(['$compileProvider', function($compileProvider) {
+var app = angular.module('albumApp', ['gettext']);  
+
+app.config(['$compileProvider', function($compileProvider) {
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
 }]); 
+ 
 app.run(['$rootScope', 'gettextCatalog', 'InitUserDB',
     function($rootScope, gettextCatalog, InitUserDB) {
 
@@ -23,29 +25,10 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 	function($scope, gettextCatalog, DBServices, $rootScope, $element) {
 	$scope.current = {};
 	$scope.current.showHome = true;
-	DBServices.initAlbumDB($scope);
-	
-	$scope.changeLanguage = function(lang) {
-		$rootScope.userInfo.lang = lang;
-		gettextCatalog.setCurrentLanguage(lang);
-		gettextCatalog.loadRemote('static/build/locale/'+lang+'/album.json');
-		updateUserDB(lang);
-	};
-	
-	function updateUserDB(lang) {
-		var openRq = window.indexedDB.open('UserDB',2);
-		openRq.onsuccess = function(event) {
-			var db = openRq.result,
-				trans = db.transaction(['userInfo'], 'readwrite'),
-				store = trans.objectStore('userInfo')
-				var getRq = store.get(1);
-			getRq.onsuccess = function() {
-				var info = getRq.result;
-				info.lang = lang;
-				store.put(info);
-			};
-		};
-	};
+	DBServices.initAlbumDB()
+	.then(function(albumSCs) {
+		$scope.albumSCs = albumSCs || [];
+	});
 
 	$scope.goHome = function() {
 		$scope.current.showHome = true;
@@ -54,11 +37,6 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 			$scope.current.showAlbums = true;
 		}
 	};
-	
-	$element[0].onselectstart = function() {
-		return false;
-	};
-	
 
 	$scope.mouseUp = function(evt) {
 		$scope.current.mouseIsUp = true;
