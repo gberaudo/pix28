@@ -1,0 +1,21 @@
+{
+  "name": "AlbumIt",
+  "description": "Make photo album, export to PDF or JPEG",
+  "version": "1",
+	"manifest_version": 2, 
+  "app": {
+    "urls": [
+      "*://localhost/"
+    ],
+    "launch": {
+      "web_url": "http://localhost:8080/"
+    }
+  },
+  "icons": {
+    "128": "album.png"
+  },
+  "permissions": [
+    "unlimitedStorage",
+    "notifications"
+  ]
+}
