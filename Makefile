@@ -1,9 +1,9 @@
 CLOSURE_UTIL_PATH := closure-util
 CLOSURE_LIBRARY_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getLibraryPath())' 2> /dev/null)
 CLOSURE_COMPILER_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getCompilerPath())' 2> /dev/null)
-#APP_JS_FILES = $(shell find static/js -type f -name '*.js')
-APP_JS_FILES := static/js/siteController.js static/js/albumController.js static/js/imageLoaderController.js static/js/pageController.js static/js/canvasController.js static/js/layoutController.js static/js/services.js static/js/textController.js static/js/layoutFac.js static/js/albumFormatChoice.js static/js/initUserDBService.js static/js/albumLanguage.js static/js/albumDelPage.js static/js/albumMovePage.js static/js/albumDelAlbum.js static/js/albumAddFonts.js static/js/albumShowExportChoices.js static/js/exportController.js static/js/exportService.js static/js/fontService.js
+APP_JS_FILES = $(shell sed '/$$else/,/html/d' dist/templates/index.html | grep js\' | grep -v lib | cut -d"'" -f2)
 APP_HTML_FILES := $(shell find templates -type f -name '*.html')
+LIB_DIR := static/lib
 
 export closure_library_path = $(CLOSURE_LIBRARY_PATH)
 export closure_compiler_path = $(CLOSURE_COMPILER_PATH)
@@ -44,29 +44,31 @@ clean:
 cleanall: clean
 	rm -rf .build
 	rm -rf node_modules
+	rm -rf $(LIB_DIR)/*
 
 .PHONY: compile-catalog
 compile-catalog: static/build/locale/fr/album.json static/build/locale/en/album.json static/build/locale/vi/album.json
 
+.PHONY: couloux
+couloux:
+	sed '/$$else/,/html/d' dist/templates/index.html | grep js\' | grep -v lib | cut -d"'" -f2
+
 .PHONY: dist
 dist: build
-	mkdir -p dist
+	mkdir -p dist/lib
 	cp -R static templates dist/
-	rm -rf dist/static/js/*
 	sed 's/dev/prod/g' albumServer.py > dist/albumServer.py
-	cp node_modules/angular/angular.min.js dist/static/js/
-#	cp static/js/angular_13.js dist/static/js/angular.min.js
-	cp node_modules/angular-gettext/dist/angular-gettext.min.js  dist/static/js/
-	cp node_modules/exif-js/exif.js dist/static/js/
-	cp static/js/blob-stream.js dist/static/js/
-	cp node_modules/pdfkit/build/pdfkit.js dist/static/js/
-	cp static/build/album.js dist/static/build/album.js
-	cp static/js/jszip.min.js dist/static/js/
-	cp static/js/FileSaver.min.js dist/static/js/
+	cp node_modules/angular/angular.min.js dist/$(LIB_DIR)/
+	cp node_modules/angular-gettext/dist/angular-gettext.min.js  dist/$(LIB_DIR)/
+	cp node_modules/exif-js/exif.js dist/$(LIB_DIR)/
+	cp node_modules/pdfkit/build/pdfkit.js dist/$(LIB_DIR)/
+	cp $(LIB_DIR)/blob-stream.js dist/$(LIB_DIR)/
+	cp $(LIB_DIR)/jszip.min.js dist/$(LIB_DIR)/
+	cp $(LIB_DIR)/FileSaver.min.js dist/$(LIB_DIR)/
 	sed '/$$if/,/$$else/d' dist/templates/index.html | tail -n +2 | sed 's/\\\$$/\$$/g' > dist/index.html
-	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/angular.min.js
-	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/angular-gettext.min.js
-	sed -i 's/^.*ourceMappingUR.*$$//g' dist/static/js/pdfkit.js
+	sed -i 's/^.*ourceMappingUR.*$$//g' dist/$(LIB_DIR)/angular.min.js
+	sed -i 's/^.*ourceMappingUR.*$$//g' dist/$(LIB_DIR)/angular-gettext.min.js
+	sed -i 's/^.*ourceMappingUR.*$$//g' dist/$(LIB_DIR)/pdfkit.js
 
 
 .PHONY: test
@@ -148,23 +150,29 @@ serve-prod:
 	(cd dist; ../.build/venv/bin/python albumServer.py)
 
 
-static/js/angular_13.js: .build/node_modules.timestamp
-	cp node_modules/angular/angular.js static/js/angular_13.js
+$(LIB_DIR)/angular_13.js: .build/node_modules.timestamp
+	cp node_modules/angular/angular.js $@
 
-static/js/angular-gettext.js: .build/node_modules.timestamp
-	cp node_modules/angular-gettext/dist/angular-gettext.js static/js/angular-gettext.js
+$(LIB_DIR)/angular-gettext.js: .build/node_modules.timestamp
+	cp node_modules/angular-gettext/dist/angular-gettext.js $@
 
-static/js/blob-stream.js:
-	wget https://github.com/devongovett/blob-stream/releases/download/v0.1.2/blob-stream-v0.1.2.js -O static/js/blob-stream.js
+$(LIB_DIR)/exif.js:.build/node_modules.timestamp
+	cp node_modules/exif-js/exif.js $@
 
-static/js/exif.js:.build/node_modules.timestamp
-	cp node_modules/exif-js/exif.js static/js/exif.js
+$(LIB_DIR)/pdfkit.js:.build/node_modules.timestamp
+	grep -v 'sourceMappingURL=pdfkit.js.map' node_modules/pdfkit/build/pdfkit.js > $@
 
-static/js/pdfkit.js:.build/node_modules.timestamp
-	grep -v 'sourceMappingURL=pdfkit.js.map' node_modules/pdfkit/build/pdfkit.js > static/js/pdfkit.js
+$(LIB_DIR)/blob-stream.js:
+	wget https://github.com/devongovett/blob-stream/releases/download/v0.1.2/blob-stream-v0.1.2.js -O $@
+
+$(LIB_DIR)/jszip.min.js:
+	wget https://github.com/Stuk/jszip/raw/64b33125ef8970a4bb1725042804995bc1535958/dist/jszip.min.js -O $@
+
+$(LIB_DIR)/FileSaver.min.js:
+	wget https://github.com/eligrey/FileSaver.js/raw/d593c0b9114ac14a648fbaee822f181117b2b5fa/FileSaver.min.js -O $@
 
 .PHONY: node_deps
-node_deps: static/js/angular_13.js static/js/angular-gettext.js static/js/blob-stream.js static/js/exif.js static/js/pdfkit.js
+node_deps: $(LIB_DIR)/angular_13.js $(LIB_DIR)/angular-gettext.js $(LIB_DIR)/jszip.min.js $(LIB_DIR)/blob-stream.js $(LIB_DIR)/exif.js $(LIB_DIR)/pdfkit.js
 
 .PHONY: deploy
 deploy: dist

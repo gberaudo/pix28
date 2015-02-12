@@ -1,18 +1,18 @@
 $def with (mode)
 <!DOCTYPE html> 
-<html ng-app = 'albumApp' ng-init = 'greeting = true' ng-strict-di='false'>
+<html ng-app = 'albumApp' ng-init = 'greeting = true' ng-strict-di='true'>
 <head profile="http://www.w3.org/2005/10/profile">
 	<meta charset="UTF-8">
 
 
 	$if mode == 'dev':
-		<script src = 'static/js/angular_13.js'></script>
-		<script src = 'static/js/angular-gettext.js'></script>
-		<script src = 'static/js/pdfkit.js'></script>
-		<script src = 'static/js/blob-stream.js'></script>
-		<script src = 'static/js/exif.js'></script>
-		<script src = 'static/js/FileSaver.min.js'></script>
-		<script src = 'static/js/jszip.min.js'></script>
+		<script src = 'static/lib/angular_13.js'></script>
+		<script src = 'static/lib/angular-gettext.js'></script>
+		<script src = 'static/lib/pdfkit.js'></script>
+		<script src = 'static/lib/blob-stream.js'></script>
+		<script src = 'static/lib/exif.js'></script>
+		<script src = 'static/lib/FileSaver.min.js'></script>
+		<script src = 'static/lib/jszip.min.js'></script>
 		
 		
 		<script src = 'static/js/siteController.js'></script>
@@ -40,13 +40,13 @@ $def with (mode)
 		<script src = 'static/js/fontService.js'></script>
 		
 	$else:
-		<script src = 'static/js/angular.min.js'></script>
-		<script src = 'static/js/angular-gettext.min.js'></script>
-		<script src = 'static/js/pdfkit.js'></script>
-		<script src = 'static/js/blob-stream.js'></script>
-		<script src = 'static/js/exif.js'></script>
-		<script src = 'static/js/FileSaver.min.js'></script>
-		<script src = 'static/js/jszip.min.js'></script>
+		<script src = 'static/lib/angular.min.js'></script>
+		<script src = 'static/lib/angular-gettext.min.js'></script>
+		<script src = 'static/lib/pdfkit.js'></script>
+		<script src = 'static/lib/blob-stream.js'></script>
+		<script src = 'static/lib/exif.js'></script>
+		<script src = 'static/lib/FileSaver.min.js'></script>
+		<script src = 'static/lib/jszip.min.js'></script>
 		
 		<script src = 'static/build/album.js'></script>
 		
