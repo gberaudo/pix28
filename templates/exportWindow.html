@@ -1,9 +1,7 @@
 <div id = 'exportWindow'
-		ng-if = 'current.showExportWindow'
-	ng-controller = 'ExportController' >
-			
+	ng-controller = 'ExportController'>
 	<div id = 'exportMenu'
-		ng-show = 'showExportMenu'>
+		ng-show = 'showMenu'>
 		<p translate>To which format would you like to export your album?</p>
 		<ul> 
 			<li >
@@ -29,31 +27,7 @@
 					<span class = 'link' style = 'float: right'
 						ng-click = 'generatePdf(300)' translate>Other</span>
 				</div>
-				<div ng-if = 'choosingCover'>
-					<div style = 'display: inline-block'>
-						<label> Cover type</label> <br/>
-						<select ng-model = 'coverType'
-							form = 'blurbForm'>
-							<option value = 'soft'>Softcover</option>
-							<option value = 'hardDJ'>Hardcover, Dust Jacket</option>
-							<option value = 'hardIW'>Hardcover, Image Wrap</option>
-						</select>
-					</div>
-					<div style = 'display: inline-block'>
-						<label> Paper Type</label> <br/>
-						<select ng-model = 'paperType'
-							form = 'blurbForm'>
-							<option value = 'standard'>Standard</option>
-							<option value = 'premium'>Premium (lustre or matte finish)</option>
-							<option value = 'prolineUncoated'> Proline (uncoated)</option>
-							<option value = 'prolinePearl'>Proline(Pearl)</option>
-						</select>
-					</div>
-					<form id = 'blurbForm' style = 'display:inline-block'
-						ng-submit = 'editCover()'>
-						<input type = 'submit' value = 'OK'/>
-					</form>
-				</div>
+				
 				
 				<div ng-if = 'editingCover'>
 					
@@ -74,36 +48,43 @@
 	
 
 	<!--=========================================-->
-	<div ng-show = 'processingPdf' >
+	<div ng-if = 'processingPdf' >
 		<p translate>
 			Generating pdf. Please be patient...
 		</p>
 		<div style = 'font-size: 90%' > 
 			<p translate>
-				...processing page {{processPage}}
+				...processing page {{communication.page}}
 			</p>
 			<p class = 'icon fa fa-spinner fa-spin'
 				style = 'font-size: 2em' > </p>
 		</div>
 	</div>
-	<div ng-show = 'showLink'>
+	<div ng-if = 'showLink'>
 		<h4 translate> Congratulation! </h4>
 		<p translate>Your PDF album is ready.</p>
 		<span class = 'icon fa fa-download'> </span>
 		<a download = '{{album.title + ".pdf"}}' 
-			id = 'pdfoutput' translate>
+			id = 'pdfoutput' 
+			href = '{{pdfLink}}'
+			translate>
 			Download file
 		</a>
 	</div>
 	
-	<div ng-show = 'processingJpg' >
+	<div ng-if = 'processingJpg' >
 		<p translate>
 			Generating Jpg. Please be patient...
 		</p>
 
 			<p class = 'icon fa fa-spinner fa-spin'> </p>
 	</div>
-	<div ng-show = 'showJpgLink' id = 'exportJpgAlbum'>
+	<div ng-if = 'showJpgLink' id = 'exportJpgAlbum'>
+		<p>
+			<span class = 'icon fa fa-download'> </span>
+			<span class = 'link' ng-click = 'popupZip()'> Download Jpeg files
+		<p>
+		
 	</div>
 	<span class = 'clickable close fa fa-remove'
 			ng-click = 'closeExportWindow()'></span>

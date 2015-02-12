@@ -10,15 +10,16 @@
 			Save this album
 		</li>
 
-		<li class = 'link respond' 
+		<li album-del-album
+			class = 'link respond' 
 			ng-click = 'delAlbumRq()' translate>
 			Remove this album
 		</li>
 	</ul>
 
-	<div id = 'exportBtn'>
+	<div id = 'exportBtn' album-show-export-choices
+		ng-click = 'showExportMenu()'>
 		<span class = 'bigbtn respond' 
-			ng-click = 'current.showExportWindow = true' 
 			title = '{{"Export this album to pdf file to use on your computer or for printing"|translate}}' 
 			translate>
 			Export this album
