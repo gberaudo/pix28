@@ -1,6 +1,6 @@
 app.controller('ImageLoaderController', 
-    ['$scope', '$timeout', 'ImgService', '$q', '$element', 'gettextCatalog',
-					function($scope, $timeout, ImgService, $q, $element, gettextCatalog) {
+    ['$scope', '$timeout', 'ImgService', '$q', '$element', 'gettextCatalog', 'Misc',
+					function($scope, $timeout, ImgService, $q, $element, gettextCatalog, Misc) {
 	var usedMap = getUsedMap();
 	function getUsedMap() {
 		var result = {};
@@ -24,10 +24,25 @@ app.controller('ImageLoaderController',
 	
 	ImgService.loadImages($scope.current.albumId, usedMap);
 	
+	
 	$scope.handleFileSelect = function(evt) {
 		var files = evt.target.files || evt.dataTransfer.files;
+		var tasks = [];
 		evt.preventDefault();
 		$scope.loadingImg = true;
+		
+		for (var i = 0; i < files.length; i++) {
+			var task = {
+				function: handleFile,
+				args: [files[i]]
+			}
+			tasks.push(task);
+		}
+		
+		Misc.syncTask(tasks).then(function(){
+			$scope.loadingImg = false;
+		});
+		
 		function readFile(file) {
 			var deferred = $q.defer();
 			if (file.type.match(/image.*/)){
@@ -42,31 +57,23 @@ app.controller('ImageLoaderController',
 			return deferred.promise;
 		};
 
-		var i = 0;
-		putNextFile();
-		
-		function putNextFile() {
-			readFile(files[i]).then(function(result) {
-				if (!!result) {
-					processImage(result);
+		function handleFile(file) {
+			var deferred = $q.defer();
+			readFile(file).then(function(dataURL) {
+				if (!!dataURL) {
+					resizeImg(dataURL).then(function(result) {
+						updateImg(result).then(function(result) {
+							showThumbnail(result);
+							deferred.resolve(null);
+						});
+					});
 				}
-				else {
-					i++;
-					putNextFile();
-				}
+				else deferred.resolve(null);
 			});
- 		}
-		
-		function processImage(imgURL) {
-			resizeImg(imgURL)
-				.then(function(result) {
-					updateImg(result)
-					.then(function(result) {
-						showThumbnail(result);
-					})
-				});
+			return deferred.promise;
 		}
 		
+
 		function resizeImg(imgURL) {
 			var deferred = $q.defer();
 			var imgObj = new Image();
@@ -169,12 +176,6 @@ app.controller('ImageLoaderController',
 		
 		function showThumbnail(result) {
 			ImgService.showThumbnail(result[0], result[1], true);
-			i++;
-			if (i < files.length) {
-				putNextFile();
-			} else {
-				$scope.loadingImg = false;
-			}
 		};
 	};
 	

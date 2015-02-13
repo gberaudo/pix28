@@ -509,7 +509,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 }]);
 
 /*-----------------------------------------------------------*/
-app.service('Misc', function() {
+app.service('Misc', ['$q', function($q) {
 	this.toHex = function(n) {
 		return "0123456789ABCDEF".charAt((n-n%16)/16)
 				+ "0123456789ABCDEF".charAt(n%16);
@@ -733,4 +733,23 @@ app.service('Misc', function() {
 			top: Math.round(rect.top * pwidth / 100)
 		};
 	};
-});
+
+	var syncTask = function(tasks) { //a function to chain promises
+		var deferred = $q.defer();
+		if (tasks.length ==1) {
+			tasks[0]['function'].apply(null, tasks[0]['args']).then(function() {
+				deferred.resolve(null);
+			});
+		} else {
+			var lastTask = tasks.pop();
+			syncTask(tasks).then(function(){
+				lastTask['function'].apply(null, lastTask['args']).then(function() {
+					deferred.resolve(null)
+				});
+			});
+		}
+		return deferred.promise;
+	}
+
+	this.syncTask = syncTask;
+}]);
