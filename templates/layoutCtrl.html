@@ -99,7 +99,8 @@
 				ng-init = 'showColor = true'>
 				<div ng-repeat = 'color in colors'
 					ng-show = 'showColor'
-					class = 'showItem BGColor {{"BG_" +color}}'
+					class = 'showItem BGColor'
+					name = '{{"BG_" +color}}'
 					style = 'background-color: {{color}};
 						width: {{0.2 * pwidth + "px"}};
 						height: {{0.2 * pheight + "px"}}'
@@ -119,7 +120,8 @@
 				</div>
 				
 				<div ng-repeat = 'pattern in patterns'
-					class = 'showItem pattern {{"Pattern_" + pattern.name}}'
+					class = 'showItem pattern'
+					name = '{{"Pattern_" + pattern.name}}'
 					ng-show = 'showPattern'
 					ng-controller = 'PatternController'
 					style = 'width: {{0.2 * pwidth + "px"}};

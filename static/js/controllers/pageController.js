@@ -14,28 +14,13 @@ app.controller('PageController',
 		
 	$scope.activate = function() {
 		var page = angular.element($element[0]);
+		var color = 'BG_' + $scope.current[$scope.page].background;
+		var pattern = 'Pattern_' + $scope.current[$scope.page].patternName;
+		
 		DOMService.deactivate('pActive');
 		DOMService.activate(page, 'pActive');
-		
-		markSelectedBGColor();
-		markSelectedPattern();
-		function markSelectedBGColor() {
-			if (document.getElementsByClassName('BGColor selected').length > 0) {
-				angular.element(document.getElementsByClassName('BGColor selected')[0])
-				.removeClass('selected');
-			}
-			angular.element(document.getElementsByClassName(
-				'BGColor ' + 'BG_' + $scope.current[$scope.page].background)).addClass('selected');
-		}
-		
-		function markSelectedPattern() {
-			if (document.getElementsByClassName('pattern selected').length > 0) {
-				angular.element(document.getElementsByClassName('pattern selected')[0])
-				.removeClass('selected');
-			}
-			angular.element(document.getElementsByClassName(
-				'pattern ' + 'Pattern_' + $scope.current[$scope.page].patternName)).addClass('selected');
-		}
+		DOMService.markSelectedItem('BGColor', color);
+		DOMService.markSelectedItem('pattern', pattern);
 	};
 	
 	$scope.deactivate = function() {
