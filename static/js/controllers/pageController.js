@@ -1,6 +1,6 @@
 app.controller('PageController',
     ['$scope', '$timeout', '$element', 'FrameObject', 'Misc', 'DOMService',
-    function($scope, $timeout, $element, FrameObject, Mics, DOMService) {
+    function($scope, $timeout, $element, FrameObject, Misc, DOMService) {
 	
 	function initPage() {
 		var page = $element[0];
@@ -54,7 +54,8 @@ app.controller('PageController',
 		
 		switch (name) {
 			case 'frame':
-				var maxFrameLayer = getMaxFrameLayer(page.id);
+				var frames = $scope.current[page.id].frames
+				var maxFrameLayer = Misc.getMaxProp(frames, 'layer');
 				var canvas = {};
 				canvas.width = $scope.pwidth / 3;
 				canvas.height = $scope.pwidth / 3;
@@ -90,8 +91,10 @@ app.controller('PageController',
 				});
 				$scope.activate();
 				break;
+				
 			case 'text':
-				var maxTextLayer = getMaxTextLayer(page.id);
+				var textBoxes = $scope.current[page.id].textBoxes;
+				var maxTextLayer = Misc.getMaxProp(textBoxes, 'layer');
 				var box = {};
 				box.width =  $scope.pwidth / 2;
 				box.height = $scope.pheight / 12;
@@ -133,30 +136,5 @@ app.controller('PageController',
 				$scope.activate();
 				break;
 		}
-		function getMaxFrameLayer(pageId) {
-			var max = 10;
-			var frames = $scope.current[pageId].frames;
-			
-			for (var i = 0; i < frames.length; i++) {
-				var index = parseInt(frames[i].layer);
-				if (max < index) {
-					max = index;
-				}
-			}
-			
-			return max;
-		}
-		
-		function getMaxTextLayer(pageId) {
-			var max = 0;
-			var textBoxes = $scope.current[pageId].textBoxes;
-			for (var i = 0; i < textBoxes.length; i++) {
-				var index = parseInt(textBoxes[i].layer);
-				if (max < index) {
-					max = index;
-				}
-			}
-		}
-		
 	};
 }]);

@@ -684,4 +684,13 @@ app.service('Misc', function() {
 		}
 		return buffer;
 	};
+	
+	this.getMaxProp = function (objList, prop) {
+			var max = 0;
+			objList.forEach(function(obj) {
+				max = Math.max(max, parseInt(obj[prop])||0); //set prop to 0 if obj[prop] is undefined
+			});
+			return max;
+		}
+		
 });
