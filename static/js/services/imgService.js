@@ -737,19 +737,19 @@ app.service('Misc', ['$q', function($q) {
 	var syncTask = function(tasks) { //a function to chain promises
 		var deferred = $q.defer();
 		if (tasks.length ==1) {
-			tasks[0]['function'].apply(null, tasks[0]['args']).then(function() {
+			tasks[0]().then(function() {
 				deferred.resolve(null);
 			});
 		} else {
 			var lastTask = tasks.pop();
 			syncTask(tasks).then(function(){
-				lastTask['function'].apply(null, lastTask['args']).then(function() {
+				lastTask().then(function() {
 					deferred.resolve(null)
 				});
 			});
 		}
 		return deferred.promise;
-	}
+	};
 
 	this.syncTask = syncTask;
 }]);

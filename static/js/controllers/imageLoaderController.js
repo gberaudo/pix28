@@ -31,14 +31,18 @@ app.controller('ImageLoaderController',
 		evt.preventDefault();
 		$scope.loadingImg = true;
 		
+
 		for (var i = 0; i < files.length; i++) {
-			var task = {
-				function: handleFile,
-				args: [files[i]]
-			}
-			tasks.push(task);
+			tasks.push(
+				(function(thefile) {
+					return function() {
+						return handleFile(thefile);
+					};
+				})(files[i])
+			)
 		}
 		
+	
 		Misc.syncTask(tasks).then(function(){
 			$scope.loadingImg = false;
 		});
@@ -50,27 +54,27 @@ app.controller('ImageLoaderController',
 				reader.onload = function(e) {
 					deferred.resolve(e.target.result);
 				};
+				reader.onerror = function() {
+					deferred.reject(null);
+				};
 				reader.readAsDataURL(file);
 			} else {
-				deferred.resolve(null);
+				deferred.reject(null);
 			}
 			return deferred.promise;
 		};
 
 		function handleFile(file) {
-			var deferred = $q.defer();
-			readFile(file).then(function(dataURL) {
-				if (!!dataURL) {
-					resizeImg(dataURL).then(function(result) {
-						updateImg(result).then(function(result) {
-							showThumbnail(result);
-							deferred.resolve(null);
-						});
-					});
-				}
-				else deferred.resolve(null);
+			return readFile(file)
+			.then(function(dataURL) {
+				return resizeImg(dataURL);
+			})
+			.then(function(result) {
+				return updateImg(result);
+			})
+			.then(function(result) {
+				return showThumbnail(result);
 			});
-			return deferred.promise;
 		}
 		
 
