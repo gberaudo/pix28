@@ -693,8 +693,19 @@ app.service('Misc', function() {
 		return max;
 	};
 	
-	this.abs2perCent = function(rect, pwidth, pheight) {
-		return {
+	this.abs2perCent = function(rect, pwidth, pheight, target) {
+		var width = 100 * rect.width / pwidth;
+		var height = 100 * rect.height / pheight;
+		var left = 100 * rect.left / pwidth;
+		var top = 100 * rect.top / pheight;
+
+		if (!!target) {
+			target.width = width;
+			target.height = height;
+			target.left = left;
+			target.top = top;
+		}
+		else return {
 			width: 100 * rect.width / pwidth,
 			height: 100 * rect.height / pheight,
 			left: 100 * rect.left / pwidth,
@@ -703,13 +714,23 @@ app.service('Misc', function() {
 	};
 	
 	
-	this.perCent2Abs = function(rect, pwidth, pheight) {
-		return {
+	this.perCent2Abs = function(rect, pwidth, pheight, target) {
+		var width = Math.round(rect.width * pwidth / 100);
+		var height = Math.round(rect.height * pheight / 100);
+		var left = Math.round(rect.left * pwidth / 100);
+		var top = Math.round(rect.top * pwidth / 100);
+
+		if (!!target) {
+			target.width = width;
+			target.height = height;
+			target.left = left;
+			target.top = top;
+		}
+		else return {
 			width: Math.round(rect.width * pwidth / 100),
 			height: Math.round(rect.height * pheight / 100),
 			left: Math.round(rect.left * pwidth / 100),
 			top: Math.round(rect.top * pwidth / 100)
 		};
 	};
-	
 });
