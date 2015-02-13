@@ -686,11 +686,30 @@ app.service('Misc', function() {
 	};
 	
 	this.getMaxProp = function (objList, prop) {
-			var max = 0;
-			objList.forEach(function(obj) {
-				max = Math.max(max, parseInt(obj[prop])||0); //set prop to 0 if obj[prop] is undefined
-			});
-			return max;
-		}
-		
+		var max = 0;
+		objList.forEach(function(obj) {
+			max = Math.max(max, parseInt(obj[prop])||0); //set prop to 0 if obj[prop] is undefined
+		});
+		return max;
+	};
+	
+	this.abs2perCent = function(rect, pwidth, pheight) {
+		return {
+			width: 100 * rect.width / pwidth,
+			height: 100 * rect.height / pheight,
+			left: 100 * rect.left / pwidth,
+			top: 100 * rect.top / pheight
+		};
+	};
+	
+	
+	this.perCent2Abs = function(rect, pwidth, pheight) {
+		return {
+			width: Math.round(rect.width * pwidth / 100),
+			height: Math.round(rect.height * pheight / 100),
+			left: Math.round(rect.left * pwidth / 100),
+			top: Math.round(rect.top * pwidth / 100)
+		};
+	};
+	
 });
