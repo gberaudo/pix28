@@ -1,7 +1,7 @@
 app.controller('CanvasController',
     ['$scope', '$element', '$timeout', 'FrameObject', 
-	 'ImgService', 'Misc', 
-    function($scope, $element, $timeout, FrameObject, ImgService, Misc) {
+	 'ImgService', 'Misc', 'DOMService', 
+    function($scope, $element, $timeout, FrameObject, ImgService, Misc, DOMService) {
 	var display = $scope.frame.display,
 		canvas = $element[0].children[0],
 		ctx = canvas.getContext('2d'),
@@ -15,16 +15,10 @@ app.controller('CanvasController',
 	setFocus();
 	function canvasFocus() {
 		$scope.$parent.activate();
-		if (document.getElementsByClassName('cActive').length > 0) {
-			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
-			activeCanvas.removeClass('cActive');
-		}
-		if (document.getElementsByClassName('tActive').length > 0) {
-			var activeText = angular.element(document.getElementsByClassName('tActive')[0]);
-			activeText.removeClass('tActive');
-		}
+		DOMService.deactivate('cActive');
+		DOMService.deactivate('tActive');
+		DOMService.activate(canvas, 'cActive');
 		
-		angular.element(canvas).addClass('cActive');
 		$scope.current.onEditText = false;
 		$scope.current.onEditImage = true;
 		ImgService.drawAnchors(canvas);
@@ -572,7 +566,7 @@ app.controller('CanvasController',
 			) {
 			return;
 		} else {
-			angular.element(canvas).removeClass('cActive');
+			DOMService.deactivate('cActive');
 			$scope.current.onEditImage = false;
 			if (!!$scope.img.src) {
 				drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);

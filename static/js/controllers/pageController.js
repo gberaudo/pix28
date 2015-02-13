@@ -1,6 +1,6 @@
 app.controller('PageController',
-    ['$scope', '$timeout', '$element', 'FrameObject', 'Misc',
-    function($scope, $timeout, $element, FrameObject, Mics) {
+    ['$scope', '$timeout', '$element', 'FrameObject', 'Misc', 'DOMService',
+    function($scope, $timeout, $element, FrameObject, Mics, DOMService) {
 	
 	function initPage() {
 		var page = $element[0];
@@ -11,12 +11,11 @@ app.controller('PageController',
 	};
 	
 	initPage();
-	
+		
 	$scope.activate = function() {
-		var active = angular.element(document.getElementsByClassName('pActive')[0]);
-		active.removeClass('pActive');
 		var page = angular.element($element[0]);
-		page.addClass('pActive');
+		DOMService.deactivate('pActive');
+		DOMService.activate(page, 'pActive');
 		
 		markSelectedBGColor();
 		markSelectedPattern();
@@ -40,7 +39,7 @@ app.controller('PageController',
 	};
 	
 	$scope.deactivate = function() {
-		angular.element($element[0]).removeClass('pActive');
+		DOMService.deactivate(page, 'pActive');
 	};
 	
 	$scope.pageFocus = function(event) {

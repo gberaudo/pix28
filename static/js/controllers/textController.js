@@ -1,6 +1,6 @@
 app.controller('TextBoxController',
-    ['$scope', '$element', '$timeout', 'Init', 'Misc',
-    function($scope, $element, $timeout,Init, Misc) {
+    ['$scope', '$element', '$timeout', 'Init', 'Misc', 'DOMService',
+    function($scope, $element, $timeout,Init, Misc, DOMService) {
  	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
 	var TAcontainer = $element[0];
  	var previewText = document.getElementById('previewText');
@@ -10,15 +10,11 @@ app.controller('TextBoxController',
 		$scope.textArea.focus();
 		$scope.current.onEditImage = false;
 		$scope.current.onEditText = true;
-		if (document.getElementsByClassName('tActive').length != 0) {
-			 activeTextArea = angular.element(document.getElementsByClassName('tActive')[0]); 
-			activeTextArea.removeClass('tActive');
-		}
-		if (document.getElementsByClassName('cActive').length > 0) {
-			var activeCanvas = angular.element(document.getElementsByClassName('cActive')[0]);
-			activeCanvas.removeClass('cActive');
-		}
-		angular.element($scope.textArea).addClass('tActive');
+		
+		DOMService.deactivate('tActive');
+		DOMService.deactivate('cActive');
+		DOMService.activate($scope.textArea, 'tActive');
+	
 		$scope.current.font.color = $scope.textArea.style.color;
 // 		$scope.current.font.weight = style.fontWeight;
 // 		$scope.current.font.style = style.fontStyle;
