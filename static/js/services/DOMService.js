@@ -2,7 +2,8 @@ app.factory('DOMService', [function() {
 	return {
 		activate: activate,
 		deactivate: deactivate,
-		markSelectedItem: markSelectedItem
+		markSelectedItem: markSelectedItem,
+		getAbsPos: getAbsPos
 	}
 	
 	function activate(elem, className) {
@@ -24,6 +25,17 @@ app.factory('DOMService', [function() {
 		var newSelected = document.getElementsByName(name)[0];
 		if (!!newSelected) {
 			angular.element(newSelected).addClass('selected');
+		}
+	}
+	
+	function getAbsPos(el) {
+		var rect = el.getBoundingClientRect();
+		var docEl = document.documentElement;
+		var rectTop = rect.top + window.pageYOffset - docEl.clientTop;
+		var rectLeft = rect.left + window.pageXOffset - docEl.clientLeft;
+		return {
+			top: rectTop,
+			left: rectLeft
 		}
 	}
 	

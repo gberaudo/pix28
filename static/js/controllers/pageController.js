@@ -45,14 +45,12 @@ app.controller('PageController',
 	};
 	
 	function dropInPage(ev) {
+		var page = $element[0];
 		var data = ev.dataTransfer;
-		var name = data.getData('name'),
-			page = $element[0],
-			mouseX = ev.pageX - page.offsetLeft - 
-						page.parentNode.offsetLeft - page.parentNode.parentNode.offsetLeft,
-			mouseY = ev.pageY - page.offsetTop - 
-						page.parentNode.offsetTop - page.parentNode.parentNode.offsetTop;
-		
+		var name = data.getData('name');
+		var pagePos = DOMService.getAbsPos(page);
+		var mouseX = ev.pageX - pagePos.left;
+		var mouseY = ev.pageY - pagePos.top;
 		
 		switch (name) {
 			case 'frame':
