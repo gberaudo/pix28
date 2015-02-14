@@ -8,7 +8,7 @@ app.directive('albumLanguage', ['gettextCatalog', function(gettextCatalog) {
 		},
 		template: '<img title = "{{title}}"\
 			class = "clickable"\
-			src = "{{src}}"\
+			ng-src = "{{src}}"\
 			ng-click = "changeLanguage(lang)"/>',
 		link: function(scope) {
 			scope.changeLanguage = function(lang) {
