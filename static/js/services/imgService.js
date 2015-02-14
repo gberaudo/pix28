@@ -520,7 +520,9 @@ app.service('Misc', ['$q', function($q) {
 
 	var syncTask = function(tasks) { //a function to chain promises
 		var deferred = $q.defer();
-		if (tasks.length ==1) {
+		if (tasks.length == 0) {
+			deferred.resolve(null);
+		} else if (tasks.length == 1) {
 			$q.when(tasks[0]()).then(function() {
 				deferred.resolve(null);
 			});
