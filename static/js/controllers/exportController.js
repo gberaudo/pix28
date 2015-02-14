@@ -1,6 +1,6 @@
 app.controller('ExportController', 
-					['$scope', '$timeout', 'Misc', '$q', '$http', 'ImgService', 'exportService',
-					function($scope, $timeout, Misc, $q, $http, ImgService, exportService) {
+					['$scope', '$timeout', 'Misc', '$q', '$http', 'ImgService', 'exportService', 'drawService',
+					function($scope, $timeout, Misc, $q, $http, ImgService, exportService, drawService) {
 
 	$scope.communication = {};
 	$scope.generatePdf = function(resolution) {
@@ -56,7 +56,7 @@ app.controller('ExportController',
 			var deferred = $q.defer();
 			var pageCanvas = document.createElement('canvas');
 			
-			ImgService.drawPage(page, pageCanvas, $scope).then(function() {
+			drawService.drawPage(page, pageCanvas, $scope).then(function() {
 				var image = pageCanvas.toDataURL('image/jpeg');
 				deferred.resolve(image);
 			});

@@ -472,8 +472,8 @@ app.controller('AlbumController',
 
 }]);
 
-app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
-					function($scope, $q, $timeout, ImgService) {
+app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', 'drawService',
+					function($scope, $q, $timeout, ImgService, drawService) {
 	
 	$scope.previewPage = function(num) {
 		var maxHeight = Math.floor(0.9 * window.innerHeight);
@@ -638,7 +638,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 		var content = $scope.album.content;
 		if (pageNum == 0) {
 			var canvas = document.createElement('canvas');
-			ImgService.drawPage(content[0], canvas, $scope)
+			drawService.drawPage(content[0], canvas, $scope)
 			.then(function() {
 				var image = canvas.toDataURL('image/jpeg');
 				var blob = dataUrlToBlob(image);
@@ -646,7 +646,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 			});
 		} else if (pageNum == content.length) {
 			var canvas = document.createElement('canvas');
-			ImgService.drawPage(content[content.length-1], canvas, $scope)
+			drawService.drawPage(content[content.length-1], canvas, $scope)
 			.then(function() {
 				var image = canvas.toDataURL('image/jpeg');
 				var blob = dataUrlToBlob(image);
@@ -656,9 +656,9 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 			var canvas1 = document.createElement('canvas'),
 				canvas2 = document.createElement('canvas');
 			
-			ImgService.drawPage(content[pageNum-1], canvas1, $scope)
+			drawService.drawPage(content[pageNum-1], canvas1, $scope)
 			.then(function() {
-				ImgService.drawPage(content[pageNum], canvas2, $scope)
+				drawService.drawPage(content[pageNum], canvas2, $scope)
 				.then(function() {
 					var canvas = document.createElement('canvas'),
 						ctx = canvas.getContext('2d');
