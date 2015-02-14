@@ -6,7 +6,6 @@ app.service('drawService', ['$q', 'Misc',
 		drawBackground();
 		return drawPattern()
 		.then(function() {
-			console.log('pattern drawn');
 			return drawObjects();
 		});
 
@@ -58,7 +57,6 @@ app.service('drawService', ['$q', 'Misc',
 			var objList = angular.copy(page.frames);
 			objList = objList.concat(angular.copy(page.textBoxes));
 			Misc.sortObjList(objList, 'layer');
-
 			var tasks = [];
 			var task;
 			objList.forEach(function(obj) {
