@@ -5,10 +5,8 @@ app.controller('ImageLoaderController',
 	function getUsedMap() {
 		var result = {};
 		var content = $scope.album.content;
-		for (var j = 0; j < content.length; j++) {
-			var page = content[j];
-			for (var i = 0; i < page.frames.length; i++) {
-				var frame = page.frames[i];
+		content.forEach(function(page) {
+			page.frames.forEach(function(frame) {
 				if (!!frame.image.DbId) {
 					var DbId = frame.image.DbId;
 					if (DbId in result) {
@@ -17,8 +15,8 @@ app.controller('ImageLoaderController',
 						result[DbId] = 1;
 					}
 				}
-			}
-		}
+			});
+		});
 		return result;
 	}
 	
