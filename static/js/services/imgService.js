@@ -737,13 +737,13 @@ app.service('Misc', ['$q', function($q) {
 	var syncTask = function(tasks) { //a function to chain promises
 		var deferred = $q.defer();
 		if (tasks.length ==1) {
-			tasks[0]().then(function() {
+			$q.when(tasks[0]()).then(function() {
 				deferred.resolve(null);
 			});
 		} else {
 			var lastTask = tasks.pop();
 			syncTask(tasks).then(function(){
-				lastTask().then(function() {
+				$q.when(lastTask()).then(function() {
 					deferred.resolve(null)
 				});
 			});
