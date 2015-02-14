@@ -204,20 +204,32 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		drawImage(canvas, img, display, image.ratio, scope.pageRatio );
 		drawAnchors(canvas);
 	};
-	
+
 	this.drawPage = function(page, canvas, scope) {
 		var ctx = canvas.getContext('2d');
-		var deferred = $q.defer();
-		if (scope.pwidth > scope.pheight) {
-			canvas.width = 800;
-			canvas.height = canvas.width * scope.pheight/scope.pwidth;
-		} else {
-			canvas.height = 800;
-			canvas.width = canvas.height * scope.pwidth/scope.pheight;
+		setCanvasDim();
+		drawBackground();
+		return drawPattern()
+		.then(function() {
+			console.log('pattern drawn');
+			return drawObjects();
+		});
+
+		function setCanvasDim() {
+			if (scope.pwidth > scope.pheight) {
+				canvas.width = 800;
+				canvas.height = canvas.width * scope.pheight/scope.pwidth;
+			} else {
+				canvas.height = 800;
+				canvas.width = canvas.height * scope.pwidth/scope.pheight;
+			}
 		}
-		ctx.fillStyle = page.background || '#FFFFFF';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		
+
+		function drawBackground() {
+			ctx.fillStyle = page.background || '#FFFFFF';
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+		}
+
 		function drawPattern() {
 			var deferred1 = $q.defer();
 			if (!!page.patternURL) {
@@ -245,51 +257,36 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			}
 			return deferred1.promise;
 		}
-		
-		drawPattern().then(function() {
-			drawObjects() ;
-		});
-		
+
+
 		function drawObjects() {
 			var objList = angular.copy(page.frames);
 			objList = objList.concat(angular.copy(page.textBoxes));
-			Misc.sortObjList(objList, 'layer');	
-			if (objList.length > 0) {
-				var n = 0;
-				
-				function drawNext() {
-					var obj = objList[n];
-					
-					function checkEnd(m) {
-						if (m < objList.length) {
-							drawNext();
-						} else {
-							drawWatermark();
-							deferred.resolve(null);
-						}
-					}
-					n++;
-					if ('text' in obj) {
-						drawText(obj);
-						checkEnd(n);
-					} else if ('image' in obj) {
-						drawImage(obj).then(function() {
-							checkEnd(n);
-						});
-					} else {
-						checkEnd(n);
-					}
+			Misc.sortObjList(objList, 'layer');
+
+			var tasks = [];
+			objList.forEach(function(obj) {
+				var task;
+				if ('text' in obj) {
+					task = (function(theObj) {
+						return function() {
+							return drawText(theObj);
+						};
+					})(obj);
 				}
-				drawNext();
-			} else {
-				drawWatermark();
-				deferred.resolve(null);
-			}
-			
+				if ('image' in obj) {
+					task = (function(theObj) {
+						return function() {
+							return drawImage(theObj);
+						};
+					})(obj);
+				}
+				tasks.push(task);
+			});
+			return Misc.syncTask(tasks);
 		}
-		
-		return deferred.promise;
-		
+
+
 		function drawImage(frame) {
 			var deferred2 = $q.defer();
 			if (!!frame.image.src) {
