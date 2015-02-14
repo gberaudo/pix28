@@ -22,14 +22,7 @@ app.controller('ExportController',
 		$scope.showMenu = false;
 		$scope.processingJpg = true;
 		makeJpg(album).then(function(res) {
-			var zip = new JSZip();
-			var jpgZip = zip.folder('images');
-			for (num in res) {
-				var fileName = $scope.album.title + '_p' + (num + 1) + '.jpg ';
-				var b64content = res[num].replace('data:image/jpeg;base64,', '');
-				jpgZip.file(fileName, b64content, {base64: true});
-			}
-			var content = jpgZip.generate({type: 'blob'});
+			var content = zipFiles(res);
 			saveAs(content, "AlbumJPEG.zip");
 			$scope.processingJpg = false;
 			$scope.showJpgLink = true;
@@ -37,31 +30,6 @@ app.controller('ExportController',
 				saveAs(content, 'AlbumJPEG.zip');
 			};
 		});
-		
-		function makeJpg(album) {
-			var deferred = $q.defer(),
-					promises = [];
-			
-			for (var i = 0; i < album.length; i++) {
-				promises.push(drawPage(album[i]));
-			}
-			$q.all(promises).then(function(res) {
-				deferred.resolve(res);
-			});
-			return deferred.promise;
-		}
-		
-		function drawPage(page) {
-			
-			var deferred = $q.defer();
-			var pageCanvas = document.createElement('canvas');
-			
-			drawService.drawPage(page, pageCanvas, $scope).then(function() {
-				var image = pageCanvas.toDataURL('image/jpeg');
-				deferred.resolve(image);
-			});
-			return deferred.promise;
-		}
 	};
 	
 	$scope.blurbHandle = function() {
@@ -74,7 +42,38 @@ app.controller('ExportController',
 		function getBackWidth(coverType, paperType, pageNum) {
 			return Math.round(5*pageNum/20);
 		}
-		
 	};
-	
+
+	function zipFiles(res) {
+		var zip = new JSZip();
+		var jpgZip = zip.folder('images');
+		for (num in res) {
+			var fileName = $scope.album.title + '_p' + (num + 1) + '.jpg ';
+			var b64content = res[num].replace('data:image/jpeg;base64,', '');
+			jpgZip.file(fileName, b64content, {base64: true});
+		}
+		return jpgZip.generate({type: 'blob'});
+	}
+
+	function makeJpg(album) {
+		var deferred = $q.defer();
+		var promises = [];
+		album.forEach(function(page) {
+			promises.push(drawPage(page));
+		});
+		$q.all(promises).then(function(res) {
+			deferred.resolve(res);
+		});
+		return deferred.promise;
+	}
+
+	function drawPage(page) {
+		var deferred = $q.defer();
+		var pageCanvas = document.createElement('canvas');
+		drawService.drawPage(page, pageCanvas, $scope).then(function() {
+			var image = pageCanvas.toDataURL('image/jpeg');
+			deferred.resolve(image);
+		});
+		return deferred.promise;
+	}
 }]);
