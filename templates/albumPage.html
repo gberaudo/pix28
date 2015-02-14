@@ -10,12 +10,14 @@
 		ng-mousemove = 'mouseMove(\$event)'
 		ng-click = 'pageFocus(\$event)'
 		ng-focus = 'pageFocus(\$event)'
-		style = 'width: {{pageWidth}}; height: {{pageHeight}}; 
-			top: {{pageTop}};
-			background-color: {{current[page].background}};
-			background-image: url({{current[page].patternURL}});
-			background-size: {{current[page].patternSize}}'
-			>
+		ng-style = "{
+			width: pageWidth,
+		       	height: pageHeight, 
+			top: pageTop,
+			'background-color': current[page].background,
+			'background-image': 'url(' + current[page].patternURL + ')',
+			'background-size': current[page].patternSize
+			}">
 	
 	<div ng-repeat= 'frame in current[page].frames' 
 		ng-controller='CanvasController'
