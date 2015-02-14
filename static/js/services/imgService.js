@@ -324,7 +324,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			}
 			return deferred2.promise;
 		}
-	
+
 		function drawText(textBox) {
 			if (!!textBox.text) {
 				var left = textBox.box.left * canvas.width / 100,
@@ -350,8 +350,8 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 							width, lineHeight, textBox.align);
 				ctx.restore();
 			}
-			
-			
+
+
 			function wrapText(context, text, x, y, maxWidth, lineHeight) {
 				var paragraphs = text.split('\n');
 				for (var j = 0; j< paragraphs.length; j++) {
@@ -380,7 +380,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 					fillTextAlign(line, lineWidth, x, y, textBox.align);
 					y += lineHeight;
 				}
-				
+
 				function fillTextAlign(line, lineWidth, x, y, align) {
 					var startX;
 					switch (align) {
@@ -398,7 +398,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 				}
 			}
 		}
-		
+
 		function drawWatermark() {
 			ctx.save();
 			ctx.globalAlpha=.20;
@@ -411,13 +411,12 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 			ctx.fillText('LibreAlbum', 33, 53);
 			ctx.restore();
 		};
-		
 	};
-		
-		
-	
-	
-	
+
+
+
+
+
 	function getRefLines(scope, pageId) {
 		var boxes = document.getElementsByClassName(pageId + 'box');
 				

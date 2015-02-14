@@ -90,8 +90,6 @@ app.service('Init', ['gettextCatalog', function(gettextCatalog) {
 // 		textArea.style.fontWeight = textBox.font.weight;
 // 		textArea.style.fontStyle = textBox.font.style;
 		var size = textBox.font.size || 24;
-		console.log('size', size);
-		console.log('layer', textBox.layer);
 		textArea.style.fontSize = (size * $scope.pwidth/$scope.pdfWidth) + 'px';
 		textArea.style.textAlign = textBox.align;
 		if (!!textBox.angle) {

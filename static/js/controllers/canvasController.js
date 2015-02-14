@@ -10,10 +10,26 @@ app.controller('CanvasController',
 		pheight = $scope.pheight,
 		drawImage = ImgService.drawImage;
 	var pageId = canvas.parentNode.parentNode.id;
+	var drag = {
+		center: false,
+		TL: false,
+		TR: false,
+		BL: false,
+		BR: false,
+		L: false,
+		R: false,
+		T: false,
+		B: false,
+	};
+
+	var mousePosWatch = function() {};
+	
+	
 	initCanvas();
 	
 	setFocus();
 	function canvasFocus() {
+		var border = 'BD_' + $scope.frame.border.color;
 		$scope.$parent.activate();
 		DOMService.deactivate('cActive');
 		DOMService.deactivate('tActive');
@@ -26,21 +42,12 @@ app.controller('CanvasController',
 		$scope.current.borderColor = $scope.frame.border.color || '';
 		$scope.current.borderThickness = $scope.frame.border.thickness || 0;
 		
-		markSelectedBorder();
-		function markSelectedBorder() {
-			if (document.getElementsByClassName('border selected').length > 0) {
-				angular.element(document.getElementsByClassName('border selected')[0])
-				.removeClass('selected');
-			}
-			angular.element(document.getElementsByClassName(
-				'border ' + 'BD_' + $scope.frame.border.color)).addClass('selected');
-		}
+		DOMService.markSelectedItem('border', border);
 	};
 	
 	function setFocus() {
 		if ($scope.current.datumWithFocus === $scope.frame) {
 			canvasFocus();
-			ImgService.drawAnchors(canvas);
 			$scope.current.datumWithFocus = undefined;
 		}
 	}
@@ -79,7 +86,7 @@ app.controller('CanvasController',
 			}
 			
 		} else {
-				ImgService.resetFrame(canvas);
+			ImgService.resetFrame(canvas);
 		}
 	};
 
@@ -109,19 +116,6 @@ app.controller('CanvasController',
 		ImgService.drawAnchors(canvas);
 	};
 
-	var drag = {
-		center: false,
-		TL: false,
-		TR: false,
-		BL: false,
-		BR: false,
-		L: false,
-		R: false,
-		T: false,
-		B: false,
-	};
-
-	var mousePosWatch = function() {};
 
 	$scope.mouseDown = function(evt) {
 		$scope.current.mouseIsUp = false;
@@ -576,18 +570,6 @@ app.controller('CanvasController',
 			document.removeEventListener('mousedown', canvasBlurHandle, true);
 		}
 	}
-/*	
-	$scope.dragCanvas = function(event) {
-		
-		event.dataTransfer.effectAllowed = "copy";
-		event.dataTransfer.setData('name', 'exchange');
-// 		var img = document.createElement('img');
-// 		img.src = $scope.img.src;
-// 		img.style.width = '100px';
-// 		img.style.height = '100px';
-		event.preventDefault();
-	};
-	*/
 }]);
 
 

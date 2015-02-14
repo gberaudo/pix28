@@ -1,6 +1,7 @@
 app.controller('ImageController',
     ['$scope', 'ImgService', '$interval', '$timeout', 'Misc',
     function($scope, ImgService, $interval, $timeout, Misc) {
+
 	$scope.zoomImage = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
@@ -138,7 +139,4 @@ app.controller('ImageController',
 				break;
 		}
 	};
-	
-
-	
 }]);
