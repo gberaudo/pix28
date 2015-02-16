@@ -29,10 +29,6 @@ app.controller('PageController',
 		$scope.activate();
 	};
 
-	$scope.mouseMove = function(evt) {
-		$scope.current.mousePos = {X: evt.pageX, Y: evt.pageY};
-	};
-	
 	$scope.allowDropInPage = function(ev) {
 		ev.preventDefault();
 	};

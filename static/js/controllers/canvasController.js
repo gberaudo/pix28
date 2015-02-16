@@ -10,21 +10,6 @@ app.controller('CanvasController',
 		pheight = $scope.pheight,
 		drawImage = ImgService.drawImage;
 	var pageId = canvas.parentNode.parentNode.id;
-	var drag = {
-		center: false,
-		TL: false,
-		TR: false,
-		BL: false,
-		BR: false,
-		L: false,
-		R: false,
-		T: false,
-		B: false,
-	};
-
-	var mousePosWatch = function() {};
-	
-	
 	initCanvas();
 	
 	setFocus();
@@ -118,64 +103,75 @@ app.controller('CanvasController',
 
 
 	$scope.mouseDown = function(evt) {
-		$scope.current.mouseIsUp = false;
+		var drag = {center: false, TL: false, TR: false, BL: false,
+			BR: false, L: false, R: false, T: false, B: false};
 		var mouseRtCanvas = {
 			X: evt.layerX,
 			Y: evt.layerY
 		};
 		var refs = ImgService.getRefLines($scope, pageId);
+		var mousePosWatch;
 		
-		
-		Misc.setCursor(mouseRtCanvas, $scope.canvasZone, $scope.current);
 		$scope.dragimage = true;
+		$scope.mousePos = {X: evt.pageX, Y: evt.pageY};
+		mousePosWatch = $scope.$watch('mousePos', function(newValue, oldValue) {
+			var offset = {
+				X: newValue.X - oldValue.X,
+				Y: newValue.Y - oldValue.Y
+			};
+		
+			for (anchor in drag) {
+				if (drag[anchor]){
+					var offsetCopy = angular.copy(offset);
+					var anchorCopy = angular.copy(anchor);
+
+					window.requestAnimationFrame(function() {
+						redimension(canvas, offsetCopy, anchorCopy, refs);
+						if ($scope.frame.angle % 180 == 0) {
+							ImgService.showRefLines(canvas, refs, $scope);
+						}
+						if (!!$scope.img.src) {
+							drawImage(canvas, $scope.img, display,
+										$scope.frame.image.ratio, $scope.pageRatio );
+						} else {
+							ImgService.resetFrame(canvas);
+						}
+						ImgService.drawAnchors(canvas);
+						Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
+						updateFrame();
+					});
+					break;
+				}
+			}
+
+			if ($scope.dragimage) {
+				moveImageInCanvas(offset);
+			}
+		});
+		document.addEventListener('mousemove', mouseMoveHandle, true);
+		document.addEventListener('mouseup', mouseUpHandle, true);
+		
+		function mouseMoveHandle(evt) {
+			$scope.mousePos= {X: evt.pageX, Y: evt.pageY};
+		}
+		
+		function mouseUpHandle(ev) {
+			mousePosWatch();
+			for (anchor in drag) {
+				drag[anchor] = false;
+			}
+			$scope.dragimage = false;
+			document.removeEventListener('mouseup', mouseUpHandle, true);
+			document.removeEventListener('mousemove', mouseMoveHandle, true);
+		}
+		
 		for (anchor in drag) {
 			if (Misc.inRect(mouseRtCanvas, $scope.canvasZone[anchor])) {
 				drag[anchor] = true;
 				$scope.dragimage = false;
 				break;
 			} 
-			
 		}
-		
-		mousePosWatch = $scope.$watch('current.mousePos', function(newValue, oldValue) {
-			if (!$scope.current.mouseIsUp) {
-				var offset = {
-					X: newValue.X - oldValue.X,
-					Y: newValue.Y - oldValue.Y
-				};
-				
-				for (anchor in drag) {
-					if (drag[anchor]){
-						var offsetCopy = angular.copy(offset);
-						var anchorCopy = angular.copy(anchor);
-						
-						window.requestAnimationFrame(function() {
-							redimension(canvas, offsetCopy, anchorCopy, refs);
-							if ($scope.frame.angle % 180 == 0) {
-								ImgService.showRefLines(canvas, refs, $scope);
-							}
-							if (!!$scope.img.src) {
-								drawImage(canvas, $scope.img, display, 
-											$scope.frame.image.ratio, $scope.pageRatio );
-								ImgService.drawAnchors(canvas);
-							}
-							else {
-								ImgService.resetFrame(canvas);
-								ImgService.drawAnchors(canvas);
-							}
-							
-							Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
-							updateFrame();
-						});
-						break;
-					}
-				}
-				
-				if ($scope.dragimage) {
- 						moveImageInCanvas(offset);
-				}
-			}
-		});
 	};
 	
 	$scope.mouseMove = function(evt) {
@@ -185,18 +181,6 @@ app.controller('CanvasController',
 		};
 		Misc.setCursor(mouseRtCanvas, $scope.canvasZone, $scope.current);
 	};
-
-	$scope.$watch('current.mouseIsUp', function() {
-		if ($scope.current.mouseIsUp) {
-			for (anchor in drag) {
-				drag[anchor] = false;
-			}
-			$scope.dragimage = false;
-			mousePosWatch();
-		} 
-		
-	});
-
 
 
 	function moveImageInCanvas(offset) {

@@ -37,9 +37,4 @@ app.controller('SiteController', ['$scope', 'gettextCatalog', 'DBServices',
 			$scope.current.showAlbums = true;
 		}
 	};
-
-	$scope.mouseUp = function(evt) {
-		$scope.current.mouseIsUp = true;
-		$scope.current.cursor = 'auto';
-	};
 }]);
