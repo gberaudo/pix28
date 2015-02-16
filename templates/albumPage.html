@@ -19,10 +19,9 @@
 			'background-size': current[page].patternSize
 			}">
 	
-	<div ng-repeat= 'frame in current[page].frames' 
-		ng-controller='CanvasController'
-		ng-style='{cursor: current.cursor}'>
-		<canvas tabindex = '0' 
+		<canvas ng-repeat= 'frame in current[page].frames'
+					ng-controller='CanvasController'
+					tabindex = '0'
 					class = 'frame inPage {{page + "box"}}'
 					title = '{{"Drag a corner or an edge to redimension the frame."| translate}}'
 					ondrop = 'angular.element(this).scope().dropInCanvas(event)' 
@@ -32,7 +31,6 @@
 					ng-keydown = 'keyDown(\$event)'
 					ng-click = 'canvasFocus()'
 					ng-blur = 'canvasBlur(\$event)'> </canvas>
-	</div>
 	
 	<div ng-repeat = 'textBox in current[page].textBoxes' 
 			ng-controller = 'TextBoxController'

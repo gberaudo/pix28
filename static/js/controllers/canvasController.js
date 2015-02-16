@@ -9,7 +9,7 @@ app.controller('CanvasController',
 		pwidth = $scope.pwidth,
 		pheight = $scope.pheight,
 		drawImage = ImgService.drawImage;
-	var pageId = canvas.parentNode.parentNode.id;
+	var pageId = canvas.parentNode.id;
 	initCanvas();
 	
 	setFocus();
