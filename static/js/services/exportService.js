@@ -1,7 +1,11 @@
 app.factory('exportService', ['$q', 'fontService', 'Misc',
 				function($q, fontService, Misc) {
+	return {
+		exportPdf: exportPdf
+	}
+	
 	function exportPdf(albumJSON, pdfHeight, pdfWidth, ratio, resolution, communication) {
-		var coeff = resolution/72.0;
+// 		var coeff = resolution/72.0;
 		var deferred = $q.defer();
 		var doc = new PDFDocument(
 			{
@@ -152,122 +156,129 @@ app.factory('exportService', ['$q', 'fontService', 'Misc',
 		}
 
 		function drawImage(frame) {
-			var  deferred1 = $q.defer();
-			if (!!frame.image.DbId) {
-				var id = frame.image.DbId;
-				var rq = indexedDB.open('ImagesDB',1);
-
-				rq.onsuccess = function() {
-					var db = rq.result;
-					var trans = db.transaction(['Images']);
-					var imageStore = trans.objectStore('Images');
-						getRq = imageStore.get(id);
-
-					getRq.onsuccess = function(event) {
-						var img = event.target.result;
-						var display = frame.display,
-							r = img.ratio,
-							sx = r * display.sx,
-							sy = r * display.sy,
-							sw = r * display.sw,
-							sh = r * display.sh;
-
-						//crop image on phantom canvas
-						var canvas = document.createElement('canvas'),
-							ctx = canvas.getContext('2d'),
-							realWidth = pdfWidth * frame.canvas.width / 100;
-						if (sw < coeff * realWidth) {
-							scale = 1;
-						} else {
-							scale = coeff * realWidth / sw;
-						}
-						var imgObj = new Image();
-						imgObj.onload = function() {
-							canvas.width = scale * sw;
-							canvas.height = scale * sh;
-							var rsx, rsy, rsw, rsh;
-							switch (img.orientation) {
-								case 6:
-									rsx = sy;
-									rsy = Math.max(img.rWidth - sw - sx, 0);
-									rsw = Math.min(sh, img.rHeight -sy);
-									rsh = Math.min(sw, img.rWidth - rsy);
-									ctx.translate(canvas.width, 0);
-									ctx.rotate(Math.PI/2);
-									ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
-														0, 0, canvas.height, canvas.width);
-									break;
-								case 8:
-									rsx = Math.max(img.rHeight - sh -sy, 0);
-									rsy = sx;
-									rsw = Math.min(sh, img.rHeight - rsx);
-									rsh = Math.min(sw, img.rWidth - sx);
-									ctx.translate(0, canvas.height);
-									ctx.rotate(-Math.PI/2);
-									ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
-													0, 0, canvas.height, canvas.width);
-									break;
-								case 3:
-									rsx = Math.max(img.rWidth - sw -sx, 0);
-									rsy = Math.max(img.rHeight - sh - sy, 0);
-									rsw = Math.min(sw, img.rWidth - rsx);
-									rsh = Math.min(sh, img.rHeight - rsy);
-									ctx.translate(canvas.width, canvas.height);
-									ctx.rotate(Math.PI);
-									ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
-													0, 0, canvas.width, canvas.height);
-									break;
-								default:
-									ctx.drawImage(imgObj, sx, sy, sw, sh,
-												0, 0, canvas.width, canvas.height);
-									break;
-							}
-							var outputImg = canvas.toDataURL('image/jpeg', 1.0);
-							var width = frame.canvas.width * pdfWidth / 100,
-								height = frame.canvas.height * pdfHeight / 100,
-								left = frame.canvas.left * pdfWidth /100,
-								top = frame.canvas.top * pdfHeight /100
-							var centerX = left + width / 2;
-							var centerY =  top + height / 2;
-							doc.save();
-							doc.rotate(frame.angle, {origin : [centerX, centerY]});
-
-							if (frame.border.color && frame.border.thickness) {
-								var thickness = frame.border.thickness * ratio;
-								doc.rect( left - thickness/2, top - thickness/2,
-											width + thickness, height + thickness)
-									.lineWidth(thickness)
-									.stroke(frame.border.color);
-							}
-							doc.image(outputImg, left, top,
-											{
-												width: width,
-												height: height
-											});
-							doc.restore();
-							deferred1.resolve(null);
-						}
-						imgObj.src = img.src;
-					};
-					getRq.onerror = function() {
-							console.log('get image error', id);
-							deferred1.resolve(null);
-					};
-				};
-				rq.onerror = function() {
-					console.log('cannot open DB');
-					deferred1.resolve(null);
-				};
+			var  deferred = $q.defer();
+			var id = frame.image.DbId;
+			if (id) {
+				getDBImage(id)
+				.then(function(img) {
+					return processImage(img, frame, pdfWidth, pdfHeight, resolution);
+				})
+				.then(function(processedImg) {
+					putImage(processedImg, frame);
+					deferred.resolve(null);
+				});
+			} else {
+				deferred.resolve(null);
 			}
-			else {
-				deferred1.resolve(null);
-			}
-			return deferred1.promise;
+			return deferred.promise;
 		}
-	
-	}
-	
-	return {
-		exportPdf: exportPdf
+
+		function getDBImage(id) {
+			var deferred = $q.defer();
+			var rq = indexedDB.open('ImagesDB',1);
+			rq.onsuccess = function() {
+				var db = rq.result;
+				var trans = db.transaction(['Images']);
+				var imageStore = trans.objectStore('Images');
+				var getRq = imageStore.get(id);
+				getRq.onsuccess = function(event) {
+					deferred.resolve(event.target.result);
+				};
+				getRq.onerror = function() {
+					deferred.resolve(null);
+				};
+			};
+			rq.onerror = function() {
+				deferred.resolve(null);
+			};
+			return deferred.promise;
+		}
+
+		function processImage(img, frame, pdfWidth, pdfHeight, resolution) {
+			var deferred = $q.defer();
+			var coeff = resolution / 72;
+			var display = frame.display;
+			var r = img.ratio;
+			var sx = r * display.sx;
+			var sy = r * display.sy;
+			var sw = r * display.sw;
+			var sh = r * display.sh;
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+			var realWidth = pdfWidth * frame.canvas.width / 100;
+
+			if (sw < coeff * realWidth) {
+				scale = 1;
+			} else {
+				scale = coeff * realWidth / sw;
+			}
+
+			canvas.width = scale * sw;
+			canvas.height = scale * sh;
+			var imgObj = new Image();
+			imgObj.onload = function() {
+				var rsx, rsy, rsw, rsh;
+				switch (img.orientation) {
+					case 6:
+						rsx = sy;
+						rsy = Math.max(img.rWidth - sw - sx, 0);
+						rsw = Math.min(sh, img.rHeight -sy);
+						rsh = Math.min(sw, img.rWidth - rsy);
+						ctx.translate(canvas.width, 0);
+						ctx.rotate(Math.PI/2);
+						ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
+											0, 0, canvas.height, canvas.width);
+						break;
+					case 8:
+						rsx = Math.max(img.rHeight - sh -sy, 0);
+						rsy = sx;
+						rsw = Math.min(sh, img.rHeight - rsx);
+						rsh = Math.min(sw, img.rWidth - sx);
+						ctx.translate(0, canvas.height);
+						ctx.rotate(-Math.PI/2);
+						ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
+										0, 0, canvas.height, canvas.width);
+						break;
+					case 3:
+						rsx = Math.max(img.rWidth - sw -sx, 0);
+						rsy = Math.max(img.rHeight - sh - sy, 0);
+						rsw = Math.min(sw, img.rWidth - rsx);
+						rsh = Math.min(sh, img.rHeight - rsy);
+						ctx.translate(canvas.width, canvas.height);
+						ctx.rotate(Math.PI);
+						ctx.drawImage(imgObj, rsx, rsy, rsw, rsh,
+										0, 0, canvas.width, canvas.height);
+						break;
+					default:
+						ctx.drawImage(imgObj, sx, sy, sw, sh,
+									0, 0, canvas.width, canvas.height);
+						break;
+				}
+				deferred.resolve(canvas.toDataURL('image/jpeg', 1.0));
+			};
+			imgObj.src = img.src;
+			return deferred.promise;
+		}
+
+		function putImage(img, frame) {
+			var width = frame.canvas.width * pdfWidth / 100,
+				height = frame.canvas.height * pdfHeight / 100,
+				left = frame.canvas.left * pdfWidth /100,
+				top = frame.canvas.top * pdfHeight /100
+			var centerX = left + width / 2;
+			var centerY =  top + height / 2;
+			doc.save();
+			doc.rotate(frame.angle, {origin : [centerX, centerY]});
+
+			if (frame.border.color && frame.border.thickness) {
+				var thickness = frame.border.thickness * ratio;
+				doc.rect( left - thickness/2, top - thickness/2,
+							width + thickness, height + thickness)
+					.lineWidth(thickness)
+					.stroke(frame.border.color);
+			}
+			doc.image(img, left, top, {width: width, height: height});
+			doc.restore();
+		}
 	}
 }]);
