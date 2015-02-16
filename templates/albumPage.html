@@ -30,7 +30,11 @@
 					ng-mousemove = 'mouseMove(\$event)'
 					ng-keydown = 'keyDown(\$event)'
 					ng-click = 'canvasFocus()'
-					ng-blur = 'canvasBlur(\$event)'> </canvas>
+					ng-blur = 'canvasBlur(\$event)'
+					ng-style='{cursor: current.cursor,
+						transform: "rotate(" + frame.angle + "deg)",
+						zIndex: frame.layer,
+						}'> </canvas>
 	
 	<div ng-repeat = 'textBox in current[page].textBoxes' 
 			ng-controller = 'TextBoxController'

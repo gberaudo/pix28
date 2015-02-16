@@ -113,11 +113,9 @@ app.controller('ImageController',
 		switch (para) {
 			case 'right':
 				scope.frame.angle += angle; 
-				canvas.style.transform = 'rotate(' + scope.frame.angle + 'deg)';
 				break;
 			case 'left':
 				scope.frame.angle -= angle; 
-				canvas.style.transform = 'rotate(' + scope.frame.angle + 'deg)';
 				break;
 		}
 	}
@@ -125,16 +123,13 @@ app.controller('ImageController',
 	$scope.level = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0];
 		var scope = angular.element(canvas).scope();
-		var index = parseInt(canvas.style.zIndex)
 		switch (para) {
 			case 'up':
-				canvas.style.zIndex = index + 1;
-				scope.frame.layer = index + 1;
+				scope.frame.layer += 1;
 				break;
 			case 'down':
-				if (index > 0) {
-				canvas.style.zIndex = index - 1;
-				scope.frame.layer = index - 1;
+				if (scope.frame.layer > 0) {
+				scope.frame.layer -= 1;
 				}
 				break;
 		}

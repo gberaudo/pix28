@@ -2,30 +2,34 @@ app.controller('CanvasController',
     ['$scope', '$element', '$timeout', 'FrameObject', 
 	 'ImgService', 'Misc', 'DOMService', 
     function($scope, $element, $timeout, FrameObject, ImgService, Misc, DOMService) {
-	var display = $scope.frame.display,
-		canvas = $element[0].children[0],
-		ctx = canvas.getContext('2d'),
-		frame = $scope.frame,
-		pwidth = $scope.pwidth,
-		pheight = $scope.pheight,
-		drawImage = ImgService.drawImage;
+	var display = $scope.frame.display;
+	var frame = $scope.frame;
+	var pwidth = $scope.pwidth;
+	var pheight = $scope.pheight;
+	
+
+	var drawImage = ImgService.drawImage;
+	
+	var canvas = $element[0];
+	var ctx = canvas.getContext('2d');
 	var pageId = canvas.parentNode.id;
 	initCanvas();
 	
 	setFocus();
 	function canvasFocus() {
-		var border = 'BD_' + $scope.frame.border.color;
+		var border = 'BD_' + frame.border.color;
 		$scope.$parent.activate();
 		DOMService.deactivate('cActive');
 		DOMService.deactivate('tActive');
 		DOMService.activate(canvas, 'cActive');
+		ImgService.drawAnchors(canvas);
 		
 		$scope.current.onEditText = false;
 		$scope.current.onEditImage = true;
-		ImgService.drawAnchors(canvas);
+		
 		document.addEventListener('mousedown', canvasBlurHandle, true);
-		$scope.current.borderColor = $scope.frame.border.color || '';
-		$scope.current.borderThickness = $scope.frame.border.thickness || 0;
+		$scope.current.borderColor = frame.border.color || '';
+		$scope.current.borderThickness = frame.border.thickness || 0;
 		
 		DOMService.markSelectedItem('border', border);
 	};
@@ -37,48 +41,36 @@ app.controller('CanvasController',
 		}
 	}
 	function initCanvas(){
-		canvas.width = Math.floor(frame.canvas.width * pwidth / 100);
-		canvas.height = Math.floor(frame.canvas.height * pheight / 100);
-		canvas.style.left = Math.floor(frame.canvas.left * pwidth / 100) + 'px';
-		canvas.style.top = Math.floor(frame.canvas.top * pheight / 100) + 'px';
+		$scope.rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
+		canvas.width = $scope.rcanvas.width;
+		canvas.height = $scope.rcanvas.height;
+		canvas.style.left = $scope.rcanvas.left + 'px';
+		canvas.style.top = $scope.rcanvas.top + 'px';
 		frame.layer = frame.layer || 10;
-		if (!!frame.border) {
-			if (frame.border.color && frame.border.thickness) {
-				canvas.style.outline = frame.border.thickness + 'px solid '+ frame.border.color;
-			}
+		frame.angle = frame.angle || 0;
+		if (frame.border && frame.border.color && frame.border.thickness) {
+			canvas.style.outline = frame.border.thickness + 'px solid '+ frame.border.color;
 		}
-		canvas.style.zIndex = frame.layer;
-		if (!!frame.angle) {
-			canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
-		} else {
-			frame.angle = 0;
-		}
+		
 		$scope.canvasZone = {};
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
-		if (!!$scope.frame.image.src) {
-			if (!!display.sw) { //verify if the image is already draw on this canvas before
-				$scope.img.onload = function() {
-					drawImage(canvas, $scope.img, display,
-								$scope.frame.image.ratio, $scope.pageRatio);
-				};
-				$scope.img.src = $scope.frame.image.src;
-			} else {
-				$scope.img.onload = function() {
-					firstDrawImage();
-				};
-				$scope.img.src = $scope.frame.image.src;
-			}
-			
+		if ($scope.frame.image.src) {
+			$scope.img.onload = function() {
+				drawImage(canvas, $scope.img, display,
+							$scope.frame.image.ratio, $scope.pageRatio);
+			};
+			$scope.img.src = $scope.frame.image.src;
 		} else {
-			ImgService.resetFrame(canvas);
+			$timeout(function() {
+				ImgService.resetFrame(canvas);
+			});
 		}
 	};
 
-	function firstDrawImage() {
+	function firstDrawImage() {  // fill canvas with image
 		if (!!$scope.img.src) {
 			var image = $scope.frame.image;
-			/* When an image is dragged into the canvas, fill canvas with image*/
 			if (image.mHeight / canvas.height > image.mWidth / canvas.width) {
 				image.scaleRatio = image.mWidth / canvas.width;
 				display.sw = image.mWidth;
