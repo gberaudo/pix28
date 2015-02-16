@@ -113,7 +113,7 @@ app.controller('ImageLoaderController',
 							break;
 							
 						case 8:
-							canvas.height = 400;
+							canvas.height = 800;
 							canvas.width = canvas.height * imgObj.height / imgObj.width;
 							ctx.translate(canvas.width/2, canvas.height/2);
 							ctx.rotate(-Math.PI / 2);
