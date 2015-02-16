@@ -502,7 +502,7 @@ app.service('Misc', ['$q', function($q) {
 		var width = Math.round(rect.width * pwidth / 100);
 		var height = Math.round(rect.height * pheight / 100);
 		var left = Math.round(rect.left * pwidth / 100);
-		var top = Math.round(rect.top * pwidth / 100);
+		var top = Math.round(rect.top * pheight / 100);
 
 		if (!!target) {
 			target.width = width;
@@ -514,7 +514,7 @@ app.service('Misc', ['$q', function($q) {
 			width: Math.round(rect.width * pwidth / 100),
 			height: Math.round(rect.height * pheight / 100),
 			left: Math.round(rect.left * pwidth / 100),
-			top: Math.round(rect.top * pwidth / 100)
+			top: Math.round(rect.top * pheight / 100)
 		};
 	};
 
