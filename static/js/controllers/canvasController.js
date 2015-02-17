@@ -1,7 +1,8 @@
-app.controller('CanvasController',
-    ['$scope', '$element', '$timeout', 'FrameObject', 
-	 'ImgService', 'Misc', 'DOMService', 
-    function($scope, $element, $timeout, FrameObject, ImgService, Misc, DOMService) {
+// app.controller('CanvasController',
+//     ['$scope', '$element', '$timeout', 'FrameObject', 
+// 	 'ImgService', 'Misc', 'DOMService', canvasController]);
+
+function canvasController($scope, $element, $timeout, FrameObject, ImgService, Misc, DOMService) {
 	var display = $scope.frame.display;
 	var frame = $scope.frame;
 	var pwidth = $scope.pwidth;
@@ -517,6 +518,8 @@ app.controller('CanvasController',
 			document.removeEventListener('mousedown', canvasBlurHandle, true);
 		}
 	}
-}]);
-
+}
+// ]);
+canvasController.$inject = ['$scope', '$element', '$timeout', 'FrameObject',
+	 'ImgService', 'Misc', 'DOMService'];
 

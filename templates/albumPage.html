@@ -18,8 +18,11 @@
 			'background-image': 'url(' + current[page].patternURL + ')',
 			'background-size': current[page].patternSize
 			}">
-	
-		<canvas ng-repeat= 'frame in current[page].frames'
+
+	<album-frame ng-repeat= 'frame in current[page].frames'
+		pwidth = 'pwidth' pheight = 'pheight'
+		frame = 'frame' current = 'current'></album-frame>
+<!--		<canvas ng-repeat= 'frame in current[page].frames'
 					ng-controller='CanvasController'
 					tabindex = '0'
 					class = 'frame inPage {{page + "box"}}'
@@ -29,12 +32,10 @@
 					ng-mousedown = 'mouseDown(\$event)' 
 					ng-mousemove = 'mouseMove(\$event)'
 					ng-keydown = 'keyDown(\$event)'
-					ng-click = 'canvasFocus()'
-					ng-blur = 'canvasBlur(\$event)'
 					ng-style='{cursor: current.cursor,
 						transform: "rotate(" + frame.angle + "deg)",
 						zIndex: frame.layer,
-						}'> </canvas>
+						}'> </canvas>-->
 	
 	<div ng-repeat = 'textBox in current[page].textBoxes' 
 			ng-controller = 'TextBoxController'
