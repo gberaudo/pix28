@@ -35,6 +35,19 @@
 	width: 75%;
 }
 
+#abTitle div {
+	display: inline;
+}
+
+#abTitle [field-name = 'description']{
+	float: right;
+	font-style: italic;
+}
+
+#abTitle [field-name = 'title'] {
+	font-weight: bold;
+}
+
 #album {
 	position: relative;
 	margin-top: 2em;

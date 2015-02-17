@@ -228,27 +228,6 @@ app.controller('AlbumController',
 		
 	};
 	
-	/* -------------show title, description--------------*/
-
-	function makeTitle() {
-		if (!!$scope.album.title) {
-			$scope.hasTitle = true;
-			$scope.enterTitle = false;
-		} 
-		else {
-			$scope.hasTitle = false;
-			$scope.enterTitle = true;
-		}
-		
-		if (!!$scope.album.description) {
-			$scope.hasDescription = true;
-			$scope.enterDescription = false;
-		}
-		else {
-			$scope.hasDescription = false;
-			$scope.enterDescription = true;
-		}
-	}
 	
 	$scope.addNewPage = function (){
 		var pattern = {};
@@ -373,40 +352,9 @@ app.controller('AlbumController',
 	$scope.updateView = updateView;
 	
 
-	/*------------------title, description control-------------------*/
- 
-	$scope.showTitle = function() {
-		$scope.hasTitle = true;
-		$scope.enterTitle = false;
-	};
-	
-	$scope.showDescription = function() {
-		$scope.hasDescription = true;
-		$scope.enterDescription = false;
-	};
-	
-	$scope.editTitle = function() {
-		$scope.hasTitle = false;
-		$scope.enterTitle = true;
-		$timeout(function() {
-			document.getElementById('titleInput').focus();
-		});
-	};
-
-	$scope.editDescription = function() {
-		$scope.hasDescription = false;
-		$scope.enterDescription = true;
-		$timeout(function() {
-			document.getElementById('inputDescription').focus();
-		});
-	};
 	
 	$scope.saveAlbum = function() {
-		DBServices.updateAlbumDB(
-					$scope.album.content, $scope.current.albumId,
-					$scope.album.title, $scope.album.description,
-					$scope.album.date
-				)
+		DBServices.updateAlbumDB($scope.album, $scope.current.albumId)
 		.then(function() {}, 
 				function() {
 					var el = document.getElementById('updateMsg');
@@ -442,21 +390,6 @@ app.controller('AlbumController',
 		});
  	};
 
-
-	$scope.descriptionBlur = function() {
-		if (!!$scope.album.description) {
-			$scope.enterDescription = false;
-			$scope.hasDescription = true;
-		}
-	};
-	
-	$scope.titleBlur = function() {
-		if (!!$scope.album.title) {
-			$scope.enterTitle = false;
-			$scope.hasTitle = true;
-		}
-	};
-	
 	$scope.dragText = function(ev) {
 		ev.dataTransfer.setData('name', 'text');
 	};

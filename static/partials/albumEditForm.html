@@ -1,0 +1,26 @@
+<div class = 'clickable'
+	ng-click = 'edit()'>
+	<div ng-show = '!inEdit'>
+		<span ng-bind = 'model[fieldName]'
+			name = 'fieldName'>
+		</span>
+		<img src = 'static/icons/edit.png'
+			title = '{{"edit " + fieldName|translate}}'
+			name = 'edit'/>
+	</div>
+	
+	<form ng-submit = 'submit()'
+		class = 'inline left'
+		ng-show = 'inEdit'>
+	<input type = 'text'
+		name = 'input'
+		ng-model = 'model[fieldName]'
+		ng-blur = 'blur()'
+		maxlength = 'maxlength'
+		placeholder = '{{placeholder}}'
+		ng-required = 'required'
+		value = 'model[fieldName]'/>
+	</form>
+</div>
+
+
