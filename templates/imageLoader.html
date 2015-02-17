@@ -1,9 +1,7 @@
 <div id = 'imageLoader'
 	ng-controller = 'ImageLoaderController'
 	ondrop = 'angular.element(this).scope().handleFileSelect(event)'
-	ondragover = 'return false;'
-	ondragenter = 'return false;'
-	ng-if = 'imgLoad'>
+	ng-if = 'current.inAlbum'>
 	<label for = 'files' class = 'medbtn'
 		id = 'loadPhotos'
 		title = '{{"Click to add photos from your computer"|translate}}'> 

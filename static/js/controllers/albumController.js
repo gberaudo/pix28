@@ -14,22 +14,11 @@ app.controller('AlbumController',
 	
 	function init() {
 		$scope.album = {};
-		$scope.current.mousePos = {};
-		$scope.current.pageNum = -1;
 		$scope.current.font = {size: 24, family: 'UVNTinTuc_R'};
-		$scope.current.imgLoad = false;
 		$scope.show = {};
 
 		$scope.albumElHeight = 0.4*$scope.screenWidth;
-		
-		//set default page size (for compatibility with previous version)
-		$scope.pheight = $scope.pwidth 
-			=  $scope.maxSize = Math.floor(0.225*$scope.screenWidth);
-		$scope.pageHeight = $scope.pheight + 'px';
-		$scope.pageWidth = $scope.pwidth + 'px';
-		$scope.pdfWidth = 595;
-		$scope.pdfHeight = 595;
-		
+		$scope.maxSize = Math.floor(0.225*$scope.screenWidth);
 		$scope.current.borderThickness = 0;
 		$scope.layoutList = [
 			'x1', 'x2', 'x3', 'x4', 'x5'
@@ -37,22 +26,22 @@ app.controller('AlbumController',
 		$scope.fonts = Fonts;
 		$scope.userFonts = getUserFonts();
 	};
-	$scope.cancelUpdater = undefined;
+	var cancelUpdater;
 	
 	function setUpdateAlbum() {
-		if ($scope.cancelUpdater) {
-			$scope.cancelUpdater();
+		if (cancelUpdater) {
+			cancelUpdater();
 		}
 		var updateAlbum = $interval(function() {
 			if ($scope.current.inAlbum) {
 				DBServices.updateAlbumDB($scope.album, $scope.current.albumId);
 			} else {
 				$interval.cancel(updateAlbum);
-				$scope.cancelUpdater = undefined;
+				cancelUpdater = undefined;
 			}
 		}, 10000);
 
-		$scope.cancelUpdater = function() {
+		cancelUpdater = function() {
 			$interval.cancel(updateAlbum);
 		};
 	}
@@ -60,14 +49,13 @@ app.controller('AlbumController',
 	$scope.createAlbum = function(width, height) {
 	
 		DBServices.addAlbum().then(function(id) {
-			$scope.current.inAlbum = true;
+			var album = $scope.album;
 			var date = new Date();
 			var options = {year: 'numeric', month: 'short', day: 'numeric' };
+			$scope.current.inAlbum = true;
 			$scope.current.albumId = id;
 			$scope.current.showHome = false;
- 			$scope.album.title = '';
- 			$scope.album.description = '';
-			$scope.album.date = date.toLocaleString($scope.userInfo.lang, options);
+			album.date = date.toLocaleString($scope.userInfo.lang, options);
 			if (width > height) {
 				$scope.pwidth = $scope.maxSize;
 				$scope.pheight = height * $scope.pwidth / width;
@@ -75,23 +63,15 @@ app.controller('AlbumController',
 				$scope.pheight = $scope.maxSize;
 				$scope.pwidth = width * $scope.pheight / height;
 			}
-			$scope.pageHeight = $scope.pheight + 'px';
-			$scope.pageWidth = $scope.pwidth + 'px';
-			$scope.album.width = width;
-			$scope.album.height = height;
-			$scope.pdfWidth = width;
-			$scope.pdfHeight = height;
+			album.width = $scope.pdfWidth = width;
+			album.height = $scope.pdfHeight = height;
 			$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
 			$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72) / 10
 				+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72) / 10 + 'cm';
 			
-			makeRandomAlbum(20);
+			makeRandomAlbum(album, 20);
 			
 			$scope.current.showAlbums = false;
-			$scope.imgLoad = false;
-			$timeout(function() {
-				$scope.imgLoad = true;
-			},20);
 			$scope.hasTitle = false;
 			$scope.hasDescription = false;
 			$scope.enterDescription = true;
@@ -107,7 +87,7 @@ app.controller('AlbumController',
 				var doublePage = document.getElementById('doublepage');
 				$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
 				document.getElementById('titleInput').focus();
-			}, 200);
+			}, 20);
 			setUpdateAlbum();
 		});
 	};
@@ -128,20 +108,20 @@ app.controller('AlbumController',
 		return page;
 	}
 		
-	function makeRandomAlbum(num) {
+	function makeRandomAlbum(album, num) {
 		var frontPage = makeRandomPage([$scope.layoutList[0]]),
 			innerFrontPage = new PageObject({}),
 			innerBackPage = new PageObject({}),
 			backPage = makeRandomPage(
 								[$scope.layoutList[0]]);
-		$scope.album.content = [frontPage, innerFrontPage];
+		album.content = [frontPage, innerFrontPage];
 		for (var i = 1; i < num-1; i++) {
 			var page = makeRandomPage($scope.layoutList);
 			$scope.album.content.push(page);
 		}
-		$scope.album.content.push(innerFrontPage);
-		$scope.album.content.push(backPage);
-		$scope.current.rightPage = $scope.album.content[0];
+		album.content.push(innerFrontPage);
+		album.content.push(backPage);
+		$scope.current.rightPage = album.content[0];
 		$scope.current.pageNum = 0;
 		updateView('prev');
 	}

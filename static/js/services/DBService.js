@@ -16,8 +16,8 @@
 						description: cursor.value.description,
 						title: cursor.value.title,
 						date: cursor.value.date,
-						width: cursor.value.width || undefined,
-						height: cursor.value.height || undefined
+						width: cursor.value.width,
+						height: cursor.value.height
 					};
 					albumSCs.push(albumSC);
 					cursor.continue();
@@ -101,7 +101,6 @@
 	};
 	
 	this.addAlbum = function() {
-		//add this new album to the database 
 		var deferred = $q.defer();
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		openRq.onsuccess = function(event) {
