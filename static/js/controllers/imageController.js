@@ -3,27 +3,18 @@ app.controller('ImageController',
     function($scope, ImgService, $interval, $timeout, Misc) {
 
 	$scope.zoomImage = function(para) {
-		var canvas = document.getElementsByClassName('cActive')[0],
-			scope = angular.element(canvas).scope();
- 		$scope.mouseIsDown = true;
-		$scope.mouseLeft = false;
+		var canvas = document.getElementsByClassName('cActive')[0];
+		var scope = angular.element(canvas).scope();
 		var intervalPromise = $interval(function() {
- 			if (!$scope.mouseIsDown || $scope.mouseLeft) {
-				$interval.cancel(intervalPromise);
- 			} else {
-				ImgService.zoomImage(canvas, scope, para);
-			}
-		}, 50);
+			ImgService.zoomImage(canvas, scope, para);
+		}, 20);
+		document.addEventListener('mouseup', handleMouseUp, true);
+		function handleMouseUp() {
+			$interval.cancel(intervalPromise);
+			document.removeEventListener('mouseup', handleMouseUp, true);
+		};
 	};
-	
-	$scope.mouseUp = function() {
-		$scope.mouseIsDown = false;
-	};
-	
-	$scope.mouseLeave = function() {
-		$scope.mouseLeft = true;
-	};
-	
+
 	$scope.removeImage = function() {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
@@ -40,15 +31,14 @@ app.controller('ImageController',
 	$scope.go = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
-		$scope.mouseIsDown = true;
-		$scope.mouseLeft = false;
 		var intervalPromise = $interval(function() {
-			if(!$scope.mouseIsDown || $scope.mouseLeft) {
-				$interval.cancel(intervalPromise);
-			} else {
-				moveCanvas(canvas, scope, para);
-			}
-		}, 100);
+			moveCanvas(canvas, scope, para);
+		}, 50);
+		document.addEventListener('mouseup', handleMouseUp, true);
+		function handleMouseUp() {
+			$interval.cancel(intervalPromise);
+			document.removeEventListener('mouseup', handleMouseUp, true);
+		};
 	};
 	
 	function moveCanvas(canvas, scope, para) {
@@ -97,15 +87,14 @@ app.controller('ImageController',
 	$scope.rotate = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0];
 		var scope = angular.element(canvas).scope();
-		$scope.mouseIsDown = true;
-		$scope.mouseLeft = false;
 		var intervalPromise = $interval(function() {
-			if(!$scope.mouseIsDown || $scope.mouseLeft) {
-				$interval.cancel(intervalPromise);
-			} else {
-				rotate(canvas, para, scope);
-			}
-		}, 100);
+			rotate(canvas, para, scope);
+		}, 50);
+		document.addEventListener('mouseup', handleMouseUp, true);
+		function handleMouseUp() {
+			$interval.cancel(intervalPromise);
+			document.removeEventListener('mouseup', handleMouseUp, true);
+		};
 	};
 	
 	function rotate(canvas, para, scope) {
