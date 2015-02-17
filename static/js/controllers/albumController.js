@@ -72,14 +72,8 @@ app.controller('AlbumController',
 			makeRandomAlbum(album, 20);
 			
 			$scope.current.showAlbums = false;
-			$scope.hasTitle = false;
-			$scope.hasDescription = false;
-			$scope.enterDescription = true;
-			$scope.enterTitle = true;
 			$scope.currentAlbumSC = {
 				id: id, 
-				title: '', 
-				description: '',
 				date: $scope.album.date
 			};
 			$scope.albumSCs.push($scope.currentAlbumSC);
@@ -97,14 +91,14 @@ app.controller('AlbumController',
 		var layouts = Layouts[lset];
 		var layout = Misc.randomFromList(layouts);
 		var page = new PageObject({});
-		for (var k in layout.frames) {
-			var frame = new FrameObject(angular.copy(layout.frames[k])); 
-			page.frames.push(frame);
-		}
-		for (var j in layout.textBoxes) {
-			var textbox = new TextBoxObject(layout.textBoxes[j]);
-			page.textBoxes.push(textbox);
-		}
+		layout.frames.forEach(function(frame) {
+			var newframe = new FrameObject(angular.copy(frame));
+			page.frames.push(newframe);
+		});
+		layout.textBoxes.forEach(function(textbox) {
+			var newtextbox = new TextBoxObject(textbox);
+			page.textBoxes.push(newtextbox);
+		});
 		return page;
 	}
 		
@@ -198,17 +192,18 @@ app.controller('AlbumController',
 		var props = ['background', 'patternName', 'patternURL',
 			'patternURL300', 'patternWidth', 'patternHeight'];
 		props.forEach(function(prop) {
-			page[prop] = modelPage[prop] || '';
+			page[prop] = modelPage[prop];
 		});
 	}
 
 	function activate(id) {
-		var active = angular.element(document.getElementsByClassName('pActive')[0])||null;
-		if (!!active) {
-			active.removeClass('pActive');
-		}
+		var actives = document.getElementsByClassName('pActive');
+		[].forEach.call(actives, function(el) {
+			angular.element(el).removeClass('pActive');
+		});
 		angular.element(document.getElementById(id)).addClass('pActive');
 	}
+
 	$scope.prevPage = function() { //show previous page
 		$scope.current.pageNum -= 2;
 		if ($scope.current.pageNum > 0) {
@@ -273,9 +268,7 @@ app.controller('AlbumController',
 	};
  
 	$scope.updateView = updateView;
-	
 
-	
 	$scope.saveAlbum = function() {
 		DBServices.updateAlbumDB($scope.album, $scope.current.albumId)
 		.then(function() {}, 
@@ -288,7 +281,7 @@ app.controller('AlbumController',
 					}, 3000);
 				});
 	};
-	
+
 	$scope.toAlbumList = function() {
 		DBServices.updateAlbumDB($scope.album, $scope.current.albumId)
 		.then(function() {
@@ -312,14 +305,13 @@ app.controller('AlbumController',
 	$scope.dragText = function(ev) {
 		ev.dataTransfer.setData('name', 'text');
 	};
-	
+
 	$scope.dragFrame = function(event) {
 		event.dataTransfer.setData('name','frame');
 	};
-	
+
 	$scope.previewPage = function(num) {
 		var scope = angular.element(document.getElementById('previewPage')).scope();
 		scope.previewPage(num);
 	};
-
 }]);
