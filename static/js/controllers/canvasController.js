@@ -42,8 +42,8 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		}
 	}
 	function initCanvas(){
-		var rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
-		$scope.rcanvas = rcanvas;
+		$scope.rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
+		var rcanvas = $scope.rcanvas;
 		canvas.width = rcanvas.width;
 		canvas.height = rcanvas.height;
 		canvas.style.left = rcanvas.left + 'px';
@@ -117,14 +117,13 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 				if (drag[anchor]){
 					var offsetCopy = angular.copy(offset);
 					var anchorCopy = angular.copy(anchor);
-					var rcanvas = $scope.rcanvas;
 
 					window.requestAnimationFrame(function() {
-						redimension(rcanvas, offsetCopy, anchorCopy, refs);
-						canvas.width = rcanvas.width;
-						canvas.height = rcanvas.height;
-						canvas.style.left = rcanvas.left + 'px';
-						canvas.style.top = rcanvas.top + 'px';
+						redimension($scope.rcanvas, offsetCopy, anchorCopy, refs);
+						canvas.width = $scope.rcanvas.width;
+						canvas.height = $scope.rcanvas.height;
+						canvas.style.left = $scope.rcanvas.left + 'px';
+						canvas.style.top = $scope.rcanvas.top + 'px';
 						if (frame.angle % 180 == 0) {
 							ImgService.showRefLines(canvas, refs, $scope);
 						}
@@ -135,8 +134,8 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 							ImgService.resetFrame(canvas);
 						}
 						ImgService.drawAnchors(canvas);
-						Misc.resetZone($scope.canvasZone, rcanvas.width, rcanvas.height);
-						frame.canvas = Misc.abs2perCent(rcanvas, $scope.pwidth, $scope.pheight);
+						Misc.resetZone($scope.canvasZone, $scope.rcanvas.width, $scope.rcanvas.height);
+						frame.canvas = Misc.abs2perCent($scope.rcanvas, $scope.pwidth, $scope.pheight);
 					});
 					break;
 				}
