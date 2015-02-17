@@ -13,20 +13,8 @@ module.exports = function(config) {
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
 
-      'static/js/angular-gettext.js',
-      'static/js/pdfkit.js',
-      'static/js/blob-stream.js',
-      'static/js/exif.js',
-
-      'static/js/siteController.js',
-      'static/js/albumController.js',
-      'static/js/pageController.js',
-      'static/js/canvasController.js',
-      'static/js/imageLoaderController.js',
-      'static/js/layoutController.js',
-      'static/js/textController.js',
-      'static/js/services.js',
-      'static/js/layoutFac.js',
+      'static/js/**/*.js',
+      'static/lib/**/*.js',
 
       'test/spec/beforeeach.js',
       'test/spec/**/*.spec.js',
