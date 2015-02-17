@@ -205,15 +205,13 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		drawAnchors(canvas);
 	};
 
-	function getRefLines(scope, pageId) {
-		var boxes = document.getElementsByClassName(pageId + 'box');
-				
+	function getRefLines() {
+		var boxes = document.getElementsByClassName('ref');
 		var refs = {
 			horizontal: [], 
 			vertical: []
 		};
-		for (var i = 0; i < boxes.length; i++) {
-			var box = boxes[i];
+		[].forEach.call(boxes, function(box) {
 			if (!isActive(box)) {
 				var left = box.offsetLeft,
 					right = box.offsetLeft + box.offsetWidth,
@@ -222,8 +220,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 				refs.horizontal.push(left, right);
 				refs.vertical.push(top, bot);
 			}
-			
-		}
+		});
 		refs.horizontal.sort();
 		refs.vertical.sort();
 		return refs;
@@ -240,45 +237,45 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	
 	this.getRefLines = getRefLines;
 	
-	this.showRefLines = function(box, refs, $scope) {
+	this.showRefLines = function(box, refs, current) {
 		if (Misc.InList(box.offsetTop, refs.vertical)) {
-			$scope.current.top = box.offsetTop;
-			$scope.current.showTopLine = true;
+			current.top = box.offsetTop;
+			current.showTopLine = true;
 			$timeout(function() {
-				$scope.current.showTopLine = false;
+				current.showTopLine = false;
 			}, 1500);
 		} else {
-			$scope.current.showTopLine = false;
+			current.showTopLine = false;
 		}
 		
 		if (Misc.InList(box.offsetTop + box.offsetHeight, refs.vertical)) {
-			$scope.current.bot = box.offsetTop + box.offsetHeight;
-			$scope.current.showBotLine = true;
+			current.bot = box.offsetTop + box.offsetHeight;
+			current.showBotLine = true;
 			$timeout(function() {
-				$scope.current.showBotLine = false;
+				current.showBotLine = false;
 			}, 2000);
 		} else {
-			$scope.current.showBotLine = false;
+			current.showBotLine = false;
 		}
 		
 		if (Misc.InList(box.offsetLeft, refs.horizontal)) {
-			$scope.current.left = box.offsetLeft;
-			$scope.current.showLeftLine = true;
+			current.left = box.offsetLeft;
+			current.showLeftLine = true;
 			$timeout(function() {
-				$scope.current.showLeftLine = false;
+				current.showLeftLine = false;
 			}, 1500);
 		} else {
-			$scope.current.showLeftLine = false;
+			current.showLeftLine = false;
 		}
 		
 		if (Misc.InList(box.offsetLeft + box.offsetWidth, refs.horizontal)) {
-			$scope.current.right = box.offsetLeft + box.offsetWidth;
-			$scope.current.showRightLine = true;
+			current.right = box.offsetLeft + box.offsetWidth;
+			current.showRightLine = true;
 			$timeout(function() {
-				$scope.current.showRightLine = false;
+				current.showRightLine = false;
 			}, 1500);
 		} else {
-			$scope.current.showRightLine = false;
+			current.showRightLine = false;
 		}
 	};
 	this.updateOldThumb= function(DbId) {

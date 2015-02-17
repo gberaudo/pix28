@@ -31,56 +31,56 @@ app.controller('ImageController',
 	$scope.go = function(para) {
 		var canvas = document.getElementsByClassName('cActive')[0],
 			scope = angular.element(canvas).scope();
+		var rcanvas = Misc.perCent2Abs(scope.frame.canvas, $scope.pwidth, scope.pheight);
 		var intervalPromise = $interval(function() {
-			moveCanvas(canvas, scope, para);
+			moveCanvas(canvas, rcanvas, scope, para);
 		}, 50);
 		document.addEventListener('mouseup', handleMouseUp, true);
 		function handleMouseUp() {
 			$interval.cancel(intervalPromise);
+			Misc.abs2perCent(rcanvas, $scope.pwidth, $scope.pheight, scope.frame.canvas);
 			document.removeEventListener('mouseup', handleMouseUp, true);
 		};
 	};
 	
-	function moveCanvas(canvas, scope, para) {
+	function moveCanvas(canvas, rcanvas, scope, para) {
 		var off = 1;
 		var pwidth = $scope.pwidth;
+		var pheight = $scope.pheight;
 		switch (para) {
 			case 'left':
-				if (off > canvas.offsetLeft) {
-					off = canvas.offsetLeft;
+				if (off > rcanvas.left) {
+					off = rcanvas.left;
 				}
-				scope.frame.canvas.left -=  off * 100 / pwidth;
-				canvas.style.left = (canvas.offsetLeft - off) + 'px';
+				rcanvas.left -= off;
 				break;
 			
 			case 'right':
-				if (off > $scope.pwidth - canvas.offsetLeft - canvas.offsetWidth) {
-					off = $scope.pwidth - canvas.offsetLeft -canvas.offsetWidth;
+				if (off > pwidth - rcanvas.left - rcanvas.width) {
+					off = pwidth - rcanvas.left - rcanvas.width;
 				}
-				scope.frame.canvas.left +=  off * 100 / pwidth;
-				canvas.style.left = (canvas.offsetLeft + off) + 'px';
+				rcanvas.left += off;
 				break;
 			
 			case 'up':
-				if (off > canvas.offsetTop) {
-					off = canvas.offsetTop;
+				if (off > rcanvas.top) {
+					off = rcanvas.top;
 				}
-				scope.frame.canvas.top -= off * 100 / pwidth;
-				canvas.style.top = (canvas.offsetTop - off) + 'px';
+				rcanvas.top -= off;
 				break;
 				
 			case 'down':
-				if (off > $scope.pheight - canvas.offsetTop - canvas.offsetHeight) {
-					off = $scope.pheight - canvas.offsetTop -canvas.offsetHeight;
+				if (off > pheight - rcanvas.top - rcanvas.height) {
+					off = pheight - rcanvas.top - rcanvas.height;
 				}
-				scope.frame.canvas.top +=  off * 100 / pwidth;
-				canvas.style.top = (canvas.offsetTop + off) + 'px';
+				rcanvas.top += off;
 				break;
 		}
+		canvas.style.left = rcanvas.left + 'px';
+		canvas.style.top = rcanvas.top + 'px';
 		if (scope.frame.angle % 180 == 0) {
-			var pageId = canvas.parentNode.parentNode.id;
-			var refs = ImgService.getRefLines(scope, pageId);
-			ImgService.showRefLines(canvas, refs, $scope);
+			var refs = ImgService.getRefLines();
+			ImgService.showRefLines(canvas, refs, $scope.current);
 		}
 	}
 	
