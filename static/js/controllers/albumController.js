@@ -158,74 +158,37 @@ app.controller('AlbumController',
 	};
 	
 	$scope.openAlbum = function(albumSC) {
-		getAlbum(albumSC.id);
 		$scope.currentAlbumSC = albumSC;
-		function getAlbum(id) {
-			var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
-			openRq.onsuccess = function(event) {
-				var db = openRq.result;
-				var trans = db.transaction(['Albums']);
-				db.close();
-				var store = trans.objectStore('Albums');		
-				
-				var getRq = store.get(id);
-				getRq.onsuccess = function(event) {
-					$scope.album.content = angular.copy(getRq.result.content);
-					$scope.album.description = getRq.result.description;
-					$scope.album.title = getRq.result.title || getRq.result.date;
-					if (!!getRq.result.width) {
-						var width = getRq.result.width;
-						var height = getRq.result.height;
-						if (width > height) {
-							$scope.pwidth = $scope.maxSize;
-							$scope.pheight = height * $scope.pwidth / width;
-						} else {
-							$scope.pheight = $scope.maxSize;
-							$scope.pwidth = width * $scope.pheight / height;
-						}
-						$scope.pageHeight = $scope.pheight + 'px';
-						$scope.pageWidth = $scope.pwidth + 'px';
-						$scope.album.width = width;
-						$scope.album.height = height;
-						$scope.pdfWidth = width;
-						$scope.pdfHeight = height;
-					} else {
-						$scope.pheight = $scope.pwidth =  $scope.maxSize;
-						$scope.pageHeight = $scope.pheight + 'px';
-						$scope.pageWidth = $scope.pwidth + 'px';
-						$scope.album.width = $scope.pdfWidth = 595;
-						$scope.album.height = $scope.pdfHeight = 595;
-					}
-					$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
-					$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72)/10
-						+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72)/10 + 'cm';
-					$scope.current.rightPage = $scope.album.content[0];
-					$scope.$apply(function() {
-						makeTitle();
-						$scope.current.inAlbum = true;
-						$scope.current.showHome = false;
-						$scope.current.showAlbums = false;
-						$scope.current.pageNum = 0;
-						$scope.current.albumId = id;
-						$scope.imgLoad = false;
-						$timeout(function() {
-							var doublePage = document.getElementById('doublepage');
-							$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
-							$scope.imgLoad = true;
-						}, 20);
-						updateView('prev');
-					});
-					setUpdateAlbum();
-				};
-				getRq.onerror = function() {
-					console.log('Can not get this album from database');
-				};
-			};
-			openRq.onerror = function(event) {
-				console.log('error in open DB for opening album');
-			};
-		}
-		
+		DBServices.getAlbum(albumSC.id).then(function(result) {
+			var width, height;
+			$scope.album = result;
+			width = $scope.album.width;
+			height = $scope.album.height;
+			$scope.pdfWidth = width;
+			$scope.pdfHeight = height;
+			if (width > height) {
+				$scope.pwidth = $scope.maxSize;
+				$scope.pheight = height * $scope.pwidth / width;
+			} else {
+				$scope.pheight = $scope.maxSize;
+				$scope.pwidth = width * $scope.pheight / height;
+			}
+			$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
+			$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72)/10
+				+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72)/10 + 'cm';
+			$scope.current.rightPage = $scope.album.content[0];
+			$scope.current.showHome = false;
+			$scope.current.showAlbums = false;
+			$scope.current.pageNum = 0;
+			$scope.current.albumId = albumSC.id;
+			$scope.current.inAlbum = true;
+			$timeout(function() {
+				var doublePage = document.getElementById('doublepage');
+				$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
+			}, 20);
+			updateView('prev');
+			setUpdateAlbum();
+		});
 	};
 	
 	

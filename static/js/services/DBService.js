@@ -126,4 +126,25 @@
 		};
 		return deferred.promise;
 	};
+
+	this.getAlbum = function(id) {
+		var deferred = $q.defer();
+		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
+		openRq.onsuccess = function(event) {
+			var db = openRq.result;
+			var trans = db.transaction(['Albums']);
+			var store = trans.objectStore('Albums');
+			var getRq = store.get(id);
+			getRq.onsuccess = function(event) {
+				deferred.resolve(event.target.result);
+			};
+			getRq.onerror = function() {
+				console.log('Can not get this album from database');
+			};
+		};
+		openRq.onerror = function(event) {
+			console.log('error in open DB for opening album');
+		};
+		return deferred.promise;
+	};
 }]);
