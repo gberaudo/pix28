@@ -43,7 +43,6 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 	}
 	function initCanvas(){
 		var rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
-		$scope.rcanvas = rcanvas;
 		canvas.width = rcanvas.width;
 		canvas.height = rcanvas.height;
 		canvas.style.left = rcanvas.left + 'px';
@@ -117,7 +116,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 				if (drag[anchor]){
 					var offsetCopy = angular.copy(offset);
 					var anchorCopy = angular.copy(anchor);
-					var rcanvas = $scope.rcanvas;
+					var rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
 
 					window.requestAnimationFrame(function() {
 						redimension(rcanvas, offsetCopy, anchorCopy, refs);
