@@ -61,7 +61,7 @@
 	};
 	
 	
-	this.updateAlbumDB = function(content, id, title, description, date, width, height) {
+	this.updateAlbumDB = function(album, id) {
 		var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 		var deferred = $q.defer();
 		openRq.onsuccess = function(event) {
@@ -70,15 +70,11 @@
 			var store = trans.objectStore('Albums');
 			var getRq = store.get(id); 
 			getRq.onsuccess = function(event) {
-				var album = this.result;
-				album.content = content;
-				album.title = title;
-				album.description = description;
-				album.date = date;
-				album.width = width;
-				album.height = height;
-				
-				var updateRq = store.put(album);
+				var data = getRq.result;
+				for (key in album) {
+					data[key] = album[key];
+				}
+				var updateRq = store.put(data);
 				updateRq.onsuccess = function(event){
 					var el = document.getElementById('updateMsg');
 					el.innerHTML = 'Album saved.';

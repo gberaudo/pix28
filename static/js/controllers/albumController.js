@@ -45,12 +45,7 @@ app.controller('AlbumController',
 		}
 		var updateAlbum = $interval(function() {
 			if ($scope.current.inAlbum) {
-				DBServices.updateAlbumDB(
-					$scope.album.content, $scope.current.albumId,
-					$scope.album.title, $scope.album.description,
-					$scope.album.date, $scope.album.width, $scope.album.height
-				);
-				
+				DBServices.updateAlbumDB($scope.album, $scope.current.albumId);
 			} else {
 				$interval.cancel(updateAlbum);
 				$scope.cancelUpdater = undefined;
@@ -330,11 +325,7 @@ app.controller('AlbumController',
 	};
 	
 	$scope.toAlbumList = function() {
-		DBServices.updateAlbumDB(
-					$scope.album.content, $scope.current.albumId,
-					$scope.album.title, $scope.album.description,
-					$scope.album.date, $scope.album.width, $scope.album.height
-				)
+		DBServices.updateAlbumDB($scope.album, $scope.current.albumId)
 		.then(function() {
 			$scope.currentAlbumSC.title = $scope.album.title || $scope.album.date;
 			$scope.currentAlbumSC.description = $scope.album.description;
