@@ -35,7 +35,7 @@ app.controller('CanvasController',
 	};
 	
 	function setFocus() {
-		if ($scope.current.datumWithFocus === $scope.frame) {
+		if ($scope.current.datumWithFocus === frame) {
 			canvasFocus();
 			$scope.current.datumWithFocus = undefined;
 		}
@@ -55,12 +55,12 @@ app.controller('CanvasController',
 		$scope.canvasZone = {};
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
-		if ($scope.frame.image.src) {
+		if (frame.image.src) {
 			$scope.img.onload = function() {
 				drawImage(canvas, $scope.img, display,
-							$scope.frame.image.ratio, $scope.pageRatio);
+							frame.image.ratio, $scope.pageRatio);
 			};
-			$scope.img.src = $scope.frame.image.src;
+			$scope.img.src = frame.image.src;
 		} else {
 			$timeout(function() {
 				ImgService.resetFrame(canvas);
@@ -69,8 +69,8 @@ app.controller('CanvasController',
 	};
 
 	function firstDrawImage() {  // fill canvas with image
-		if (!!$scope.img.src) {
-			var image = $scope.frame.image;
+		if ($scope.img.src) {
+			var image = frame.image;
 			if (image.mHeight / canvas.height > image.mWidth / canvas.width) {
 				image.scaleRatio = image.mWidth / canvas.width;
 				display.sw = image.mWidth;
@@ -84,12 +84,12 @@ app.controller('CanvasController',
 				display.sx = Math.max((image.mWidth - display.sw) / 2, 0);
 				display.sy = 0;
 			}
-			drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
+			drawImage(canvas, $scope.img, display, frame.image.ratio, $scope.pageRatio);
 		}
 	};
 
 	function redrawImage() {
-		drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
+		drawImage(canvas, $scope.img, display, frame.image.ratio, $scope.pageRatio);
 		ImgService.drawAnchors(canvas);
 	};
 
@@ -103,7 +103,7 @@ app.controller('CanvasController',
 		};
 		var refs = ImgService.getRefLines($scope, pageId);
 		var mousePosWatch;
-		
+		canvasFocus();
 		$scope.dragimage = true;
 		$scope.mousePos = {X: evt.pageX, Y: evt.pageY};
 		mousePosWatch = $scope.$watch('mousePos', function(newValue, oldValue) {
@@ -111,26 +111,30 @@ app.controller('CanvasController',
 				X: newValue.X - oldValue.X,
 				Y: newValue.Y - oldValue.Y
 			};
-		
 			for (anchor in drag) {
 				if (drag[anchor]){
 					var offsetCopy = angular.copy(offset);
 					var anchorCopy = angular.copy(anchor);
+					var rcanvas = $scope.rcanvas;
 
 					window.requestAnimationFrame(function() {
-						redimension(canvas, offsetCopy, anchorCopy, refs);
-						if ($scope.frame.angle % 180 == 0) {
+						redimension(rcanvas, offsetCopy, anchorCopy, refs);
+						canvas.width = rcanvas.width;
+						canvas.height = rcanvas.height;
+						canvas.style.left = rcanvas.left + 'px';
+						canvas.style.top = rcanvas.top + 'px';
+						if (frame.angle % 180 == 0) {
 							ImgService.showRefLines(canvas, refs, $scope);
 						}
-						if (!!$scope.img.src) {
+						if ($scope.img.src) {
 							drawImage(canvas, $scope.img, display,
-										$scope.frame.image.ratio, $scope.pageRatio );
+										frame.image.ratio, $scope.pageRatio );
 						} else {
 							ImgService.resetFrame(canvas);
 						}
 						ImgService.drawAnchors(canvas);
-						Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
-						updateFrame();
+						Misc.resetZone($scope.canvasZone, rcanvas.width, rcanvas.height);
+						frame.canvas = Misc.abs2perCent(rcanvas, $scope.pwidth, $scope.pheight);
 					});
 					break;
 				}
@@ -176,8 +180,8 @@ app.controller('CanvasController',
 
 
 	function moveImageInCanvas(offset) {
-		if (!!$scope.frame.image.src) {
-			var image = $scope.frame.image;
+		if (frame.image.src) {
+			var image = frame.image;
 			var sChangeX = -offset.X * image.mWidth / canvas.width,
 				sChangeY = -offset.Y * image.mHeight / canvas.height;
 			if (sChangeX < -display.sx) {
@@ -199,92 +203,83 @@ app.controller('CanvasController',
 		}
 	}
 
-	function redimension(cv, offset, anchor, refs){
+	function redimension(rcanvas, offset, anchor, refs){
 		var sChange = {},
-			canvasProp = cv.height/cv.width,
-			ctop = parseFloat(cv.style.top),
-			cleft = parseFloat(cv.style.left),
-			pwidth = $scope.pwidth,
-			pheight = $scope.pheight,
-			image = $scope.frame.image,
+			canvasProp = rcanvas.height/rcanvas.width,
+			ctop = rcanvas.top,
+			cleft = rcanvas.left,
+			image = frame.image,
 			off,
 			minSize = pwidth / 6;
-		var angle = $scope.frame.angle || 0;
+		var angle = frame.angle || 0;
 			
 		function getCloseRef(pos, list) {
-			var close = false;
-			for (var i = 0; i < list.length; i++) {
-				if (list[i] - 2 <= pos && pos <= list[i] + 2) {
-					close = true;
-					return list[i];
-					break;
+			list.forEach(function(ref) { 
+				if (ref - 2 <= pos && pos <= ref + 2) {
+					return ref;
 				}
-			}
-			if (!close) {
-				return false;
-			}
+			});
+			return false;
 		}
 		var left, right, top, bot;
-		switch (anchor){
+		switch (anchor) {
 			case 'center': 
 				if (offset.X < -cleft) {
 					offset.X = -cleft;
 				}
-				if (offset.X + cleft + cv.width > pwidth) {
-					offset.X = pwidth - cleft - cv.width;
+				if (offset.X + cleft + rcanvas.width > pwidth) {
+					offset.X = pwidth - cleft - rcanvas.width;
 				}
 				if (offset.Y < -ctop) {
 					offset.Y = -ctop;
 				}
-				if (offset.Y + ctop + cv.height > pheight) {
-					offset.Y = $scope.height - ctop - cv.height;
+				if (offset.Y + ctop + rcanvas.height > pheight) {
+					offset.Y = pheight - ctop - rcanvas.height;
 				}
 				left = getCloseRef(cleft + offset.X, refs.horizontal);
 				top = getCloseRef(ctop + offset.Y, refs.vertical);
-				right = getCloseRef(cleft + offset.X + cv.width, refs.horizontal);
-				bot = getCloseRef(ctop + offset.Y + cv.height, refs.vertical);
+				right = getCloseRef(cleft + offset.X + rcanvas.width, refs.horizontal);
+				bot = getCloseRef(ctop + offset.Y + rcanvas.height, refs.vertical);
 				//stick border of canvas to a close border
 				
-				if (!!left) {
-					cv.style.left = left + 'px';
-				} else if (!!right) {
-					cv.style.left = (right - cv.width) + 'px';
-				}
-				else {
-					cv.style.left = (cleft + offset.X) + 'px';
+				if (left) {
+					rcanvas.left = left;
+				} else if (right) {
+					rcanvas.left = right - rcanvas.width;
+				} else {
+					rcanvas.left = cleft + offset.X;
 				}
 				
-				if (!!top) {
-					cv.style.top = top + 'px';
-				} else if (!!bot) {
-					cv.style.top = (bot - cv.height) + 'px'; 
-				}else {
-					cv.style.top = (ctop + offset.Y) + 'px';
+				if (top) {
+					rcanvas.top = top;
+				} else if (bot) {
+					rcanvas.top = bot - rcanvas.height;
+				} else {
+					rcanvas.top = ctop + offset.Y;
 				}
 				break;
 				
 			case 'L':
-				
 				off = Math.floor(Math.cos(Math.PI * angle / 180) * offset.X
 						+ Math.sin(Math.PI * angle / 180) * offset.Y); 
-				if (off > cv.width - minSize) {
-					off = cv.width - minSize;
+				if (off > rcanvas.width - minSize) {
+					off = rcanvas.width - minSize;
 				}
 				
 				if (off < -cleft) {
 					off = -cleft;
 				}
 				left = getCloseRef(cleft + off, refs.horizontal);
-				if (!!left) {
+				if (left) {
 					off = left - cleft;
 				}
-				sChange.X = off * display.sw / cv.width;
+				sChange.X = off * display.sw / rcanvas.width;
 				
 				if (sChange.X < -display.sx) {
 					if (display.sw - sChange.X > image.mWidth) {
 						var sRes = display.sw - sChange.X - image.mWidth;
 						var dr = sRes/image.mWidth;
-						scaleRatio = image.mWidth / (cv.width - off);
+						scaleRatio = image.mWidth / (rcanvas.width - off);
 						display.sy = display.sy + display.sh * dr/2;
 						display.sh -=  display.sh * dr;
 						display.sx = 0;
@@ -298,36 +293,34 @@ app.controller('CanvasController',
 					display.sx += sChange.X; 
 					display.sw = Math.min(display.sw - sChange.X, image.mWidth - display.sx);
 				}
-				cv.style.left = (cleft + off) +'px';
-				cv.width -= off;
+				rcanvas.left = cleft + off;
+				rcanvas.width -= off;
 				break;
 				
 			case 'R':
 				
 				off = Math.floor(Math.cos(Math.PI * angle / 180) * offset.X
 						+ Math.sin(Math.PI * angle / 180) * offset.Y); 
-// 				off = offset.X;
 				
 				//enlarge image when limit attained
-				if (off < -cv.width + minSize) {
-					off = -cv.width + minSize;
+				if (off < -rcanvas.width + minSize) {
+					off = -rcanvas.width + minSize;
 				}
-				if (off + cv.width + cleft > pwidth) {
-					off = pwidth - cv.width - cleft;
+				if (off + rcanvas.width + cleft > pwidth) {
+					off = pwidth - rcanvas.width - cleft;
 				}
-				right = getCloseRef(cleft + off + cv.width, refs.horizontal);
+				right = getCloseRef(cleft + off + rcanvas.width, refs.horizontal);
 				if(!!right) {
-					off = right - cleft - cv.width;
+					off = right - cleft - rcanvas.width;
 				}
 				
-				sChange.X = off * display.sw/cv.width;
+				sChange.X = off * display.sw/rcanvas.width;
 				
 				if (display.sw + display.sx + sChange.X > image.mWidth) {
 					sChange.X1 = image.mWidth - display.sw - display.sx;
 					if (sChange.X - sChange.X1 > display.sx) {
 						var sRes = sChange.X - sChange.X1 - display.sx;
 						var dr = sRes/image.mWidth;
-// 						scaleRatio = image.mWidth / (cv.width + off);
 						display.sy = display.sy + display.sh * dr/2;
 						display.sh -=  display.sh * dr;
 						display.sx = 0;
@@ -341,15 +334,14 @@ app.controller('CanvasController',
 				else {
 					display.sw = Math.min(display.sw + sChange.X, image.mWidth - display.sx);
 				}
-				cv.width += off;
+				rcanvas.width += off;
 				break;
 			
 			case 'T':
 				off = Math.floor(-Math.sin(Math.PI * angle / 180) * offset.X
 						+ Math.cos(Math.PI * angle / 180) * offset.Y); 
-// 				off = offset.Y;
-				if (off > cv.height - minSize) {
-					off = cv.height - minSize;
+				if (off > rcanvas.height - minSize) {
+					off = rcanvas.height - minSize;
 				}
 				if (off < -ctop) {
 					off = -ctop;
@@ -358,13 +350,12 @@ app.controller('CanvasController',
 				if (!!top) {
 					off = top - ctop;
 				}
-				sChange.Y = off * display.sh / cv.height;
+				sChange.Y = off * display.sh / rcanvas.height;
 				
 				if (sChange.Y < -display.sy) {
 					if (display.sh - sChange.Y > image.mHeight) {
 						var sRes = display.sh - sChange.Y - image.mHeight;
 						var dr = sRes/image.mHeight;
-// 						scaleRatio = image.mHeight / (cv.height - off);
 						display.sx = display.sx + display.sw * dr/2;
 						display.sw -=  display.sw * dr;
 						display.sy = 0;
@@ -378,32 +369,30 @@ app.controller('CanvasController',
 					display.sy += sChange.Y; 
 					display.sh = Math.min(display.sh - sChange.Y, image.mHeight - display.sy);
 				}
-				cv.style.top = (ctop + off) +'px';
-				cv.height -= off;
+				rcanvas.top = ctop + off;
+				rcanvas.height -= off;
 				break;
 			
 			case 'B':
 				off = Math.floor(-Math.sin(Math.PI * angle / 180) * offset.X
 						+ Math.cos(Math.PI * angle / 180) * offset.Y); 
-// 				off = offset.Y;
-				if (off < -cv.height + minSize) {
-					off = -cv.height + minSize;
+				if (off < -rcanvas.height + minSize) {
+					off = -rcanvas.height + minSize;
 				}
-				if (off + cv.height + ctop > pheight) {
-					off = pheight - cv.height - ctop;
+				if (off + rcanvas.height + ctop > pheight) {
+					off = pheight - rcanvas.height - ctop;
 				}
-				bot = getCloseRef(ctop + off + cv.height, refs.vertical);
+				bot = getCloseRef(ctop + off + rcanvas.height, refs.vertical);
 				if (!!bot) {
-					off = bot - ctop - cv.height;
+					off = bot - ctop - rcanvas.height;
 				}
-				sChange.Y = off * display.sh / cv.height;
+				sChange.Y = off * display.sh / rcanvas.height;
 				
 				if (display.sh + display.sy + sChange.Y > image.mHeight) {
 					sChange.Y1 = image.mHeight - display.sh - display.sy;
 					if (sChange.Y - sChange.Y1 > display.sy) {
 						var sRes = sChange.Y - sChange.Y1 - display.sy;
 						var dr = sRes/image.mHeight;
-// 						scaleRatio = image.mHeight / (cv.height + off);
 						display.sx = display.sx + display.sw * dr/2;
 						display.sw -=  display.sw * dr;
 						display.sy = 0;
@@ -417,37 +406,31 @@ app.controller('CanvasController',
 				else {
 					display.sh = Math.min(display.sh + sChange.Y, image.mHeight - display.sy);
 				}
-				cv.height += off;
+				rcanvas.height += off;
 				break;
 
 			case 'TR':
-				redimension(cv, offset, 'T', refs);
-				redimension(cv, offset, 'R', refs);
+				redimension(rcanvas, offset, 'T', refs);
+				redimension(rcanvas, offset, 'R', refs);
 				break;
 			
 			case 'TL':
-				redimension(cv, offset, 'T', refs);
-				redimension(cv, offset, 'L', refs);
+				redimension(rcanvas, offset, 'T', refs);
+				redimension(rcanvas, offset, 'L', refs);
 				break;
 			
 			case 'BR':
-				redimension(cv, offset, 'B', refs);
-				redimension(cv, offset, 'R', refs);
+				redimension(rcanvas, offset, 'B', refs);
+				redimension(rcanvas, offset, 'R', refs);
 				break;
 
 			case 'BL':
-				redimension(cv, offset, 'B', refs);
-				redimension(cv, offset, 'L', refs);
+				redimension(rcanvas, offset, 'B', refs);
+				redimension(rcanvas, offset, 'L', refs);
 				break;
 		}
 	};
 	
-	function updateFrame() {
-		$scope.frame.canvas.width = 100 * canvas.width / $scope.pwidth;
-		$scope.frame.canvas.height = 100 * canvas.height / $scope.pheight;
-		$scope.frame.canvas.top = 100 * canvas.offsetTop / $scope.pheight;
-		$scope.frame.canvas.left = 100 * canvas.offsetLeft / $scope.pwidth;
-	};
 	
 	$scope.keyDown = function(evt) {
 		switch (evt.keyCode) {
@@ -472,10 +455,10 @@ app.controller('CanvasController',
 				ImgService.moveImage(canvas, $scope, 'down');
 				break;
 			case 46: //del
-				if (!!$scope.frame.image.src) {
-					ImgService.updateOldThumb($scope.frame.image.DbId);
+				if (!!frame.image.src) {
+					ImgService.updateOldThumb(frame.image.DbId);
 					$scope.img = new Image();
-					$scope.frame.image = {};
+					frame.image = {};
 					ImgService.resetFrame(canvas);
 				} else {
 					ImgService.delCanvas(canvas, $scope);
@@ -494,26 +477,20 @@ app.controller('CanvasController',
 		var data = evt.dataTransfer;
 		var name = data.getData('name');
 		if (name == 'image') {
-			if (!!$scope.frame.image.DbId) {
-				var oldDbId = $scope.frame.image.DbId;
+			if (frame.image.DbId) {
+				var oldDbId = frame.image.DbId;
 				ImgService.updateOldThumb(oldDbId);
 			}
 			$scope.img.src = data.getData('URL');
-		//update information for image in storage
-			$scope.frame.image.src = data.getData('URL');
-			$scope.frame.image.mHeight = parseInt(data.getData('mHeight'));
-			$scope.frame.image.mWidth = parseInt(data.getData('mWidth'));
+			frame.image.src = data.getData('URL');
+			frame.image.mHeight = parseInt(data.getData('mHeight'));
+			frame.image.mWidth = parseInt(data.getData('mWidth'));
 			var DbId = parseInt(data.getData('DbId'));
-			$scope.frame.image.DbId = DbId;
-			$scope.frame.image.ratio = parseFloat(data.getData('ratio'));
-		//then draw image
+			frame.image.DbId = DbId;
+			frame.image.ratio = parseFloat(data.getData('ratio'));
 			firstDrawImage();
 			canvasFocus();
-			$scope.$parent.activate();
 			updateNewThumb(DbId);
-		}
-		if (name == 'exchange') {
-			console.log('exchanged');
 		}
 	};
 	
@@ -522,12 +499,6 @@ app.controller('CanvasController',
 		usedCheck.innerHTML = parseInt(usedCheck.innerHTML||0) + 1; 
 		usedCheck.style.display = 'inline-block';
 	}
-	
-	
-	
-	$scope.canvasFocus = function() {
-		canvasFocus();
-	};
 	
 	function canvasBlurHandle(event) {
 		var el = angular.element(event.target);
@@ -539,7 +510,7 @@ app.controller('CanvasController',
 			DOMService.deactivate('cActive');
 			$scope.current.onEditImage = false;
 			if (!!$scope.img.src) {
-				drawImage(canvas, $scope.img, display, $scope.frame.image.ratio, $scope.pageRatio);
+				drawImage(canvas, $scope.img, display, frame.image.ratio, $scope.pageRatio);
 			} else {
 				ImgService.resetFrame(canvas);
 			}
