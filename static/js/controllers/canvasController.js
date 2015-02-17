@@ -42,11 +42,12 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		}
 	}
 	function initCanvas(){
-		$scope.rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
-		canvas.width = $scope.rcanvas.width;
-		canvas.height = $scope.rcanvas.height;
-		canvas.style.left = $scope.rcanvas.left + 'px';
-		canvas.style.top = $scope.rcanvas.top + 'px';
+		var rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
+		$scope.rcanvas = rcanvas;
+		canvas.width = rcanvas.width;
+		canvas.height = rcanvas.height;
+		canvas.style.left = rcanvas.left + 'px';
+		canvas.style.top = rcanvas.top + 'px';
 		frame.layer = frame.layer || 10;
 		frame.angle = frame.angle || 0;
 		if (frame.border && frame.border.color && frame.border.thickness) {
