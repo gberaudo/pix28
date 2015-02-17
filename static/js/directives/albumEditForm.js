@@ -5,6 +5,7 @@ app.directive('albumEditForm', ['$timeout', function($timeout) {
 		scope: {
 			model: '=albumModel',
 			fieldName: '@',
+			title: '@',
 			maxlength: '@',
 			required: '@',
 			placeholder: '@message',
@@ -12,7 +13,9 @@ app.directive('albumEditForm', ['$timeout', function($timeout) {
 		},
 		templateUrl: 'static/partials/albumEditForm.html',
 		link: function(scope, elem) {
-			scope.inEdit = !scope.model[scope.fieldName];
+			scope.$watch(function() {return scope.model[scope.fieldName]}, function() {
+				scope.inEdit = !scope.model[scope.fieldName];
+			});
 			scope.submit = function() {
 				scope.inEdit = !scope.model[scope.fieldName];
 			};
@@ -22,7 +25,7 @@ app.directive('albumEditForm', ['$timeout', function($timeout) {
 			scope.edit = function() {
 				scope.inEdit = true;
 				$timeout(function() {
-					document.getElementsByName('input')[0].focus();
+					elem.find('input')[0].focus();
 				});
 			};
 		}
