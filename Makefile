@@ -1,7 +1,7 @@
 CLOSURE_UTIL_PATH := closure-util
 CLOSURE_LIBRARY_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getLibraryPath())' 2> /dev/null)
 CLOSURE_COMPILER_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getCompilerPath())' 2> /dev/null)
-APP_JS_FILES = $(shell sed '/$$else/,/html/d' dist/templates/index.html | grep js\' | grep -v lib | cut -d"'" -f2)
+APP_JS_FILES = $(shell sed '/$$else/,/html/d' templates/index.html | grep js\' | grep -v lib | cut -d"'" -f2)
 APP_HTML_FILES := $(shell find templates -type f -name '*.html')
 LIB_DIR := static/lib
 
@@ -48,10 +48,6 @@ cleanall: clean
 
 .PHONY: compile-catalog
 compile-catalog: static/build/locale/fr/album.json static/build/locale/en/album.json static/build/locale/vi/album.json
-
-.PHONY: couloux
-couloux:
-	sed '/$$else/,/html/d' dist/templates/index.html | grep js\' | grep -v lib | cut -d"'" -f2
 
 .PHONY: dist
 dist: build
@@ -124,7 +120,7 @@ static/build/locale/%/album.json: locale/%/LC_MESSAGES/album-client.po
 	touch $@
 
 .build/gjslint.timestamp: $(APP_JS_FILES)
-	.build/venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=event,fires,function,classdesc,api,observable $?
+	.build/venv/bin/gjslint --disable 0005,0130,0131 --max_line_length 130 $?
 	touch $@
 
 .build/jshint.timestamp: $(APP_JS_FILES)
