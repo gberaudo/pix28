@@ -176,34 +176,12 @@ app.controller('AlbumController',
 		} else {
 			modelPage = $scope.current.leftPage;
 		}
-
-		color = modelPage.background || '';
-		pattern.name = modelPage.patternName || '';
-		pattern.URL72 = modelPage.patternURL || '';
-		pattern.URL300 = modelPage.patternURL300 || '';
-		pattern.width = modelPage.patternWidth || '';
-		pattern.height = modelPage.patternHeight || '';
-		
 		var page1 = makeRandomPage($scope.layoutList);
-		page1.background = color
-		page1.patternName = pattern.name;
-		page1.patternURL = pattern.URL72;
-		page1.patternURL300 = pattern.URL300;
-		page1.patternWidth = pattern.width;
-		page1.patternHeight = pattern.height;
-		page1.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%' || undefined;
-// 		
 		var page2 = makeRandomPage($scope.layoutList);
-		page2.background = color;
-		page2.patternName = pattern.name;
-		page2.patternURL = pattern.URL72;
-		page2.patternURL300 = pattern.URL300;
-		page2.patternWidth = pattern.width;
-		page2.patternHeight = pattern.height;
-		page2.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%' || undefined;
-// 		
-		
-		 //insert a new page to the album
+		setPageDefault(page1, modelPage);
+		setPageDefault(page2, modelPage);
+		page1.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%';
+		page2.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%';
 		if ($scope.current.pageNum < content.length) {
 			content.splice($scope.current.pageNum + 1, 0, page1, page2);
 			$scope.current.leftPage = page1;
@@ -216,6 +194,14 @@ app.controller('AlbumController',
 		}
 		updateView('next');
 	};
+
+	function setPageDefault(page, modelPage) {
+		var props = ['background', 'patternName', 'patternURL',
+			'patternURL300', 'patternWidth', 'patternHeight'];
+		props.forEach(function(prop) {
+			page[prop] = modelPage[prop] || '';
+		});
+	}
 
 	function activate(id) {
 		var active = angular.element(document.getElementsByClassName('pActive')[0])||null;
