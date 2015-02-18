@@ -19,30 +19,8 @@
 			'background-size': current[page].patternSize
 			}">
 
-	<album-frame ng-repeat= 'frame in current[page].frames'
-		pwidth = 'pwidth' pheight = 'pheight'
-		frame = 'frame' current = 'current'></album-frame>
+	<album-frame ng-repeat= 'frame in current[page].frames'></album-frame>
 	<album-text-box ng-repeat = 'textBox in current[page].textBoxes'></album-text-box>
-	
-<!--	<div ng-repeat = 'textBox in current[page].textBoxes' 
-			ng-controller = 'TextBoxController'
-				class = 'tbContainer ref'>
-			<textarea name = 'textbox'
-					placeholder = '{{"Enter text here"| translate}}'
-					ng-style = '{cursor: current.cursor}'
-					title = '{{"Ctrl+Del to delete. Ctrl + arrows to move it around. Drag the bottom-right corner to redimension."|translate}}'
-					ng-model = 'textBox.text'
-					ng-mousedown = 'mouseDown(\$event)'
-					ng-mousemove = 'mouseMove(\$event)'
-					ondrop = 'angular.element(this).scope().dropInTA(event)'
-					ng-keyup = 'autoResize(\$event)'
-					ng-keydown = 'keyDown(\$event)'>
-			</textarea>
-			<span  ng-show = 'active'
-				class = 'textHandle-br fa fa-arrows-h'></span>
-			<span ng-show = 'active' 
-				class = 'textHandle-tl fa fa-arrows'></span>
-	</div>-->
 	
 	<svg id = 'refTop' style = 'top: {{current.top + "px"}}'
 		ng-show = 'current.showTopLine'>
