@@ -16,8 +16,6 @@ app.controller('TextBoxController',
 		DOMService.activate($scope.textArea, 'tActive');
 	
 		$scope.current.font.color = $scope.textArea.style.color;
-// 		$scope.current.font.weight = style.fontWeight;
-// 		$scope.current.font.style = style.fontStyle;
 		$scope.current.font.size = $scope.textBox.font.size;
 		$scope.current.font.family = style.fontFamily;
 		$scope.$parent.activate();
@@ -27,17 +25,15 @@ app.controller('TextBoxController',
 		$scope.$watch('textArea.value', function(newValue, oldValue) {
 				var innerHTML = $scope.textArea.value.replace(/\n\r?/g, '<br />');
 				previewText.innerHTML = innerHTML;
-				previewText.style.fontFamily = $scope.current.font.family;
-				previewText.style.fontSize = $scope.current.font.size + 'px';
-				previewText.style.color = $scope.current.font.color;
 		});
 		document.addEventListener('mousedown', textboxBlurHandle, true);
 	}
 		
 	
 	Init.initTextArea(TAcontainer, $scope.textArea, $scope.textBox, $scope);
+	$scope.mousePos = {};
 	if ($scope.current.datumWithFocus === $scope.textBox) {
-		$scope.textBox.font.size = $scope.current.font.size ||24;
+		$scope.textBox.font.size = $scope.current.font.size || 24;
 		$scope.textArea.style.fontSize = $scope.textBox.font.size * $scope.pwidth / $scope.pdfWidth + 'px';
  		$scope.current.datumWithFocus = undefined;
 		activateTA();
@@ -65,16 +61,10 @@ app.controller('TextBoxController',
 		}
 	});
 	
-
-	$scope.textFocus = function(event) {
-		activateTA();
-	};
-	
-
 	function textboxBlurHandle(event) {
 		var el = angular.element(event.target);
-		if (Misc.ancestorHasClass(el, 6, 'controls')
-			|| Misc.ancestorHasClass(el, 6, 'previewText')
+		if (Misc.ancestorHasClass(el, 8, 'controls')
+			|| Misc.ancestorHasClass(el, 8, 'previewText')
 			||(el.scope() == $scope)) {
 			return;
 		} else {
@@ -112,8 +102,10 @@ app.controller('TextBoxController',
 	resetZone();
 	
 	$scope.mouseDown = function(event) {
-		$scope.current.mouseIsUp = false;
+		activateTA();
 		var mouseRtTA = {X: event.layerX, Y: event.layerY};
+		$scope.mousePos = {X: event.pageX, Y: event.pageY};
+
 		if (Misc.inRect(mouseRtTA, $scope.TAZone.TL)) {
 			$scope.current.cursor = 'move';
 			drag.all = true;
@@ -126,30 +118,47 @@ app.controller('TextBoxController',
 			drag.all = false;
 			drag.BR = false;
 		}
-	};
-	
-	$scope.$watch('current.mousePos', function(newValue, oldValue) {
-// 		if (newValue != oldValue) {
-			offsetX = newValue.X - oldValue.X;
-			offsetY = newValue.Y - oldValue.Y;
-			if (!!drag.all & !$scope.current.mouseIsUp) {
-				moveText('horizontal', offsetX);
-				moveText('vertical', offsetY);
+
+		var mousePosWatch = $scope.$watch('mousePos', function(newValue, oldValue) {
+			var offset = {
+				X: newValue.X - oldValue.X,
+				Y: newValue.Y - oldValue.Y
+			};
+			if (drag.all) {
+				moveText('horizontal', offset.X);
+				moveText('vertical', offset.Y);
 				resetZone();
-			} else if (!!drag.BR & !$scope.current.mouseIsUp) {
+			} else if (drag.BR) {
 				var angle = $scope.textBox.angle || 0;
-				var offX = Math.cos(Math.PI * angle / 180) * offsetX
-						+ Math.sin(Math.PI * angle / 180) * offsetY; 
-				var offY = -Math.sin(Math.PI * angle / 180) * offsetX
-						+ Math.cos(Math.PI * angle / 180) * offsetY; 
+				var offX = Math.cos(Math.PI * angle / 180) * offset.X
+						+ Math.sin(Math.PI * angle / 180) * offset.Y; 
+				var offY = -Math.sin(Math.PI * angle / 180) * offset.X
+						+ Math.cos(Math.PI * angle / 180) * offset.Y; 
 				window.requestAnimationFrame(function() {
 					resizeText('horizontal', offX);
 					resizeText('vertical', offY);
 					resetZone();
 				});
 			}
-// 		}
-	});
+		});
+		document.addEventListener('mousemove', mouseMoveHandle, true);
+		document.addEventListener('mouseup', mouseUpHandle, true);
+
+		function mouseMoveHandle(evt) {
+			$scope.mousePos= {X: evt.pageX, Y: evt.pageY};
+		}
+
+		function mouseUpHandle(ev) {
+			mousePosWatch();
+			for (anchor in drag) {
+				drag[anchor] = false;
+			}
+			document.removeEventListener('mouseup', mouseUpHandle, true);
+			document.removeEventListener('mousemove', mouseMoveHandle, true);
+		}
+	};
+
+
 	
 	function resizeText(para, offset) {
 		 var pheight = $scope.pheight,
@@ -188,13 +197,7 @@ app.controller('TextBoxController',
 		}
 		Misc.abs2perCent(box, pwidth, pheight, DBbox);
 	}
-	$scope.$watch('current.mouseIsUp', function() {
-		if ($scope.current.mouseIsUp) {
-			drag.all = false;
-			drag.BR = false;
-		}
-	});
-	
+
 	$scope.mouseMove = function(event) {
 		var mouseRtTA = {X: event.layerX, Y: event.layerY};
 		resetZone();
@@ -260,7 +263,7 @@ app.controller('TextBoxController',
 // 				}
 				box.top += offset;
 				TAcontainer.style.top = box.top + "px";
-				break;	
+				break;
 		}
 		Misc.abs2perCent(box, pwidth, pheight, DBbox);
 		};
@@ -273,6 +276,5 @@ app.controller('TextBoxController',
 	
 	$scope.dropInTA = function(event) {
 		event.preventDefault();
-		activateTA();
 	};
 }]);
