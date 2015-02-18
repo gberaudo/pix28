@@ -1,7 +1,5 @@
-app.controller('TextBoxController',
-    ['$scope', '$element', '$timeout', 'Init', 'Misc', 'DOMService',
-    function($scope, $element, $timeout,Init, Misc, DOMService) {
- 	$scope.textArea = $element[0].children[0]; //the current textarea DOM element
+function textBoxController($scope, $element, $timeout,Init, Misc, DOMService) {
+ 	$scope.textArea = $element[0].children[0];
 	var TAcontainer = $element[0];
  	var previewText = document.getElementById('previewText');
 	
@@ -273,8 +271,6 @@ app.controller('TextBoxController',
 		$scope.current[page].textBoxes.splice($scope.$index,1);
 		previewText.style.display = 'none';
 	};
-	
-	$scope.dropInTA = function(event) {
-		event.preventDefault();
-	};
-}]);
+}
+textBoxController.$inject = ['$scope', '$element', '$timeout', 'Init', 'Misc', 'DOMService'];
+
