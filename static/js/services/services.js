@@ -78,11 +78,11 @@ app.factory('FrameObject', function() {
 /*------------------------------------------------------*/
 
 app.service('Init', ['gettextCatalog', function(gettextCatalog) {
-	this.initTextArea = function(div, textArea, textBox, $scope) {
-		div.style.height = textArea.style.height = Math.floor(textBox.box.height * $scope.pheight/100) + "px";
-		div.style.width = textArea.style.width = Math.floor(textBox.box.width * $scope.pwidth/100) + "px";
-		div.style.top = Math.floor(textBox.box.top * $scope.pheight/100) + "px";
-		div.style.left = Math.floor(textBox.box.left * $scope.pwidth/100) + "px";
+	this.initTextArea = function(div, textArea, textBox, measure) {
+		div.style.height = textArea.style.height = Math.floor(textBox.box.height * measure.pheight/100) + "px";
+		div.style.width = textArea.style.width = Math.floor(textBox.box.width * measure.pwidth/100) + "px";
+		div.style.top = Math.floor(textBox.box.top * measure.pheight/100) + "px";
+		div.style.left = Math.floor(textBox.box.left * measure.pwidth/100) + "px";
 		textBox.layer = textBox.layer || 15;
 		div.style.zIndex = textBox.layer;
 		textArea.style.color = textBox.font.color;
@@ -90,7 +90,7 @@ app.service('Init', ['gettextCatalog', function(gettextCatalog) {
 // 		textArea.style.fontWeight = textBox.font.weight;
 // 		textArea.style.fontStyle = textBox.font.style;
 		var size = textBox.font.size || 24;
-		textArea.style.fontSize = (size * $scope.pwidth/$scope.pdfWidth) + 'px';
+		textArea.style.fontSize = (size * measure.pwidth/measure.pdfWidth) + 'px';
 		textArea.style.textAlign = textBox.align;
 		if (!!textBox.angle) {
 			textArea.parentNode.style.transform = 'rotate(' + textBox.angle + 'deg)';

@@ -5,9 +5,10 @@
 function canvasController($scope, $element, $timeout, FrameObject, ImgService, Misc, DOMService) {
 	var display = $scope.frame.display;
 	var frame = $scope.frame;
-	var pwidth = $scope.pwidth;
-	var pheight = $scope.pheight;
-	var pageRatio = $scope.pageRatio;
+	var measure = $scope.measure;
+	var pwidth = measure.pwidth;
+	var pheight = measure.pheight;
+	var pageRatio = measure.pageRatio;
 	
 
 	var drawImage = ImgService.drawImage;
@@ -61,7 +62,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		if (frame.image.src) {
 			$scope.img.onload = function() {
 				drawImage(canvas, $scope.img, display,
-							frame.image.ratio, $scope.pageRatio);
+							frame.image.ratio, measure.pageRatio);
 			};
 			$scope.img.src = frame.image.src;
 		} else {
@@ -87,12 +88,12 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 				display.sx = Math.max((image.mWidth - display.sw) / 2, 0);
 				display.sy = 0;
 			}
-			drawImage(canvas, $scope.img, display, frame.image.ratio, $scope.pageRatio);
+			drawImage(canvas, $scope.img, display, frame.image.ratio, measure.pageRatio);
 		}
 	};
 
 	function redrawImage() {
-		drawImage(canvas, $scope.img, display, frame.image.ratio, $scope.pageRatio);
+		drawImage(canvas, $scope.img, display, frame.image.ratio, measure.pageRatio);
 		ImgService.drawAnchors(canvas);
 	};
 
@@ -130,13 +131,13 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 						}
 						if ($scope.img.src) {
 							drawImage(canvas, $scope.img, display,
-										frame.image.ratio, $scope.pageRatio );
+										frame.image.ratio, measure.pageRatio );
 						} else {
 							ImgService.resetFrame(canvas);
 						}
 						ImgService.drawAnchors(canvas);
 						Misc.resetZone($scope.canvasZone, $scope.rcanvas.width, $scope.rcanvas.height);
-						frame.canvas = Misc.abs2perCent($scope.rcanvas, $scope.pwidth, $scope.pheight);
+						frame.canvas = Misc.abs2perCent($scope.rcanvas, measure.pwidth, measure.pheight);
 					});
 					break;
 				}
@@ -200,7 +201,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 			} else {
 				display.sy += sChangeY;
 			}
-			drawImage(canvas, $scope.img, display, image.ratio, $scope.pageRatio);
+			drawImage(canvas, $scope.img, display, image.ratio, measure.pageRatio);
 			ImgService.drawAnchors(canvas);
 		}
 	}
@@ -512,7 +513,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 			DOMService.deactivate('cActive');
 			$scope.current.onEditImage = false;
 			if (!!$scope.img.src) {
-				drawImage(canvas, $scope.img, display, frame.image.ratio, $scope.pageRatio);
+				drawImage(canvas, $scope.img, display, frame.image.ratio, measure.pageRatio);
 			} else {
 				ImgService.resetFrame(canvas);
 			}

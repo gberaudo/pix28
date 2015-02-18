@@ -23,7 +23,20 @@
 			{{current.pageNum + 1}}/{{album.content.length}}
 		</span>
 
-		<div ng-include = '"templates/albumPage.html"'></div>
+		
+		<album-page id = 'leftPage'
+				album-model = 'current.leftPage'
+				measure = 'measure'
+				current = 'current'
+				show = 'show.leftPage'></album-page>
+		<album-page id = 'rightPage'
+				album-model = 'current.rightPage'
+				measure = 'measure'
+				current = 'current'
+				show = 'show.rightPage'></album-page>
+
+				
+<!-- 		<div ng-include = '"templates/albumPage.html"'></div> -->
 		
 		<div id = 'controls'
 			ng-mousedown = 'controlsMouseDown()'

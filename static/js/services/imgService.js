@@ -125,7 +125,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	};
 	
 	this.delCanvas = function(el, $scope) {
-		$scope.current[el.parentNode.id].frames.splice($scope.$index,1);
+		$scope.page.frames.splice($scope.$index,1);
 	};
 
 	this.computeZoomedDisplay = function(canvas, image, display, rate) {

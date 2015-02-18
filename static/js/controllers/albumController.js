@@ -14,6 +14,7 @@ app.controller('AlbumController',
 	
 	function init() {
 		$scope.album = {};
+		$scope.measure = {};
 		$scope.current.font = {size: 24, family: 'UVNTinTuc_R'};
 		$scope.show = {};
 
@@ -49,6 +50,7 @@ app.controller('AlbumController',
 	$scope.createAlbum = function(width, height) {
 	
 		DBServices.addAlbum().then(function(id) {
+			var measure = $scope.measure;
 			var album = $scope.album;
 			var date = new Date();
 			var options = {year: 'numeric', month: 'short', day: 'numeric' };
@@ -57,17 +59,17 @@ app.controller('AlbumController',
 			$scope.current.showHome = false;
 			album.date = date.toLocaleString($scope.userInfo.lang, options);
 			if (width > height) {
-				$scope.pwidth = $scope.maxSize;
-				$scope.pheight = height * $scope.pwidth / width;
+				measure.pwidth = $scope.maxSize;
+				measure.pheight = height * measure.pwidth / width;
 			} else {
-				$scope.pheight = $scope.maxSize;
-				$scope.pwidth = width * $scope.pheight / height;
+				measure.pheight = $scope.maxSize;
+				measure.pwidth = width * measure.pheight / height;
 			}
-			album.width = $scope.pdfWidth = width;
-			album.height = $scope.pdfHeight = height;
-			$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
-			$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72) / 10
-				+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72) / 10 + 'cm';
+			album.width = measure.pdfWidth = width;
+			album.height = measure.pdfHeight = height;
+			measure.pageRatio = measure.pdfWidth/measure.pwidth;
+			$scope.albumFormat = Math.round(25.4 * measure.pdfHeight / 72) / 10
+				+ 'cm x ' + Math.round(25.4 * measure.pdfWidth / 72) / 10 + 'cm';
 			
 			makeRandomAlbum(album, 20);
 			
@@ -79,7 +81,7 @@ app.controller('AlbumController',
 			$scope.albumSCs.push($scope.currentAlbumSC);
 			$timeout(function() {
 				var doublePage = document.getElementById('doublepage');
-				$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
+				$scope.pageTop = (doublePage.offsetHeight - measure.pheight) / 2 + 'px';
 				document.getElementById('titleInput').focus();
 			}, 20);
 			setUpdateAlbum();
@@ -127,24 +129,25 @@ app.controller('AlbumController',
 	};
 	
 	$scope.openAlbum = function(albumSC) {
+		var measure = $scope.measure;
 		$scope.currentAlbumSC = albumSC;
 		DBServices.getAlbum(albumSC.id).then(function(result) {
 			var width, height;
 			$scope.album = result;
 			width = $scope.album.width;
 			height = $scope.album.height;
-			$scope.pdfWidth = width;
-			$scope.pdfHeight = height;
+			measure.pdfWidth = width;
+			measure.pdfHeight = height;
 			if (width > height) {
-				$scope.pwidth = $scope.maxSize;
-				$scope.pheight = height * $scope.pwidth / width;
+				measure.pwidth = $scope.maxSize;
+				measure.pheight = height * measure.pwidth / width;
 			} else {
-				$scope.pheight = $scope.maxSize;
-				$scope.pwidth = width * $scope.pheight / height;
+				measure.pheight = $scope.maxSize;
+				measure.pwidth = width * measure.pheight / height;
 			}
-			$scope.pageRatio = $scope.pdfWidth/$scope.pwidth;
-			$scope.albumFormat = Math.round(25.4 * $scope.pdfHeight / 72)/10
-				+ 'cm x ' + Math.round(25.4 * $scope.pdfWidth / 72)/10 + 'cm';
+			measure.pageRatio = measure.pdfWidth/measure.pwidth;
+			$scope.albumFormat = Math.round(25.4 * measure.pdfHeight / 72)/10
+				+ 'cm x ' + Math.round(25.4 * measure.pdfWidth / 72)/10 + 'cm';
 			$scope.current.rightPage = $scope.album.content[0];
 			$scope.current.showHome = false;
 			$scope.current.showAlbums = false;
@@ -153,7 +156,7 @@ app.controller('AlbumController',
 			$scope.current.inAlbum = true;
 			$timeout(function() {
 				var doublePage = document.getElementById('doublepage');
-				$scope.pageTop = (doublePage.offsetHeight - $scope.pheight) / 2 + 'px';
+				$scope.pageTop = (doublePage.offsetHeight - measure.pheight) / 2 + 'px';
 			}, 20);
 			updateView('prev');
 			setUpdateAlbum();
@@ -162,6 +165,7 @@ app.controller('AlbumController',
 	
 	
 	$scope.addNewPage = function (){
+		var measure = $scope.measure;
 		var color, modelPage;
 		var content = $scope.album.content;
 		if ($scope.current.pageNum < content.length) {
@@ -173,8 +177,8 @@ app.controller('AlbumController',
 		var page2 = makeRandomPage($scope.layoutList);
 		setPageDefault(page1, modelPage);
 		setPageDefault(page2, modelPage);
-		page1.patternSize = Math.floor(page1.patternWidth / $scope.pdfWidth * 100) + '%';
-		page2.patternSize = Math.floor(page2.patternWidth / $scope.pdfWidth * 100) + '%';
+		page1.patternSize = Math.floor(page1.patternWidth / measure.pdfWidth * 100) + '%';
+		page2.patternSize = Math.floor(page2.patternWidth / measure.pdfWidth * 100) + '%';
 		if ($scope.current.pageNum < content.length) {
 			content.splice($scope.current.pageNum + 1, 0, page1, page2);
 			$scope.current.leftPage = page1;

@@ -27,12 +27,12 @@ function textBoxController($scope, $element, $timeout,Init, Misc, DOMService) {
 		document.addEventListener('mousedown', textboxBlurHandle, true);
 	}
 		
-	
-	Init.initTextArea(TAcontainer, $scope.textArea, $scope.textBox, $scope);
+	var measure = $scope.measure;
+	Init.initTextArea(TAcontainer, $scope.textArea, $scope.textBox, measure);
 	$scope.mousePos = {};
 	if ($scope.current.datumWithFocus === $scope.textBox) {
 		$scope.textBox.font.size = $scope.current.font.size || 24;
-		$scope.textArea.style.fontSize = $scope.textBox.font.size * $scope.pwidth / $scope.pdfWidth + 'px';
+		$scope.textArea.style.fontSize = $scope.textBox.font.size * measure.pwidth / measure.pdfWidth + 'px';
  		$scope.current.datumWithFocus = undefined;
 		activateTA();
 	}
@@ -42,7 +42,7 @@ function textBoxController($scope, $element, $timeout,Init, Misc, DOMService) {
 		if (newValue != oldValue && $scope.textBox.text) {
 			var textArea = $scope.textArea,
 				box = $scope.textBox.box,
-				pheight = $scope.pheight,
+				pheight = measure.pheight,
 				marginY = Math.floor(0.02 * pheight);
 				
 			if (textArea.scrollHeight > pheight - 2 * marginY) {
@@ -156,15 +156,13 @@ function textBoxController($scope, $element, $timeout,Init, Misc, DOMService) {
 		}
 	};
 
-
-	
 	function resizeText(para, offset) {
-		 var pheight = $scope.pheight,
-			pwidth= $scope.pwidth,
+		 var pheight = measure.pheight,
+			pwidth= measure.pwidth,
 			DBbox = $scope.textBox.box,
 			textArea = $scope.textArea,
-			marginX = 0.02 * $scope.pwidth,
-			marginY = 0.02 * $scope.pheight,
+			marginX = 0.02 * measure.pwidth,
+			marginY = 0.02 * measure.pheight,
 			minWidth = 50,
 			minHeight = 30;
 		
@@ -233,8 +231,8 @@ function textBoxController($scope, $element, $timeout,Init, Misc, DOMService) {
 	};
 	
 	function moveText(para, offset) {
-		var pwidth = $scope.pwidth,
-			pheight = $scope.pheight,
+		var pwidth = measure.pwidth,
+			pheight = measure.pheight,
 			DBbox = $scope.textBox.box,
 			box =  Misc.perCent2Abs(DBbox, pwidth, pheight);
 		var marginX = pwidth / 50,
@@ -267,8 +265,7 @@ function textBoxController($scope, $element, $timeout,Init, Misc, DOMService) {
 		};
 	
 	function removeTextArea(el) {
-		var page = el.parentNode.parentNode.id;
-		$scope.current[page].textBoxes.splice($scope.$index,1);
+		$scope.page.textBoxes.splice($scope.$index,1);
 		previewText.style.display = 'none';
 	};
 }

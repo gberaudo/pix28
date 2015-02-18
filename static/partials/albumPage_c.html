@@ -1,0 +1,23 @@
+<div id = '{{id}}'
+		class = '{{id}} page'
+		ng-click = 'pageFocus($event)'
+		ng-show = 'show'
+		ng-style = "{
+			width: measure.pwidth + 'px',
+		   height: measure.pheight + 'px',
+			top: pageTop,
+			'background-color': page.background,
+			'background-image': 'url(' + page.patternURL + ')',
+			'background-size': page.patternSize
+			}">
+
+	<album-frame ng-repeat= 'frame in page.frames'></album-frame>
+	<album-text-box ng-repeat = 'textBox in page.textBoxes'></album-text-box>
+
+	<album-ref-line ref = 'top'></album-ref-line>
+	<album-ref-line ref = 'bot'></album-ref-line>
+	<album-ref-line ref = 'left'></album-ref-line>
+	<album-ref-line ref = 'right'></album-ref-line>
+	<!--<span ng-bind = 'pageMessage[page]'
+		class = 'pageMessage'></span>-->
+</div>

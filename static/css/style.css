@@ -66,7 +66,7 @@
 	height: 73%;
 }
 
-#leftPage {
+.leftPage {
 	position: absolute;
 	right: 50%; 
 	/*top: 50%;
@@ -77,7 +77,7 @@
 	background-color: #FFFFFF;
 }
 
-#rightPage {
+.rightPage {
 	position: absolute;
 	left: 50.2%; 
 	top: 11%;
