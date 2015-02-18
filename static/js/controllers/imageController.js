@@ -6,7 +6,7 @@ app.controller('ImageController',
 		var canvas = document.getElementsByClassName('cActive')[0];
 		var scope = angular.element(canvas).scope();
 		var intervalPromise = $interval(function() {
-			ImgService.zoomImage(canvas, scope, para);
+			ImgService.zoomImage(canvas, scope.img, scope.frame, para);
 		}, 20);
 		document.addEventListener('mouseup', handleMouseUp, true);
 		function handleMouseUp() {

@@ -152,11 +152,10 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
                 display.sh = Math.min(display.sw * canvasProp, image.mHeight - display.sy);
 	}
 
-	this.zoomImage = function(canvas, scope, para) {
+	this.zoomImage = function(canvas, img, frame, para, pageRatio) {
 		var rate = 1.01,
-		img = scope.img,
-		image = scope.frame.image,
-		display = scope.frame.display;
+		image = frame.image,
+		display = frame.display;
 
                 if (para == 'in') {
                         this.computeZoomedDisplay(canvas, image, display, 1/rate);
@@ -165,7 +164,7 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
                         this.computeZoomedDisplay(canvas, image, display, rate);
                 }
 
-		drawImage(canvas, img, display, image.ratio, scope.pageRatio);
+		drawImage(canvas, img, display, image.ratio, pageRatio);
                 drawAnchors(canvas);
 	};
 

@@ -7,6 +7,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 	var frame = $scope.frame;
 	var pwidth = $scope.pwidth;
 	var pheight = $scope.pheight;
+	var pageRatio = $scope.pageRatio;
 	
 
 	var drawImage = ImgService.drawImage;
@@ -437,11 +438,11 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		switch (evt.keyCode) {
 			case 61: // key + 
 			case 187:
-				ImgService.zoomImage(canvas, $scope, 'in');
+				ImgService.zoomImage(canvas, $scope.img, frame, pageRatio, 'in');
 				break;
 			case 173: // key -
 			case 189:
-				ImgService.zoomImage(canvas, $scope, 'out');
+				ImgService.zoomImage(canvas, $scope.img, frame, pageRatio, 'out');
 				break;
 			case 37: //key left
 				ImgService.moveImage(canvas, $scope, 'left');

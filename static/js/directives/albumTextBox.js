@@ -5,10 +5,9 @@ app.directive('albumTextBox', [function() {
 		templateUrl: 'static/partials/albumTextBox.html',
 		controller: textBoxController,
 		link: function(scope, elem) {
-			elem.on('drop', dropHandle);
-			function dropHandle(ev) {
+			elem.on('drop', function(ev) {
 				ev.preventDefault();
-			}
+			});
 		}
 	}
 }]);

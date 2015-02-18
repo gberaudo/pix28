@@ -4,12 +4,6 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 	return {
 		restrict: 'EA',
 		replace: true,
-		scope: {
-			frame: '=',
-			current: '=',
-			pwidth: '=',
-			pheight: '='
-		},
 		controller: canvasController,
 		templateUrl: 'static/partials/albumFrame.html',
 		link: function(scope, elem) {
