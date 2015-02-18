@@ -236,45 +236,45 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 	
 	this.getRefLines = getRefLines;
 	
-	this.showRefLines = function(box, refs, current) {
+	this.showRefLines = function(box, refs, refLines) {
 		if (Misc.InList(box.offsetTop, refs.vertical)) {
-			current.top = box.offsetTop;
-			current.showTopLine = true;
+			refLines.top = box.offsetTop;
+			refLines.show.top = true;
 			$timeout(function() {
-				current.showTopLine = false;
+				refLines.show.top = false;
 			}, 1500);
 		} else {
-			current.showTopLine = false;
+			refLines.show.top = false;
 		}
 		
 		if (Misc.InList(box.offsetTop + box.offsetHeight, refs.vertical)) {
-			current.bot = box.offsetTop + box.offsetHeight;
-			current.showBotLine = true;
+			refLines.bot = box.offsetTop + box.offsetHeight;
+			refLines.show.bot = true;
 			$timeout(function() {
-				current.showBotLine = false;
+				refLines.show.bot = false;
 			}, 2000);
 		} else {
-			current.showBotLine = false;
+			refLines.show.bot = false;
 		}
 		
 		if (Misc.InList(box.offsetLeft, refs.horizontal)) {
-			current.left = box.offsetLeft;
-			current.showLeftLine = true;
+			refLines.left = box.offsetLeft;
+			refLines.show.left = true;
 			$timeout(function() {
-				current.showLeftLine = false;
+				refLines.show.left = false;
 			}, 1500);
 		} else {
-			current.showLeftLine = false;
+			refLines.show.left = false;
 		}
 		
 		if (Misc.InList(box.offsetLeft + box.offsetWidth, refs.horizontal)) {
-			current.right = box.offsetLeft + box.offsetWidth;
-			current.showRightLine = true;
+			refLines.right = box.offsetLeft + box.offsetWidth;
+			refLines.show.right = true;
 			$timeout(function() {
-				current.showRightLine = false;
+				refLines.show.right = false;
 			}, 1500);
 		} else {
-			current.showRightLine = false;
+			refLines.show.right = false;
 		}
 	};
 	this.updateOldThumb= function(DbId) {

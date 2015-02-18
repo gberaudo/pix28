@@ -8,6 +8,7 @@ app.controller('PageController',
 		page.style.width = $scope.pageWidth;
 		page.style.height = $scope.pageHeight;
 		page.style.backgroundColor = color;
+		$scope.refLines = {show: {}};
 	})();
 	
 	$scope.activate = function() {
