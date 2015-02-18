@@ -21,37 +21,11 @@
 
 	<album-frame ng-repeat= 'frame in current[page].frames'></album-frame>
 	<album-text-box ng-repeat = 'textBox in current[page].textBoxes'></album-text-box>
-	
-	<svg id = 'refTop' style = 'top: {{current.top + "px"}}'
-		ng-show = 'current.showTopLine'>
-		<line x1 = '0' y1 = '0' 
-			ng-attr-x2 = '{{pwidth}}' y2 = '0' 
-			class = 'refLine'>
-		</line>
-	</svg>
-	
-	<svg id = 'refBot' style = 'top: {{current.bot + "px"}}'
-		ng-show = 'current.showBotLine'>
-		<line x1 = '0' y1 = '0' 
-			ng-attr-x2 = '{{pwidth}}' y2 = '0' 
-			class = 'refLine'>
-		</line>
-	</svg>
-	
-	<svg id = 'refLeft' style = 'left: {{current.left + "px"}}'
-		ng-show = 'current.showLeftLine'>
-		<line x1 = '0' y1 = '0' 
-			x2 = '0' ng-attr-y2 = '{{pheight}}' 
-			class = 'refLine'>
-		</line>
-	</svg>
-	
-	<svg id = 'refRight' style = 'left: {{current.right + "px"}}'
-		ng-show = 'current.showRightLine'>
-		<line x1 = '0' y1 = '0' 
-			x2 = '0' ng-attr-y2 = '{{pheight}}' class = 'refLine'>
-		</line>
-	</svg>
+
+	<album-ref-line ref = 'top'></album-ref-line>
+	<album-ref-line ref = 'bot'></album-ref-line>
+	<album-ref-line ref = 'left'></album-ref-line>
+	<album-ref-line ref = 'right'></album-ref-line>
 	<span ng-bind = 'pageMessage[page]'
 		class = 'pageMessage'></span>
 </div>

@@ -126,7 +126,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 						canvas.style.left = $scope.rcanvas.left + 'px';
 						canvas.style.top = $scope.rcanvas.top + 'px';
 						if (frame.angle % 180 == 0) {
-							ImgService.showRefLines(canvas, refs, $scope);
+							ImgService.showRefLines(canvas, refs, $scope.refLines);
 						}
 						if ($scope.img.src) {
 							drawImage(canvas, $scope.img, display,
