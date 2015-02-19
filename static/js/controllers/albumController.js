@@ -175,8 +175,8 @@ app.controller('AlbumController',
 		}
 		var page1 = makeRandomPage($scope.layoutList);
 		var page2 = makeRandomPage($scope.layoutList);
-		setPageDefault(page1, modelPage);
-		setPageDefault(page2, modelPage);
+		Misc.setPageDefault(page1, modelPage);
+		Misc.setPageDefault(page2, modelPage);
 		page1.patternSize = Math.floor(page1.patternWidth / measure.pdfWidth * 100) + '%';
 		page2.patternSize = Math.floor(page2.patternWidth / measure.pdfWidth * 100) + '%';
 		if ($scope.current.pageNum < content.length) {
@@ -191,14 +191,6 @@ app.controller('AlbumController',
 		}
 		updateView('next');
 	};
-
-	function setPageDefault(page, modelPage) {
-		var props = ['background', 'patternName', 'patternURL',
-			'patternURL300', 'patternWidth', 'patternHeight'];
-		props.forEach(function(prop) {
-			page[prop] = modelPage[prop];
-		});
-	}
 
 	function activate(id) {
 		var actives = document.getElementsByClassName('pActive');

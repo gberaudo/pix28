@@ -534,4 +534,14 @@ app.service('Misc', ['$q', function($q) {
 	};
 
 	this.syncTask = syncTask;
+
+	this.setPageDefault = setPageDefault;
+
+	function setPageDefault(page, modelPage) {
+		var props = ['background', 'patternName', 'patternURL',
+			'patternURL300', 'patternWidth', 'patternHeight'];
+		props.forEach(function(prop) {
+			page[prop] = modelPage[prop];
+		});
+	}
 }]);
