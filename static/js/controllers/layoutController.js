@@ -496,7 +496,7 @@ app.controller('minLayoutController',
 	$scope.loadPageLayout = function(layout) {
 		var activePage = document.getElementsByClassName('pActive')[0];
 
-		if (!!activePage) {
+		if (activePage) {
 			var oldPageCopy = angular.copy($scope.current[activePage.id]);
 			var currentPage = $scope.current[activePage.id];
 

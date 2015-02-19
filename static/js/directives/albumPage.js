@@ -2,7 +2,7 @@ app.directive('albumPage', [function() {
 	return {
 		restrict: 'E',
 		scope: {
-			id: '@',
+			pageId: '@pageId',
 			measure: '=',
 			page: '=albumModel',
 			current: '=',
