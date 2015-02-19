@@ -101,9 +101,11 @@
 					ng-show = 'showColor'
 					class = 'showItem BGColor'
 					name = '{{"BG_" +color}}'
-					style = 'background-color: {{color}};
-						width: {{0.2 * pwidth + "px"}};
-						height: {{0.2 * pheight + "px"}}'
+					ng-style = '{
+						"background-color": color,
+						width: 0.2 * measure.pwidth + "px",
+						height: 0.2 * measure.pheight + "px"
+						}'
 					ng-click = 'changeBGColor(color)'>
 				</div>
 				
@@ -124,11 +126,13 @@
 					name = '{{"Pattern_" + pattern.name}}'
 					ng-show = 'showPattern'
 					ng-controller = 'PatternController'
-					style = 'width: {{0.2 * pwidth + "px"}};
-						height: {{0.2 * pheight + "px"}};
-						background: url({{pattern.URL72}});
-						background-size: {{pattern.width / 7 + "px"}};
-						border: 1px solid #CCC'
+					ng-style = '{
+						width: 0.2 * measure.pwidth + "px",
+						height: 0.2 * measure.pheight + "px",
+						background: "url(" + pattern.URL72 +")",
+						"background-size": pattern.width / 7 + "px",
+						border: "1px solid #CCC"
+						}'
 					ng-click = 'changePattern(pattern)'
 					ng-mouseover = 'previewPattern(pattern, \$event)'
 					ng-mouseleave = 'mouseLeave()'>
