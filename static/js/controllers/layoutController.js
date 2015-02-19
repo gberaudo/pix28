@@ -376,8 +376,8 @@ app.controller('minLayoutController',
 
 	function drawLayout(canvas, scale) {
 		var ctx = canvas.getContext('2d');
-		canvas.width = scale * $scope.pwidth;
-		canvas.height = scale * $scope.pheight;
+		canvas.width = scale * $scope.measure.pwidth;
+		canvas.height = scale * $scope.measure.pheight;
 		
 		function drawPattern() {
 			var deferred1 = $q.defer();
@@ -414,10 +414,10 @@ app.controller('minLayoutController',
 				var rect = frame.canvas;
 				ctx.beginPath();
 				ctx.lineWidth = '.2';
-				var left = scale * rect.left* $scope.pwidth / 100,
-					top = scale * rect.top * $scope.pheight / 100,
-					width = scale * rect.width * $scope.pwidth / 100,
-					height = scale * rect.height * $scope.pheight / 100;
+				var left = scale * rect.left* $scope.measure.pwidth / 100,
+					top = scale * rect.top * $scope.measure.pheight / 100,
+					width = scale * rect.width * $scope.measure.pwidth / 100,
+					height = scale * rect.height * $scope.measure.pheight / 100;
 				if (!!frame.angle) {
 					ctx.save();
 					var centerX = left + width / 2,
@@ -440,10 +440,10 @@ app.controller('minLayoutController',
 			for (i = 0; i < $scope.layout.textBoxes.length; i++) {
 				var textBox = $scope.layout.textBoxes[i];
 				var rect = textBox.box;
-				var left = scale * rect.left*$scope.pwidth/100, 
-					top = scale * rect.top * $scope.pheight/100,
-					width = scale * rect.width * $scope.pwidth/100,
-					height = scale * rect.height * $scope.pheight/100;
+				var left = scale * rect.left*$scope.measure.pwidth/100,
+					top = scale * rect.top * $scope.measure.pheight/100,
+					width = scale * rect.width * $scope.measure.pwidth/100,
+					height = scale * rect.height * $scope.measure.pheight/100;
 				ctx.beginPath();
 				ctx.lineWidth = '.2';
 				if (!!textBox.angle) {
@@ -575,7 +575,7 @@ app.controller('PatternController', ['$scope',
 		page.patternURL300 = $scope.pattern.URL300;
 		page.patternWidth = $scope.pattern.width;
 		page.patternHeight = $scope.pattern.height;
-		page.patternSize = Math.floor($scope.pattern.width / $scope.pdfWidth * 100) + '%';
+		page.patternSize = Math.floor($scope.pattern.width / $scope.measure.pdfWidth * 100) + '%';
 		$scope.current.pattern = $scope.pattern;
 	};
 	
@@ -587,8 +587,8 @@ app.controller('PatternController', ['$scope',
 		previewPattern.style.bottom = (document.body.offsetHeight - mouseY + 50) + 'px';
 		previewPattern.style.left = (mouseX - 100) + 'px';
 		previewPattern.style.display = 'block';
-		previewPattern.style.width = 0.6 * $scope.pwidth + 'px';
-		previewPattern.style.height = 0.6 * $scope.pheight + 'px';
+		previewPattern.style.width = 0.6 * $scope.measure.pwidth + 'px';
+		previewPattern.style.height = 0.6 * $scope.measure.pheight + 'px';
 		previewPattern.style.background = 'url("' + pattern.URL72 + '")';
 		previewPattern.style.backgroundSize =  pattern.width / 4 + "px";
 	};
