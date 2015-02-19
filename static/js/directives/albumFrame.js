@@ -21,12 +21,13 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 			setFocus();
 
 			
-			elem.on('dragover', function(e) {
-				e.preventDefault();
+			elem.on('dragover', function(evt) {
+				evt.preventDefault();
 			});
 			elem.on('drop', dropInCanvas);
 			elem.on('mousedown', mouseDownHandle);
 			elem.on('mousemove', mouseMoveHandle);
+			elem.on('keydown', keyDown);
 
 			function mouseDownHandle(evt) {
 				var drag = {center: false, TL: false, TR: false, BL: false,
@@ -489,6 +490,43 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 						display.sy = 0;
 					}
 					drawImage(canvas, scope.img, display, frame.image.ratio, pageRatio);
+				}
+			};
+
+			function keyDown(evt) {
+				evt.preventDefault();
+				switch (evt.keyCode) {
+					case 61: // key +
+					case 186:
+					case 187:
+						ImgService.zoomImage(canvas, scope.img, frame, 'in', pageRatio);
+						break;
+					case 173: // key -
+					case 189:
+						ImgService.zoomImage(canvas, scope.img, frame, 'out', pageRatio);
+						break;
+					case 37: //key left
+						ImgService.moveImage(canvas, scope, 'left');
+						break;
+					case 38: //key up
+						ImgService.moveImage(canvas, scope, 'up');
+						break;
+					case 39: //key right
+						ImgService.moveImage(canvas, scope, 'right');
+						break;
+					case 40: //key down
+						ImgService.moveImage(canvas, scope, 'down');
+						break;
+					case 46: //del
+						if (frame.image.src) {
+							ImgService.updateOldThumb(frame.image.DbId);
+							scope.img = new Image();
+							frame.image = {};
+							ImgService.resetFrame(canvas);
+						} else {
+							ImgService.delCanvas(canvas, scope);
+						}
+						break;
 				}
 			};
 		}
