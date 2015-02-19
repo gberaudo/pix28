@@ -376,8 +376,24 @@ app.controller('minLayoutController',
 
 	function drawLayout(canvas, scale) {
 		var ctx = canvas.getContext('2d');
-		canvas.width = scale * $scope.measure.pwidth;
-		canvas.height = scale * $scope.measure.pheight;
+		var measureWatch = $scope.$watch('measure', function() {
+			if ($scope.measure.pwidth) {
+				canvas.width = scale * $scope.measure.pwidth;
+				canvas.height = scale * $scope.measure.pheight;
+				var BGcolor =  $scope.layout.background || '#FFFFFF';
+				ctx.fillStyle = BGcolor;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				if (!!$scope.layout.patternURL) {
+					drawPattern()
+					.then(function() {
+						drawFrames();
+					});
+				} else {
+					drawFrames();
+				}
+				measureWatch();
+			}
+		}, true);
 		
 		function drawPattern() {
 			var deferred1 = $q.defer();
@@ -462,17 +478,6 @@ app.controller('minLayoutController',
 					ctx.stroke();
 				}
 			}
-		}
-		var BGcolor =  $scope.layout.background || '#FFFFFF';
-		ctx.fillStyle = BGcolor;
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		if (!!$scope.layout.patternURL) {
-			drawPattern()
-			.then(function() {
-				drawFrames();
-			});
-		} else {
-			drawFrames();
 		}
 	}
 	
