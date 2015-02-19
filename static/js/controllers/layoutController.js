@@ -366,8 +366,8 @@ app.controller('LayoutController',
 }]);
 
 app.controller('minLayoutController',
-    ['$scope', '$element', 'FrameObject', 'TextBoxObject', '$q',
-					function($scope, $element, FrameObject, TextBoxObject, $q) {
+    ['$scope', '$element', 'FrameObject', 'TextBoxObject', '$q', 'Misc',
+					function($scope, $element, FrameObject, TextBoxObject, $q, Misc) {
 	
 	var canvas = $element[0].children[1],
 		scale = 0.2;
@@ -503,11 +503,11 @@ app.controller('minLayoutController',
 			function saveImages() {
 				var images = [];
 				var frames = currentPage.frames;
-				for (var j = 0; j < frames.length; j++) {
-					if (!!frames[j].image.src) {
-						images.push(frames[j].image);
+				frames.forEach(function(frame) {
+					if (frame.image.src) {
+						images.push(frame.image);
 					}
-				}
+				});
 				return images;
 			}
 			
@@ -515,13 +515,13 @@ app.controller('minLayoutController',
 			currentPage.frames = [];
 			currentPage.textBoxes = [];
 			
-			for (var i = 0; i < layout.frames.length; i++) {
-				currentPage.frames[i] = new FrameObject(angular.copy(layout.frames[i]));
-			}
+			layout.frames.forEach(function(frame) {
+				currentPage.frames.push(new FrameObject(angular.copy(frame)));
+			});
 			
-			for (var j = 0; j< layout.textBoxes.length; j++) {
-				currentPage.textBoxes[j] = new TextBoxObject(angular.copy(layout.textBoxes[j]));
-			}
+			layout.textBoxes.forEach(function(textBox) {
+				currentPage.textBoxes.push(new TextBoxObject(angular.copy(textBox)));
+			});
 			
 			if (layout.isCustom) {
 				var model = layout;
@@ -532,6 +532,7 @@ app.controller('minLayoutController',
 			currentPage.frames.forEach(function(frame) {
 				if (images.length > 0) {
 					frame.image = images.shift();
+					console.log(frame.display);
 				} else {
 					frame.image = {};
 				}
