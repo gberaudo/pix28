@@ -248,38 +248,34 @@ app.controller('LayoutController',
 			var pageId = document.getElementsByClassName('pActive')[0].id;
 			var goodCanvas = [];
 			var allCanvas = document.getElementsByClassName('frame');
-			for (var j = 0; j < allCanvas.length; j++) {
-				var canvas = allCanvas[j];
-				if (Misc.ancestorHasClass(angular.element(canvas), 3, pageId)) {
+			[].forEach.call(allCanvas, function(canvas) {
+				if (Misc.ancestorHasClass(angular.element(canvas), 5, pageId)) {
 					goodCanvas.push(canvas);
 				}
-			}
-			var frames = $scope.current[pageId].frames;
-			for (var i = 0; i < frames.length; i++) {
-				var frame = frames[i];
+			});
+			$scope.current[pageId].frames.forEach(function(frame) {
 				frame.border.color = $scope.current.borderColor;
 				frame.border.thickness = $scope.current.borderThickness;
-				goodCanvas[i].style.outline = $scope.current.borderThickness +
+			});
+			goodCanvas.forEach(function(canvas) {
+				canvas.style.outline = $scope.current.borderThickness +
 					'px solid ' + $scope.current.borderColor;
-			}
+			});
 		}
 	};
 	
 	$scope.imgBordertoAlbum = function() {
-		for (var j = 0; j < $scope.album.content.length; j++) {
-			var page = $scope.album.content[j];
-			for (var i = 0; i < page.frames.length; i++) {
-				var frame = page.frames[i];
+		$scope.album.content.forEach(function(page) {
+			page.frames.forEach(function(frame) {
 				frame.border.color = $scope.current.borderColor;
 				frame.border.thickness = $scope.current.borderThickness;
-			}
-		}
+			});
+		});
 		var allCanvas = document.getElementsByClassName('frame');
-		for (var k = 0; k < allCanvas.length; k++) {
-			var canvas = allCanvas[k];
+		[].forEach.call(allCanvas, function(canvas) {
 			canvas.style.outline = $scope.current.borderThickness +
 					'px solid ' + $scope.current.borderColor;
-		}
+		});
 	};
 	
 	$scope.getUserBorderColor = function() {
@@ -335,14 +331,13 @@ app.controller('LayoutController',
 	};
 	$scope.patterntoAlbum = function() {
 		var pattern = $scope.current.pattern;
-		for (var i = 0; i < $scope.album.content.length; i++) {
-			var page = $scope.album.content[i];
+		$scope.album.content.forEach(function(page) {
 			page.patternURL = pattern.URL72;
 			page.patternURL300 = pattern.URL300;
 			page.patternWidth = pattern.width;
 			page.patternHeight = pattern.height;
-			page.patternSize = Math.floor(pattern.width / $scope.pdfWidth * 100) + '%';
-		}
+			page.patternSize = Math.floor(pattern.width / $scope.measure.pdfWidth * 100) + '%';
+		});
 	};
 	
 	$scope.removePattern = function() {
@@ -350,12 +345,11 @@ app.controller('LayoutController',
 			var activePage = document.getElementsByClassName('pActive')[0];
 		}
 		var page = $scope.current[activePage.id];
-		page.patternName = '';
-		page.patternURL = '';
-		page.patternURL300 = '';
-		page.patternWidth = '';
-		page.patternHeight = '';
-		page.patternSize = '';
+		var props = ['patternName', 'patternURL', 'patternURL300',
+			'patternWidth', 'patternHeight', 'patternSize']
+		props.forEach(function(prop) {
+			page[prop] = '';
+		});
 		$scope.current.pattern = {};
 	};
 	
@@ -396,7 +390,7 @@ app.controller('minLayoutController',
 		}, true);
 		
 		function drawPattern() {
-			var deferred1 = $q.defer();
+			var deferred = $q.defer();
 			if (!!$scope.layout.patternURL) {
 				var tempCanvas = document.createElement('canvas');
 				tempCtx = tempCanvas.getContext('2d');
@@ -414,19 +408,18 @@ app.controller('minLayoutController',
 						ctx.rect(0,0,canvas.width, canvas.height);
 						ctx.fillStyle = pat;
 						ctx.fill();
-						deferred1.resolve(null);
+						deferred.resolve(null);
 					};
 				};
 			} else {
-				deferred1.resolve(null);
+				deferred.resolve(null);
 			}
-			return deferred1.promise;
+			return deferred.promise;
 		}
 		
 		function drawFrames() {
 			
-			for (i = 0; i < $scope.layout.frames.length; i++) {
-				var frame = $scope.layout.frames[i];
+			$scope.layout.frames.forEach(function(frame){
 				var rect = frame.canvas;
 				ctx.beginPath();
 				ctx.lineWidth = '.2';
@@ -451,10 +444,9 @@ app.controller('minLayoutController',
 					ctx.fillStyle = '#EEEEEE';
 					ctx.fillRect(left, top, width, height);
 				}
-			}
+			});
 			
-			for (i = 0; i < $scope.layout.textBoxes.length; i++) {
-				var textBox = $scope.layout.textBoxes[i];
+			 $scope.layout.textBoxes.forEach(function(textBox) {
 				var rect = textBox.box;
 				var left = scale * rect.left*$scope.measure.pwidth/100,
 					top = scale * rect.top * $scope.measure.pheight/100,
@@ -477,7 +469,7 @@ app.controller('minLayoutController',
 					ctx.strokeStyle = 'blue';
 					ctx.stroke();
 				}
-			}
+			});
 		}
 	}
 	
@@ -537,7 +529,6 @@ app.controller('minLayoutController',
 			currentPage.frames.forEach(function(frame) {
 				if (images.length > 0) {
 					frame.image = images.shift();
-					console.log(frame.display);
 				} else {
 					frame.image = {};
 				}
