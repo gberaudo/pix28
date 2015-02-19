@@ -159,11 +159,18 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 				scope.img = new Image();
 				Misc.resetZone(scope.canvasZone, canvas.width, canvas.height);
 				if (frame.image.src) {
-					scope.img.onload = function() {
-						drawImage(canvas, scope.img, display,
-									frame.image.ratio, pageRatio);
-					};
-					scope.img.src = frame.image.src;
+					if (display.sw) {
+						scope.img.onload = function() {
+							drawImage(canvas, scope.img, display,
+										frame.image.ratio, pageRatio);
+						};
+						scope.img.src = frame.image.src;
+					} else {
+						scope.img.onload = function() {
+							firstDrawImage();
+						};
+						scope.img.src = frame.image.src;
+					}
 				} else {
 					$timeout(function() {
 						ImgService.resetFrame(canvas);
