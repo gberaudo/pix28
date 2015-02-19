@@ -23,7 +23,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 
 			
 			elem.on('dragover', function(e) {
-				scope.allowDrop(e);
+				e.preventDefault();
 			});
 			elem.on('drop', function(e) {
 				scope.dropInCanvas(e);
@@ -50,9 +50,10 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 					}
 				}
 
-// 				document.addEventListener('mousemove', mouseMoveHandle, true);
+				document.addEventListener('mousemove', mouseMoveHandle1, true);
 				document.addEventListener('mouseup', mouseUpHandle, true);
 				mousePosWatch = scope.$watch('mousePos', function(newValue, oldValue) {
+					console.log('mousePos watch');
 					var offset = {
 						X: newValue.X - oldValue.X,
 						Y: newValue.Y - oldValue.Y
@@ -84,13 +85,10 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 							break;
 						}
 					}
-
-					console.log('mousePos watch');
 					if (scope.dragimage) {
 						moveImageInCanvas(offset);
 					}
 				}, true);
-
 
 				function mouseUpHandle(ev) {
 					mousePosWatch();
@@ -99,19 +97,22 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 					}
 					scope.dragimage = false;
 					document.removeEventListener('mouseup', mouseUpHandle, true);
-// 					document.removeEventListener('mousemove', mouseMoveHandle, true);
+					document.removeEventListener('mousemove', mouseMoveHandle1, true);
+				}
+				function mouseMoveHandle1(evt) {
+					scope.$apply(function() {
+						scope.mousePos = {X: evt.layerX, Y: evt.layerY};
+					});
 				}
 				
 			}
 
 			function mouseMoveHandle(evt) {
-				scope.mousePos = {X: evt.layerX, Y: evt.layerY};
 				var mouseRtCanvas = {
 					X: evt.layerX,
 					Y: evt.layerY
 				};
 				Misc.setCursor(mouseRtCanvas, scope.canvasZone, scope.current);
-				console.log('mousemove, drag right');
 			}
 			function setFocus() {
 				if (scope.current.datumWithFocus === frame) {
@@ -415,6 +416,30 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 						break;
 				}
 			};
+
+			function moveImageInCanvas(offset) {
+				if (frame.image.src) {
+					var image = frame.image;
+					var sChangeX = -offset.X * image.mWidth / canvas.width,
+						sChangeY = -offset.Y * image.mHeight / canvas.height;
+					if (sChangeX < -display.sx) {
+						display.sx = 0;
+					} else if (sChangeX + display.sx + display.sw > image.mWidth) {
+						display.sx = image.mWidth - display.sw;
+					} else {
+						display.sx += sChangeX;
+					}
+					if (sChangeY < -display.sy) {
+						display.sy = 0;
+					} else if (sChangeY + display.sy + display.sh > image.mHeight) {
+						display.sy = image.mHeight - display.sh;
+					} else {
+						display.sy += sChangeY;
+					}
+					drawImage(canvas, scope.img, display, image.ratio, measure.pageRatio);
+					ImgService.drawAnchors(canvas);
+				}
+			}
 		}
 	}
 }]);
