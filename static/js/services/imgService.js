@@ -539,7 +539,7 @@ app.service('Misc', ['$q', function($q) {
 
 	function setPageDefault(page, modelPage) {
 		var props = ['background', 'patternName', 'patternURL',
-			'patternURL300', 'patternWidth', 'patternHeight'];
+			'patternURL300', 'patternWidth', 'patternHeight', 'patternSize'];
 		props.forEach(function(prop) {
 			page[prop] = modelPage[prop];
 		});
