@@ -73,13 +73,13 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 									}
 									if (scope.img.src) {
 										drawImage(canvas, scope.img, display,
-													frame.image.ratio, measure.pageRatio );
+													frame.image.ratio, pageRatio );
 									} else {
 										ImgService.resetFrame(canvas);
 									}
 									ImgService.drawAnchors(canvas);
 									Misc.resetZone(scope.canvasZone, scope.rcanvas.width, scope.rcanvas.height);
-									frame.canvas = Misc.abs2perCent(scope.rcanvas, measure.pwidth, measure.pheight);
+									frame.canvas = Misc.abs2perCent(scope.rcanvas, pwidth, pheight);
 								});
 					
 							
@@ -160,7 +160,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 				if (frame.image.src) {
 					scope.img.onload = function() {
 						drawImage(canvas, scope.img, display,
-									frame.image.ratio, measure.pageRatio);
+									frame.image.ratio, pageRatio);
 					};
 					scope.img.src = frame.image.src;
 				} else {
@@ -170,7 +170,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 				}
 			};
 			function redrawImage() {
-				drawImage(canvas, scope.img, display, frame.image.ratio, measure.pageRatio);
+				drawImage(canvas, scope.img, display, frame.image.ratio, pageRatio);
 				ImgService.drawAnchors(canvas);
 			};
 
@@ -184,7 +184,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 					DOMService.deactivate('cActive');
 					scope.current.onEditImage = false;
 					if (!!scope.img.src) {
-						drawImage(canvas, scope.img, display, frame.image.ratio, measure.pageRatio);
+						drawImage(canvas, scope.img, display, frame.image.ratio, pageRatio);
 					} else {
 						ImgService.resetFrame(canvas);
 					}
@@ -439,7 +439,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 					} else {
 						display.sy += sChangeY;
 					}
-					drawImage(canvas, scope.img, display, image.ratio, measure.pageRatio);
+					drawImage(canvas, scope.img, display, image.ratio, pageRatio);
 					ImgService.drawAnchors(canvas);
 				}
 			}
@@ -488,7 +488,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 						display.sx = Math.max((image.mWidth - display.sw) / 2, 0);
 						display.sy = 0;
 					}
-					drawImage(canvas, scope.img, display, frame.image.ratio, measure.pageRatio);
+					drawImage(canvas, scope.img, display, frame.image.ratio, pageRatio);
 				}
 			};
 		}
