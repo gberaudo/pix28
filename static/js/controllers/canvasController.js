@@ -44,6 +44,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		}
 	}
 	function initCanvas(){
+		console.log('init');
 		$scope.rcanvas = Misc.perCent2Abs(frame.canvas, pwidth, pheight);
 		var rcanvas = $scope.rcanvas;
 		canvas.width = rcanvas.width;
@@ -60,11 +61,19 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		$scope.img = new Image();
 		Misc.resetZone($scope.canvasZone, canvas.width, canvas.height);
 		if (frame.image.src) {
-			$scope.img.onload = function() {
-				drawImage(canvas, $scope.img, display,
-							frame.image.ratio, measure.pageRatio);
-			};
-			$scope.img.src = frame.image.src;
+			console.log('has src');
+			if (display.sw) {
+				$scope.img.onload = function() {
+					drawImage(canvas, $scope.img, display,
+								frame.image.ratio, measure.pageRatio);
+				};
+				$scope.img.src = frame.image.src;
+			} else {
+				$scope.img.onload = function() {
+					firstDrawImage();
+				};
+				$scope.img.src = frame.image.src;
+			}
 		} else {
 			$timeout(function() {
 				ImgService.resetFrame(canvas);
