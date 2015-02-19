@@ -16,7 +16,7 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 	var canvas = $element[0];
 	var ctx = canvas.getContext('2d');
 	var pageId = canvas.parentNode.id;
-	initCanvas();
+// 	initCanvas();
 	
 	setFocus();
 	function canvasFocus() {
@@ -26,17 +26,17 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		DOMService.deactivate('tActive');
 		DOMService.activate(canvas, 'cActive');
 		ImgService.drawAnchors(canvas);
-		
+
 		$scope.current.onEditText = false;
 		$scope.current.onEditImage = true;
-		
+
 		document.addEventListener('mousedown', canvasBlurHandle, true);
 		$scope.current.borderColor = frame.border.color || '';
 		$scope.current.borderThickness = frame.border.thickness || 0;
-		
+
 		DOMService.markSelectedItem('border', border);
 	};
-	
+
 	function setFocus() {
 		if ($scope.current.datumWithFocus === frame) {
 			canvasFocus();
@@ -97,7 +97,10 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 		ImgService.drawAnchors(canvas);
 	};
 
-
+	var mousePosWatch;
+	var drag = {center: false, TL: false, TR: false, BL: false,
+			BR: false, L: false, R: false, T: false, B: false};
+// 	$scope.mousePos = {};
 	$scope.mouseDown = function(evt) {
 		var drag = {center: false, TL: false, TR: false, BL: false,
 			BR: false, L: false, R: false, T: false, B: false};
@@ -106,11 +109,37 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 			Y: evt.layerY
 		};
 		var refs = ImgService.getRefLines($scope, pageId);
-		var mousePosWatch;
+		
 		canvasFocus();
 		$scope.dragimage = true;
-		$scope.mousePos = {X: evt.pageX, Y: evt.pageY};
-		mousePosWatch = $scope.$watch('mousePos', function(newValue, oldValue) {
+		for (anchor in drag) {
+			if (Misc.inRect(mouseRtCanvas, $scope.canvasZone[anchor])) {
+				drag[anchor] = true;
+				$scope.dragimage = false;
+				break;
+			}
+		}
+
+		document.addEventListener('mousemove', mouseMoveHandle, true);
+		document.addEventListener('mouseup', mouseUpHandle, true);
+		
+		function mouseMoveHandle(evt) {
+			$scope.mousePos.X =  evt.pageX;
+			$scope.mousePos.Y = evt.pageY;
+			console.log('mousemove, drag right', drag.R);
+		}
+		
+		function mouseUpHandle(ev) {
+			mousePosWatch();
+			for (anchor in drag) {
+				drag[anchor] = false;
+			}
+			$scope.dragimage = false;
+			document.removeEventListener('mouseup', mouseUpHandle, true);
+			document.removeEventListener('mousemove', mouseMoveHandle, true);
+		}
+	};
+	mousePosWatch = $scope.$watch('mousePos', function(newValue, oldValue) {
 			var offset = {
 				X: newValue.X - oldValue.X,
 				Y: newValue.Y - oldValue.Y
@@ -143,35 +172,11 @@ function canvasController($scope, $element, $timeout, FrameObject, ImgService, M
 				}
 			}
 
+			console.log('mousePos watch');
 			if ($scope.dragimage) {
 				moveImageInCanvas(offset);
 			}
-		});
-		document.addEventListener('mousemove', mouseMoveHandle, true);
-		document.addEventListener('mouseup', mouseUpHandle, true);
-		
-		function mouseMoveHandle(evt) {
-			$scope.mousePos= {X: evt.pageX, Y: evt.pageY};
-		}
-		
-		function mouseUpHandle(ev) {
-			mousePosWatch();
-			for (anchor in drag) {
-				drag[anchor] = false;
-			}
-			$scope.dragimage = false;
-			document.removeEventListener('mouseup', mouseUpHandle, true);
-			document.removeEventListener('mousemove', mouseMoveHandle, true);
-		}
-		
-		for (anchor in drag) {
-			if (Misc.inRect(mouseRtCanvas, $scope.canvasZone[anchor])) {
-				drag[anchor] = true;
-				$scope.dragimage = false;
-				break;
-			} 
-		}
-	};
+		}, true);
 	
 	$scope.mouseMove = function(evt) {
 		var mouseRtCanvas = {
