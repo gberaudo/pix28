@@ -4,8 +4,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 		restrict: 'EA',
 		replace: true,
 		scope: true,
-		template: '<img src = "static/icons/delpage.svg" title="msg"/>'
-		.replace("msg", "{{'Delete this double page'|translate}}"),
+		template: '<img class = "respond clickable"/>',
 		link: function(scope, elem, attrs) {
 			function removePageRq() {
 				var num = scope.current.pageNum;
