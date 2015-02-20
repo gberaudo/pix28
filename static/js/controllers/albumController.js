@@ -177,8 +177,6 @@ app.controller('AlbumController',
 		var page2 = makeRandomPage($scope.layoutList);
 		Misc.setPageDefault(page1, modelPage);
 		Misc.setPageDefault(page2, modelPage);
-		page1.patternSize = Math.floor(page1.patternWidth / measure.pdfWidth * 100) + '%';
-		page2.patternSize = Math.floor(page2.patternWidth / measure.pdfWidth * 100) + '%';
 		if ($scope.current.pageNum < content.length) {
 			content.splice($scope.current.pageNum + 1, 0, page1, page2);
 			$scope.current.leftPage = page1;
