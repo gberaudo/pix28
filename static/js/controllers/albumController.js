@@ -72,6 +72,7 @@ app.controller('AlbumController',
 				+ 'cm x ' + Math.round(25.4 * measure.pdfWidth / 72) / 10 + 'cm';
 			
 			makeRandomAlbum(album, 20);
+			saveAlbum(album, id);
 			
 			$scope.current.showAlbums = false;
 			$scope.currentAlbumSC = {
@@ -82,7 +83,7 @@ app.controller('AlbumController',
 			$timeout(function() {
 				var doublePage = document.getElementById('doublepage');
 				$scope.pageTop = (doublePage.offsetHeight - measure.pheight) / 2 + 'px';
-				document.getElementById('titleInput').focus();
+// 				document.getElementById('titleInput').focus();
 			}, 20);
 			setUpdateAlbum();
 		});
@@ -264,16 +265,7 @@ app.controller('AlbumController',
 	$scope.updateView = updateView;
 
 	$scope.saveAlbum = function() {
-		DBServices.updateAlbumDB($scope.album, $scope.current.albumId)
-		.then(function() {}, 
-				function() {
-					var el = document.getElementById('updateMsg');
-					var msg = 'Failed to save this album. Please try again.'
-					el.innerHTML = msg;
-					$timeout(function() {
-						el.innerHTML = '';
-					}, 3000);
-				});
+		saveAlbum($scope.album, $scope.current.albumId);
 	};
 
 	$scope.toAlbumList = function() {
@@ -295,4 +287,16 @@ app.controller('AlbumController',
 			},3000);
 		});
  	};
+	function saveAlbum(album, id) {
+		DBServices.updateAlbumDB(album, id)
+		.then(function() {},
+				function() {
+					var el = document.getElementById('updateMsg');
+					var msg = 'Failed to save this album. Please try again.'
+					el.innerHTML = msg;
+					$timeout(function() {
+						el.innerHTML = '';
+					}, 3000);
+				});
+	}
 }]);
