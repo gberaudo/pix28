@@ -4,6 +4,7 @@ app.factory('DOMService', ['Misc', 'FrameObject', function(Misc, FrameObject) {
 		deactivate: deactivate,
 		markSelectedItem: markSelectedItem,
 		getAbsPos: getAbsPos,
+		getRelPos: getRelPos,
 		dropInPage: dropInPage
 	}
 	
@@ -104,6 +105,14 @@ app.factory('DOMService', ['Misc', 'FrameObject', function(Misc, FrameObject) {
 				rect.left = Math.floor(mouseX - rect.width/2);
 			}
 			return rect;
+		}
+	}
+	function getRelPos(evt) {
+		if (evt.offsetX === undefined){
+			console.log('this case');
+			return {X: evt.layerX, Y: evt.layerY};
+		} else {
+			return {X: evt.offsetX, Y: evt.offsetY};
 		}
 	}
 	

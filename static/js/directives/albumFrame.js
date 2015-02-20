@@ -32,10 +32,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 			function mouseDownHandle(evt) {
 				var drag = {center: false, TL: false, TR: false, BL: false,
 					BR: false, L: false, R: false, T: false, B: false};
-				var mouseRtCanvas = {
-					X: evt.layerX,
-					Y: evt.layerY
-				};
+				var mouseRtCanvas = DOMService.getRelPos(evt);
 				var refs = ImgService.getRefLines();
 				var mousePosWatch;
 				canvasFocus();
@@ -110,10 +107,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 			}
 
 			function mouseMoveHandle(evt) {
-				var mouseRtCanvas = {
-					X: evt.layerX,
-					Y: evt.layerY
-				};
+				var mouseRtCanvas = DOMService.getRelPos(evt);
 				scope.$apply(function(){
 					Misc.setCursor(mouseRtCanvas, scope.canvasZone, scope.current);
 				});

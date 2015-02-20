@@ -69,9 +69,9 @@
 .leftPage {
 	position: absolute;
 	right: 50%; 
-	/*top: 50%;
-	transform: translateY(-50%);*/
-	top: 11%;
+	top: 50%;
+	transform: translateY(-50%);
+/* 	top: 11%; */
  	overflow: hidden; 
 	box-shadow: 2px 3px 5px 6px #ccc;
 	background-color: #FFFFFF;
@@ -79,8 +79,10 @@
 
 .rightPage {
 	position: absolute;
-	left: 50.2%; 
-	top: 11%;
+	left: 50.2%;
+	top: 50%;
+	transform: translateY(-50%);
+/* 	top: 11%; */
 	border-right: 5px solid #999;
  	overflow: hidden; 
 	box-shadow: 3px 3px 5px 6px #ccc;
