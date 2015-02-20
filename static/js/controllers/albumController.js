@@ -298,14 +298,6 @@ app.controller('AlbumController',
 		});
  	};
 
-	$scope.dragText = function(ev) {
-		ev.dataTransfer.setData('name', 'text');
-	};
-
-	$scope.dragFrame = function(event) {
-		event.dataTransfer.setData('name','frame');
-	};
-
 	$scope.previewPage = function(num) {
 		var scope = angular.element(document.getElementById('previewPage')).scope();
 		scope.previewPage(num);

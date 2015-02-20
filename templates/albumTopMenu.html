@@ -1,22 +1,16 @@
 <div id = 'topMenu'>
-		
-	<img  src = 'static/icons/text2.svg'
-			title = '{{"Drag and drop into page to add a text field"|translate}}'
-			draggable = 'true'
-			ondragstart = 'angular.element(this).scope().dragText(event)'
-			class = 'respond draggable'/>
-	
-	<img src = 'static/icons/frame.svg'
-			draggable = 'true'
-			ondragstart = 'angular.element(this).scope().dragFrame(event)'
-			title = '{{"Drag and drop into page to add a new frame"|translate}}'
-			class = 'respond draggable'/>
+	<album-drag drag-type = 'text' src = 'static/icons/text2.svg'
+			title = '{{"Drag and drop into page to add a text field"|translate}}'>
+	</album-drag>
+	<album-drag drag-type = 'frame' src = 'static/icons/frame.svg'
+			title = '{{"Drag and drop into page to add a new frame"|translate}}'>
+	</album-drag>
 	
 	<img src = 'static/icons/preview.svg'
 			class = 'respond clickable'
 			ng-click = 'previewPage(current.pageNum)'
 			title = '{{"Preview album"|translate}}'/>
-			
+
 	<album-move-page direction = 'backward' data-type = 'single'
 		src = 'static/icons/pageBack.svg'
 		title = '{{"Move this single page backward"|translate}}'></album-move-page>
