@@ -4,7 +4,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 	$scope.previewPage = function(num) {
 		var maxHeight = Math.floor(0.9 * window.innerHeight);
 		var maxWidth = Math.floor(0.9 * window.innerWidth);
-		var prop = 0.5 * $scope.pheight / $scope.pwidth;
+		var prop = 0.5 * $scope.measure.pheight / $scope.measure.pwidth;
 		if (prop < maxHeight / maxWidth) {
 			previewWidth = maxWidth;
 			previewHeight = Math.round(prop * previewWidth);
@@ -16,14 +16,23 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 		$scope.previewWidth = previewWidth;
 		document.addEventListener('keydown', handleKeyDown, true);
 		$scope.viewPageNum = num;
-		drawPage(num);
+		var pageWatch;
+		$timeout(function() {
+			pageWatch = $scope.$watch('previewHeight', function() {
+				if ($scope.previewHeight) {
+					drawPage(num);
+					pageWatch();
+				}
+			});
+		});
  		$scope.current.hideAlbum = true;
 		$scope.$parent.previewMode = true;
 	};
 
 	function drawPage(num) {
-		var pwidth = $scope.previewWidth/2,
-			pheight = $scope.previewHeight;
+		var pwidth, pheight;
+		pwidth = $scope.previewWidth/2;
+		pheight = $scope.previewHeight;
 
 		document.getElementById('rightPreview').innerHTML = '';
 		document.getElementById('leftPreview').innerHTML = '';
@@ -70,7 +79,7 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 					canvas.style.zIndex = frame.layer;
 					canvas.style.transform = 'rotate(' + frame.angle + 'deg)';
 					if (frame.border.thickness && frame.border.color) {
-						var thickness = frame.border.thickness * pwidth/ $scope.pwidth;
+						var thickness = frame.border.thickness * pwidth/ $scope.measure.pwidth;
 						canvas.style.outline = thickness + 'px solid ' + frame.border.color;
 					}
 					display.dw = canvas.width;
@@ -91,9 +100,9 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 					div.style.whiteSpace = 'pre-wrap';
 					div.style.width = textBox.box.width * pwidth / 100 + 'px';
 					div.style.height = textBox.box.height * pheight / 100 + 'px';
-					div.style.top = (textBox.box.top * pheight / 100 + 2 * pheight/$scope.pheight) + 'px';
+					div.style.top = (textBox.box.top * pheight / 100 + 2 * pheight/$scope.measure.pheight) + 'px';
 					div.style.left = textBox.box.left * pwidth / 100 + 'px';
-					div.style.fontSize = textBox.font.size * pwidth/$scope.pdfWidth + 'px';
+					div.style.fontSize = textBox.font.size * pwidth/$scope.measure.pdfWidth + 'px';
 					div.style.fontStyle = textBox.font.style;
 					div.style.fontFamily = textBox.font.family;
 					div.style.color = textBox.font.color;
