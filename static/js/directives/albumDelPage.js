@@ -8,6 +8,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 		link: function(scope, elem, attrs) {
 			function removePageRq() {
 				var num = scope.current.pageNum;
+				console.log(num);
 				var abContent = scope.album.content;
 				var length = abContent.length;
 				var anchor = angular.element(document.body);
@@ -32,7 +33,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 				
 				scope.delCurrentPage = function() {
 					abContent.splice(num - 1, 2);
-					scope.current.pageNum -= 2;
+					num = scope.current.pageNum -= 2;
 					scope.current.rightPage = abContent[num];
 					if (num > 0) {
 						scope.current.leftPage = abContent[num - 1];
