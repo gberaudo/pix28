@@ -295,9 +295,4 @@ app.controller('AlbumController',
 			},3000);
 		});
  	};
-
-	$scope.previewPage = function(num) {
-		var scope = angular.element(document.getElementById('previewPage')).scope();
-		scope.previewPage(num);
-	};
 }]);

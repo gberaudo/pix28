@@ -5,28 +5,21 @@
 	<album-drag drag-type = 'frame' src = 'static/icons/frame.svg'
 			title = '{{"Drag and drop into page to add a new frame"|translate}}'>
 	</album-drag>
-	
-	<img src = 'static/icons/preview.svg'
-			class = 'respond clickable'
-			ng-click = 'previewPage(current.pageNum)'
-			title = '{{"Preview album"|translate}}'/>
-
+	<album-preview src = 'static/icons/preview.svg'
+			title = '{{"Preview album"|translate}}'></album-preview>
 	<album-move-page direction = 'backward' data-type = 'single'
 		src = 'static/icons/pageBack.svg'
 		title = '{{"Move this single page backward"|translate}}'></album-move-page>
 	<album-move-page direction = 'forward' data-type = 'single'
 		src = 'static/icons/pageFor.svg'
 		title = '{{"Move this single page forward"|translate}}'></album-move-page>
-		
 	<album-move-page direction = 'backward' data-type = 'double'
 		src = 'static/icons/DBPageBack.svg'
 		title = '{{"Move this double page backward"|translate}}'></album-move-page>	
 	<album-move-page direction = 'forward' data-type = 'double'
 		src = 'static/icons/DBPageFor.svg'
 		title = '{{"Move this double page forward"|translate}}'></album-move-page>
-		
 	<album-del-page></album-del-page>
-
 	<img title = '{{"Add a new double page"|translate}}'
 		ng-click = 'addNewPage()'
 		src = 'static/icons/addpage.svg'
