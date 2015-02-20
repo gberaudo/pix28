@@ -531,7 +531,7 @@ app.directive('albumFrame', ['$timeout', 'FrameObject',
 							frame.image = {};
 							ImgService.resetFrame(canvas);
 						} else {
-							ImgService.delCanvas(canvas, scope);
+							ImgService.delCanvas(scope);
 						}
 						break;
 				}

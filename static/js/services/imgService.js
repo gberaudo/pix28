@@ -124,8 +124,10 @@ app.service('ImgService', ['gettextCatalog', '$q', 'Misc', '$timeout',
 		ctx.fillText(msg, 5, 20);
 	};
 	
-	this.delCanvas = function(el, $scope) {
-		$scope.page.frames.splice($scope.$index,1);
+	this.delCanvas = function(scope) {
+		$timeout(function(){
+			scope.page.frames.splice(scope.$index,1);
+		});
 	};
 
 	this.computeZoomedDisplay = function(canvas, image, display, rate) {

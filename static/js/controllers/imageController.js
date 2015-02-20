@@ -24,7 +24,7 @@ app.controller('ImageController',
 			scope.frame.image = {};
 			ImgService.resetFrame(canvas);
 		} else {
-			ImgService.delCanvas(canvas, scope);
+			ImgService.delCanvas(scope);
 		}
 	};
 	
