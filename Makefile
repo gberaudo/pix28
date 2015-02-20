@@ -3,6 +3,7 @@ CLOSURE_LIBRARY_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE
 CLOSURE_COMPILER_PATH := $(shell node -e 'process.stdout.write(require("$(CLOSURE_UTIL_PATH)").getCompilerPath())' 2> /dev/null)
 APP_JS_FILES = $(shell sed '/$$else/,/html/d' templates/index.html | grep js\' | grep -v lib | cut -d"'" -f2)
 APP_HTML_FILES := $(shell find templates -type f -name '*.html')
+LESS_FILES = $(shell find less -type f -name '*.less')
 LIB_DIR := static/lib
 
 export closure_library_path = $(CLOSURE_LIBRARY_PATH)
@@ -30,7 +31,7 @@ help:
 check: flake8 lint build
 
 .PHONY: build
-build: static/build/album.js compile-catalog .build/dev-requirements.timestamp
+build: jsdeps static/build/album.js static/build/build.css compile-catalog .build/dev-requirements.timestamp
 
 .PHONY: clean
 clean:
@@ -146,6 +147,9 @@ serve-prod:
 	(cd dist; ../.build/venv/bin/python albumServer.py)
 
 
+.PHONY: jsdeps
+jsdeps: $(LIB_DIR)/angular_13.js $(LIB_DIR)/angular-gettext.js $(LIB_DIR)/exif.js $(LIB_DIR)/pdfkit.js $(LIB_DIR)/blob-stream.js $(LIB_DIR)/jszip.min.js $(LIB_DIR)/FileSaver.min.js
+
 $(LIB_DIR)/angular_13.js: .build/node_modules.timestamp
 	cp node_modules/angular/angular.js $@
 
@@ -166,6 +170,11 @@ $(LIB_DIR)/jszip.min.js:
 
 $(LIB_DIR)/FileSaver.min.js:
 	wget https://github.com/eligrey/FileSaver.js/raw/d593c0b9114ac14a648fbaee822f181117b2b5fa/FileSaver.min.js -O $@
+
+static/build/build.css: $(LESS_FILES) .build/node_modules.timestamp
+	mkdir -p $(dir $@)
+	./node_modules/less/bin/lessc less/album.less $@
+
 
 .PHONY: node_deps
 node_deps: $(LIB_DIR)/angular_13.js $(LIB_DIR)/angular-gettext.js $(LIB_DIR)/jszip.min.js $(LIB_DIR)/blob-stream.js $(LIB_DIR)/exif.js $(LIB_DIR)/pdfkit.js
