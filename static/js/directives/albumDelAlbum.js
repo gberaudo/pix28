@@ -7,32 +7,33 @@ app.directive('albumDelAlbum', ['$http', '$templateCache', '$compile', '$timeout
 			var popup;
 			var anchor = angular.element(document.body);
 			
-			$http.get('static/partials/alertDelAlbum.html', {cache: $templateCache})
-			.success(function(tpl){
-				popup = angular.element(tpl);
-				$compile(popup)(scope);
-				anchor.append(popup);
-			});
 			
 			scope.delAlbumRq = function() {
-				scope.delAlbum = true;
-				scope.current.hideAlbum = true;
+				$http.get('static/partials/alertDelAlbum.html', {cache: $templateCache})
+				.success(function(tpl){
+					popup = angular.element(tpl);
+					popup.on('keydown', alertKeydown);
+					$compile(popup)(scope);
+					anchor.append(popup);
+				});
 				$timeout(function() {
 					document.getElementById('notDelAlbum').focus();
 				}, 50);
 			};
 
-			scope.alertKeydown = function(event) {
+			
+			function alertKeydown(event) {
+				if (event.keyCode != 13) event.preventDefault();
 				if (event.keyCode == 37) {
 					document.getElementById('delAlbum').focus();
 				}
 				if  (event.keyCode == 39) {
 					document.getElementById('notDelAlbum').focus();
 				}
-				if (event.keyCode == 27) {
-					scope.delAlbum = false;
-					scope.current.hideAlbum = false;
-				}
+			};
+
+			scope.notDelAlbum = function() {
+				popup.remove();
 			};
 			
 			scope.removeAlbum = function(id) {
@@ -56,20 +57,18 @@ app.directive('albumDelAlbum', ['$http', '$templateCache', '$compile', '$timeout
 								scope.current.showAlbums = true;
 							}
 							scope.current.showHome = true;
-							scope.delAlbum = false;
-							scope.current.hideAlbum = false;
+							popup.remove();
 						});
 					};
 					removeRq.onerror = function() {
 						console.log('failed to remove album', id);
-						scope.delAlbum = false;
-						scope.current.hideAlbum = false;
+						popup.remove();
 					};
 						
 				};
 				openRq.onerror = function() {
 					console.log('failed to open DB to removing album');
-					scope.delAlbum = false;
+					popup.remove();
 				};
 			};
 		}

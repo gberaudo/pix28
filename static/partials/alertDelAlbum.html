@@ -1,9 +1,4 @@
-<div  class = 'alert'
-	style = 'width: {{screenWidth/4 + "px"}}; 
-					left: {{screenWidth/4 + "px"}}; 
-					top: {{screenWidth/12 +"px"}}'
-	ng-show = 'delAlbum'
-	ng-keydown = 'alertKeydown($event)'>
+<div album-popup page-deactivate blacken-out class = 'alert'>
 	<span style = 'color: red' translate>
 		The album 
 	</span>
@@ -22,7 +17,7 @@
 	</button>
 	<button type = 'button' class = 'respond' 
 		id = 'notDelAlbum'
-		ng-click = 'delAlbum = false; current.hideAlbum = false' 
+		ng-click = 'notDelAlbum()'
 		style = 'float: right' translate>
 		No, do not delete.
 	</button>
