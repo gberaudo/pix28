@@ -7,7 +7,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 		template: '<img class = "respond clickable"/>',
 		link: function(scope, elem, attrs) {
 			function removePageRq() {
-				var popup = angular.element('<div album-popup></div>');
+				var popup = angular.element('<div album-popup page-deactivate></div>');
 				var anchor = angular.element(document.body);
 				var num = scope.current.pageNum;
 				var abContent = scope.album.content;
