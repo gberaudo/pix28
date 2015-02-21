@@ -1,10 +1,11 @@
 app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', 'drawService',
 					function($scope, $q, $timeout, ImgService, drawService) {
 
-	$scope.previewPage = function(num) {
+	$timeout(function() {
 		var maxHeight = Math.floor(0.9 * window.innerHeight);
 		var maxWidth = Math.floor(0.9 * window.innerWidth);
 		var prop = 0.5 * $scope.measure.pheight / $scope.measure.pwidth;
+		var num = $scope.current.pageNum;
 		if (prop < maxHeight / maxWidth) {
 			previewWidth = maxWidth;
 			previewHeight = Math.round(prop * previewWidth);
@@ -16,40 +17,33 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 		$scope.previewWidth = previewWidth;
 		document.addEventListener('keydown', handleKeyDown, true);
 		$scope.viewPageNum = num;
-		var pageWatch;
-		$timeout(function() {
-			pageWatch = $scope.$watch('previewHeight', function() {
-				if ($scope.previewHeight) {
-					drawPage(num);
-					pageWatch();
-				}
-			});
-		});
- 		$scope.current.hideAlbum = true;
-		$scope.$parent.previewMode = true;
+		drawPage(num, $scope.album.content);
+	});
+
+	$scope.previewPage = function(num) {
+		$scope.viewPageNum = num;
+		drawPage(num, $scope.album.content);
 	};
 
-	function drawPage(num) {
+	function drawPage(num, content) {
 		var pwidth, pheight;
 		pwidth = $scope.previewWidth/2;
 		pheight = $scope.previewHeight;
 
 		document.getElementById('rightPreview').innerHTML = '';
 		document.getElementById('leftPreview').innerHTML = '';
-		var content = $scope.album.content;
 		if (num != 0) {
-			var leftPage = angular.copy(content[num - 1]),
-				leftView = document.getElementById('leftPreview');
+			var leftPage = angular.copy(content[num - 1]);
+			var leftView = document.getElementById('leftPreview');
 			showPage(leftPage, leftView, pwidth, pheight);
 		}
 		if (num != content.length) {
-			var rightPage = angular.copy(content[num]),
-				rightView = document.getElementById('rightPreview');
+			var rightPage = angular.copy(content[num]);
+			var rightView = document.getElementById('rightPreview');
 			showPage(rightPage, rightView, pwidth, pheight);
 		}
 
 		function showPage(page, view, pwidth, pheight) {
-
 			$timeout(function() {
 				view.style.width = pwidth + 'px';
 				view.style.height = pheight + 'px';
@@ -61,7 +55,6 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 			page.frames.forEach( function(frame) {
 				drawFrame(frame);
 			});
-			//draw text
 			page.textBoxes.forEach(function(textBox) {
 				drawText(textBox);
 			});
@@ -119,36 +112,20 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 		}
 	}
 
-
-	$scope.removePreview = function() {
-		document.removeEventListener('keydown', handleKeyDown, true);
-		$scope.current.hideAlbum = false;
-		$scope.$parent.previewMode = false;
-	};
-
 	function handleKeyDown(event) {
+		var content = $scope.album.content;
+		var viewPageNum = $scope.viewPageNum;
 		switch (event.keyCode){
-			case 27: //ESC
-				$timeout(function() {
-					$scope.current.hideAlbum = false;
-					$scope.$parent.previewMode = false;
-				});
-				document.removeEventListener('keydown', handleKeyDown, true);
-				break;
 			case 39:
 				event.preventDefault();
-				if ($scope.viewPageNum != $scope.album.content.length) {
-					$timeout(function(){
-						$scope.previewPage($scope.viewPageNum + 2);
-					});
+				if (viewPageNum != content.length) {
+						$scope.previewPage(viewPageNum + 2, content);
 				}
 				break;
 			case 37:
 				event.preventDefault();
-				if ($scope.viewPageNum != 0) {
-					$timeout(function(){
-						$scope.previewPage($scope.viewPageNum - 2);
-					});
+				if (viewPageNum != 0) {
+					$scope.previewPage(viewPageNum - 2, content);
 				}
 				break;
 		}
