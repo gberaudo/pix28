@@ -1,10 +1,10 @@
 app.controller('AlbumController',
     ['$scope', '$timeout', '$http', '$element', '$q', 'PageObject', 
 	 'DBServices', 'Misc', 'gettextCatalog', 'Layouts', 'FrameObject', 
-	 'ImgService', 'TextBoxObject', '$interval', 'Fonts', 'getUserFonts',
+	 'ImgService', 'TextBoxObject', '$interval', 'Fonts', 'getUserFonts', '$templateCache', '$compile',
     function($scope, $timeout, $http, $element, $q, PageObject, 
 		DBServices, Misc, gettextCatalog, Layouts, FrameObject, 
-		ImgService, TextBoxObject, $interval, Fonts, getUserFonts
+		ImgService, TextBoxObject, $interval, Fonts, getUserFonts, $templateCache, $compile
 	) {
 	
 	init();
@@ -287,6 +287,19 @@ app.controller('AlbumController',
 			},3000);
 		});
  	};
+
+	$scope.showExportMenu = function() {
+		var popup;
+		var anchor = angular.element(document.body);
+		$http.get('static/partials/exportWindow.html', {cache: $templateCache})
+		.success(function(tpl){
+			popup = angular.element('<album-popup page-deactivate blacken-out></album-popup>');
+			popup.html(tpl);
+			$compile(popup)($scope);
+			anchor.append(popup);
+		});
+	};
+	
 	function saveAlbum(album, id) {
 		DBServices.updateAlbumDB(album, id)
 		.then(function() {},
