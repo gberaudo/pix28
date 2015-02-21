@@ -7,30 +7,17 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 		template: '<img class = "respond clickable"/>',
 		link: function(scope, elem, attrs) {
 			function removePageRq() {
+				var popup = angular.element('<div album-popup></div>');
+				var anchor = angular.element(document.body);
 				var num = scope.current.pageNum;
-				console.log(num);
 				var abContent = scope.album.content;
 				var length = abContent.length;
-				var anchor = angular.element(document.body);
-				var popup = angular.element('<div ng-keydown = "delPageKeydown($event)"></div>');
-				
 				anchor.append(popup);
 				popup.addClass('alert');
 				scope.removePopup = function() {
 					popup.remove();
 				};
-				scope.delPageKeydown = function(event) {
-					if (event.keyCode == 37) {
-						document.getElementById('delPage').focus();
-					}
-					if  (event.keyCode == 39) {
-						document.getElementById('notDelPage').focus();
-					}
-					if (event.keyCode == 27) {
-						popup.remove();
-					}
-				};
-				
+
 				scope.delCurrentPage = function() {
 					abContent.splice(num - 1, 2);
 					num = scope.current.pageNum -= 2;
@@ -41,9 +28,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 					popup.remove();
 					scope.updateView('next');
 				};
-				
-				
-				
+
 				if (num == 0 || num == length) {
 					var msg = gettextCatalog.getString('Cannot remove cover page!');
 					popup.text(msg);
@@ -51,7 +36,6 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 						popup.remove();
 					}, 2000);
 				} else {
-
 					var innerHTML = '<span translate>Do you really want to remove this double page?</span>\
 						<br/><br/>\
 						<button type = "button" class = "respond"\
@@ -67,10 +51,21 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 							Cancel\
 						</button>'
 					popup.html(innerHTML);
+					popup.on('keydown', delPageKeydown);
 					$compile(popup)(scope);
 					$timeout(function() {
 						document.getElementById('notDelPage').focus();
 					}, 50);
+
+					function delPageKeydown(event) {
+						event.preventDefault();
+						if (event.keyCode == 37) {
+							document.getElementById('delPage').focus();
+						}
+						if  (event.keyCode == 39) {
+							document.getElementById('notDelPage').focus();
+						}
+					};
 				}
 			}
 			elem.bind('click', removePageRq);
