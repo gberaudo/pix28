@@ -6,8 +6,6 @@ app.directive('albumDelAlbum', ['$http', '$templateCache', '$compile', '$timeout
 		link: function(scope, elem, attrs) {
 			var popup;
 			var anchor = angular.element(document.body);
-			
-			
 			scope.delAlbumRq = function() {
 				$http.get('static/partials/alertDelAlbum.html', {cache: $templateCache})
 				.success(function(tpl){
@@ -21,7 +19,6 @@ app.directive('albumDelAlbum', ['$http', '$templateCache', '$compile', '$timeout
 				}, 50);
 			};
 
-			
 			function alertKeydown(event) {
 				if (event.keyCode != 13) event.preventDefault();
 				if (event.keyCode == 37) {
@@ -35,7 +32,7 @@ app.directive('albumDelAlbum', ['$http', '$templateCache', '$compile', '$timeout
 			scope.notDelAlbum = function() {
 				popup.remove();
 			};
-			
+
 			scope.removeAlbum = function(id) {
 				var openRq = window.indexedDB.open('PhotoAlbumsDB', 1);
 				openRq.onsuccess = function(event) {

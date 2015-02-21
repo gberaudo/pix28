@@ -58,7 +58,7 @@ app.directive('albumDelPage', ['gettextCatalog', '$timeout', '$compile',
 					}, 50);
 
 					function delPageKeydown(event) {
-						event.preventDefault();
+						if (event.keyCode != 13) event.preventDefault();
 						if (event.keyCode == 37) {
 							document.getElementById('delPage').focus();
 						}

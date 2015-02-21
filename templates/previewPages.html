@@ -5,7 +5,7 @@
 	<span ng-show = 'viewPageNum != 0'
 			class = 'link prev fa fa-chevron-left'
 			ng-click = 'previewPage(viewPageNum - 2)'> </span>
-	<div xmlns="http://www.w3.org/1999/xhtml"  id = 'prePageCont'>
+	<div id = 'prePageCont'>
 		<div id = 'leftPreview'
 			ng-show = 'viewPageNum != 0'
 			style = 'position: absolute; top: 0px; left: 0px; 
@@ -25,6 +25,7 @@
 			ng-click = 'removePreview()'> </span>
 	<div id = 'exportJPEG' >
 		<span class = 'link'
-			ng-click = 'toJPEG(viewPageNum)' translate> Export this page to JPEG</span>
+			ng-click = 'toJPEG(viewPageNum)' translate>
+			Export this page to JPEG</span>
 	</div>
 </div>
