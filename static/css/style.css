@@ -888,6 +888,10 @@ option {
 	color: #99F;
 }
 
+['album-popup' = ''] {
+	z-index: 1001;
+}
+
 #previewPage .next {
 	position: absolute;
 	left: 101%; 

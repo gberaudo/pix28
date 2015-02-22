@@ -10,7 +10,7 @@ app.directive('albumPreview', ['$http', '$templateCache', '$compile',
 				var anchor = angular.element(document.body);
 				$http.get('static/partials/previewPages.html', {cache: $templateCache})
 				.success(function(tpl){
-					popup = angular.element('<album-popup page-deactivate blacken-out></album-popup>');
+					popup = angular.element('<album-popup page-deactivate blacken-out close></album-popup>');
 					popup.html(tpl);
 					$compile(popup)(scope);
 					anchor.append(popup);
