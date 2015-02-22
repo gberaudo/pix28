@@ -1,5 +1,6 @@
-app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', 'drawService',
-					function($scope, $q, $timeout, ImgService, drawService) {
+app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
+					'drawService', '$element',
+					function($scope, $q, $timeout, ImgService, drawService, $element) {
 
 	$timeout(function() {
 		var maxHeight = Math.floor(0.9 * window.innerHeight);
@@ -16,6 +17,9 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService', '
 		$scope.previewHeight = previewHeight;
 		$scope.previewWidth = previewWidth;
 		document.addEventListener('keydown', handleKeyDown, true);
+		angular.element($element[0]).on('$destroy', function(){
+			document.removeEventListener('keydown', handleKeyDown, true);
+		});
 		$scope.viewPageNum = num;
 		drawPage(num, $scope.album.content);
 	});
