@@ -10,12 +10,12 @@ app.service('drawService', ['$q', 'Misc',
 		});
 
 		function setCanvasDim() {
-			if (scope.pwidth > scope.pheight) {
+			if (scope.measure.pwidth > scope.measure.pheight) {
 				canvas.width = 800;
-				canvas.height = canvas.width * scope.pheight/scope.pwidth;
+				canvas.height = canvas.width * scope.measure.pheight/scope.measure.pwidth;
 			} else {
 				canvas.height = 800;
-				canvas.width = canvas.height * scope.pwidth/scope.pheight;
+				canvas.width = canvas.height * scope.measure.pwidth/scope.measure.pheight;
 			}
 		}
 
@@ -99,7 +99,7 @@ app.service('drawService', ['$q', 'Misc',
 					ctx.translate(centerX, centerY);
 					ctx.rotate(frame.angle * Math.PI / 180);
 					if (frame.border.thickness && frame.border.color) {
-						var thickness = frame.border.thickness * canvas.width / scope.pwidth;
+						var thickness = frame.border.thickness * canvas.width / scope.measure.pwidth;
 						ctx.lineWidth = thickness;
 						ctx.strokeStyle = frame.border.color;
 						ctx.strokeRect(-(width + thickness)/2, -(height + thickness) / 2,
@@ -126,7 +126,7 @@ app.service('drawService', ['$q', 'Misc',
 					width = textBox.box.width * canvas.width / 100,
 					height = textBox.box.height * canvas.height / 100;
 
-				var fontSize = textBox.font.size * canvas.width / scope.pdfWidth,
+				var fontSize = textBox.font.size * canvas.width / scope.measure.pdfWidth,
 					color = textBox.font.color,
 					fontName = textBox.font.family,
 					lineHeight = 1.2 * fontSize;
