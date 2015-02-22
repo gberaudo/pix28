@@ -5,21 +5,20 @@ app.directive('albumAddFonts', ['$http', '$templateCache', '$compile', '$q',
 		scope: true,
 		template: '<span> more font</span>',
 		link: function(scope, elem) {
-			var popup;
-			var anchor = angular.element(document.body);
-			
 			elem.bind('click', showPopup);
 			function showPopup() {
 				$http.get('static/partials/addFonts.html', {cache: $templateCache})
 				.success(function(tpl){
-					popup = angular.element(tpl);
+					var popup;
+					var anchor = angular.element(document.body);
+					popup = angular.element('<album-popup page-deactivate close></album-popup>');
+					popup.html(tpl);
 					$compile(popup)(scope);
 					anchor.append(popup);
-					scope.close = function(){
-						popup.remove();
-					};
-					
-					scope.handleFontSelect = function(event) {
+					var fileInput = angular.element(popup.find('input')[0]);
+					fileInput.bind('change', handleFontSelect);
+
+					function handleFontSelect(event) {
 						var files = event.target.files;
 						event.preventDefault();
 						var newStyle = document.createElement('style');
