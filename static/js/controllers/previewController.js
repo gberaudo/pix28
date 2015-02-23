@@ -31,19 +31,18 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 
 	function drawPage(num, content) {
 		var pwidth, pheight;
+		var rightView = document.getElementById('rightPreview');
+		var leftView = document.getElementById('leftPreview');
 		pwidth = $scope.previewWidth/2;
 		pheight = $scope.previewHeight;
-
-		document.getElementById('rightPreview').innerHTML = '';
-		document.getElementById('leftPreview').innerHTML = '';
+		rightView.innerHTML = '';
+		leftView.innerHTML = '';
 		if (num != 0) {
 			var leftPage = angular.copy(content[num - 1]);
-			var leftView = document.getElementById('leftPreview');
 			showPage(leftPage, leftView, pwidth, pheight);
 		}
 		if (num != content.length) {
 			var rightPage = angular.copy(content[num]);
-			var rightView = document.getElementById('rightPreview');
 			showPage(rightPage, rightView, pwidth, pheight);
 		}
 
@@ -52,8 +51,10 @@ app.controller('PreviewController', ['$scope', '$q', '$timeout', 'ImgService',
 				view.style.width = pwidth + 'px';
 				view.style.height = pheight + 'px';
 				view.style.backgroundColor = page.background || '#FFFFFF';
-				view.style.backgroundImage = 'url("' + page.patternURL + '")';
-				view.style.backgroundSize = page.patternSize;
+				if (page.patternURL) {
+					view.style.backgroundImage = 'url("' + page.patternURL + '")';
+					view.style.backgroundSize = page.patternSize;
+				}
 			});
 
 			page.frames.forEach( function(frame) {
