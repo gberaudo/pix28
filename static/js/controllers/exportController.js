@@ -7,8 +7,8 @@ app.controller('ExportController',
 		$scope.showMenu = false;
 		$scope.processingPdf = true;
 		var albumJSON = angular.copy($scope.album.content);
-		var ratio = $scope.pdfWidth / $scope.pwidth;
-		exportService.exportPdf(albumJSON, $scope.pdfHeight, $scope.pdfWidth, 
+		var ratio = $scope.measure.pdfWidth / $scope.measure.pwidth;
+		exportService.exportPdf(albumJSON, $scope.measure.pdfHeight, $scope.measure.pdfWidth,
 										ratio, resolution, $scope.communication)
 		.then(function(pdfLink) {
 			$scope.pdfLink = pdfLink;
