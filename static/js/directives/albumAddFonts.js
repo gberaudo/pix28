@@ -3,7 +3,7 @@ app.directive('albumAddFonts', ['$http', '$templateCache', '$compile', '$q',
 	return {
 		restrict: 'EA',
 		scope: true,
-		template: '<span> more font</span>',
+		template: '<span class = "link clickable"> More fonts</span>',
 		link: function(scope, elem) {
 			elem.bind('click', showPopup);
 			function showPopup() {
@@ -22,12 +22,9 @@ app.directive('albumAddFonts', ['$http', '$templateCache', '$compile', '$q',
 						var files = event.target.files;
 						event.preventDefault();
 						var newStyle = document.createElement('style');
-						for (var i = 0; i < files.length; i++) {
-							var file = files[i];
-							if (file.type.match(/x-font-ttf/)) { 
-								handleFont(file);
-							}
-						}
+						[].forEach.call(files, function(file) {
+							if (file.type.match(/x-font-ttf/)) handleFont(file);
+						});
 						function saveUserFonts(fontURL, name) {
 							var deferred = $q.defer();
 							var openRq = window.indexedDB.open('UserDB');
