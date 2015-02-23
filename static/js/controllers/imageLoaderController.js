@@ -30,15 +30,15 @@ app.controller('ImageLoaderController',
 		$scope.loadingImg = true;
 		
 
-		for (var i = 0; i < files.length; i++) {
+		[].forEach.call(files, function(file) {
 			tasks.push(
 				(function(thefile) {
 					return function() {
 						return handleFile(thefile);
 					};
-				})(files[i])
-			)
-		}
+				})(file)
+			);
+		});
 		
 	
 		Misc.syncTask(tasks).then(function(){
@@ -184,16 +184,11 @@ app.controller('ImageLoaderController',
 	
 	$scope.dragImage = function(ev) {
 		ev.dataTransfer.setData('URL', ev.target.src);
-		ev.dataTransfer.setData(
-			'mHeight', ev.target.getAttribute('mHeight')
-		);
-		ev.dataTransfer.setData(
-			'mWidth', ev.target.getAttribute('mWidth')
-		);
-		ev.dataTransfer.setData('ratio', ev.target.getAttribute('ratio'));
-		ev.dataTransfer.setData('DbId', ev.target.getAttribute('DbId'));
+		var props = ['mHeight', 'mWidth', 'ratio', 'DbId'];
+		props.forEach(function(prop) {
+			ev.dataTransfer.setData(prop, ev.target.getAttribute(prop));
+		});
 		ev.dataTransfer.setData('name', 'image');
-		
 	};
 	
 	$scope.bigImg = document.createElement('img');
