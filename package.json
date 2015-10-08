@@ -6,7 +6,7 @@
   "license": "proprietary",
   "dependencies": {
     "angular": "~1.3.3",
-    "pdfkit": "~0.7.0"
+    "pdfkit": "0.7.0"
   },
   "devDependencies": {
     "angular-gettext": "~1.1.3",

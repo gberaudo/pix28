@@ -6,6 +6,9 @@ APP_HTML_FILES := $(shell find templates -type f -name '*.html')
 LESS_FILES = $(shell find less -type f -name '*.less')
 LIB_DIR := static/lib
 
+# TODO check msgmerge is installed
+# python envelop something
+
 export closure_library_path = $(CLOSURE_LIBRARY_PATH)
 export closure_compiler_path = $(CLOSURE_COMPILER_PATH)
 
@@ -151,24 +154,31 @@ serve-prod:
 jsdeps: $(LIB_DIR)/angular_13.js $(LIB_DIR)/angular-gettext.js $(LIB_DIR)/exif.js $(LIB_DIR)/pdfkit.js $(LIB_DIR)/blob-stream.js $(LIB_DIR)/jszip.min.js $(LIB_DIR)/FileSaver.min.js
 
 $(LIB_DIR)/angular_13.js: .build/node_modules.timestamp
+	mkdir -p $(LIB_DIR)
 	cp node_modules/angular/angular.js $@
 
 $(LIB_DIR)/angular-gettext.js: .build/node_modules.timestamp
+	mkdir -p $(LIB_DIR)
 	cp node_modules/angular-gettext/dist/angular-gettext.js $@
 
 $(LIB_DIR)/exif.js:.build/node_modules.timestamp
+	mkdir -p $(LIB_DIR)
 	cp node_modules/exif-js/exif.js $@
 
 $(LIB_DIR)/pdfkit.js:.build/node_modules.timestamp
+	mkdir -p $(LIB_DIR)
 	grep -v 'sourceMappingURL=pdfkit.js.map' node_modules/pdfkit/build/pdfkit.js > $@
 
 $(LIB_DIR)/blob-stream.js:
+	mkdir -p $(LIB_DIR)
 	wget https://github.com/devongovett/blob-stream/releases/download/v0.1.2/blob-stream-v0.1.2.js -O $@
 
 $(LIB_DIR)/jszip.min.js:
+	mkdir -p $(LIB_DIR)
 	wget https://github.com/Stuk/jszip/raw/64b33125ef8970a4bb1725042804995bc1535958/dist/jszip.min.js -O $@
 
 $(LIB_DIR)/FileSaver.min.js:
+	mkdir -p $(LIB_DIR)
 	wget https://github.com/eligrey/FileSaver.js/raw/d593c0b9114ac14a648fbaee822f181117b2b5fa/FileSaver.min.js -O $@
 
 static/build/build.css: $(LESS_FILES) .build/node_modules.timestamp
